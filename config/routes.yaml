@@ -1,0 +1,25 @@
+# This file is the entry point to configure your own HTTP routes.
+# Files in the routes/ subdirectory configure the routes for your dependencies.
+
+#index:
+#    path: /
+#    defaults: { _controller: 'App\Controller\DefaultController::index' }
+
+api_login_anonymous:
+    path: '/api/loginAnonymous'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\TempUserController::login
+        _api_resource_class: App\Entity\TempUser
+        
+api_list_col:
+    path: '/api/listCol'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\SeoApisController::listCol
+        
+api_list_no_col:
+    path: '/api/listNoCol'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\SeoApisController::listNoCol
