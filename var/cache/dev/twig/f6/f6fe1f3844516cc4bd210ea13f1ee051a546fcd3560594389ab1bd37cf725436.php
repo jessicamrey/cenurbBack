@@ -59,6 +59,6 @@ class __TwigTemplate_e41aeafbdb719510d39c3107a0bf18c644f3372304eaee51368f72ddca3
 <?php if (\$form_method !== \$method): ?>
     <input type=\"hidden\" name=\"_method\" value=\"<?php echo \$method ?>\" />
 <?php endif ?>
-", "@Framework/Form/form_start.html.php", "/home/jessica/Escritorio/Symfony/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_start.html.php");
+", "@Framework/Form/form_start.html.php", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_start.html.php");
     }
 }

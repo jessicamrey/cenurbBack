@@ -140,6 +140,6 @@ class __TwigTemplate_b13218c6dc36904935ed7ebb37d7f16cf581d64dd0f7c6457ad512f9464
     {{ filename|file_excerpt(line, -1) }}
 </div>
 {% endblock %}
-", "@WebProfiler/Profiler/open.html.twig", "/home/jessica/Escritorio/Symfony/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/open.html.twig");
+", "@WebProfiler/Profiler/open.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/open.html.twig");
     }
 }

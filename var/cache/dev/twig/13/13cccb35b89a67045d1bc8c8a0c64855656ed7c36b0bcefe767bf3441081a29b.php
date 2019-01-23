@@ -65,6 +65,6 @@ class __TwigTemplate_92fe428e2c758dec3a619bc74f3ee8fe2920057f0337c9346a649d80e51
 <?php printf('%s=\"%s\" ', \$view->escape(\$k), \$view->escape(\$v)) ?>
 <?php endif ?>
 <?php endforeach ?>
-", "@Framework/Form/attributes.html.php", "/home/jessica/Escritorio/Symfony/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/attributes.html.php");
+", "@Framework/Form/attributes.html.php", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/attributes.html.php");
     }
 }

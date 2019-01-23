@@ -64,24 +64,24 @@ class VisitasColonia
      */
     private $completo;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getColonia(): ?Colonia
+    public function getColonia(): Colonia
     {
         return $this->colonia;
     }
 
-    public function setColonia(?Colonia $colonia): self
+    public function setColonia(Colonia $colonia): self
     {
         $this->colonia = $colonia;
 
         return $this;
     }
 
-    public function getUsuario(): ?int
+    public function getUsuario(): int
     {
         return $this->usuario;
     }
@@ -93,7 +93,7 @@ class VisitasColonia
         return $this;
     }
 
-    public function getNumVisita(): ?int
+    public function getNumVisita(): int
     {
         return $this->numVisita;
     }
@@ -105,72 +105,72 @@ class VisitasColonia
         return $this;
     }
 
-    public function getFecha(): ?\DateTimeInterface
+    public function getFecha(): \DateTimeInterface
     {
         return $this->fecha;
     }
 
-    public function setFecha(?\DateTimeInterface $fecha): self
+    public function setFecha(\DateTimeInterface $fecha): self
     {
         $this->fecha = $fecha;
 
         return $this;
     }
 
-    public function getNumNidos(): ?int
+    public function getNumNidos(): int
     {
         return $this->numNidos;
     }
 
-    public function setNumNidos(?int $numNidos): self
+    public function setNumNidos(int $numNidos): self
     {
         $this->numNidos = $numNidos;
 
         return $this;
     }
 
-    public function getNumNidosOcupados(): ?int
+    public function getNumNidosOcupados(): int
     {
         return $this->numNidosOcupados;
     }
 
-    public function setNumNidosOcupados(?int $numNidosOcupados): self
+    public function setNumNidosOcupados(int $numNidosOcupados): self
     {
         $this->numNidosOcupados = $numNidosOcupados;
 
         return $this;
     }
 
-    public function getNumNidosVacios(): ?int
+    public function getNumNidosVacios(): int
     {
         return $this->numNidosVacios;
     }
 
-    public function setNumNidosVacios(?int $numNidosVacios): self
+    public function setNumNidosVacios(int $numNidosVacios): self
     {
         $this->numNidosVacios = $numNidosVacios;
 
         return $this;
     }
 
-    public function getNumNidosExito(): ?int
+    public function getNumNidosExito(): int
     {
         return $this->numNidosExito;
     }
 
-    public function setNumNidosExito(?int $numNidosExito): self
+    public function setNumNidosExito(int $numNidosExito): self
     {
         $this->numNidosExito = $numNidosExito;
 
         return $this;
     }
 
-    public function getCompleto(): ?bool
+    public function getCompleto(): bool
     {
         return $this->completo;
     }
 
-    public function setCompleto(?bool $completo): self
+    public function setCompleto(bool $completo): self
     {
         $this->completo = $completo;
 

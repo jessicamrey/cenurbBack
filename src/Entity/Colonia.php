@@ -21,6 +21,11 @@ class Colonia
     private $id;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $usuario;
+    
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $nombre;
@@ -71,34 +76,50 @@ class Colonia
     private $visitasColonias;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Comunidades", inversedBy="colonias")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $ccaa;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Provincias", inversedBy="colonias")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $provincia;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Poblaciones", inversedBy="colonias")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $municipio;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\OtrasEspecies", mappedBy="colonia")
+     */
+    private $otrasEspecies;
 
     public function __construct()
     {
         $this->visitasColonias = new ArrayCollection();
+        $this->otrasEspecies = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
+    
+    public function getUsuario(): int
+    {
+        return $this->usuario;
+    }
+    
+    public function setUsuario(int $usuario): self
+    {
+        $this->usuario = $usuario;
+        
+        return $this;
+    }
+    
 
-    public function getNombre(): ?string
+    public function getNombre(): string
     {
         return $this->nombre;
     }
@@ -110,67 +131,67 @@ class Colonia
         return $this;
     }
 
-    public function getBarrio(): ?string
+    public function getBarrio(): string
     {
         return $this->barrio;
     }
 
-    public function setBarrio(?string $barrio): self
+    public function setBarrio(string $barrio): self
     {
         $this->barrio = $barrio;
 
         return $this;
     }
 
-    public function getCalleNumPiso(): ?string
+    public function getCalleNumPiso(): string
     {
         return $this->calleNumPiso;
     }
 
-    public function setCalleNumPiso(?string $calleNumPiso): self
+    public function setCalleNumPiso(string $calleNumPiso): self
     {
         $this->calleNumPiso = $calleNumPiso;
 
         return $this;
     }
 
-    public function getNombreCentro(): ?string
+    public function getNombreCentro(): string
     {
         return $this->nombreCentro;
     }
 
-    public function setNombreCentro(?string $nombreCentro): self
+    public function setNombreCentro(string $nombreCentro): self
     {
         $this->nombreCentro = $nombreCentro;
 
         return $this;
     }
 
-    public function getTipoPropiedad(): ?TipoPropiedad
+    public function getTipoPropiedad(): TipoPropiedad
     {
         return $this->tipoPropiedad;
     }
 
-    public function setTipoPropiedad(?TipoPropiedad $tipoPropiedad): self
+    public function setTipoPropiedad(TipoPropiedad $tipoPropiedad): self
     {
         $this->tipoPropiedad = $tipoPropiedad;
 
         return $this;
     }
 
-    public function getTipoEdificio(): ?TipoEdificio
+    public function getTipoEdificio(): TipoEdificio
     {
         return $this->tipoEdificio;
     }
 
-    public function setTipoEdificio(?TipoEdificio $tipoEdificio): self
+    public function setTipoEdificio(TipoEdificio $tipoEdificio): self
     {
         $this->tipoEdificio = $tipoEdificio;
 
         return $this;
     }
 
-    public function getTemporada(): ?int
+    public function getTemporada(): int
     {
         return $this->temporada;
     }
@@ -182,24 +203,24 @@ class Colonia
         return $this;
     }
 
-    public function getLocNidos(): ?LocNidosCol
+    public function getLocNidos(): LocNidosCol
     {
         return $this->locNidos;
     }
 
-    public function setLocNidos(?LocNidosCol $locNidos): self
+    public function setLocNidos(LocNidosCol $locNidos): self
     {
         $this->locNidos = $locNidos;
 
         return $this;
     }
 
-    public function getVacio(): ?bool
+    public function getVacio(): bool
     {
         return $this->vacio;
     }
 
-    public function setVacio(?bool $vacio): self
+    public function setVacio(bool $vacio): self
     {
         $this->vacio = $vacio;
 
@@ -237,38 +258,69 @@ class Colonia
         return $this;
     }
 
-    public function getCcaa(): ?comunidades
+    public function getCcaa(): string
     {
         return $this->ccaa;
     }
 
-    public function setCcaa(?comunidades $ccaa): self
+    public function setCcaa(string $ccaa): self
     {
         $this->ccaa = $ccaa;
 
         return $this;
     }
 
-    public function getProvincia(): ?provincias
+    public function getProvincia(): string
     {
         return $this->provincia;
     }
 
-    public function setProvincia(?provincias $provincia): self
+    public function setProvincia(string $provincia): self
     {
         $this->provincia = $provincia;
 
         return $this;
     }
 
-    public function getMunicipio(): ?poblaciones
+    public function getMunicipio(): string
     {
         return $this->municipio;
     }
 
-    public function setMunicipio(?poblaciones $municipio): self
+    public function setMunicipio(string $municipio): self
     {
         $this->municipio = $municipio;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OtrasEspecies[]
+     */
+    public function getOtrasEspecies(): Collection
+    {
+        return $this->otrasEspecies;
+    }
+
+    public function addOtrasEspecy(OtrasEspecies $otrasEspecy): self
+    {
+        if (!$this->otrasEspecies->contains($otrasEspecy)) {
+            $this->otrasEspecies[] = $otrasEspecy;
+            $otrasEspecy->setColonia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOtrasEspecy(OtrasEspecies $otrasEspecy): self
+    {
+        if ($this->otrasEspecies->contains($otrasEspecy)) {
+            $this->otrasEspecies->removeElement($otrasEspecy);
+            // set the owning side to null (unless already changed)
+            if ($otrasEspecy->getColonia() === $this) {
+                $otrasEspecy->setColonia(null);
+            }
+        }
 
         return $this;
     }

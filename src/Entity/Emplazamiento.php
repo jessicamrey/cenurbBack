@@ -28,12 +28,12 @@ class Emplazamiento
      */
     private $detalle;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getTipo(): ?string
+    public function getTipo(): string
     {
         return $this->tipo;
     }
@@ -45,12 +45,12 @@ class Emplazamiento
         return $this;
     }
 
-    public function getDetalle(): ?string
+    public function getDetalle(): string
     {
         return $this->detalle;
     }
 
-    public function setDetalle(?string $detalle): self
+    public function setDetalle(string $detalle): self
     {
         $this->detalle = $detalle;
 

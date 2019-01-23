@@ -155,6 +155,6 @@ class __TwigTemplate_3930f538d6dfe3a11382eee93384ad4c245345bd32fb4f61bbf9300aa0a
         {% block javascripts %}{% endblock %}
     </body>
 </html>
-", "base.html.twig", "/home/jessica/Escritorio/Symfony/cenurbBack/templates/base.html.twig");
+", "base.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/templates/base.html.twig");
     }
 }

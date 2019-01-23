@@ -1627,6 +1627,6 @@ class __TwigTemplate_bb6bfe698fb1bc6cba6c3b7cee0cd7818185eda6673a9f385f40cb01673
         <canvas width=\"680\" height=\"\" id=\"{{ id }}\" class=\"timeline\"></canvas>
     </div>
 {% endmacro %}
-", "@WebProfiler/Collector/time.html.twig", "/home/jessica/Escritorio/Symfony/cenurb/vendor/symfony/web-profiler-bundle/Resources/views/Collector/time.html.twig");
+", "@WebProfiler/Collector/time.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Collector/time.html.twig");
     }
 }

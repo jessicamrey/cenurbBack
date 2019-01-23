@@ -21,6 +21,11 @@ class Territorio
     /**
      * @ORM\Column(type="integer")
      */
+    private $usuario;
+    
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $especie;
 
     /**
@@ -79,29 +84,38 @@ class Territorio
     private $vacio;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Comunidades", inversedBy="territorios")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $ccaa;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Provincias", inversedBy="territorios")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $provincia;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Poblaciones", inversedBy="territorios")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $municipio;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getEspecie(): ?int
+    public function getUsuario(): int
+    {
+        return $this->usuario;
+    }
+    
+    public function setUsuario(int $usuario): self
+    {
+        $this->usuario = $usuario;
+        
+        return $this;
+    }
+    
+    public function getEspecie(): int
     {
         return $this->especie;
     }
@@ -113,7 +127,7 @@ class Territorio
         return $this;
     }
 
-    public function getNombre(): ?string
+    public function getNombre(): string
     {
         return $this->nombre;
     }
@@ -125,7 +139,7 @@ class Territorio
         return $this;
     }
 
-    public function getTemporada(): ?int
+    public function getTemporada(): int
     {
         return $this->temporada;
     }
@@ -137,79 +151,79 @@ class Territorio
         return $this;
     }
 
-    public function getBarrio(): ?string
+    public function getBarrio(): string
     {
         return $this->barrio;
     }
 
-    public function setBarrio(?string $barrio): self
+    public function setBarrio(string $barrio): self
     {
         $this->barrio = $barrio;
 
         return $this;
     }
 
-    public function getCalleNumPiso(): ?string
+    public function getCalleNumPiso(): string
     {
         return $this->calleNumPiso;
     }
 
-    public function setCalleNumPiso(?string $calleNumPiso): self
+    public function setCalleNumPiso(string $calleNumPiso): self
     {
         $this->calleNumPiso = $calleNumPiso;
 
         return $this;
     }
 
-    public function getNombreCentro(): ?string
+    public function getNombreCentro(): string
     {
         return $this->nombreCentro;
     }
 
-    public function setNombreCentro(?string $nombreCentro): self
+    public function setNombreCentro(string $nombreCentro): self
     {
         $this->nombreCentro = $nombreCentro;
 
         return $this;
     }
 
-    public function getTipoPropiedad(): ?TipoPropiedad
+    public function getTipoPropiedad(): TipoPropiedad
     {
         return $this->tipoPropiedad;
     }
 
-    public function setTipoPropiedad(?TipoPropiedad $tipoPropiedad): self
+    public function setTipoPropiedad(TipoPropiedad $tipoPropiedad): self
     {
         $this->tipoPropiedad = $tipoPropiedad;
 
         return $this;
     }
 
-    public function getTipoEdificio(): ?TipoEdificio
+    public function getTipoEdificio(): TipoEdificio
     {
         return $this->tipoEdificio;
     }
 
-    public function setTipoEdificio(?TipoEdificio $tipoEdificio): self
+    public function setTipoEdificio(TipoEdificio $tipoEdificio): self
     {
         $this->tipoEdificio = $tipoEdificio;
 
         return $this;
     }
 
-    public function getLocNidos(): ?LocNidosNoCol
+    public function getLocNidos(): LocNidosNoCol
     {
         return $this->locNidos;
     }
 
-    public function setLocNidos(?LocNidosNoCol $locNidos): self
+    public function setLocNidos(LocNidosNoCol $locNidos): self
     {
         $this->locNidos = $locNidos;
 
         return $this;
     }
 
-    public function getAmenazada(): ?bool
+    public function getAmenazada(): bool
     {
         return $this->amenazada;
     }
@@ -221,60 +235,60 @@ class Territorio
         return $this;
     }
 
-    public function getObservaciones(): ?string
+    public function getObservaciones(): string
     {
         return $this->observaciones;
     }
 
-    public function setObservaciones(?string $observaciones): self
+    public function setObservaciones(string $observaciones): self
     {
         $this->observaciones = $observaciones;
 
         return $this;
     }
 
-    public function getVacio(): ?bool
+    public function getVacio(): bool
     {
         return $this->vacio;
     }
 
-    public function setVacio(?bool $vacio): self
+    public function setVacio(bool $vacio): self
     {
         $this->vacio = $vacio;
 
         return $this;
     }
 
-    public function getCcaa(): ?comunidades
+    public function getCcaa(): string
     {
         return $this->ccaa;
     }
 
-    public function setCcaa(?comunidades $ccaa): self
+    public function setCcaa(string $ccaa): self
     {
         $this->ccaa = $ccaa;
 
         return $this;
     }
 
-    public function getProvincia(): ?provincias
+    public function getProvincia(): string
     {
         return $this->provincia;
     }
 
-    public function setProvincia(?provincias $provincia): self
+    public function setProvincia(string $provincia): self
     {
         $this->provincia = $provincia;
 
         return $this;
     }
 
-    public function getMunicipio(): ?poblaciones
+    public function getMunicipio(): string
     {
         return $this->municipio;
     }
 
-    public function setMunicipio(?poblaciones $municipio): self
+    public function setMunicipio(string $municipio): self
     {
         $this->municipio = $municipio;
 

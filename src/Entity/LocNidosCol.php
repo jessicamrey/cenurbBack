@@ -19,6 +19,11 @@ class LocNidosCol
     private $id;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $usuario;
+    
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $fachada;
@@ -58,101 +63,113 @@ class LocNidosCol
      */
     private $lon;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getFachada(): ?bool
+    public function getUsuario(): int
+    {
+        return $this->usuario;
+    }
+    
+    public function setUsuario(int $usuario): self
+    {
+        $this->usuario = $usuario;
+        
+        return $this;
+    }
+    
+    public function getFachada(): bool
     {
         return $this->fachada;
     }
 
-    public function setFachada(?bool $fachada): self
+    public function setFachada(bool $fachada): self
     {
         $this->fachada = $fachada;
 
         return $this;
     }
 
-    public function getTrasera(): ?bool
+    public function getTrasera(): bool
     {
         return $this->trasera;
     }
 
-    public function setTrasera(?bool $trasera): self
+    public function setTrasera(bool $trasera): self
     {
         $this->trasera = $trasera;
 
         return $this;
     }
 
-    public function getLateralDerecho(): ?bool
+    public function getLateralDerecho(): bool
     {
         return $this->lateralDerecho;
     }
 
-    public function setLateralDerecho(?bool $lateralDerecho): self
+    public function setLateralDerecho(bool $lateralDerecho): self
     {
         $this->lateralDerecho = $lateralDerecho;
 
         return $this;
     }
 
-    public function getLateralIzquierdo(): ?bool
+    public function getLateralIzquierdo(): bool
     {
         return $this->lateralIzquierdo;
     }
 
-    public function setLateralIzquierdo(?bool $lateralIzquierdo): self
+    public function setLateralIzquierdo(bool $lateralIzquierdo): self
     {
         $this->lateralIzquierdo = $lateralIzquierdo;
 
         return $this;
     }
 
-    public function getPatioInferior(): ?bool
+    public function getPatioInferior(): bool
     {
         return $this->patioInferior;
     }
 
-    public function setPatioInferior(?bool $patioInferior): self
+    public function setPatioInferior(bool $patioInferior): self
     {
         $this->patioInferior = $patioInferior;
 
         return $this;
     }
 
-    public function getHuso(): ?string
+    public function getHuso(): string
     {
         return $this->huso;
     }
 
-    public function setHuso(?string $huso): self
+    public function setHuso(string $huso): self
     {
         $this->huso = $huso;
 
         return $this;
     }
 
-    public function getLat(): ?float
+    public function getLat(): float
     {
         return $this->lat;
     }
 
-    public function setLat(?float $lat): self
+    public function setLat(float $lat): self
     {
         $this->lat = $lat;
 
         return $this;
     }
 
-    public function getLon(): ?float
+    public function getLon(): float
     {
         return $this->lon;
     }
 
-    public function setLon(?float $lon): self
+    public function setLon(float $lon): self
     {
         $this->lon = $lon;
 

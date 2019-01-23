@@ -23,12 +23,12 @@ class TipoPropiedad
      */
     private $Description;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->Description;
     }

@@ -53,6 +53,6 @@ class __TwigTemplate_fd2c1a47c18e5e3bc8c709922a6b3da2cc1cb093a68a3df47cfef8b9c5f
         return new Twig_Source("<div>
     <?php echo \$view['form']->widget(\$form) ?>
 </div>
-", "@Framework/Form/button_row.html.php", "/home/jessica/Escritorio/Symfony/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/button_row.html.php");
+", "@Framework/Form/button_row.html.php", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/button_row.html.php");
     }
 }

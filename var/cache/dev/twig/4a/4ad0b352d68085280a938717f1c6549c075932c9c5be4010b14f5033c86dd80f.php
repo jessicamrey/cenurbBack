@@ -157,6 +157,6 @@ class __TwigTemplate_ddb5f6898b705f792e1647934b1e8e91a515516537fb7a484162589b1c2
         {%- endfor -%}
     </pre>
 {% endif %}
-", "@Doctrine/Collector/explain.html.twig", "/home/jessica/Escritorio/Symfony/cenurbBack/vendor/doctrine/doctrine-bundle/Resources/views/Collector/explain.html.twig");
+", "@Doctrine/Collector/explain.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/doctrine/doctrine-bundle/Resources/views/Collector/explain.html.twig");
     }
 }

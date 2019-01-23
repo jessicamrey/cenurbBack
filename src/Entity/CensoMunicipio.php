@@ -19,8 +19,12 @@ class CensoMunicipio
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Poblaciones", inversedBy="censoMunicipios")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="integer")
+     */
+    private $usuario;
+    
+    /**
+     * @ORM\Column(type="string", length=255)
      */
     private $municipio;
 
@@ -34,24 +38,36 @@ class CensoMunicipio
      */
     private $completo;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getMunicipio(): ?poblaciones
+    public function getUsuario(): int
+    {
+        return $this->usuario;
+    }
+    
+    public function setUsuario(int $usuario): self
+    {
+        $this->usuario = $usuario;
+        
+        return $this;
+    }
+    
+    public function getMunicipio(): string
     {
         return $this->municipio;
     }
 
-    public function setMunicipio(?poblaciones $municipio): self
+    public function setMunicipio(string $municipio): self
     {
         $this->municipio = $municipio;
 
         return $this;
     }
 
-    public function getEspecie(): ?int
+    public function getEspecie(): int
     {
         return $this->especie;
     }
@@ -63,12 +79,12 @@ class CensoMunicipio
         return $this;
     }
 
-    public function getCompleto(): ?bool
+    public function getCompleto(): bool
     {
         return $this->completo;
     }
 
-    public function setCompleto(?bool $completo): self
+    public function setCompleto(bool $completo): self
     {
         $this->completo = $completo;
 

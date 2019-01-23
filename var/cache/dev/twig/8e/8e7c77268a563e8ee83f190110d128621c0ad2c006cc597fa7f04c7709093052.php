@@ -81,6 +81,6 @@ class __TwigTemplate_b2d75a51cf86b3ef29a50f730f3567a16ae0bc06b0223abe9b6878f824c
         ), \$date_pattern) ?>
     </div>
 <?php endif ?>
-", "@Framework/Form/date_widget.html.php", "/home/jessica/Escritorio/Symfony/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/date_widget.html.php");
+", "@Framework/Form/date_widget.html.php", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/date_widget.html.php");
     }
 }
