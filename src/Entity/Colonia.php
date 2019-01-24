@@ -94,6 +94,11 @@ class Colonia
      * @ORM\OneToMany(targetEntity="App\Entity\OtrasEspecies", mappedBy="colonia")
      */
     private $otrasEspecies;
+    
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $especie;
 
     public function __construct()
     {
@@ -322,6 +327,18 @@ class Colonia
             }
         }
 
+        return $this;
+    }
+    
+    public function getEspecie(): int
+    {
+        return $this->especie;
+    }
+    
+    public function setEspecie(int $especie): self
+    {
+        $this->especie = $especie;
+        
         return $this;
     }
 }

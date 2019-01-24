@@ -22,6 +22,11 @@ class OtrasEspecies
      * @ORM\ManyToOne(targetEntity="App\Entity\Colonia", inversedBy="otrasEspecies")
      */
     private $colonia;
+    
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $especie;
 
     public function getId(): ?int
     {
@@ -37,6 +42,18 @@ class OtrasEspecies
     {
         $this->colonia = $colonia;
 
+        return $this;
+    }
+    
+    public function getEspecie(): int
+    {
+        return $this->especie;
+    }
+    
+    public function setEspecie(int $especie): self
+    {
+        $this->especie = $especie;
+        
         return $this;
     }
 }

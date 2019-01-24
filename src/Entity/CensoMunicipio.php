@@ -37,6 +37,11 @@ class CensoMunicipio
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $completo;
+    
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $temporada;
 
     public function getId(): int
     {
@@ -88,6 +93,18 @@ class CensoMunicipio
     {
         $this->completo = $completo;
 
+        return $this;
+    }
+    
+    public function getTemporada(): int
+    {
+        return $this->temporada;
+    }
+    
+    public function setTemporada(int $temporada): self
+    {
+        $this->temporada = $temporada;
+        
         return $this;
     }
 }
