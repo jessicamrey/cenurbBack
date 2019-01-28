@@ -19,7 +19,7 @@ class CensoMunicipio
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
     private $usuario;
     
@@ -48,12 +48,12 @@ class CensoMunicipio
         return $this->id;
     }
 
-    public function getUsuario(): int
+    public function getUsuario(): string
     {
         return $this->usuario;
     }
     
-    public function setUsuario(int $usuario): self
+    public function setUsuario(string $usuario): self
     {
         $this->usuario = $usuario;
         
