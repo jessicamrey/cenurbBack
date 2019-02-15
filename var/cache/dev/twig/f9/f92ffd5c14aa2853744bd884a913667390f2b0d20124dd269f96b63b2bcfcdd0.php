@@ -207,6 +207,6 @@ class __TwigTemplate_d4a8d684edea5f0e9a7b09df825b4f4bd4c9c3545334fee56acba276d5f
         {{ include('@Twig/base_js.html.twig') }}
     </body>
 </html>
-", "@Twig/layout.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/twig-bundle/Resources/views/layout.html.twig");
+", "@Twig/layout.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/twig-bundle/Resources/views/layout.html.twig");
     }
 }

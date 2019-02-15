@@ -171,10 +171,112 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
 
                 }
 
+                // api_ccaa
+                if ('/api/ccaa' === $pathinfo) {
+                    $ret = array (  '_controller' => 'App\\Controller\\SeoApisController::ccaa',  '_route' => 'api_ccaa',);
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_ccaa;
+                    }
+
+                    return $ret;
+                }
+                not_api_ccaa:
+
             }
 
             elseif (0 === strpos($pathinfo, '/api/t')) {
-                if (0 === strpos($pathinfo, '/api/tipo-propiedads')) {
+                if (0 === strpos($pathinfo, '/api/territorios')) {
+                    // api_territorios_get_collection
+                    if (preg_match('#^/api/territorios(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_territorios_get_collection')), array (  '_controller' => 'api_platform.action.get_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_collection_operation_name' => 'get',));
+                        if (!in_array($canonicalMethod, array('GET'))) {
+                            $allow = array_merge($allow, array('GET'));
+                            goto not_api_territorios_get_collection;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_territorios_get_collection:
+
+                    // api_territorios_post_collection
+                    if (preg_match('#^/api/territorios(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_territorios_post_collection')), array (  '_controller' => 'api_platform.action.post_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_collection_operation_name' => 'post',));
+                        if (!in_array($requestMethod, array('POST'))) {
+                            $allow = array_merge($allow, array('POST'));
+                            goto not_api_territorios_post_collection;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_territorios_post_collection:
+
+                    // api_territorios_get_item
+                    if (preg_match('#^/api/territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_territorios_get_item')), array (  '_controller' => 'api_platform.action.get_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_item_operation_name' => 'get',));
+                        if (!in_array($canonicalMethod, array('GET'))) {
+                            $allow = array_merge($allow, array('GET'));
+                            goto not_api_territorios_get_item;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_territorios_get_item:
+
+                    // api_territorios_delete_item
+                    if (preg_match('#^/api/territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_territorios_delete_item')), array (  '_controller' => 'api_platform.action.delete_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_item_operation_name' => 'delete',));
+                        if (!in_array($requestMethod, array('DELETE'))) {
+                            $allow = array_merge($allow, array('DELETE'));
+                            goto not_api_territorios_delete_item;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_territorios_delete_item:
+
+                    // api_territorios_put_item
+                    if (preg_match('#^/api/territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_territorios_put_item')), array (  '_controller' => 'api_platform.action.put_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_item_operation_name' => 'put',));
+                        if (!in_array($requestMethod, array('PUT'))) {
+                            $allow = array_merge($allow, array('PUT'));
+                            goto not_api_territorios_put_item;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_territorios_put_item:
+
+                }
+
+                elseif (0 === strpos($pathinfo, '/api/temp-users')) {
+                    // api_temp_users_get_collection
+                    if (preg_match('#^/api/temp\\-users(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_temp_users_get_collection')), array (  '_controller' => 'api_platform.action.get_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\TempUser',  '_api_collection_operation_name' => 'get',));
+                        if (!in_array($canonicalMethod, array('GET'))) {
+                            $allow = array_merge($allow, array('GET'));
+                            goto not_api_temp_users_get_collection;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_temp_users_get_collection:
+
+                    // api_temp_users_get_item
+                    if (preg_match('#^/api/temp\\-users/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_temp_users_get_item')), array (  '_controller' => 'api_platform.action.get_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\TempUser',  '_api_item_operation_name' => 'get',));
+                        if (!in_array($canonicalMethod, array('GET'))) {
+                            $allow = array_merge($allow, array('GET'));
+                            goto not_api_temp_users_get_item;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_temp_users_get_item:
+
+                }
+
+                elseif (0 === strpos($pathinfo, '/api/tipo-propiedads')) {
                     // api_tipo_propiedads_get_collection
                     if (preg_match('#^/api/tipo\\-propiedads(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
                         $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_tipo_propiedads_get_collection')), array (  '_controller' => 'api_platform.action.get_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\TipoPropiedad',  '_api_collection_operation_name' => 'get',));
@@ -297,96 +399,6 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                         return $ret;
                     }
                     not_api_tipo_edificios_put_item:
-
-                }
-
-                elseif (0 === strpos($pathinfo, '/api/temp-users')) {
-                    // api_temp_users_get_collection
-                    if (preg_match('#^/api/temp\\-users(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_temp_users_get_collection')), array (  '_controller' => 'api_platform.action.get_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\TempUser',  '_api_collection_operation_name' => 'get',));
-                        if (!in_array($canonicalMethod, array('GET'))) {
-                            $allow = array_merge($allow, array('GET'));
-                            goto not_api_temp_users_get_collection;
-                        }
-
-                        return $ret;
-                    }
-                    not_api_temp_users_get_collection:
-
-                    // api_temp_users_get_item
-                    if (preg_match('#^/api/temp\\-users/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_temp_users_get_item')), array (  '_controller' => 'api_platform.action.get_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\TempUser',  '_api_item_operation_name' => 'get',));
-                        if (!in_array($canonicalMethod, array('GET'))) {
-                            $allow = array_merge($allow, array('GET'));
-                            goto not_api_temp_users_get_item;
-                        }
-
-                        return $ret;
-                    }
-                    not_api_temp_users_get_item:
-
-                }
-
-                elseif (0 === strpos($pathinfo, '/api/territorios')) {
-                    // api_territorios_get_collection
-                    if (preg_match('#^/api/territorios(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_territorios_get_collection')), array (  '_controller' => 'api_platform.action.get_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_collection_operation_name' => 'get',));
-                        if (!in_array($canonicalMethod, array('GET'))) {
-                            $allow = array_merge($allow, array('GET'));
-                            goto not_api_territorios_get_collection;
-                        }
-
-                        return $ret;
-                    }
-                    not_api_territorios_get_collection:
-
-                    // api_territorios_post_collection
-                    if (preg_match('#^/api/territorios(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_territorios_post_collection')), array (  '_controller' => 'api_platform.action.post_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_collection_operation_name' => 'post',));
-                        if (!in_array($requestMethod, array('POST'))) {
-                            $allow = array_merge($allow, array('POST'));
-                            goto not_api_territorios_post_collection;
-                        }
-
-                        return $ret;
-                    }
-                    not_api_territorios_post_collection:
-
-                    // api_territorios_get_item
-                    if (preg_match('#^/api/territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_territorios_get_item')), array (  '_controller' => 'api_platform.action.get_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_item_operation_name' => 'get',));
-                        if (!in_array($canonicalMethod, array('GET'))) {
-                            $allow = array_merge($allow, array('GET'));
-                            goto not_api_territorios_get_item;
-                        }
-
-                        return $ret;
-                    }
-                    not_api_territorios_get_item:
-
-                    // api_territorios_delete_item
-                    if (preg_match('#^/api/territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_territorios_delete_item')), array (  '_controller' => 'api_platform.action.delete_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_item_operation_name' => 'delete',));
-                        if (!in_array($requestMethod, array('DELETE'))) {
-                            $allow = array_merge($allow, array('DELETE'));
-                            goto not_api_territorios_delete_item;
-                        }
-
-                        return $ret;
-                    }
-                    not_api_territorios_delete_item:
-
-                    // api_territorios_put_item
-                    if (preg_match('#^/api/territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_territorios_put_item')), array (  '_controller' => 'api_platform.action.put_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_item_operation_name' => 'put',));
-                        if (!in_array($requestMethod, array('PUT'))) {
-                            $allow = array_merge($allow, array('PUT'));
-                            goto not_api_territorios_put_item;
-                        }
-
-                        return $ret;
-                    }
-                    not_api_territorios_put_item:
 
                 }
 
@@ -518,69 +530,6 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
 
             }
 
-            elseif (0 === strpos($pathinfo, '/api/observaciones-territorios')) {
-                // api_observaciones_territorios_get_collection
-                if (preg_match('#^/api/observaciones\\-territorios(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_observaciones_territorios_get_collection')), array (  '_controller' => 'api_platform.action.get_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\ObservacionesTerritorio',  '_api_collection_operation_name' => 'get',));
-                    if (!in_array($canonicalMethod, array('GET'))) {
-                        $allow = array_merge($allow, array('GET'));
-                        goto not_api_observaciones_territorios_get_collection;
-                    }
-
-                    return $ret;
-                }
-                not_api_observaciones_territorios_get_collection:
-
-                // api_observaciones_territorios_post_collection
-                if (preg_match('#^/api/observaciones\\-territorios(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_observaciones_territorios_post_collection')), array (  '_controller' => 'api_platform.action.post_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\ObservacionesTerritorio',  '_api_collection_operation_name' => 'post',));
-                    if (!in_array($requestMethod, array('POST'))) {
-                        $allow = array_merge($allow, array('POST'));
-                        goto not_api_observaciones_territorios_post_collection;
-                    }
-
-                    return $ret;
-                }
-                not_api_observaciones_territorios_post_collection:
-
-                // api_observaciones_territorios_get_item
-                if (preg_match('#^/api/observaciones\\-territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_observaciones_territorios_get_item')), array (  '_controller' => 'api_platform.action.get_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\ObservacionesTerritorio',  '_api_item_operation_name' => 'get',));
-                    if (!in_array($canonicalMethod, array('GET'))) {
-                        $allow = array_merge($allow, array('GET'));
-                        goto not_api_observaciones_territorios_get_item;
-                    }
-
-                    return $ret;
-                }
-                not_api_observaciones_territorios_get_item:
-
-                // api_observaciones_territorios_delete_item
-                if (preg_match('#^/api/observaciones\\-territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_observaciones_territorios_delete_item')), array (  '_controller' => 'api_platform.action.delete_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\ObservacionesTerritorio',  '_api_item_operation_name' => 'delete',));
-                    if (!in_array($requestMethod, array('DELETE'))) {
-                        $allow = array_merge($allow, array('DELETE'));
-                        goto not_api_observaciones_territorios_delete_item;
-                    }
-
-                    return $ret;
-                }
-                not_api_observaciones_territorios_delete_item:
-
-                // api_observaciones_territorios_put_item
-                if (preg_match('#^/api/observaciones\\-territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_observaciones_territorios_put_item')), array (  '_controller' => 'api_platform.action.put_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\ObservacionesTerritorio',  '_api_item_operation_name' => 'put',));
-                    if (!in_array($requestMethod, array('PUT'))) {
-                        $allow = array_merge($allow, array('PUT'));
-                        goto not_api_observaciones_territorios_put_item;
-                    }
-
-                    return $ret;
-                }
-                not_api_observaciones_territorios_put_item:
-
-            }
-
             elseif (0 === strpos($pathinfo, '/api/otras-especies')) {
                 // api_otras_especies_get_collection
                 if (preg_match('#^/api/otras\\-especies(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
@@ -641,6 +590,69 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     return $ret;
                 }
                 not_api_otras_especies_put_item:
+
+            }
+
+            elseif (0 === strpos($pathinfo, '/api/observaciones-territorios')) {
+                // api_observaciones_territorios_get_collection
+                if (preg_match('#^/api/observaciones\\-territorios(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_observaciones_territorios_get_collection')), array (  '_controller' => 'api_platform.action.get_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\ObservacionesTerritorio',  '_api_collection_operation_name' => 'get',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_observaciones_territorios_get_collection;
+                    }
+
+                    return $ret;
+                }
+                not_api_observaciones_territorios_get_collection:
+
+                // api_observaciones_territorios_post_collection
+                if (preg_match('#^/api/observaciones\\-territorios(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_observaciones_territorios_post_collection')), array (  '_controller' => 'api_platform.action.post_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\ObservacionesTerritorio',  '_api_collection_operation_name' => 'post',));
+                    if (!in_array($requestMethod, array('POST'))) {
+                        $allow = array_merge($allow, array('POST'));
+                        goto not_api_observaciones_territorios_post_collection;
+                    }
+
+                    return $ret;
+                }
+                not_api_observaciones_territorios_post_collection:
+
+                // api_observaciones_territorios_get_item
+                if (preg_match('#^/api/observaciones\\-territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_observaciones_territorios_get_item')), array (  '_controller' => 'api_platform.action.get_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\ObservacionesTerritorio',  '_api_item_operation_name' => 'get',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_observaciones_territorios_get_item;
+                    }
+
+                    return $ret;
+                }
+                not_api_observaciones_territorios_get_item:
+
+                // api_observaciones_territorios_delete_item
+                if (preg_match('#^/api/observaciones\\-territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_observaciones_territorios_delete_item')), array (  '_controller' => 'api_platform.action.delete_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\ObservacionesTerritorio',  '_api_item_operation_name' => 'delete',));
+                    if (!in_array($requestMethod, array('DELETE'))) {
+                        $allow = array_merge($allow, array('DELETE'));
+                        goto not_api_observaciones_territorios_delete_item;
+                    }
+
+                    return $ret;
+                }
+                not_api_observaciones_territorios_delete_item:
+
+                // api_observaciones_territorios_put_item
+                if (preg_match('#^/api/observaciones\\-territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_observaciones_territorios_put_item')), array (  '_controller' => 'api_platform.action.put_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\ObservacionesTerritorio',  '_api_item_operation_name' => 'put',));
+                    if (!in_array($requestMethod, array('PUT'))) {
+                        $allow = array_merge($allow, array('PUT'));
+                        goto not_api_observaciones_territorios_put_item;
+                    }
+
+                    return $ret;
+                }
+                not_api_observaciones_territorios_put_item:
 
             }
 
@@ -783,31 +795,85 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 }
                 not_api_login_anonymous:
 
-                // api_list_col
-                if ('/api/listCol' === $pathinfo) {
-                    $ret = array (  '_controller' => 'App\\Controller\\SeoApisController::listCol',  '_route' => 'api_list_col',);
-                    if (!in_array($canonicalMethod, array('GET'))) {
-                        $allow = array_merge($allow, array('GET'));
-                        goto not_api_list_col;
+                if (0 === strpos($pathinfo, '/api/listCol')) {
+                    // api_list_col
+                    if ('/api/listCol' === $pathinfo) {
+                        $ret = array (  '_controller' => 'App\\Controller\\SeoApisController::listCol',  '_route' => 'api_list_col',);
+                        if (!in_array($canonicalMethod, array('GET'))) {
+                            $allow = array_merge($allow, array('GET'));
+                            goto not_api_list_col;
+                        }
+
+                        return $ret;
                     }
+                    not_api_list_col:
 
-                    return $ret;
-                }
-                not_api_list_col:
+                    // api_list_one_col
+                    if (preg_match('#^/api/listCol/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_list_one_col')), array (  '_controller' => 'App\\Controller\\SeoApisController::listOneCol',));
+                        if (!in_array($canonicalMethod, array('GET'))) {
+                            $allow = array_merge($allow, array('GET'));
+                            goto not_api_list_one_col;
+                        }
 
-                // api_list_no_col
-                if ('/api/listNoCol' === $pathinfo) {
-                    $ret = array (  '_controller' => 'App\\Controller\\SeoApisController::listNoCol',  '_route' => 'api_list_no_col',);
-                    if (!in_array($canonicalMethod, array('GET'))) {
-                        $allow = array_merge($allow, array('GET'));
-                        goto not_api_list_no_col;
+                        return $ret;
                     }
+                    not_api_list_one_col:
 
-                    return $ret;
                 }
-                not_api_list_no_col:
+
+                elseif (0 === strpos($pathinfo, '/api/listNoCol')) {
+                    // api_list_no_col
+                    if ('/api/listNoCol' === $pathinfo) {
+                        $ret = array (  '_controller' => 'App\\Controller\\SeoApisController::listNoCol',  '_route' => 'api_list_no_col',);
+                        if (!in_array($canonicalMethod, array('GET'))) {
+                            $allow = array_merge($allow, array('GET'));
+                            goto not_api_list_no_col;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_list_no_col:
+
+                    // api_list_one_no_col
+                    if (preg_match('#^/api/listNoCol/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_list_one_no_col')), array (  '_controller' => 'App\\Controller\\SeoApisController::listOneNoCol',));
+                        if (!in_array($canonicalMethod, array('GET'))) {
+                            $allow = array_merge($allow, array('GET'));
+                            goto not_api_list_one_no_col;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_list_one_no_col:
+
+                }
 
             }
+
+            // api_provincias
+            if (0 === strpos($pathinfo, '/api/provincias') && preg_match('#^/api/provincias/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_provincias')), array (  '_controller' => 'App\\Controller\\SeoApisController::provincias',));
+                if (!in_array($canonicalMethod, array('GET'))) {
+                    $allow = array_merge($allow, array('GET'));
+                    goto not_api_provincias;
+                }
+
+                return $ret;
+            }
+            not_api_provincias:
+
+            // api_municipios
+            if (0 === strpos($pathinfo, '/api/municipios') && preg_match('#^/api/municipios/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_municipios')), array (  '_controller' => 'App\\Controller\\SeoApisController::municipios',));
+                if (!in_array($canonicalMethod, array('GET'))) {
+                    $allow = array_merge($allow, array('GET'));
+                    goto not_api_municipios;
+                }
+
+                return $ret;
+            }
+            not_api_municipios:
 
         }
 

@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
+use PDO;
 
 class SeoApisController extends Controller{
     
@@ -58,7 +59,7 @@ class SeoApisController extends Controller{
             );
     }
     
-    public function listCol(Request $request) //falta diferenciar col de nocol
+    public function listCol(Request $request)
     {
             //abrimos el manager de Seo
             $entityManager = $this->getDoctrine()->getManager('seo');
@@ -73,7 +74,11 @@ class SeoApisController extends Controller{
                     t.`DEN_ESP_GAL`, 
                     t.`DEN_ESP_VAS` 
                 FROM   
-                    tablas_seo.t_especies t
+                    tablas_seo.t_especies t,
+                    tablas_seo.t_esp_grupo tg
+                WHERE
+                    tg.ID_ESP=t.ID_ESP AND
+                    tg.`ID_GRU`=13 AND tg.`ID_SUBG`=29
             ";
             
             $stmt = $entityManager->getConnection()->prepare($sql);
@@ -83,7 +88,7 @@ class SeoApisController extends Controller{
             
             //ahora añadimos a cada grupo del array el campo de la imagen
             foreach ($array as &$group) {
-                $group["image"] = url('col', $group['ID_ESP']);
+                $group["image"] = SeoApisController::url('col', $group['ID_ESP']);
             }
 
             return new Response(
@@ -91,7 +96,7 @@ class SeoApisController extends Controller{
                 );
     }
     
-    public function listNoCol(Request $request) //falta diferenciar col de nocol
+    public function listOneCol(Request $request, $id) 
     {
         //abrimos el manager de Seo
         $entityManager = $this->getDoctrine()->getManager('seo');
@@ -106,7 +111,51 @@ class SeoApisController extends Controller{
                     t.`DEN_ESP_GAL`,
                     t.`DEN_ESP_VAS`
                 FROM
-                    tablas_seo.t_especies t
+                    tablas_seo.t_especies t,
+                    tablas_seo.t_esp_grupo tg
+                WHERE
+                    tg.ID_ESP=t.ID_ESP AND
+                    t.ID_ESP = :id AND
+                    tg.`ID_GRU`=13 AND tg.`ID_SUBG`=29
+            ";
+        
+        $stmt = $entityManager->getConnection()->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
+        $stmt->execute();
+        $array= new ArrayCollection();
+        $array=$stmt->fetchAll();
+        
+        //ahora añadimos a cada grupo del array el campo de la imagen
+        foreach ($array as &$group) {
+            $group["image"] =SeoApisController:: url('col', $group['ID_ESP']);
+        }
+        
+        return new Response(
+            json_encode( $this->utf8ize( $array ) ), 200, ['content-type' => 'text/html; charset=UTF-8']
+            );
+    }
+    
+    public function listNoCol(Request $request) 
+    {
+        //abrimos el manager de Seo
+        $entityManager = $this->getDoctrine()->getManager('seo');
+        
+        $sql = "
+                SELECT
+                    t.`ID_ESP`,
+                    t.`DEN_ESP_CAS`,
+                    t.`DEN_ESP_LAT`,
+                    t.`DEN_ESP_ING`,
+                    t.`DEN_ESP_CAT`,
+                    t.`DEN_ESP_GAL`,
+                    t.`DEN_ESP_VAS`
+                FROM
+                    tablas_seo.t_especies t,
+                    tablas_seo.t_esp_grupo tg
+                WHERE
+                    tg.ID_ESP=t.ID_ESP AND
+                    tg.`ID_GRU`=13 AND tg.`ID_SUBG`=30
             ";
         
         $stmt = $entityManager->getConnection()->prepare($sql);
@@ -116,7 +165,7 @@ class SeoApisController extends Controller{
         
         //ahora añadimos a cada grupo del array el campo de la imagen
         foreach ($array as &$group) {
-            $group["image"] = url('nocol', $group['ID_ESP']);
+            $group["image"] = SeoApisController::url('nocol', $group['ID_ESP']);
         }
         
         return new Response(
@@ -124,6 +173,114 @@ class SeoApisController extends Controller{
             );
     }
     
+    public function listOneNoCol(Request $request, $id) //Las imagenes habra que añadir un listado con las fotos subidas por la gente
+    {
+        //abrimos el manager de Seo
+        $entityManager = $this->getDoctrine()->getManager('seo');
+        
+        $sql = "
+                SELECT
+                    t.`ID_ESP`,
+                    t.`DEN_ESP_CAS`,
+                    t.`DEN_ESP_LAT`,
+                    t.`DEN_ESP_ING`,
+                    t.`DEN_ESP_CAT`,
+                    t.`DEN_ESP_GAL`,
+                    t.`DEN_ESP_VAS`
+                FROM
+                    tablas_seo.t_especies t,
+                    tablas_seo.t_esp_grupo tg
+                WHERE
+                    tg.ID_ESP=t.ID_ESP AND
+                    t.ID_ESP = :id AND
+                    tg.`ID_GRU`=13 AND tg.`ID_SUBG`=30
+            ";
+        
+        $stmt = $entityManager->getConnection()->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+       
+        $stmt->execute();
+        $array= new ArrayCollection();
+        $array=$stmt->fetchAll();
+        
+        //ahora añadimos a cada grupo del array el campo de la imagen
+        foreach ($array as &$group) {
+            $group["image"] =SeoApisController:: url('nocol', $group['ID_ESP']);
+        }
+        
+        return new Response(
+            json_encode( $this->utf8ize( $array ) ), 200, ['content-type' => 'text/html; charset=UTF-8']
+            );
+    }
+    
+    public function ccaa(Request $request) 
+    {
+        //abrimos el manager de Seo
+        $entityManager = $this->getDoctrine()->getManager('seo');
+        
+        $sql = "
+               SELECT * 
+                FROM tablas_seo.comunidades
+            ";
+        
+        $stmt = $entityManager->getConnection()->prepare($sql);
+        
+        $stmt->execute();
+        $array= new ArrayCollection();
+        $array=$stmt->fetchAll();
+        
+        return new Response(
+            json_encode( $this->utf8ize( $array ) ), 200, ['content-type' => 'text/html; charset=UTF-8']
+            );
+    }
+    
+    public function provincias(Request $request, $id)
+    {
+        //abrimos el manager de Seo
+        $entityManager = $this->getDoctrine()->getManager('seo');
+        
+        $sql = "
+                SELECT ID_PROV, DEN_PROV 
+                FROM tablas_seo.provincias 
+                WHERE id_com=:id
+            ";
+        
+        $stmt = $entityManager->getConnection()->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
+        $stmt->execute();
+        $array= new ArrayCollection();
+        $array=$stmt->fetchAll();
+        
+        
+        
+        return new Response(
+            json_encode( $this->utf8ize( $array ) ), 200, ['content-type' => 'text/html; charset=UTF-8']
+            );
+    }
+    
+    public function municipios(Request $request, $id) 
+    {
+        //abrimos el manager de Seo
+        $entityManager = $this->getDoctrine()->getManager('seo');
+        
+        $sql = "
+                SELECT ID_POB, DEN_POB 
+                FROM tablas_seo.poblaciones 
+                WHERE id_prov=:id
+            ";
+        
+        $stmt = $entityManager->getConnection()->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
+        $stmt->execute();
+        $array= new ArrayCollection();
+        $array=$stmt->fetchAll();
+      
+        return new Response(
+            json_encode( $this->utf8ize( $array ) ), 200, ['content-type' => 'text/html; charset=UTF-8']
+            );
+    }
     
     
 }

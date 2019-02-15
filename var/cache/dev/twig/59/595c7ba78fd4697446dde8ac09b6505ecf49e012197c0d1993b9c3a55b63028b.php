@@ -1156,6 +1156,6 @@ class __TwigTemplate_82c69e96470ebb147994475d69348b7c9e3f02615381d08835531d9c155
         </table>
     {% endif %}
 {% endblock %}
-", "@Security/Collector/security.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/security-bundle/Resources/views/Collector/security.html.twig");
+", "@Security/Collector/security.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/security-bundle/Resources/views/Collector/security.html.twig");
     }
 }
