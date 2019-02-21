@@ -55,7 +55,7 @@ class SeoApisController extends Controller{
             "%s://%s%s",
             isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
             $_SERVER['SERVER_NAME'],
-            'public/images/'.$type.'/'.$id
+            '/public/images/'.$type.'/'.$id. '/profile/' . $id . '.gif'
             );
     }
     

@@ -29,3 +29,8 @@ ac6097,127.0.0.1,GET,http://localhost:8000/api/provincias/1,1550253093,,500
 ed166e,127.0.0.1,GET,http://localhost:8000/api/municipios/9,1550253173,39b686,200
 39b686,127.0.0.1,GET,http://localhost:8000/api/municipios/9,1550253173,,500
 829620,127.0.0.1,GET,http://localhost:8000/api/municipios/9,1550253273,,200
+66b7bc,127.0.0.1,GET,http://localhost:8000/api/listCol,1550769171,,200
+c4359c,127.0.0.1,GET,http://localhost:8000/api/listNoCol,1550769609,,200
+dcc1be,127.0.0.1,GET,http://localhost:8000/api/listCol,1550770487,,200
+e033f4,127.0.0.1,GET,http://localhost:8000/api/listNoCol,1550771076,,200
+8dc6d1,127.0.0.1,GET,http://localhost:8000/api/listNoCol,1550771639,,200
