@@ -3,10 +3,19 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ * @ApiFilter(RangeFilter::class, properties={"fecha", "numVisita"})
+ *  @ApiFilter(NumericFilter::class, properties={"numVisita"})
+ *  @ApiFilter(SearchFilter::class, properties={"usuario": "exact", "colonia" : "exact"})
+ *  @ApiFilter(BooleanFilter::class, properties={"completo"})
  * @ORM\Entity(repositoryClass="App\Repository\VisitasColoniaRepository")
  */
 class VisitasColonia

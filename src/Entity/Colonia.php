@@ -3,12 +3,30 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ * @ApiFilter(SearchFilter::class, properties={"usuario": "exact", 
+ * 												"nombre": "partial", 
+ * 												"barrio": "partial", 
+ * 												"calleNumPiso": "partial",
+ * 												"nombreCentro": "partial", 
+ * 												"tipoPropiedad": "exact", 
+ * 												"tipoEdificio": "exact",
+ * 												"ccaa": "exact", 
+ * 												"provincia": "exact", 
+ * 												"municipio": "exact"})
+ * @ApiFilter(NumericFilter::class, properties={"temporada", "especie"})
+ * @ApiFilter(RangeFilter::class, properties={"temporada"})
+ * @ApiFilter(BooleanFilter::class, properties={"vacio"})
  * @ORM\Entity(repositoryClass="App\Repository\ColoniaRepository")
  */
 class Colonia

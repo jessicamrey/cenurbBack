@@ -3,10 +3,17 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ *  @ApiFilter(RangeFilter::class, properties={"fecha", "hora"})
+ *  @ApiFilter(NumericFilter::class, properties={"coord_X", "coord_Y"})
+ *  @ApiFilter(SearchFilter::class, properties={"usuario": "exact"})
  * @ORM\Entity(repositoryClass="App\Repository\VisitasTerritorioRepository")
  */
 class VisitasTerritorio

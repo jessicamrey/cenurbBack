@@ -3,10 +3,15 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ * @ApiFilter(NumericFilter::class, properties={"especie"})
+ * @ApiFilter(SearchFilter::class, properties={"colonia": "exact"})
  * @ORM\Entity(repositoryClass="App\Repository\OtrasEspeciesRepository")
  */
 class OtrasEspecies

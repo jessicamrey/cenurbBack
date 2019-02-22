@@ -3,10 +3,21 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ * @ApiFilter(BooleanFilter::class, properties={"completo"})
+ * @ApiFilter(NumericFilter::class, properties={"temporada", "especie"})
+ * @ApiFilter(RangeFilter::class, properties={"temporada"})
+ * @ApiFilter(SearchFilter::class, properties={"usuario": "exact",
+ * 												"municipio": "exact"})
  * @ORM\Entity(repositoryClass="App\Repository\CensoMunicipioRepository")
  */
 class CensoMunicipio
