@@ -1,0 +1,67 @@
+# This file is the entry point to configure your own HTTP routes.
+# Files in the routes/ subdirectory configure the routes for your dependencies.
+
+#index:
+#    path: /
+#    defaults: { _controller: 'App\Controller\DefaultController::index' }
+
+api_login_anonymous:
+    path: '/api/loginAnonymous'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\TempUserController::login
+        _api_resource_class: App\Entity\TempUser
+        
+api_list_col:
+    path: '/api/listCol'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\SeoApisController::listCol
+        
+api_list_no_col:
+    path: '/api/listNoCol'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\SeoApisController::listNoCol
+
+api_list_one_no_col:
+    path: '/api/listNoCol/{id}'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\SeoApisController::listOneNoCol
+
+api_list_one_col:
+    path: '/api/listCol/{id}'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\SeoApisController::listOneCol
+
+##########APIS PARA RECUPERAR DATOS GEOFRAFICOS####################
+
+api_ccaa:
+    path: '/api/ccaa'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\SeoApisController::ccaa
+
+api_provincias:
+    path: '/api/provincias/{id}'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\SeoApisController::provincias
+
+api_municipios:
+    path: '/api/municipios/{id}'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\SeoApisController::municipios
+
+
+##########	COLONIA		##################################
+
+api_new_colonia:
+    path: '/api/colonias'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\ColoniaController::newColonia
+	_api_resource_class: App\Entity\Colonia

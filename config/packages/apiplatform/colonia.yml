@@ -1,0 +1,26 @@
+resources:
+    App\Entity\Colonia:
+        attributes:
+            pagination_enabled: false
+            normalization_context: 
+                groups: ['colonia']
+            denormalization_context: 
+                groups: ['colonia']
+            
+        collectionOperations:
+            post:
+                method: 'POST'
+                route_name: 'api_new_colonia'
+                swagger_context:
+                    summary: 'Registrar una nueva colonia'
+            get:
+                method: 'GET'
+
+                
+        itemOperations:
+            get:
+                method: 'GET'
+            put:
+                method: 'PUT'
+            delete:
+                method: 'DELETE'

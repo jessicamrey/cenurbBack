@@ -629,6 +629,9 @@
     <service id="EasyCorp\EasyLog\EasyLogHandler" class="EasyCorp\EasyLog\EasyLogHandler" public="false">
       <argument>/home/jessica/Escritorio/Back/cenurbBack/var/log/dev.log</argument>
     </service>
+    <service id="App\Controller\ColoniaController" class="App\Controller\ColoniaController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+    </service>
     <service id="App\Controller\SeoApisController" class="App\Controller\SeoApisController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <argument type="service" id="serializer"/>
@@ -701,6 +704,7 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Util\Util" class="App\Util\Util" public="false" autowire="true" autoconfigure="true"/>
     <service id="controller_name_converter" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
       <tag name="monolog.logger" channel="request"/>
       <argument type="service" id="kernel"/>
@@ -2474,14 +2478,6 @@
       </call>
       <call method="addListener">
         <argument>kernel.request</argument>
-        <argument type="collection">
-          <argument type="service" id="debug.debug_handlers_listener"/>
-          <argument>configure</argument>
-        </argument>
-        <argument>2048</argument>
-      </call>
-      <call method="addListener">
-        <argument>console.command</argument>
         <argument type="collection">
           <argument type="service" id="debug.debug_handlers_listener"/>
           <argument>configure</argument>
@@ -5053,10 +5049,54 @@
     </service>
     <service id="api_platform.filter_locator" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
-      <argument type="collection"/>
+      <argument type="collection">
+        <argument key="annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_boolean_filter" type="service" id="annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_boolean_filter"/>
+        <argument key="annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" type="service" id="annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter"/>
+        <argument key="annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_range_filter" type="service" id="annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_range_filter"/>
+        <argument key="annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_search_filter" type="service" id="annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_search_filter"/>
+        <argument key="annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_boolean_filter" type="service" id="annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_boolean_filter"/>
+        <argument key="annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" type="service" id="annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_numeric_filter"/>
+        <argument key="annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_range_filter" type="service" id="annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_range_filter"/>
+        <argument key="annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_search_filter" type="service" id="annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_search_filter"/>
+        <argument key="annotated_app_entity_otras_especies_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" type="service" id="annotated_app_entity_otras_especies_api_platform_core_bridge_doctrine_orm_filter_numeric_filter"/>
+        <argument key="annotated_app_entity_otras_especies_api_platform_core_bridge_doctrine_orm_filter_search_filter" type="service" id="annotated_app_entity_otras_especies_api_platform_core_bridge_doctrine_orm_filter_search_filter"/>
+        <argument key="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_boolean_filter" type="service" id="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_boolean_filter"/>
+        <argument key="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" type="service" id="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter"/>
+        <argument key="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_range_filter" type="service" id="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_range_filter"/>
+        <argument key="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_search_filter" type="service" id="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_search_filter"/>
+        <argument key="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_boolean_filter" type="service" id="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_boolean_filter"/>
+        <argument key="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" type="service" id="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_numeric_filter"/>
+        <argument key="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_range_filter" type="service" id="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_range_filter"/>
+        <argument key="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_search_filter" type="service" id="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_search_filter"/>
+        <argument key="annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" type="service" id="annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter"/>
+        <argument key="annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_range_filter" type="service" id="annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_range_filter"/>
+        <argument key="annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_search_filter" type="service" id="annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_search_filter"/>
+      </argument>
     </service>
     <service id="api_platform.filter_collection_factory" class="ApiPlatform\Core\Api\FilterCollectionFactory" public="false">
-      <argument type="collection"/>
+      <argument type="collection">
+        <argument>annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_range_filter</argument>
+        <argument>annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter</argument>
+        <argument>annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_search_filter</argument>
+        <argument>annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_range_filter</argument>
+        <argument>annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_numeric_filter</argument>
+        <argument>annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_search_filter</argument>
+        <argument>annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_boolean_filter</argument>
+        <argument>annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_search_filter</argument>
+        <argument>annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_numeric_filter</argument>
+        <argument>annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_range_filter</argument>
+        <argument>annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_boolean_filter</argument>
+        <argument>annotated_app_entity_otras_especies_api_platform_core_bridge_doctrine_orm_filter_numeric_filter</argument>
+        <argument>annotated_app_entity_otras_especies_api_platform_core_bridge_doctrine_orm_filter_search_filter</argument>
+        <argument>annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_search_filter</argument>
+        <argument>annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter</argument>
+        <argument>annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_range_filter</argument>
+        <argument>annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_boolean_filter</argument>
+        <argument>annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_boolean_filter</argument>
+        <argument>annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter</argument>
+        <argument>annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_range_filter</argument>
+        <argument>annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_search_filter</argument>
+      </argument>
     </service>
     <service id="api_platform.filters" class="ApiPlatform\Core\Api\FilterCollection" public="false">
       <argument type="service" id="api_platform.filter_locator"/>
@@ -5550,6 +5590,8 @@
       <argument>%api_platform.http_cache.vary%</argument>
       <argument>null</argument>
     </service>
+    <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\ColoniaController" class="App\Controller\ColoniaController" public="false" autowire="true" abstract="true"/>
+    <service id="abstract.instanceof.App\Controller\ColoniaController" class="App\Controller\ColoniaController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\SeoApisController" class="App\Controller\SeoApisController" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Controller\SeoApisController" class="App\Controller\SeoApisController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\TempUserController" class="App\Controller\TempUserController" public="false" autowire="true" abstract="true"/>
@@ -5879,6 +5921,234 @@
       </call>
     </service>
     <service id="monolog.handler.null_internal" class="Monolog\Handler\NullHandler"/>
+    <service id="annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_range_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="fecha">null</argument>
+        <argument key="hora">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="coord_X">null</argument>
+        <argument key="coord_Y">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_search_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="api_platform.iri_converter"/>
+      <argument type="service" id="property_accessor"/>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="usuario">exact</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_range_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="fecha">null</argument>
+        <argument key="numVisita">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="numVisita">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_search_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="api_platform.iri_converter"/>
+      <argument type="service" id="property_accessor"/>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="usuario">exact</argument>
+        <argument key="colonia">exact</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_boolean_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="completo">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_search_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="api_platform.iri_converter"/>
+      <argument type="service" id="property_accessor"/>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="usuario">exact</argument>
+        <argument key="nombre">partial</argument>
+        <argument key="barrio">partial</argument>
+        <argument key="calleNumPiso">partial</argument>
+        <argument key="nombreCentro">partial</argument>
+        <argument key="tipoPropiedad">exact</argument>
+        <argument key="tipoEdificio">exact</argument>
+        <argument key="ccaa">exact</argument>
+        <argument key="provincia">exact</argument>
+        <argument key="municipio">exact</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="temporada">null</argument>
+        <argument key="especie">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_range_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="temporada">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_boolean_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="vacio">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_otras_especies_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="especie">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_otras_especies_api_platform_core_bridge_doctrine_orm_filter_search_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="api_platform.iri_converter"/>
+      <argument type="service" id="property_accessor"/>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="colonia">exact</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_search_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="api_platform.iri_converter"/>
+      <argument type="service" id="property_accessor"/>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="usuario">exact</argument>
+        <argument key="nombre">partial</argument>
+        <argument key="barrio">partial</argument>
+        <argument key="calleNumPiso">partial</argument>
+        <argument key="nombreCentro">partial</argument>
+        <argument key="tipoPropiedad">exact</argument>
+        <argument key="tipoEdificio">exact</argument>
+        <argument key="ccaa">exact</argument>
+        <argument key="provincia">exact</argument>
+        <argument key="municipio">exact</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="temporada">null</argument>
+        <argument key="especie">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_range_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="temporada">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_boolean_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="amenazada">null</argument>
+        <argument key="vacio">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_boolean_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="completo">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="temporada">null</argument>
+        <argument key="especie">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_range_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="temporada">null</argument>
+      </argument>
+    </service>
+    <service id="annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_search_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="api_platform.iri_converter"/>
+      <argument type="service" id="property_accessor"/>
+      <argument type="service" id="monolog.logger"/>
+      <argument type="collection">
+        <argument key="usuario">exact</argument>
+        <argument key="municipio">exact</argument>
+      </argument>
+    </service>
     <service id="debug.validator.inner" class="Symfony\Component\Validator\Validator\ValidatorInterface" public="false">
       <factory service="validator.builder" method="getValidator"/>
     </service>
@@ -6345,7 +6615,7 @@
     <service id="service_locator._fpuy7b" alias="2_ServiceLocator~87frfyj" public="false"/>
     <service id="service_locator.ml7rum7" alias="1_ServiceLocator~qh6igun" public="false"/>
     <service id="service_locator.7wggj64" alias="api_platform.serializer_locator" public="false"/>
-    <service id="service_locator.fcfvpj6" alias="api_platform.filter_locator" public="false"/>
+    <service id="service_locator.zgrpgnb" alias="api_platform.filter_locator" public="false"/>
     <service id="validator" alias="debug.validator" public="true"/>
     <service id="api_platform.metadata.property.metadata_factory.property_info.inner" alias="api_platform.metadata.property.metadata_factory.xml" public="false"/>
     <service id="api_platform.metadata.property.metadata_factory.inherited.inner" alias="api_platform.metadata.property.metadata_factory.property_info" public="false"/>

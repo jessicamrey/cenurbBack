@@ -33,6 +33,17 @@ class Util{
 	}
 	
 	
+	public function existeUsuario($idUsu)
+	{
+		//TODO: Comprobar que ese id existe
+	}
+	
+	public function existeEspecie($idEspecie)
+	{
+		//TODO: Comprobar que ese id existe
+	}
+	
+	
 	
 	
 	
