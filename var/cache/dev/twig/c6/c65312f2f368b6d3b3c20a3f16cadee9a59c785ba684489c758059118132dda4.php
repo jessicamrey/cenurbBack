@@ -88,6 +88,6 @@ class __TwigTemplate_d61332b7f8bf51e1852d7a5e936fab3bfaf6bbedda05d8b6c17c87dc0e9
     {% if link|default(false) %}</a>{% endif %}
         <div class=\"sf-toolbar-info\">{{ text|default('') }}</div>
 </div>
-", "@WebProfiler/Profiler/toolbar_item.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/toolbar_item.html.twig");
+", "@WebProfiler/Profiler/toolbar_item.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/toolbar_item.html.twig");
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,6 +21,7 @@ class TipoEdificio
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"colonia"})
      */
     private $descripcion;
 

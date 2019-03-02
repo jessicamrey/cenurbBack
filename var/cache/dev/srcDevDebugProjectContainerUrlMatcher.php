@@ -58,18 +58,6 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     }
                     not_api_colonias_get_collection:
 
-                    // api_colonias_post_collection
-                    if (preg_match('#^/api/colonias(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_colonias_post_collection')), array (  '_controller' => 'api_platform.action.post_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'post',));
-                        if (!in_array($requestMethod, array('POST'))) {
-                            $allow = array_merge($allow, array('POST'));
-                            goto not_api_colonias_post_collection;
-                        }
-
-                        return $ret;
-                    }
-                    not_api_colonias_post_collection:
-
                     // api_colonias_get_item
                     if (preg_match('#^/api/colonias/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
                         $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_colonias_get_item')), array (  '_controller' => 'api_platform.action.get_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_item_operation_name' => 'get',));
@@ -81,6 +69,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                         return $ret;
                     }
                     not_api_colonias_get_item:
+
+                    // api_colonias_put_item
+                    if (preg_match('#^/api/colonias/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_colonias_put_item')), array (  '_controller' => 'api_platform.action.put_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_item_operation_name' => 'put',));
+                        if (!in_array($requestMethod, array('PUT'))) {
+                            $allow = array_merge($allow, array('PUT'));
+                            goto not_api_colonias_put_item;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_colonias_put_item:
 
                     // api_colonias_delete_item
                     if (preg_match('#^/api/colonias/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
@@ -94,17 +94,17 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     }
                     not_api_colonias_delete_item:
 
-                    // api_colonias_put_item
-                    if (preg_match('#^/api/colonias/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_colonias_put_item')), array (  '_controller' => 'api_platform.action.put_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_item_operation_name' => 'put',));
-                        if (!in_array($requestMethod, array('PUT'))) {
-                            $allow = array_merge($allow, array('PUT'));
-                            goto not_api_colonias_put_item;
+                    // api_new_colonia
+                    if ('/api/colonias' === $pathinfo) {
+                        $ret = array (  '_controller' => 'App\\Controller\\ColoniaController::newColonia',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'post',  '_route' => 'api_new_colonia',);
+                        if (!in_array($requestMethod, array('POST'))) {
+                            $allow = array_merge($allow, array('POST'));
+                            goto not_api_new_colonia;
                         }
 
                         return $ret;
                     }
-                    not_api_colonias_put_item:
+                    not_api_new_colonia:
 
                 }
 

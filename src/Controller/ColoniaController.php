@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 
+use App\Entity\TipoPropiedad;
+use App\Entity\TipoEdificio;
+
 use App\Entity\Colonia;
 use App\Entity\LocNidosCol;
 use App\Entity\OtrasEspecies;
 use App\Util\Util;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,8 +22,23 @@ use PDO;
 
 class ColoniaController extends Controller{
 	
+	/**
+	 * @var NormalizerInterface
+	 */
+	private $normalizer;
+	
+	/**
+	 * @param NormalizerInterface $normalizer
+	 */
+	public function __construct(
+			NormalizerInterface $normalizer
+	) {
+		$this->normalizer = $normalizer;
+	}
+	
 	public function newColonia(Request $request)
 	{
+		
 		//obtenemos los parámetros del cuerpo de la peticion
 		$params=json_decode($request->getContent(), true);
 		
@@ -27,6 +46,7 @@ class ColoniaController extends Controller{
 		$entityManager = $this->getDoctrine()->getManager('default');
 		
 		$newColonia= new Colonia();
+		
 		
 		if (isset($params["usuario"]) && isset($params["especie"])){
 		
@@ -42,6 +62,12 @@ class ColoniaController extends Controller{
 		}
 		
 		if ($params && count($params) /*&& $existeUsuario  && $existeEspecie*/){
+			
+			
+			$newColonia->setUsuario("usuario");
+			$newColonia->setEspecie($params["especie"]);
+			$newColonia->setVacio(false);
+			
 			if (isset($params["nombre"])){
 				$newColonia->setNombre($params["nombre"]);
 			}
@@ -58,12 +84,24 @@ class ColoniaController extends Controller{
 				$newColonia->setCalleNumPiso($params["calleNumPiso"]);
 			}
 			
-			if (isset($params["tipoPropiedad"])){
-				$newColonia->setTipoPropiedad($params["tipoPropiedad"]);
+			if (isset($params["tipoPropiedadId"])){
+				$propiedad=$this->getDoctrine()->getRepository(TipoPropiedad::class)->find($params["tipoPropiedadId"]);
+				if ($propiedad!=null){
+					$newColonia->setTipoPropiedad($propiedad);
+				}else{
+					throw new NotFoundHttpException();
+				}
+				
 			}
 			
-			if (isset($params["tipoEdificio"])){
-				$newColonia->setTipoEdificio($params["tipoEdificio"]);
+			if (isset($params["tipoEdificioId"])){
+				$edificio=$this->getDoctrine()->getRepository(TipoEdificio::class)->find($params["tipoEdificioId"]);
+				if ($edificio!=null){
+					$newColonia->setTipoEdificio($edificio);
+				}else{
+					throw new NotFoundHttpException();
+				}
+				
 			}
 			
 			if (isset($params["temporada"])){
@@ -84,6 +122,7 @@ class ColoniaController extends Controller{
 			
 			if (isset($params["locNidos"])){
 				$locNidos= new LocNidosCol();
+				$locNidos->setUsuario($params["usuario"]);
 				$locNidos->setFachada($params["locNidos"]["fachada"]);
 				$locNidos->setTrasera($params["locNidos"]["trasera"]);
 				$locNidos->setLateralDerecho($params["locNidos"]["latDer"]);
@@ -91,13 +130,15 @@ class ColoniaController extends Controller{
 				
 				$newColonia->setLocNidos($locNidos);
 			}else{
-				$newColonia->setLocNidos(new LocNidosCol());
+				$locNidos= new LocNidosCol();
+				$locNidos->setUsuario($params["usuario"]);
+				$newColonia->setLocNidos($locNidos);
 			}
 			
 			
 			//En este punto ya podemos persistir la colonia, ya que otras especies es opcional e irrelevante para la creacion
 			
-			$entityManager->persiste($newColonia);
+			$entityManager->persist($newColonia);
 			$entityManager->flush();
 			
 			/*Formato de otras especies en el json:
@@ -132,6 +173,20 @@ class ColoniaController extends Controller{
 						$newColonia, 'json', ['colonia']
 				)
 		);
+		
+		
+		/*$response = new Response();
+		
+		$response->setContent(json_encode($newColonia));
+		
+		$response->headers->set('Content-Type', 'application/json');
+		// Allow all websites
+		$response->headers->set('Access-Control-Allow-Origin', '*');
+		// Or a predefined website
+		//$response->headers->set('Access-Control-Allow-Origin', 'https://jsfiddle.net/');
+		// You can set the allowed methods too, if you want    //$response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, PATCH, OPTIONS');
+		return $response;*/
 	
 	}
+	
 }

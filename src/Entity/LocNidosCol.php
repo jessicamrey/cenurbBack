@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,41 +26,49 @@ class LocNidosCol
     
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"colonia"})
      */
     private $fachada;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"colonia"})
      */
     private $trasera;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"colonia"})
      */
     private $lateralDerecho;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"colonia"})
      */
     private $lateralIzquierdo;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"colonia"})
      */
     private $patioInferior;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"colonia"})
      */
     private $huso;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"colonia"})
      */
     private $lat;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"colonia"})
      */
     private $lon;
 

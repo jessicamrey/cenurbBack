@@ -456,6 +456,6 @@ class __TwigTemplate_ed8c8d62a920b39b6a15aafe94929420baad9a5d3a8762abed78654418a
         </div>
     {% endfor %}
 {% endblock %}
-", "@WebProfiler/Collector/validator.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Collector/validator.html.twig");
+", "@WebProfiler/Collector/validator.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Collector/validator.html.twig");
     }
 }

@@ -56,12 +56,11 @@ api_municipios:
     defaults:
         _controller: App\Controller\SeoApisController::municipios
 
+##################COLONIA#######################################
 
-##########	COLONIA		##################################
-
-api_new_colonia:
+api_municipios:
     path: '/api/colonias'
     methods: ['POST']
     defaults:
         _controller: App\Controller\ColoniaController::newColonia
-	_api_resource_class: App\Entity\Colonia
+        _api_resource_class: App\Entity\Colonia
