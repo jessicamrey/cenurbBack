@@ -173,20 +173,81 @@ class ColoniaController extends Controller{
 						$newColonia, 'json', ['colonia']
 				)
 		);
-		
-		
-		/*$response = new Response();
-		
-		$response->setContent(json_encode($newColonia));
-		
-		$response->headers->set('Content-Type', 'application/json');
-		// Allow all websites
-		$response->headers->set('Access-Control-Allow-Origin', '*');
-		// Or a predefined website
-		//$response->headers->set('Access-Control-Allow-Origin', 'https://jsfiddle.net/');
-		// You can set the allowed methods too, if you want    //$response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, PATCH, OPTIONS');
-		return $response;*/
+
 	
+	}
+	
+	public function completaNidos(Request $request, $id)
+	{
+		
+		//obtenemos los parámetros del cuerpo de la peticion
+		$params=json_decode($request->getContent(), true);
+		
+		//abrimos nuestro manager
+		$entityManager = $this->getDoctrine()->getManager('default');
+		
+		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
+		if ($colonia!=null){
+			$locNidos= new LocNidosCol();
+				$locNidos->setUsuario($params["usuario"]);
+				$locNidos->setFachada($params["fachada"]);
+				$locNidos->setTrasera($params["trasera"]);
+				$locNidos->setLateralDerecho($params["latDer"]);
+				$locNidos->setLateralIzquierdo($params["latIzq"]);
+				$locNidos->setPatioInferior($params["patio"]);
+				
+				//FALTAN LAS COORDENADAS
+				
+				$colonia->setLocNidos($locNidos);
+				
+				$entityManager->persist($newColonia);
+				$entityManager->flush();
+				$entityManager->close();
+				
+				return new JsonResponse(
+						$this->normalizer->normalize(
+								$colonia, 'json', ['colonia']
+						)
+				);
+				
+		}else{
+			throw new NotFoundHttpException();
+		}
+	}
+	
+	
+	public function completaEspecies(Request $request, $id)
+	{
+	
+		//obtenemos los parámetros del cuerpo de la peticion
+		$params=json_decode($request->getContent(), true);
+		
+		//abrimos nuestro manager
+		$entityManager = $this->getDoctrine()->getManager('default');
+		
+		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
+		
+		if ($colonia!=null){
+			
+			foreach($params as $campo){
+				$otrasEspecies= new OtrasEspecies();
+				$otrasEspecies->setColonia($colonia);
+				$otrasEspecies->setEspecie($campo);
+				$entityManager->persist($otrasEspecies);
+				
+			}
+			$entityManager->flush();
+			$entityManager->close();
+			
+			return new JsonResponse(
+					$this->normalizer->normalize(
+							$colonia, 'json', ['colonia']
+					)
+			);
+		
+		}else{
+			throw new NotFoundHttpException();
+		}
 	}
 	
 }

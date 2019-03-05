@@ -106,6 +106,30 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     }
                     not_api_new_colonia:
 
+                    // api_add_locNidosCol
+                    if (preg_match('#^/api/colonias/(?P<id>[^/]++)/loc\\-nidos$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_add_locNidosCol')), array (  '_controller' => 'App\\Controller\\ColoniaController::completaNidos',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'postCol',));
+                        if (!in_array($requestMethod, array('POST'))) {
+                            $allow = array_merge($allow, array('POST'));
+                            goto not_api_add_locNidosCol;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_add_locNidosCol:
+
+                    // api_add_especies
+                    if (preg_match('#^/api/colonias/(?P<id>[^/]++)/otras\\-especies$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_add_especies')), array (  '_controller' => 'App\\Controller\\ColoniaController::completaEspecies',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'postEspecies',));
+                        if (!in_array($requestMethod, array('POST'))) {
+                            $allow = array_merge($allow, array('POST'));
+                            goto not_api_add_especies;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_add_especies:
+
                 }
 
                 elseif (0 === strpos($pathinfo, '/api/censo-municipios')) {
@@ -606,18 +630,6 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 }
                 not_api_otras_especies_get_collection:
 
-                // api_otras_especies_post_collection
-                if (preg_match('#^/api/otras\\-especies(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_otras_especies_post_collection')), array (  '_controller' => 'api_platform.action.post_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\OtrasEspecies',  '_api_collection_operation_name' => 'post',));
-                    if (!in_array($requestMethod, array('POST'))) {
-                        $allow = array_merge($allow, array('POST'));
-                        goto not_api_otras_especies_post_collection;
-                    }
-
-                    return $ret;
-                }
-                not_api_otras_especies_post_collection:
-
                 // api_otras_especies_get_item
                 if (preg_match('#^/api/otras\\-especies/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
                     $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_otras_especies_get_item')), array (  '_controller' => 'api_platform.action.get_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\OtrasEspecies',  '_api_item_operation_name' => 'get',));
@@ -630,18 +642,6 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 }
                 not_api_otras_especies_get_item:
 
-                // api_otras_especies_delete_item
-                if (preg_match('#^/api/otras\\-especies/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_otras_especies_delete_item')), array (  '_controller' => 'api_platform.action.delete_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\OtrasEspecies',  '_api_item_operation_name' => 'delete',));
-                    if (!in_array($requestMethod, array('DELETE'))) {
-                        $allow = array_merge($allow, array('DELETE'));
-                        goto not_api_otras_especies_delete_item;
-                    }
-
-                    return $ret;
-                }
-                not_api_otras_especies_delete_item:
-
                 // api_otras_especies_put_item
                 if (preg_match('#^/api/otras\\-especies/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
                     $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_otras_especies_put_item')), array (  '_controller' => 'api_platform.action.put_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\OtrasEspecies',  '_api_item_operation_name' => 'put',));
@@ -653,6 +653,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     return $ret;
                 }
                 not_api_otras_especies_put_item:
+
+                // api_otras_especies_delete_item
+                if (preg_match('#^/api/otras\\-especies/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_otras_especies_delete_item')), array (  '_controller' => 'api_platform.action.delete_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\OtrasEspecies',  '_api_item_operation_name' => 'delete',));
+                    if (!in_array($requestMethod, array('DELETE'))) {
+                        $allow = array_merge($allow, array('DELETE'));
+                        goto not_api_otras_especies_delete_item;
+                    }
+
+                    return $ret;
+                }
+                not_api_otras_especies_delete_item:
 
             }
 
@@ -733,18 +745,6 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     }
                     not_api_loc_nidos_cols_get_collection:
 
-                    // api_loc_nidos_cols_post_collection
-                    if (preg_match('#^/api/loc\\-nidos\\-cols(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_loc_nidos_cols_post_collection')), array (  '_controller' => 'api_platform.action.post_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\LocNidosCol',  '_api_collection_operation_name' => 'post',));
-                        if (!in_array($requestMethod, array('POST'))) {
-                            $allow = array_merge($allow, array('POST'));
-                            goto not_api_loc_nidos_cols_post_collection;
-                        }
-
-                        return $ret;
-                    }
-                    not_api_loc_nidos_cols_post_collection:
-
                     // api_loc_nidos_cols_get_item
                     if (preg_match('#^/api/loc\\-nidos\\-cols/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
                         $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_loc_nidos_cols_get_item')), array (  '_controller' => 'api_platform.action.get_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\LocNidosCol',  '_api_item_operation_name' => 'get',));
@@ -757,18 +757,6 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     }
                     not_api_loc_nidos_cols_get_item:
 
-                    // api_loc_nidos_cols_delete_item
-                    if (preg_match('#^/api/loc\\-nidos\\-cols/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_loc_nidos_cols_delete_item')), array (  '_controller' => 'api_platform.action.delete_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\LocNidosCol',  '_api_item_operation_name' => 'delete',));
-                        if (!in_array($requestMethod, array('DELETE'))) {
-                            $allow = array_merge($allow, array('DELETE'));
-                            goto not_api_loc_nidos_cols_delete_item;
-                        }
-
-                        return $ret;
-                    }
-                    not_api_loc_nidos_cols_delete_item:
-
                     // api_loc_nidos_cols_put_item
                     if (preg_match('#^/api/loc\\-nidos\\-cols/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
                         $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_loc_nidos_cols_put_item')), array (  '_controller' => 'api_platform.action.put_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\LocNidosCol',  '_api_item_operation_name' => 'put',));
@@ -780,6 +768,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                         return $ret;
                     }
                     not_api_loc_nidos_cols_put_item:
+
+                    // api_loc_nidos_cols_delete_item
+                    if (preg_match('#^/api/loc\\-nidos\\-cols/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_loc_nidos_cols_delete_item')), array (  '_controller' => 'api_platform.action.delete_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\LocNidosCol',  '_api_item_operation_name' => 'delete',));
+                        if (!in_array($requestMethod, array('DELETE'))) {
+                            $allow = array_merge($allow, array('DELETE'));
+                            goto not_api_loc_nidos_cols_delete_item;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_loc_nidos_cols_delete_item:
 
                 }
 

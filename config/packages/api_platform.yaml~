@@ -1,0 +1,10 @@
+api_platform:
+    path_segment_name_generator: 'api_platform.path_segment_name_generator.dash'
+
+    mapping:
+        paths:
+            - '%kernel.project_dir%/config/packages/apiplatform/tempUser.yml'
+	    - '%kernel.project_dir%/config/packages/apiplatform/otrasEspecies.yml'
+            - '%kernel.project_dir%/config/packages/apiplatform/locNidosCol.yml'
+            - '%kernel.project_dir%/config/packages/apiplatform/colonia.yml'
+            - '%kernel.project_dir%/src/Entity'

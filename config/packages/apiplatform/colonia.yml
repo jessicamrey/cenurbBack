@@ -13,6 +13,19 @@ resources:
                 route_name: 'api_new_colonia'
                 swagger_context:
                     summary: 'Registrar una nueva colonia'
+            postCol:
+                method: 'POST'
+                route_name: 'api_add_locNidosCol'
+                swagger_context:
+                    summary: 'Añade información sobre nidos a una colonia'
+                    
+            postEspecies:
+                method: 'POST'
+                route_name: 'api_add_especies'
+                swagger_context:
+                    summary: 'Añade información sobre hay más de ua especie en la misma colonia'
+                    
+                    
             get:
                 method: 'GET'
 

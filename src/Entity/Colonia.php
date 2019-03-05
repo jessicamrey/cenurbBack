@@ -36,56 +36,67 @@ class Colonia
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("colonia")
      */
     private $id;
 
      /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("colonia")
      */
     private $usuario;
     
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("colonia")
      */
     private $nombre;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("colonia")
      */
     private $barrio;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("colonia")
      */
     private $calleNumPiso;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("colonia")
      */
     private $nombreCentro;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TipoPropiedad")
+     * @Groups("colonia")
      */
     private $tipoPropiedad;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TipoEdificio")
+     * @Groups("colonia")
      */
     private $tipoEdificio;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("colonia")
      */
     private $temporada;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\LocNidosCol", cascade={"persist", "remove"})
+     * @Groups("colonia")
      */
     private $locNidos;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("colonia")
      */
     private $vacio;
 
@@ -96,16 +107,19 @@ class Colonia
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("colonia")
      */
     private $ccaa;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("colonia")
      */
     private $provincia;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("colonia")
      */
     private $municipio;
 
@@ -116,6 +130,7 @@ class Colonia
     
     /**
      * @ORM\Column(type="integer")
+     * @Groups("colonia")
      */
     private $especie;
 

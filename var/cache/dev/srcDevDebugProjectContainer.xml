@@ -5214,6 +5214,8 @@
     <service id="api_platform.metadata.extractor.yaml" class="ApiPlatform\Core\Metadata\Extractor\YamlExtractor" public="false">
       <argument type="collection">
         <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/tempUser.yml</argument>
+        <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/otrasEspecies.yml</argument>
+        <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/locNidosCol.yml</argument>
         <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/colonia.yml</argument>
       </argument>
     </service>

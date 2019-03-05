@@ -16,6 +16,7 @@ class TipoEdificio
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("colonia")
      */
     private $id;
 

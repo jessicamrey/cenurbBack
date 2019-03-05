@@ -1,0 +1,21 @@
+resources:
+    App\Entity\OtrasEspecies:
+        attributes:
+            pagination_enabled: false
+            normalization_context: 
+                groups: ['colonia']
+            denormalization_context: 
+                groups: ['colonia']
+            
+        collectionOperations:
+            get:
+                method: 'GET'
+
+                
+        itemOperations:
+            get:
+                method: 'GET'
+            put:
+                method: 'PUT'
+            delete:
+                method: 'DELETE'

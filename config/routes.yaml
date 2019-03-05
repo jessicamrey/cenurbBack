@@ -65,3 +65,19 @@ api_new_colonia:
         _controller: App\Controller\ColoniaController::newColonia
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'post'
+        
+api_add_locNidosCol:
+    path: '/api/colonias/{id}/loc-nidos'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\ColoniaController::completaNidos
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'postCol'
+        
+api_add_especies:
+    path: '/api/colonias/{id}/otras-especies'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\ColoniaController::completaEspecies
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'postEspecies'
