@@ -188,7 +188,7 @@ class ColoniaController extends Controller{
 		
 		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
 		if ($colonia!=null){
-			$locNidos= new LocNidosCol();
+			$locNidos= $colonia->getLocNidos();
 				$locNidos->setUsuario($params["usuario"]);
 				$locNidos->setFachada($params["fachada"]);
 				$locNidos->setTrasera($params["trasera"]);
@@ -198,9 +198,7 @@ class ColoniaController extends Controller{
 				
 				//FALTAN LAS COORDENADAS
 				
-				$colonia->setLocNidos($locNidos);
-				
-				$entityManager->persist($newColonia);
+				$entityManager->persist($locNidos);
 				$entityManager->flush();
 				$entityManager->close();
 				
@@ -229,13 +227,13 @@ class ColoniaController extends Controller{
 		
 		if ($colonia!=null){
 			
-			foreach($params as $campo){
+			
 				$otrasEspecies= new OtrasEspecies();
 				$otrasEspecies->setColonia($colonia);
-				$otrasEspecies->setEspecie($campo);
+				$otrasEspecies->setEspecie($params["especie"]);
 				$entityManager->persist($otrasEspecies);
 				
-			}
+			
 			$entityManager->flush();
 			$entityManager->close();
 			
