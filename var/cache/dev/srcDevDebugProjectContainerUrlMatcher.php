@@ -207,6 +207,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 }
                 not_api_ccaa:
 
+                // api_get_closeColonias
+                if ('/api/closeCol' === $pathinfo) {
+                    $ret = array (  '_controller' => 'App\\Controller\\ColoniaController::getColoniasCercanas',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'getClose',  '_route' => 'api_get_closeColonias',);
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_get_closeColonias;
+                    }
+
+                    return $ret;
+                }
+                not_api_get_closeColonias:
+
             }
 
             elseif (0 === strpos($pathinfo, '/api/t')) {

@@ -1,12 +1,5 @@
 resources:
     App\Entity\Colonia:
-        attributes:
-            pagination_enabled: false
-            normalization_context: 
-                groups: ['colonia']
-            denormalization_context: 
-                groups: ['colonia']
-            
         collectionOperations:
             post:
                 method: 'POST'
@@ -28,6 +21,20 @@ resources:
                     
             get:
                 method: 'GET'
+                normalization_context: 
+                    groups: ['colonia']
+
+                denormalization_context: 
+                    groups: ['colonia']
+
+            getClose:
+                method: 'GET'
+                route_name: 'api_get_closeColonias'
+                normalization_context: 
+                    groups: ['colonia']
+
+                denormalization_context: 
+                    groups: ['colonia']
 
                 
         itemOperations:

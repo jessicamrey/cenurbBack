@@ -17,8 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource()
  * @ApiFilter(SearchFilter::class, properties={"usuario": "exact", 
  * 												"nombre": "partial", 
- * 												"barrio": "partial", 
- * 												"calleNumPiso": "partial",
  * 												"nombreCentro": "partial", 
  * 												"tipoPropiedad": "exact", 
  * 												"tipoEdificio": "exact",
@@ -42,7 +40,6 @@ class Colonia
 
      /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("colonia")
      */
     private $usuario;
     

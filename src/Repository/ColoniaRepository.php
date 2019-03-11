@@ -19,32 +19,27 @@ class ColoniaRepository extends ServiceEntityRepository
         parent::__construct($registry, Colonia::class);
     }
 
-//    /**
-//     * @return Colonia[] Returns an array of Colonia objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Devuelve las colonias cercanas en un radio especifico
+     * @param float $radius
+     * @param double $lat
+     * @param double $long
+     * @return Center[]
+     */
+    public function findByRadius($radius, $lat, $long)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+    	//TODO: Coger lat y lon de locNidos, faltará poner un join por aqui, o alomejor cogiendo solo el parametro ya funciona, buscar ejemplos
+        $query= $this->createQueryBuilder('c')
+                ->select('c')
+                ->join('c.locNidos', 'l')
+            	->andWhere('mydistance(l.lat, l.lon, :lat, :lon) <= :rad');
+       			 $query->orderBy('mydistance(l.lat, l.lon, :lat, :lon) ' , 'ASC') ;
+        return $query->setParameter('lat', $lat)
+             ->setParameter('lon', $long)
+             ->setParameter('rad', $radius)
+             ->getQuery()
+             ->getResult();
+        
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Colonia
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

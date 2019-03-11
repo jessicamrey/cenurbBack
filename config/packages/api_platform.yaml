@@ -1,5 +1,9 @@
 api_platform:
     path_segment_name_generator: 'api_platform.path_segment_name_generator.dash'
+    collection:
+        pagination:
+            enabled: true
+            items_per_page: 2
 
     mapping:
         paths:

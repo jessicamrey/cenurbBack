@@ -81,3 +81,11 @@ api_add_especies:
         _controller: App\Controller\ColoniaController::completaEspecies
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'postEspecies'
+        
+api_get_closeColonias:
+    path: '/api/closeCol'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::getColoniasCercanas
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'getClose'

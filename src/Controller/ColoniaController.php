@@ -170,7 +170,7 @@ class ColoniaController extends Controller{
 		
 		return new JsonResponse(
 				$this->normalizer->normalize(
-						$newColonia, 'json', ['colonia']
+						$newColonia, 'json', ['groups' => ['colonia']]
 				)
 		);
 
@@ -204,7 +204,7 @@ class ColoniaController extends Controller{
 				
 				return new JsonResponse(
 						$this->normalizer->normalize(
-								$colonia, 'json', ['colonia']
+								$colonia, 'json', ['groups' => ['colonia']]
 						)
 				);
 				
@@ -239,7 +239,7 @@ class ColoniaController extends Controller{
 			
 			return new JsonResponse(
 					$this->normalizer->normalize(
-							$colonia, 'json', ['colonia']
+							$colonia, 'json', ['groups' => ['colonia']]
 					)
 			);
 		
@@ -247,5 +247,24 @@ class ColoniaController extends Controller{
 			throw new NotFoundHttpException();
 		}
 	}
+	
+	public function getColoniasCercanas(Request $request){
+		$lat = $request->query->get("lat");
+		$lon = $request->query->get("lon");
+		$rad = $request->query->get("rad");
+		$colonias = new ArrayCollection();
+		if($rad != NULL)
+		{
+		
+			$colonias= $this->getDoctrine()->getRepository(Colonia::class)->findByRadius($rad, $lat, $lon);
+		}
+		
+		return new JsonResponse(
+			$this->normalizer->normalize(
+				$colonias, 'json', ['groups' => ['colonia']]
+		));
+	}
+	
+	
 	
 }
