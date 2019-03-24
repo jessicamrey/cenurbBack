@@ -35,11 +35,25 @@ resources:
 
                 denormalization_context: 
                     groups: ['colonia']
+                    
+            getFav:
+                method: 'GET'
+                route_name: 'api_get_favoritosCol'
+                
+            getVisits:
+                method: 'GET'
+                route_name: 'api_get_visits'
+            
 
                 
         itemOperations:
             get:
-                method: 'GET'
+                method: 'GET'             
+                normalization_context: 
+                    groups: ['colonia']
+
+                denormalization_context: 
+                    groups: ['colonia']
             put:
                 method: 'PUT'
             delete:

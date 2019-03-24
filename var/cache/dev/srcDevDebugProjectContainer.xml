@@ -640,6 +640,10 @@
       <argument type="service" id="serializer"/>
     </service>
     <service id="App\Doctrine\DistanceFunction" class="App\Doctrine\DistanceFunction" public="false" autowire="true" autoconfigure="true"/>
+    <service id="App\Repository\CensoColoniaRepository" class="App\Repository\CensoColoniaRepository" public="false" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\CensoMunicipioRepository" class="App\Repository\CensoMunicipioRepository" public="false" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -3285,7 +3289,7 @@
       <factory class="Doctrine\ORM\EntityManager" method="create"/>
     </service>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory" public="false">
-      <argument type="service" id="service_locator.ydpcb2e"/>
+      <argument type="service" id="service_locator.zifuztv"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -5603,6 +5607,8 @@
     <service id="abstract.instanceof.App\Controller\SeoApisController" class="App\Controller\SeoApisController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\TempUserController" class="App\Controller\TempUserController" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Controller\TempUserController" class="App\Controller\TempUserController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CensoColoniaRepository" class="App\Repository\CensoColoniaRepository" public="false" autowire="true" abstract="true"/>
+    <service id="abstract.instanceof.App\Repository\CensoColoniaRepository" class="App\Repository\CensoColoniaRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CensoMunicipioRepository" class="App\Repository\CensoMunicipioRepository" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Repository\CensoMunicipioRepository" class="App\Repository\CensoMunicipioRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ColoniaRepository" class="App\Repository\ColoniaRepository" public="false" autowire="true" abstract="true"/>
@@ -5804,9 +5810,10 @@
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="service" id="form.type.form"/>
       </argument>
     </service>
-    <service id="service_locator.ydpcb2e" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.zifuztv" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Repository\CensoColoniaRepository" type="service" id="App\Repository\CensoColoniaRepository"/>
         <argument key="App\Repository\CensoMunicipioRepository" type="service" id="App\Repository\CensoMunicipioRepository"/>
         <argument key="App\Repository\ColoniaRepository" type="service" id="App\Repository\ColoniaRepository"/>
         <argument key="App\Repository\ComunidadesRepository" type="service" id="App\Repository\ComunidadesRepository"/>
@@ -6008,6 +6015,7 @@
       <argument type="service" id="monolog.logger"/>
       <argument type="collection">
         <argument key="usuario">exact</argument>
+        <argument key="id">exact</argument>
         <argument key="nombre">partial</argument>
         <argument key="nombreCentro">partial</argument>
         <argument key="tipoPropiedad">exact</argument>

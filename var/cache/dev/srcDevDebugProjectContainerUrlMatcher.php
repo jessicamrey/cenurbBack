@@ -887,6 +887,30 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             }
             not_api_municipios:
 
+            // api_get_favoritosCol
+            if (0 === strpos($pathinfo, '/api/favCol') && preg_match('#^/api/favCol/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_favoritosCol')), array (  '_controller' => 'App\\Controller\\ColoniaController::getFavoritos',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'getFav',));
+                if (!in_array($canonicalMethod, array('GET'))) {
+                    $allow = array_merge($allow, array('GET'));
+                    goto not_api_get_favoritosCol;
+                }
+
+                return $ret;
+            }
+            not_api_get_favoritosCol:
+
+            // api_get_visits
+            if (0 === strpos($pathinfo, '/api/usuario') && preg_match('#^/api/usuario/(?P<id>[^/]++)/visits$#sD', $pathinfo, $matches)) {
+                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_visits')), array (  '_controller' => 'App\\Controller\\ColoniaController::getVisits',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'getVisits',));
+                if (!in_array($canonicalMethod, array('GET'))) {
+                    $allow = array_merge($allow, array('GET'));
+                    goto not_api_get_visits;
+                }
+
+                return $ret;
+            }
+            not_api_get_visits:
+
         }
 
         elseif (0 === strpos($pathinfo, '/_')) {

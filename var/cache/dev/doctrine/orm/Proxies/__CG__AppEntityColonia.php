@@ -64,10 +64,10 @@ class Colonia extends \App\Entity\Colonia implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'usuario', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'nombre', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'barrio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'calleNumPiso', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'nombreCentro', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'tipoPropiedad', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'tipoEdificio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'temporada', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'locNidos', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'vacio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'visitasColonias', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'ccaa', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'provincia', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'municipio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'otrasEspecies', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'especie'];
+            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'usuario', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'nombre', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'barrio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'calleNumPiso', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'nombreCentro', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'tipoPropiedad', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'tipoEdificio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'temporada', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'locNidos', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'vacio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'ccaa', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'provincia', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'municipio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'otrasEspecies', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'especie', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'visitasColonias'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'usuario', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'nombre', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'barrio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'calleNumPiso', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'nombreCentro', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'tipoPropiedad', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'tipoEdificio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'temporada', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'locNidos', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'vacio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'visitasColonias', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'ccaa', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'provincia', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'municipio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'otrasEspecies', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'especie'];
+        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'usuario', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'nombre', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'barrio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'calleNumPiso', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'nombreCentro', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'tipoPropiedad', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'tipoEdificio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'temporada', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'locNidos', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'vacio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'ccaa', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'provincia', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'municipio', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'otrasEspecies', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'especie', '' . "\0" . 'App\\Entity\\Colonia' . "\0" . 'visitasColonias'];
     }
 
     /**
@@ -411,28 +411,6 @@ class Colonia extends \App\Entity\Colonia implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getVisitasColonias(): \Doctrine\Common\Collections\Collection
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisitasColonias', []);
-
-        return parent::getVisitasColonias();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addVisitasColonia(\App\Entity\VisitasColonia $visitasColonia): \App\Entity\Colonia
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addVisitasColonia', [$visitasColonia]);
-
-        return parent::addVisitasColonia($visitasColonia);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function removeVisitasColonia(\App\Entity\VisitasColonia $visitasColonia): \App\Entity\Colonia
     {
 
@@ -560,6 +538,28 @@ class Colonia extends \App\Entity\Colonia implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEspecie', [$especie]);
 
         return parent::setEspecie($especie);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVisitasColonias(): \Doctrine\Common\Collections\Collection
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisitasColonias', []);
+
+        return parent::getVisitasColonias();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addVisitasColonia(\App\Entity\VisitasColonia $visitasColonia): \App\Entity\Colonia
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addVisitasColonia', [$visitasColonia]);
+
+        return parent::addVisitasColonia($visitasColonia);
     }
 
 }

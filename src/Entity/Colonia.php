@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ApiResource()
  * @ApiFilter(SearchFilter::class, properties={"usuario": "exact", 
+ * 												"id": "exact",
  * 												"nombre": "partial", 
  * 												"nombreCentro": "partial", 
  * 												"tipoPropiedad": "exact", 
@@ -34,7 +35,7 @@ class Colonia
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("colonia")
+     * @Groups({"colonia","visita"})
      */
     private $id;
 
@@ -45,7 +46,7 @@ class Colonia
     
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("colonia")
+     * @Groups({"colonia", "visita"})
      */
     private $nombre;
 
@@ -81,7 +82,7 @@ class Colonia
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups("colonia")
+     * @Groups({"colonia","visita"})
      */
     private $temporada;
 
@@ -97,10 +98,7 @@ class Colonia
      */
     private $vacio;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\VisitasColonia", mappedBy="colonia")
-     */
-    private $visitasColonias;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -110,13 +108,13 @@ class Colonia
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("colonia")
+     * @Groups({"colonia","visita"})
      */
     private $provincia;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("colonia")
+     * @Groups({"colonia","visita"})
      */
     private $municipio;
 
@@ -131,10 +129,18 @@ class Colonia
      */
     private $especie;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\VisitasColonia", mappedBy="colonia")
+     */
+    private $visitasColonias;
+
+
+
     public function __construct()
     {
         $this->visitasColonias = new ArrayCollection();
         $this->otrasEspecies = new ArrayCollection();
+        $this->censoColonias = new ArrayCollection();
     }
 
     public function getId(): int
@@ -263,23 +269,7 @@ class Colonia
         return $this;
     }
 
-    /**
-     * @return Collection|VisitasColonia[]
-     */
-    public function getVisitasColonias(): Collection
-    {
-        return $this->visitasColonias;
-    }
 
-    public function addVisitasColonia(VisitasColonia $visitasColonia): self
-    {
-        if (!$this->visitasColonias->contains($visitasColonia)) {
-            $this->visitasColonias[] = $visitasColonia;
-            $visitasColonia->setColonia($this);
-        }
-
-        return $this;
-    }
 
     public function removeVisitasColonia(VisitasColonia $visitasColonia): self
     {
@@ -372,4 +362,24 @@ class Colonia
         
         return $this;
     }
+
+    /**
+     * @return Collection|VisitasColonia[]
+     */
+    public function getVisitasColonias(): Collection
+    {
+        return $this->visitasColonias;
+    }
+
+    public function addVisitasColonia(VisitasColonia $visitasColonia): self
+    {
+        if (!$this->visitasColonias->contains($visitasColonia)) {
+            $this->visitasColonias[] = $visitasColonia;
+            $visitasColonia->setColonia($this);
+        }
+
+        return $this;
+    }
+
+
 }

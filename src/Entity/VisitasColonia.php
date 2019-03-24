@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
@@ -24,14 +26,11 @@ class VisitasColonia
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("visita")
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Colonia", inversedBy="visitasColonias")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $colonia;
+
 
      /**
      * @ORM\Column(type="string", length=255)
@@ -40,54 +39,57 @@ class VisitasColonia
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("visita")
      */
     private $numVisita;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("visita")
      */
     private $fecha;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("visita")
      */
     private $numNidos;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("visita")
      */
     private $numNidosOcupados;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("visita")
      */
     private $numNidosVacios;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("visita")
      */
     private $numNidosExito;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("visita")
      */
     private $completo;
+
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Colonia", inversedBy="visitasColonias")
+     * @Groups("visita")
+     */
+    private $colonia;
 
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getColonia(): Colonia
-    {
-        return $this->colonia;
-    }
-
-    public function setColonia(Colonia $colonia): self
-    {
-        $this->colonia = $colonia;
-
-        return $this;
     }
 
     public function getUsuario(): string
@@ -182,6 +184,20 @@ class VisitasColonia
     public function setCompleto(bool $completo): self
     {
         $this->completo = $completo;
+
+        return $this;
+    }
+
+
+
+    public function getColonia(): ?Colonia
+    {
+        return $this->colonia;
+    }
+
+    public function setColonia(?Colonia $colonia): self
+    {
+        $this->colonia = $colonia;
 
         return $this;
     }

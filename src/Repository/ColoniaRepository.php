@@ -26,17 +26,18 @@ class ColoniaRepository extends ServiceEntityRepository
      * @param double $long
      * @return Center[]
      */
-    public function findByRadius($radius, $lat, $long)
+    public function findByRadius($radius, $lat, $long, $especie)
     {
-    	//TODO: Coger lat y lon de locNidos, faltará poner un join por aqui, o alomejor cogiendo solo el parametro ya funciona, buscar ejemplos
         $query= $this->createQueryBuilder('c')
                 ->select('c')
                 ->join('c.locNidos', 'l')
-            	->andWhere('mydistance(l.lat, l.lon, :lat, :lon) <= :rad');
+            	->andWhere('mydistance(l.lat, l.lon, :lat, :lon) <= :rad')
+        		->andWhere('c.especie = :esp');
        			 $query->orderBy('mydistance(l.lat, l.lon, :lat, :lon) ' , 'ASC') ;
         return $query->setParameter('lat', $lat)
              ->setParameter('lon', $long)
              ->setParameter('rad', $radius)
+             ->setParameter('esp', $especie)
              ->getQuery()
              ->getResult();
         

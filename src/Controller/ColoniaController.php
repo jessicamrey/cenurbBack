@@ -9,6 +9,7 @@ use App\Entity\TipoEdificio;
 use App\Entity\Colonia;
 use App\Entity\LocNidosCol;
 use App\Entity\OtrasEspecies;
+use App\Entity\VisitasColonia;
 use App\Util\Util;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
@@ -148,21 +149,21 @@ class ColoniaController extends Controller{
 			 * }
 			 */
 			
-			if (isset($params["otrasEspecies"])){
-				//Comprobamos que exista cada id en la lista
-				foreach($params["otrasEspecies"] as $clave=> $valor){
-					if (!Util::existeEspecie($valor)){
-						throw new InvalidArgumentException("La especie ". $valor . " no es correcta");
-					}else{
-						$nuevaEspecie= new OtrasEspecies();
-						$nuevaEspecie->setColonia($newColonia);
-						$nuevaEspecie->setEspecie($valor);
-						$entityManager->persist($nuevaEspecie);
-						$entityManager->flush();
+// 			if (isset($params["otrasEspecies"])){
+// 				//Comprobamos que exista cada id en la lista
+// 				foreach($params["otrasEspecies"] as $clave=> $valor){
+// 					if (!Util::existeEspecie($valor)){
+// 						throw new InvalidArgumentException("La especie ". $valor . " no es correcta");
+// 					}else{
+// 						$nuevaEspecie= new OtrasEspecies();
+// 						$nuevaEspecie->setColonia($newColonia);
+// 						$nuevaEspecie->setEspecie($valor);
+// 						$entityManager->persist($nuevaEspecie);
+// 						$entityManager->flush();
 						
-					}
-				}
-			}
+// 					}
+// 				}
+// 			}
 			
 		}
 		
@@ -252,17 +253,67 @@ class ColoniaController extends Controller{
 		$lat = $request->query->get("lat");
 		$lon = $request->query->get("lon");
 		$rad = $request->query->get("rad");
+		$especie = $request->query->get("especie");
 		$colonias = new ArrayCollection();
 		if($rad != NULL)
 		{
 		
-			$colonias= $this->getDoctrine()->getRepository(Colonia::class)->findByRadius($rad, $lat, $lon);
+			$colonias= $this->getDoctrine()->getRepository(Colonia::class)->findByRadius($rad, $lat, $lon, $especie);
 		}
 		
 		return new JsonResponse(
 			$this->normalizer->normalize(
 				$colonias, 'json', ['groups' => ['colonia']]
 		));
+	}
+	
+	public function getFavoritos(Request $request, $id){
+		//$existeUsuario=Util::existeUsuario($params["usuario"]);
+		
+		//abrimos nuestro manager
+		$entityManager = $this->getDoctrine()->getManager('default');
+		
+		$sql = "
+		SELECT
+			t.`colonia`
+		FROM
+			cenurb.FavoritosCol t
+		WHERE
+			t.usuario = :id
+		";
+		
+		$stmt = $entityManager->getConnection()->prepare($sql);
+		$stmt->bindParam(':id', $id, PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$array= new ArrayCollection();
+		$array=$stmt->fetchAll();
+		
+		$colonias=array();
+		//ahora recuperamos los datos de todas las colonias marcadas como favoritas
+		foreach ($array as &$group) {
+			$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($group['colonia']);
+			array_push($colonias, $colonia);
+		}
+		
+		return new JsonResponse(
+			$this->normalizer->normalize(
+				$colonias, 'json', ['groups' => ['colonia']]
+		));
+	}
+	
+	public function getVisits(Request $request, $id){
+		//$existeUsuario=Util::existeUsuario($params["usuario"]);
+		
+		$colonia = $request->query->get("colonia");
+		
+		$colonia ? $visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$id, 'colonia'=>$colonia]) :
+					$visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$id]);
+		
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$visits, 'json', ['groups' => ['visita']]
+				));
 	}
 	
 	

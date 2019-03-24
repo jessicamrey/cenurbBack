@@ -89,3 +89,19 @@ api_get_closeColonias:
         _controller: App\Controller\ColoniaController::getColoniasCercanas
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'getClose'
+        
+api_get_favoritosCol:
+    path: '/api/favCol/{id}'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::getFavoritos
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'getFav'
+        
+api_get_visits:
+    path: '/api/usuario/{id}/visits'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::getVisits
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'getVisits'
