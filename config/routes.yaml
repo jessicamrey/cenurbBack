@@ -99,9 +99,41 @@ api_get_favoritosCol:
         _api_collection_operation_name: 'getFav'
         
 api_get_visits:
-    path: '/api/usuario/{id}/visits'
+    path: '/api/usuario/{id}/visitas'
     methods: ['GET']
     defaults:
         _controller: App\Controller\ColoniaController::getVisits
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'getVisits'
+        
+api_new_visitaCol:
+    path: '/api/colonias/{id}/visitas'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\ColoniaController::newVisit
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'newVisit'
+        
+api_stats_anno:
+    path: '/api/especies/{id}/statsAnno'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::estadisticasAnno
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'statsAnno'
+        
+api_stats_ccaa:
+    path: '/api/especies/{id}/statsCcaa'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::estadisticasCcaa
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'statsCcca'
+        
+api_stats_provincia:
+    path: '/api/especies/{id}/statsProvincia'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::estadisticasProvincia
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'statsProvincia'

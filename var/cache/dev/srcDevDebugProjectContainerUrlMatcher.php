@@ -130,6 +130,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     }
                     not_api_add_especies:
 
+                    // api_new_visitaCol
+                    if (preg_match('#^/api/colonias/(?P<id>[^/]++)/visitas$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_new_visitaCol')), array (  '_controller' => 'App\\Controller\\ColoniaController::newVisit',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'newVisit',));
+                        if (!in_array($requestMethod, array('POST'))) {
+                            $allow = array_merge($allow, array('POST'));
+                            goto not_api_new_visitaCol;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_new_visitaCol:
+
                 }
 
                 elseif (0 === strpos($pathinfo, '/api/censo-municipios')) {
@@ -743,6 +755,45 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
 
             }
 
+            elseif (0 === strpos($pathinfo, '/api/especies')) {
+                // api_stats_anno
+                if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsAnno$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_anno')), array (  '_controller' => 'App\\Controller\\ColoniaController::estadisticasAnno',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'statsAnno',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_anno;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_anno:
+
+                // api_stats_ccaa
+                if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsCcaa$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_ccaa')), array (  '_controller' => 'App\\Controller\\ColoniaController::estadisticasCcaa',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'statsCcca',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_ccaa;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_ccaa:
+
+                // api_stats_provincia
+                if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsProvincia$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_provincia')), array (  '_controller' => 'App\\Controller\\ColoniaController::estadisticasProvincia',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'statsProvincia',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_provincia;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_provincia:
+
+            }
+
             elseif (0 === strpos($pathinfo, '/api/l')) {
                 if (0 === strpos($pathinfo, '/api/loc-nidos-cols')) {
                     // api_loc_nidos_cols_get_collection
@@ -900,7 +951,7 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             not_api_get_favoritosCol:
 
             // api_get_visits
-            if (0 === strpos($pathinfo, '/api/usuario') && preg_match('#^/api/usuario/(?P<id>[^/]++)/visits$#sD', $pathinfo, $matches)) {
+            if (0 === strpos($pathinfo, '/api/usuario') && preg_match('#^/api/usuario/(?P<id>[^/]++)/visitas$#sD', $pathinfo, $matches)) {
                 $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_visits')), array (  '_controller' => 'App\\Controller\\ColoniaController::getVisits',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'getVisits',));
                 if (!in_array($canonicalMethod, array('GET'))) {
                     $allow = array_merge($allow, array('GET'));

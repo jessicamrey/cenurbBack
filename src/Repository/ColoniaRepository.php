@@ -42,5 +42,45 @@ class ColoniaRepository extends ServiceEntityRepository
              ->getResult();
         
     }
+    
+    public function statAnno($especie)
+    {
+    	$query= $this->createQueryBuilder('c')
+    	->select('count(c), c.temporada')
+    	->andWhere('c.especie = :esp')
+    	->groupBy('c.temporada');
+    	return $query->setParameter('esp', $especie)
+    	->getQuery()
+    	->getResult();
+    
+    }
+    
+    public function statCcaa($especie, $temporada)
+    {
+    	$query= $this->createQueryBuilder('c')
+    	->select('count(c), c.ccaa')
+    	->andWhere('c.especie = :esp')
+    	->andWhere('c.temporada = :temp')
+    	->groupBy('c.ccaa');
+    	return $query->setParameter('esp', $especie)
+    	->setParameter('temp', $temporada)
+    	->getQuery()
+    	->getResult();
+    
+    }
+    
+    public function statProvincia($especie, $temporada)
+    {
+    	$query= $this->createQueryBuilder('c')
+    	->select('count(c), c.provincia')
+    	->andWhere('c.especie = :esp')
+    	->andWhere('c.temporada = :temp')
+    	->groupBy('c.provincia');
+    	return $query->setParameter('esp', $especie)
+    	->setParameter('temp', $temporada)
+    	->getQuery()
+    	->getResult();
+    
+    }
 
 }

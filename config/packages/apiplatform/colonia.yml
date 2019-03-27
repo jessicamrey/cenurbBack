@@ -43,6 +43,20 @@ resources:
             getVisits:
                 method: 'GET'
                 route_name: 'api_get_visits'
+            newVisit:
+                method: 'POST'
+                route_name: 'api_new_visitaCol'
+            statsAnno:
+                method: 'GET'
+                route_name: 'api_stats_anno'
+                
+            statsCcaa:
+                method: 'GET'
+                route_name: 'api_stats_ccaa'
+                
+            statsProvincia:
+                method: 'GET'
+                route_name: 'api_stats_provincia'
             
 
                 

@@ -86,6 +86,11 @@ class VisitasColonia
      * @Groups("visita")
      */
     private $colonia;
+    
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nombreUsuario;
 
     public function getId(): int
     {
@@ -200,5 +205,17 @@ class VisitasColonia
         $this->colonia = $colonia;
 
         return $this;
+    }
+    
+    public function getNombreUsuario(): string
+    {
+    	return $this->nombreUsuario;
+    }
+    
+    public function setNombreUsuario(string $nombreUsuario): self
+    {
+    	$this->nombreUsuario = $nombreUsuario;
+    
+    	return $this;
     }
 }

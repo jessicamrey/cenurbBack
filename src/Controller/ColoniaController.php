@@ -11,6 +11,7 @@ use App\Entity\LocNidosCol;
 use App\Entity\OtrasEspecies;
 use App\Entity\VisitasColonia;
 use App\Util\Util;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -303,6 +304,9 @@ class ColoniaController extends Controller{
 	}
 	
 	public function getVisits(Request $request, $id){
+		
+		//Creamos este método para comprobar el usuario, sino se podría utilizar el API default
+		
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
 		
 		$colonia = $request->query->get("colonia");
@@ -314,6 +318,77 @@ class ColoniaController extends Controller{
 				$this->normalizer->normalize(
 						$visits, 'json', ['groups' => ['visita']]
 				));
+	}
+	
+	
+	public function newVisit(Request $request, $id){
+		//$existeUsuario=Util::existeUsuario($params["usuario"]);
+	
+		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
+		$params=json_decode($request->getContent(), true);
+		$entityManager = $this->getDoctrine()->getManager('default');
+		
+		if ($colonia!=null){
+			$visita=new VisitasColonia();
+			$visita->setUsuario($params["usuario"]);
+			$visita->setNombreUsuario($params["nombreUsuario"]);
+			$visita->setNumVisita($params["numVisita"]);
+			$visita->setNumNidos($params["numNidos"]);
+			$visita->setNumNidosExito($params["numNidosExito"]);
+			$visita->setNumNidosOcupados($params["numNidosOcupados"]);
+			$visita->setNumNidosVacios($params["numNidosVacios"]);
+			$visita->setFecha(new DateTime($params["fecha"]));
+			
+			//TODO: Falta ver que hacemos con este campo
+			$visita->setCompleto(false);
+			$visita->setColonia($colonia);
+			
+			$entityManager->persist($visita);
+			$entityManager->flush();
+			$entityManager->close();
+			
+		}
+	
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$visita, 'json', ['groups' => ['visita']]
+				));
+	}
+	
+	//TODO: borrar y editar visita deberan comprobar el usuario
+	
+	
+	//-------------------ESTADISTICAS-------------------------------
+	
+	
+	public function estadisticasAnno(Request $request, $id){
+		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statAnno($id);
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$stats, 'json', []
+				));
+	}
+	
+	public function estadisticasCcaa(Request $request, $id){
+		$temporada = $request->query->get("temporada");
+		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statCcaa($id, $temporada);
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$stats, 'json', []
+				));
+	}
+	
+	public function estadisticasProvincia(Request $request, $id){
+		$temporada = $request->query->get("temporada");
+		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statProvincia($id, $temporada);
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$stats, 'json', []
+				));
+	}
+	
+	public function estadisticasTipo(Request $request, $id){
+	
 	}
 	
 	
