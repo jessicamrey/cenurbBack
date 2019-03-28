@@ -48,11 +48,14 @@ class CensoMunicipio
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $completo;
-    
+
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Temporada")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $temporada;
+    
+
 
     public function getId(): int
     {
@@ -106,16 +109,18 @@ class CensoMunicipio
 
         return $this;
     }
-    
-    public function getTemporada(): int
+
+    public function getTemporada(): ?Temporada
     {
         return $this->temporada;
     }
-    
-    public function setTemporada(int $temporada): self
+
+    public function setTemporada(?Temporada $temporada): self
     {
         $this->temporada = $temporada;
-        
+
         return $this;
     }
+    
+
 }

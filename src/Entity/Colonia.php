@@ -80,11 +80,8 @@ class Colonia
      */
     private $tipoEdificio;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"colonia","visita"})
-     */
-    private $temporada;
+
+
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\LocNidosCol", cascade={"persist", "remove"})
@@ -133,6 +130,14 @@ class Colonia
      * @ORM\OneToMany(targetEntity="App\Entity\VisitasColonia", mappedBy="colonia")
      */
     private $visitasColonias;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Temporada")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"colonia","visita"})
+     */
+
+    private $temporada;
 
 
 
@@ -233,17 +238,7 @@ class Colonia
         return $this;
     }
 
-    public function getTemporada(): int
-    {
-        return $this->temporada;
-    }
 
-    public function setTemporada(int $temporada): self
-    {
-        $this->temporada = $temporada;
-
-        return $this;
-    }
 
     public function getLocNidos(): LocNidosCol
     {
@@ -377,6 +372,18 @@ class Colonia
             $this->visitasColonias[] = $visitasColonia;
             $visitasColonia->setColonia($this);
         }
+
+        return $this;
+    }
+
+    public function getTemporada(): ?Temporada
+    {
+        return $this->temporada;
+    }
+
+    public function setTemporada(?Temporada $temporada): self
+    {
+        $this->temporada = $temporada;
 
         return $this;
     }

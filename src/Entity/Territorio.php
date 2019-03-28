@@ -51,10 +51,7 @@ class Territorio
      */
     private $nombre;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $temporada;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -116,6 +113,12 @@ class Territorio
      */
     private $municipio;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Temporada")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $temporada;
+
     public function getId(): int
     {
         return $this->id;
@@ -157,17 +160,7 @@ class Territorio
         return $this;
     }
 
-    public function getTemporada(): int
-    {
-        return $this->temporada;
-    }
 
-    public function setTemporada(int $temporada): self
-    {
-        $this->temporada = $temporada;
-
-        return $this;
-    }
 
     public function getBarrio(): string
     {
@@ -309,6 +302,18 @@ class Territorio
     public function setMunicipio(string $municipio): self
     {
         $this->municipio = $municipio;
+
+        return $this;
+    }
+
+    public function getTemporada(): ?Temporada
+    {
+        return $this->temporada;
+    }
+
+    public function setTemporada(?Temporada $temporada): self
+    {
+        $this->temporada = $temporada;
 
         return $this;
     }

@@ -688,6 +688,10 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Repository\TemporadaRepository" class="App\Repository\TemporadaRepository" public="false" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\TerritorioRepository" class="App\Repository\TerritorioRepository" public="false" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -2489,6 +2493,14 @@
         <argument>2048</argument>
       </call>
       <call method="addListener">
+        <argument>console.command</argument>
+        <argument type="collection">
+          <argument type="service" id="debug.debug_handlers_listener"/>
+          <argument>configure</argument>
+        </argument>
+        <argument>2048</argument>
+      </call>
+      <call method="addListener">
         <argument>kernel.request</argument>
         <argument type="collection">
           <argument type="service" id="router_listener"/>
@@ -3289,7 +3301,7 @@
       <factory class="Doctrine\ORM\EntityManager" method="create"/>
     </service>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory" public="false">
-      <argument type="service" id="service_locator.zifuztv"/>
+      <argument type="service" id="service_locator.nd3lhwa"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -5631,6 +5643,8 @@
     <service id="abstract.instanceof.App\Repository\ProvinciasRepository" class="App\Repository\ProvinciasRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\TempUserRepository" class="App\Repository\TempUserRepository" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Repository\TempUserRepository" class="App\Repository\TempUserRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\TemporadaRepository" class="App\Repository\TemporadaRepository" public="false" autowire="true" abstract="true"/>
+    <service id="abstract.instanceof.App\Repository\TemporadaRepository" class="App\Repository\TemporadaRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\TerritorioRepository" class="App\Repository\TerritorioRepository" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Repository\TerritorioRepository" class="App\Repository\TerritorioRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\TipoEdificioRepository" class="App\Repository\TipoEdificioRepository" public="false" autowire="true" abstract="true"/>
@@ -5810,7 +5824,7 @@
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="service" id="form.type.form"/>
       </argument>
     </service>
-    <service id="service_locator.zifuztv" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.nd3lhwa" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\CensoColoniaRepository" type="service" id="App\Repository\CensoColoniaRepository"/>
@@ -5825,6 +5839,7 @@
         <argument key="App\Repository\PoblacionesRepository" type="service" id="App\Repository\PoblacionesRepository"/>
         <argument key="App\Repository\ProvinciasRepository" type="service" id="App\Repository\ProvinciasRepository"/>
         <argument key="App\Repository\TempUserRepository" type="service" id="App\Repository\TempUserRepository"/>
+        <argument key="App\Repository\TemporadaRepository" type="service" id="App\Repository\TemporadaRepository"/>
         <argument key="App\Repository\TerritorioRepository" type="service" id="App\Repository\TerritorioRepository"/>
         <argument key="App\Repository\TipoEdificioRepository" type="service" id="App\Repository\TipoEdificioRepository"/>
         <argument key="App\Repository\TipoPropiedadRepository" type="service" id="App\Repository\TipoPropiedadRepository"/>
