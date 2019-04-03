@@ -85,6 +85,7 @@ class Colonia
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\LocNidosCol", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
      * @Groups("colonia")
      */
     private $locNidos;

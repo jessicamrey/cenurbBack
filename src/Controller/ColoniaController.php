@@ -10,10 +10,12 @@ use App\Entity\Colonia;
 use App\Entity\LocNidosCol;
 use App\Entity\OtrasEspecies;
 use App\Entity\VisitasColonia;
+use App\Entity\Temporada;
 use App\Util\Util;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
+
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -106,8 +108,14 @@ class ColoniaController extends Controller{
 				
 			}
 			
-			if (isset($params["temporada"])){
-				$newColonia->setTemporada($params["temporada"]);
+			if (isset($params["anno"])){
+				$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findOneBy(['anno'=>$params["anno"]]);
+				if ($temporada){
+					$newColonia->setTemporada($temporada);
+				}else{
+					throw new InvalidArgumentException("Temporada incorrecta");
+				}
+				
 			}
 			
 			if (isset($params["ccaa"])){
@@ -122,20 +130,11 @@ class ColoniaController extends Controller{
 				$newColonia->setMunicipio($params["municipio"]);
 			}
 			
-			if (isset($params["locNidos"])){
-				$locNidos= new LocNidosCol();
-				$locNidos->setUsuario($params["usuario"]);
-				$locNidos->setFachada($params["locNidos"]["fachada"]);
-				$locNidos->setTrasera($params["locNidos"]["trasera"]);
-				$locNidos->setLateralDerecho($params["locNidos"]["latDer"]);
-				$locNidos->setLateralIzquierdo($params["locNidos"]["latIzq"]);
-				
-				$newColonia->setLocNidos($locNidos);
-			}else{
+			
 				$locNidos= new LocNidosCol();
 				$locNidos->setUsuario($params["usuario"]);
 				$newColonia->setLocNidos($locNidos);
-			}
+			
 			
 			
 			//En este punto ya podemos persistir la colonia, ya que otras especies es opcional e irrelevante para la creacion
@@ -143,28 +142,7 @@ class ColoniaController extends Controller{
 			$entityManager->persist($newColonia);
 			$entityManager->flush();
 			
-			/*Formato de otras especies en el json:
-			 * otrasEspecies:{
-			 * 		"1": "510",
-			 * 		"2": "200"
-			 * }
-			 */
-			
-// 			if (isset($params["otrasEspecies"])){
-// 				//Comprobamos que exista cada id en la lista
-// 				foreach($params["otrasEspecies"] as $clave=> $valor){
-// 					if (!Util::existeEspecie($valor)){
-// 						throw new InvalidArgumentException("La especie ". $valor . " no es correcta");
-// 					}else{
-// 						$nuevaEspecie= new OtrasEspecies();
-// 						$nuevaEspecie->setColonia($newColonia);
-// 						$nuevaEspecie->setEspecie($valor);
-// 						$entityManager->persist($nuevaEspecie);
-// 						$entityManager->flush();
-						
-// 					}
-// 				}
-// 			}
+		
 			
 		}
 		
@@ -197,8 +175,10 @@ class ColoniaController extends Controller{
 				$locNidos->setLateralDerecho($params["latDer"]);
 				$locNidos->setLateralIzquierdo($params["latIzq"]);
 				$locNidos->setPatioInferior($params["patio"]);
+				$locNidos->setLat($params["lat"]);
+				$locNidos->setLon($params["lon"]);
 				
-				//FALTAN LAS COORDENADAS
+				//TODO: Set HUso horario
 				
 				$entityManager->persist($locNidos);
 				$entityManager->flush();
@@ -356,7 +336,36 @@ class ColoniaController extends Controller{
 	}
 	
 	//TODO: borrar y editar visita deberan comprobar el usuario
+	public function newFavorito(Request $request){
+		$params=json_decode($request->getContent(), true);
+		//$existeUsuario=Util::existeUsuario($params["usuario"]);
+		//existe colonia= buscar colonia
+		//if existeColonia and existeUsuario->seguir
+		
+		//abrimos nuestro manager
+		$entityManager = $this->getDoctrine()->getManager('default');
 	
+		$sql = "
+		INSERT INTO
+			cenurb.FavoritosCol
+			(colonia, usuario)
+		VALUES
+			(:colonia, :usuario)
+		";
+	
+		$stmt = $entityManager->getConnection()->prepare($sql);
+		$stmt->bindParam(':usuario', $params["usuario"], PDO::PARAM_STR);
+		$stmt->bindParam(':colonia', $params["colonia"], PDO::PARAM_INT);
+	
+		$stmt->execute();
+		
+	
+		return new Response(
+				    'Se ha guardado el favorito',
+				    Response::HTTP_OK,
+				    array('content-type' => 'text/html')
+				);
+	}
 	
 	//-------------------ESTADISTICAS-------------------------------
 	
@@ -370,7 +379,8 @@ class ColoniaController extends Controller{
 	}
 	
 	public function estadisticasCcaa(Request $request, $id){
-		$temporada = $request->query->get("temporada");
+		$anno = $request->query->get("temporada");
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
 		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statCcaa($id, $temporada);
 		return new JsonResponse(
 				$this->normalizer->normalize(
@@ -379,18 +389,24 @@ class ColoniaController extends Controller{
 	}
 	
 	public function estadisticasProvincia(Request $request, $id){
-		$temporada = $request->query->get("temporada");
-		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statProvincia($id, $temporada);
+		$anno = $request->query->get("temporada");
+		$ccaa = $request->query->get("ccaa");
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
+		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statProvincia($id, $temporada, $ccaa);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
 				));
 	}
 	
-	public function estadisticasTipo(Request $request, $id){
+
 	
+	public function getTemporadas(Request $request){
+		$temporadas=$this->getDoctrine()->getRepository(Temporada::class)->findAll();
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$temporadas, 'json', []
+				));
 	}
-	
-	
 	
 }

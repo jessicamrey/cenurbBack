@@ -46,9 +46,10 @@ class ColoniaRepository extends ServiceEntityRepository
     public function statAnno($especie)
     {
     	$query= $this->createQueryBuilder('c')
-    	->select('count(c), c.temporada')
+    	->select('count(c), t.anno')
+    	->join('c.temporada', 't')
     	->andWhere('c.especie = :esp')
-    	->groupBy('c.temporada');
+    	->groupBy('t.anno');
     	return $query->setParameter('esp', $especie)
     	->getQuery()
     	->getResult();
@@ -69,15 +70,17 @@ class ColoniaRepository extends ServiceEntityRepository
     
     }
     
-    public function statProvincia($especie, $temporada)
+    public function statProvincia($especie, $temporada, $ccaa)
     {
     	$query= $this->createQueryBuilder('c')
-    	->select('count(c), c.provincia')
+    	->select('count(c), c.provincia, c.ccaa')
     	->andWhere('c.especie = :esp')
     	->andWhere('c.temporada = :temp')
+    	->andWhere('c.ccaa = :ccaa')
     	->groupBy('c.provincia');
     	return $query->setParameter('esp', $especie)
     	->setParameter('temp', $temporada)
+    	->setParameter('ccaa', $ccaa)
     	->getQuery()
     	->getResult();
     

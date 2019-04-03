@@ -91,7 +91,7 @@ api_get_closeColonias:
         _api_collection_operation_name: 'getClose'
         
 api_get_favoritosCol:
-    path: '/api/favCol/{id}'
+    path: '/api/colonias/favoritos/{id}'
     methods: ['GET']
     defaults:
         _controller: App\Controller\ColoniaController::getFavoritos
@@ -137,3 +137,15 @@ api_stats_provincia:
         _controller: App\Controller\ColoniaController::estadisticasProvincia
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'statsProvincia'
+        
+api_temporada:
+    path: '/api/temporadas'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::getTemporadas
+        
+api_new_favoritosCol:
+    path: '/api/colonias/favoritos'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\ColoniaController::newFavorito

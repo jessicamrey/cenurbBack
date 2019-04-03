@@ -79,7 +79,7 @@ class LocNidosCol
         return $this->id;
     }
 
-    public function getUsuario(): string
+    public function getUsuario()
     {
         return $this->usuario;
     }
@@ -91,7 +91,7 @@ class LocNidosCol
         return $this;
     }
     
-    public function getFachada(): bool
+    public function getFachada()
     {
         return $this->fachada;
     }
@@ -103,7 +103,7 @@ class LocNidosCol
         return $this;
     }
 
-    public function getTrasera(): bool
+    public function getTrasera()
     {
         return $this->trasera;
     }
@@ -115,7 +115,7 @@ class LocNidosCol
         return $this;
     }
 
-    public function getLateralDerecho(): bool
+    public function getLateralDerecho()
     {
         return $this->lateralDerecho;
     }
@@ -127,7 +127,7 @@ class LocNidosCol
         return $this;
     }
 
-    public function getLateralIzquierdo(): bool
+    public function getLateralIzquierdo()
     {
         return $this->lateralIzquierdo;
     }
@@ -139,7 +139,7 @@ class LocNidosCol
         return $this;
     }
 
-    public function getPatioInferior(): bool
+    public function getPatioInferior()
     {
         return $this->patioInferior;
     }
@@ -151,7 +151,7 @@ class LocNidosCol
         return $this;
     }
 
-    public function getHuso(): string
+    public function getHuso()
     {
         return $this->huso;
     }
@@ -163,7 +163,7 @@ class LocNidosCol
         return $this;
     }
 
-    public function getLat(): float
+    public function getLat()
     {
         return $this->lat;
     }
@@ -175,7 +175,7 @@ class LocNidosCol
         return $this;
     }
 
-    public function getLon(): float
+    public function getLon()
     {
         return $this->lon;
     }
