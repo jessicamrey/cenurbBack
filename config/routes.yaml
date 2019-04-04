@@ -149,3 +149,21 @@ api_new_favoritosCol:
     methods: ['POST']
     defaults:
         _controller: App\Controller\ColoniaController::newFavorito
+
+##################TERRITORIOS#######################################
+
+api_new_territorio:
+    path: '/api/territorios'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\TerritorioController::newTerritorio
+        _api_resource_class: App\Entity\Territorio
+        _api_collection_operation_name: 'post'
+        
+api_add_locNidosNoCol:
+    path: '/api/territorios/{id}/loc-nidos'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\TerritorioController::completaNidos
+        _api_resource_class: App\Entity\Territorio
+        _api_collection_operation_name: 'postNoCol'

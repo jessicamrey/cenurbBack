@@ -16,13 +16,13 @@ class TipoEdificio
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("colonia")
+     * @Groups({"colonia", "territorio"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"colonia"})
+     * @Groups({"colonia", "territorio"})
      */
     private $descripcion;
 

@@ -639,6 +639,10 @@
       <tag name="controller.service_arguments"/>
       <argument type="service" id="serializer"/>
     </service>
+    <service id="App\Controller\TerritorioController" class="App\Controller\TerritorioController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <argument type="service" id="serializer"/>
+    </service>
     <service id="App\Doctrine\DistanceFunction" class="App\Doctrine\DistanceFunction" public="false" autowire="true" autoconfigure="true"/>
     <service id="App\Repository\CensoColoniaRepository" class="App\Repository\CensoColoniaRepository" public="false" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
@@ -701,6 +705,10 @@
       <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Repository\TipoPropiedadRepository" class="App\Repository\TipoPropiedadRepository" public="false" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Repository\TipoTerritorioRepository" class="App\Repository\TipoTerritorioRepository" public="false" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -3301,7 +3309,7 @@
       <factory class="Doctrine\ORM\EntityManager" method="create"/>
     </service>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory" public="false">
-      <argument type="service" id="service_locator.nd3lhwa"/>
+      <argument type="service" id="service_locator.0gbpb8h"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -5238,6 +5246,7 @@
         <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/otrasEspecies.yml</argument>
         <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/locNidosCol.yml</argument>
         <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/colonia.yml</argument>
+        <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/territorio.yml</argument>
       </argument>
     </service>
     <service id="api_platform.metadata.resource.name_collection_factory.yaml" class="ApiPlatform\Core\Metadata\Resource\Factory\ExtractorResourceNameCollectionFactory" public="false">
@@ -5619,6 +5628,8 @@
     <service id="abstract.instanceof.App\Controller\SeoApisController" class="App\Controller\SeoApisController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\TempUserController" class="App\Controller\TempUserController" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Controller\TempUserController" class="App\Controller\TempUserController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\TerritorioController" class="App\Controller\TerritorioController" public="false" autowire="true" abstract="true"/>
+    <service id="abstract.instanceof.App\Controller\TerritorioController" class="App\Controller\TerritorioController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CensoColoniaRepository" class="App\Repository\CensoColoniaRepository" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Repository\CensoColoniaRepository" class="App\Repository\CensoColoniaRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CensoMunicipioRepository" class="App\Repository\CensoMunicipioRepository" public="false" autowire="true" abstract="true"/>
@@ -5651,6 +5662,8 @@
     <service id="abstract.instanceof.App\Repository\TipoEdificioRepository" class="App\Repository\TipoEdificioRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\TipoPropiedadRepository" class="App\Repository\TipoPropiedadRepository" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Repository\TipoPropiedadRepository" class="App\Repository\TipoPropiedadRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\TipoTerritorioRepository" class="App\Repository\TipoTerritorioRepository" public="false" autowire="true" abstract="true"/>
+    <service id="abstract.instanceof.App\Repository\TipoTerritorioRepository" class="App\Repository\TipoTerritorioRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\VisitasColoniaRepository" class="App\Repository\VisitasColoniaRepository" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Repository\VisitasColoniaRepository" class="App\Repository\VisitasColoniaRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\VisitasTerritorioRepository" class="App\Repository\VisitasTerritorioRepository" public="false" autowire="true" abstract="true"/>
@@ -5824,7 +5837,7 @@
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="service" id="form.type.form"/>
       </argument>
     </service>
-    <service id="service_locator.nd3lhwa" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.0gbpb8h" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\CensoColoniaRepository" type="service" id="App\Repository\CensoColoniaRepository"/>
@@ -5843,6 +5856,7 @@
         <argument key="App\Repository\TerritorioRepository" type="service" id="App\Repository\TerritorioRepository"/>
         <argument key="App\Repository\TipoEdificioRepository" type="service" id="App\Repository\TipoEdificioRepository"/>
         <argument key="App\Repository\TipoPropiedadRepository" type="service" id="App\Repository\TipoPropiedadRepository"/>
+        <argument key="App\Repository\TipoTerritorioRepository" type="service" id="App\Repository\TipoTerritorioRepository"/>
         <argument key="App\Repository\VisitasColoniaRepository" type="service" id="App\Repository\VisitasColoniaRepository"/>
         <argument key="App\Repository\VisitasTerritorioRepository" type="service" id="App\Repository\VisitasTerritorioRepository"/>
       </argument>

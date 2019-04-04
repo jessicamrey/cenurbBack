@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\EmplazamientoRepository")
@@ -15,16 +15,19 @@ class Emplazamiento
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("territorio")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("territorio")
      */
     private $tipo;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("territorio")
      */
     private $detalle;
 

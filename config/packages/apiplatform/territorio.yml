@@ -1,0 +1,36 @@
+resources:
+    App\Entity\Territorio:
+        collectionOperations:
+            post:
+                method: 'POST'
+                route_name: 'api_new_territorio'
+                swagger_context:
+                    summary: 'Registrar una nuevo territorio'
+            postNoCol:
+                method: 'POST'
+                route_name: 'api_add_locNidosNoCol'
+                swagger_context:
+                    summary: 'Añade información sobre nidos a un territorio'                    
+                    
+            get:
+                method: 'GET'
+                normalization_context: 
+                    groups: ['territorio']
+
+                denormalization_context: 
+                    groups: ['territorio']
+
+
+                
+        itemOperations:
+            get:
+                method: 'GET'             
+                normalization_context: 
+                    groups: ['territorio']
+
+                denormalization_context: 
+                    groups: ['territorio']
+            put:
+                method: 'PUT'
+            delete:
+                method: 'DELETE'

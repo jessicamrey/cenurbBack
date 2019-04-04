@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LocNidosNoColRepository")
@@ -13,6 +14,7 @@ class LocNidosNoCol
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("territorio")
      */
     private $id;
 
@@ -23,36 +25,43 @@ class LocNidosNoCol
     
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("territorio")
      */
     private $fachada;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("territorio")
      */
     private $trasera;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("territorio")
      */
     private $lateralDerecho;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("territorio")
      */
     private $lateralIzquierdo;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("territorio")
      */
     private $patioInterior;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("territorio")
      */
     private $numPiso;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Emplazamiento")
+     * @Groups("territorio")
      */
     private $emplazamiento;
 
@@ -63,11 +72,13 @@ class LocNidosNoCol
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups("territorio")
      */
     private $lat;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups("territorio")
      */
     private $lon;
 

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
@@ -33,6 +34,7 @@ class Territorio
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("territorio")
      */
     private $id;
 
@@ -43,11 +45,13 @@ class Territorio
     
     /**
      * @ORM\Column(type="integer")
+     * @Groups("territorio")
      */
     private $especie;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("territorio")
      */
     private $nombre;
 
@@ -55,69 +59,84 @@ class Territorio
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("territorio")
      */
     private $barrio;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("territorio")
      */
     private $calleNumPiso;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("territorio")
      */
     private $nombreCentro;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TipoPropiedad")
+     * @Groups("territorio")
      */
     private $tipoPropiedad;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TipoEdificio")
+     * @Groups("territorio")
      */
     private $tipoEdificio;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\LocNidosNoCol", inversedBy="amenazada", cascade={"persist", "remove"})
+     * @Groups("territorio")
      */
     private $locNidos;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("territorio")
      */
     private $amenazada;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $observaciones;
+
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("territorio")
      */
     private $vacio;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("territorio")
      */
     private $ccaa;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("territorio")
      */
     private $provincia;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("territorio")
      */
     private $municipio;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Temporada")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("territorio")
      */
     private $temporada;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoTerritorio")
+     * @Groups("territorio")
+     */
+    private $tipo;
 
     public function getId(): int
     {
@@ -246,17 +265,6 @@ class Territorio
         return $this;
     }
 
-    public function getObservaciones(): string
-    {
-        return $this->observaciones;
-    }
-
-    public function setObservaciones(string $observaciones): self
-    {
-        $this->observaciones = $observaciones;
-
-        return $this;
-    }
 
     public function getVacio(): bool
     {
@@ -314,6 +322,18 @@ class Territorio
     public function setTemporada(?Temporada $temporada): self
     {
         $this->temporada = $temporada;
+
+        return $this;
+    }
+
+    public function getTipo(): ?TipoTerritorio
+    {
+        return $this->tipo;
+    }
+
+    public function setTipo(?TipoTerritorio $tipo): self
+    {
+        $this->tipo = $tipo;
 
         return $this;
     }
