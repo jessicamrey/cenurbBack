@@ -6,6 +6,11 @@ resources:
                 route_name: 'api_new_territorio'
                 swagger_context:
                     summary: 'Registrar una nuevo territorio'
+                    
+            getFav:
+                method: 'GET'
+                route_name: 'api_get_favoritosTerr'
+                
             postNoCol:
                 method: 'POST'
                 route_name: 'api_add_locNidosNoCol'
@@ -19,6 +24,22 @@ resources:
 
                 denormalization_context: 
                     groups: ['territorio']
+                    
+            newVisit:
+                method: 'POST'
+                route_name: 'api_new_visitaTerr'
+                
+            statsAnno:
+                method: 'GET'
+                route_name: 'api_stats_annoTerr'
+                
+            statsCcaa:
+                method: 'GET'
+                route_name: 'api_stats_ccaaTerr'
+                
+            statsProvincia:
+                method: 'GET'
+                route_name: 'api_stats_provinciaTerr'
 
 
                 

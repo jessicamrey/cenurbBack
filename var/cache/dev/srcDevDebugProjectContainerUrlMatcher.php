@@ -562,6 +562,45 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     }
                     not_api_add_locNidosNoCol:
 
+                    if (0 === strpos($pathinfo, '/api/territorios/favoritos')) {
+                        // api_new_favoritosTerr
+                        if ('/api/territorios/favoritos' === $pathinfo) {
+                            $ret = array (  '_controller' => 'App\\Controller\\TerritorioController::newFavorito',  '_route' => 'api_new_favoritosTerr',);
+                            if (!in_array($requestMethod, array('POST'))) {
+                                $allow = array_merge($allow, array('POST'));
+                                goto not_api_new_favoritosTerr;
+                            }
+
+                            return $ret;
+                        }
+                        not_api_new_favoritosTerr:
+
+                        // api_get_favoritosTerr
+                        if (preg_match('#^/api/territorios/favoritos/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                            $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_favoritosTerr')), array (  '_controller' => 'App\\Controller\\TerritorioController::getFavoritos',  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_collection_operation_name' => 'getFav',));
+                            if (!in_array($canonicalMethod, array('GET'))) {
+                                $allow = array_merge($allow, array('GET'));
+                                goto not_api_get_favoritosTerr;
+                            }
+
+                            return $ret;
+                        }
+                        not_api_get_favoritosTerr:
+
+                    }
+
+                    // api_new_visitaTerr
+                    if (preg_match('#^/api/territorios/(?P<id>[^/]++)/visitas$#sD', $pathinfo, $matches)) {
+                        $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_new_visitaTerr')), array (  '_controller' => 'App\\Controller\\TerritorioController::newVisit',  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_collection_operation_name' => 'newVisit',));
+                        if (!in_array($requestMethod, array('POST'))) {
+                            $allow = array_merge($allow, array('POST'));
+                            goto not_api_new_visitaTerr;
+                        }
+
+                        return $ret;
+                    }
+                    not_api_new_visitaTerr:
+
                 }
 
             }
@@ -578,18 +617,6 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     return $ret;
                 }
                 not_api_visitas_territorios_get_collection:
-
-                // api_visitas_territorios_post_collection
-                if (preg_match('#^/api/visitas\\-territorios(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_visitas_territorios_post_collection')), array (  '_controller' => 'api_platform.action.post_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\VisitasTerritorio',  '_api_collection_operation_name' => 'post',));
-                    if (!in_array($requestMethod, array('POST'))) {
-                        $allow = array_merge($allow, array('POST'));
-                        goto not_api_visitas_territorios_post_collection;
-                    }
-
-                    return $ret;
-                }
-                not_api_visitas_territorios_post_collection:
 
                 // api_visitas_territorios_get_item
                 if (preg_match('#^/api/visitas\\-territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
@@ -615,33 +642,21 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 }
                 not_api_visitas_territorios_delete_item:
 
-                // api_visitas_territorios_put_item
-                if (preg_match('#^/api/visitas\\-territorios/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_visitas_territorios_put_item')), array (  '_controller' => 'api_platform.action.put_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\VisitasTerritorio',  '_api_item_operation_name' => 'put',));
+                // api_put_visitaTerr
+                if (preg_match('#^/api/visitas\\-territorios/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_put_visitaTerr')), array (  '_controller' => 'App\\Controller\\TerritorioController::editVisit',  '_api_resource_class' => 'App\\Entity\\VisitasTerritorio',  '_api_item_operation_name' => 'put',));
                     if (!in_array($requestMethod, array('PUT'))) {
                         $allow = array_merge($allow, array('PUT'));
-                        goto not_api_visitas_territorios_put_item;
+                        goto not_api_put_visitaTerr;
                     }
 
                     return $ret;
                 }
-                not_api_visitas_territorios_put_item:
+                not_api_put_visitaTerr:
 
             }
 
             elseif (0 === strpos($pathinfo, '/api/visitas-colonias')) {
-                // api_visitas_colonias_get_collection
-                if (preg_match('#^/api/visitas\\-colonias(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_visitas_colonias_get_collection')), array (  '_controller' => 'api_platform.action.get_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\VisitasColonia',  '_api_collection_operation_name' => 'get',));
-                    if (!in_array($canonicalMethod, array('GET'))) {
-                        $allow = array_merge($allow, array('GET'));
-                        goto not_api_visitas_colonias_get_collection;
-                    }
-
-                    return $ret;
-                }
-                not_api_visitas_colonias_get_collection:
-
                 // api_visitas_colonias_post_collection
                 if (preg_match('#^/api/visitas\\-colonias(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
                     $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_visitas_colonias_post_collection')), array (  '_controller' => 'api_platform.action.post_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\VisitasColonia',  '_api_collection_operation_name' => 'post',));
@@ -653,6 +668,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     return $ret;
                 }
                 not_api_visitas_colonias_post_collection:
+
+                // api_visitas_colonias_get_collection
+                if (preg_match('#^/api/visitas\\-colonias(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_visitas_colonias_get_collection')), array (  '_controller' => 'api_platform.action.get_collection',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\VisitasColonia',  '_api_collection_operation_name' => 'get',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_visitas_colonias_get_collection;
+                    }
+
+                    return $ret;
+                }
+                not_api_visitas_colonias_get_collection:
 
                 // api_visitas_colonias_get_item
                 if (preg_match('#^/api/visitas\\-colonias/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
@@ -666,18 +693,6 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 }
                 not_api_visitas_colonias_get_item:
 
-                // api_visitas_colonias_delete_item
-                if (preg_match('#^/api/visitas\\-colonias/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
-                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_visitas_colonias_delete_item')), array (  '_controller' => 'api_platform.action.delete_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\VisitasColonia',  '_api_item_operation_name' => 'delete',));
-                    if (!in_array($requestMethod, array('DELETE'))) {
-                        $allow = array_merge($allow, array('DELETE'));
-                        goto not_api_visitas_colonias_delete_item;
-                    }
-
-                    return $ret;
-                }
-                not_api_visitas_colonias_delete_item:
-
                 // api_visitas_colonias_put_item
                 if (preg_match('#^/api/visitas\\-colonias/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
                     $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_visitas_colonias_put_item')), array (  '_controller' => 'api_platform.action.put_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\VisitasColonia',  '_api_item_operation_name' => 'put',));
@@ -689,6 +704,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     return $ret;
                 }
                 not_api_visitas_colonias_put_item:
+
+                // api_visitas_colonias_delete_item
+                if (preg_match('#^/api/visitas\\-colonias/(?P<id>[^/\\.]++)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_visitas_colonias_delete_item')), array (  '_controller' => 'api_platform.action.delete_item',  '_format' => NULL,  '_api_resource_class' => 'App\\Entity\\VisitasColonia',  '_api_item_operation_name' => 'delete',));
+                    if (!in_array($requestMethod, array('DELETE'))) {
+                        $allow = array_merge($allow, array('DELETE'));
+                        goto not_api_visitas_colonias_delete_item;
+                    }
+
+                    return $ret;
+                }
+                not_api_visitas_colonias_delete_item:
 
             }
 

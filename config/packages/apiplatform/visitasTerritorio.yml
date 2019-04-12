@@ -1,0 +1,35 @@
+resources:
+    App\Entity\VisitasTerritorio:
+        attributes:
+            pagination_enabled: false
+            normalization_context: 
+                groups: ['visitaTerr']
+            denormalization_context: 
+                groups: ['visitaTerr']
+            
+        collectionOperations:
+            post:
+                method: 'POST'
+                route_name: 'api_login_anonymous'
+                swagger_context:
+                    summary: 'Entramos sin usuario registrado'
+
+            get:
+                method: 'GET'
+                normalization_context: 
+                    groups: ['visitaTerr']
+
+                denormalization_context: 
+                    groups: ['visitaTerr']
+
+                
+        itemOperations:
+            get:
+                method: 'GET'
+                
+            put:
+                method: 'PUT'
+                route_name: 'api_put_visitaTerr'
+                
+            delete:
+                method: 'DELETE'

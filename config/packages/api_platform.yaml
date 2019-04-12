@@ -12,4 +12,6 @@ api_platform:
             - '%kernel.project_dir%/config/packages/apiplatform/locNidosCol.yml'
             - '%kernel.project_dir%/config/packages/apiplatform/colonia.yml'
             - '%kernel.project_dir%/config/packages/apiplatform/territorio.yml'
+            - '%kernel.project_dir%/config/packages/apiplatform/visitasTerritorio.yml'
+            - '%kernel.project_dir%/config/packages/apiplatform/visitasColonia.yml'
             - '%kernel.project_dir%/src/Entity'

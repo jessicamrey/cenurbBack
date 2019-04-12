@@ -178,7 +178,9 @@ class ColoniaController extends Controller{
 				$locNidos->setLat($params["lat"]);
 				$locNidos->setLon($params["lon"]);
 				
-				//TODO: Set HUso horario
+				if (isset($params["huso"])){
+						$locNidos->setHuso($params["huso"]);
+					}
 				
 				$entityManager->persist($locNidos);
 				$entityManager->flush();

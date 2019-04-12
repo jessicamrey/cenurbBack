@@ -2501,14 +2501,6 @@
         <argument>2048</argument>
       </call>
       <call method="addListener">
-        <argument>console.command</argument>
-        <argument type="collection">
-          <argument type="service" id="debug.debug_handlers_listener"/>
-          <argument>configure</argument>
-        </argument>
-        <argument>2048</argument>
-      </call>
-      <call method="addListener">
         <argument>kernel.request</argument>
         <argument type="collection">
           <argument type="service" id="router_listener"/>
@@ -3277,7 +3269,7 @@
       <argument type="collection">
         <argument key="url">%env(DATABASE_SEO_URL)%</argument>
         <argument key="driver">pdo_mysql</argument>
-        <argument key="charset">utf8mb4</argument>
+        <argument key="charset">UTF8</argument>
         <argument key="host">localhost</argument>
         <argument key="port">null</argument>
         <argument key="user">root</argument>
@@ -5247,6 +5239,8 @@
         <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/locNidosCol.yml</argument>
         <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/colonia.yml</argument>
         <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/territorio.yml</argument>
+        <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/visitasTerritorio.yml</argument>
+        <argument>/home/jessica/Escritorio/Back/cenurbBack/config/packages/apiplatform/visitasColonia.yml</argument>
       </argument>
     </service>
     <service id="api_platform.metadata.resource.name_collection_factory.yaml" class="ApiPlatform\Core\Metadata\Resource\Factory\ExtractorResourceNameCollectionFactory" public="false">
@@ -5971,7 +5965,6 @@
       <argument type="service" id="monolog.logger"/>
       <argument type="collection">
         <argument key="fecha">null</argument>
-        <argument key="hora">null</argument>
       </argument>
     </service>
     <service id="annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter" autowire="true">
@@ -5993,6 +5986,7 @@
       <argument type="service" id="monolog.logger"/>
       <argument type="collection">
         <argument key="usuario">exact</argument>
+        <argument key="territorio">exact</argument>
       </argument>
     </service>
     <service id="annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_range_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter" autowire="true">
@@ -6111,6 +6105,7 @@
       <argument type="service" id="monolog.logger"/>
       <argument type="collection">
         <argument key="usuario">exact</argument>
+        <argument key="id">exact</argument>
         <argument key="nombre">partial</argument>
         <argument key="barrio">partial</argument>
         <argument key="calleNumPiso">partial</argument>

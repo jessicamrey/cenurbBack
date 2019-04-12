@@ -191,7 +191,7 @@ class LocNidosCol extends \App\Entity\LocNidosCol implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getUsuario(): string
+    public function getUsuario()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUsuario', []);
@@ -213,7 +213,7 @@ class LocNidosCol extends \App\Entity\LocNidosCol implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getFachada(): bool
+    public function getFachada()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFachada', []);
@@ -235,7 +235,7 @@ class LocNidosCol extends \App\Entity\LocNidosCol implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getTrasera(): bool
+    public function getTrasera()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTrasera', []);
@@ -257,7 +257,7 @@ class LocNidosCol extends \App\Entity\LocNidosCol implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getLateralDerecho(): bool
+    public function getLateralDerecho()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLateralDerecho', []);
@@ -279,7 +279,7 @@ class LocNidosCol extends \App\Entity\LocNidosCol implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getLateralIzquierdo(): bool
+    public function getLateralIzquierdo()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLateralIzquierdo', []);
@@ -301,7 +301,7 @@ class LocNidosCol extends \App\Entity\LocNidosCol implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getPatioInferior(): bool
+    public function getPatioInferior()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPatioInferior', []);
@@ -323,7 +323,7 @@ class LocNidosCol extends \App\Entity\LocNidosCol implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getHuso(): string
+    public function getHuso()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHuso', []);
@@ -345,7 +345,7 @@ class LocNidosCol extends \App\Entity\LocNidosCol implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getLat(): float
+    public function getLat()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLat', []);
@@ -367,7 +367,7 @@ class LocNidosCol extends \App\Entity\LocNidosCol implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getLon(): float
+    public function getLon()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLon', []);

@@ -10,8 +10,11 @@ use App\Entity\TipoTerritorio;
 use App\Entity\Territorio;
 use App\Entity\LocNidosNoCol;
 use App\Entity\OtrasEspecies;
+use App\Entity\VisitasTerritorio;
 use App\Entity\VisitasColonia;
 use App\Entity\Temporada;
+use App\Entity\Emplazamiento;
+use App\Entity\ObservacionesTerritorio;
 use App\Util\Util;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -178,7 +181,7 @@ class TerritorioController extends Controller{
 		
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
-		
+
 		$territorio=$this->getDoctrine()->getRepository(Territorio::class)->find($id);
 		if ($territorio!=null){
 			$locNidos= $territorio->getLocNidos();
@@ -187,7 +190,7 @@ class TerritorioController extends Controller{
 				$locNidos->setTrasera($params["trasera"]);
 				$locNidos->setLateralDerecho($params["latDer"]);
 				$locNidos->setLateralIzquierdo($params["latIzq"]);
-				$locNidos->setPatioInferior($params["patio"]);
+				$locNidos->setPatioInterior($params["patio"]);
 				$locNidos->setNumPiso($params["numPiso"]);
 				$locNidos->setLat($params["lat"]);
 				$locNidos->setLon($params["lon"]);
@@ -200,7 +203,9 @@ class TerritorioController extends Controller{
 					}
 						
 				}
-				//TODO: Set HUso horario
+				if (isset($params["huso"])){
+						$locNidos->setHuso($params["huso"]);
+					}
 				
 				$entityManager->persist($locNidos);
 				$entityManager->flush();
@@ -208,7 +213,7 @@ class TerritorioController extends Controller{
 				
 				return new JsonResponse(
 						$this->normalizer->normalize(
-								$colonia, 'json', ['groups' => ['colonia']]
+								$territorio, 'json', ['groups' => ['territorio']]
 						)
 				);
 				
@@ -218,41 +223,9 @@ class TerritorioController extends Controller{
 	}
 	
 	
-	/*public function completaEspecies(Request $request, $id)
-	{
 	
-		//obtenemos los parámetros del cuerpo de la peticion
-		$params=json_decode($request->getContent(), true);
-		
-		//abrimos nuestro manager
-		$entityManager = $this->getDoctrine()->getManager('default');
-		
-		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
-		
-		if ($colonia!=null){
-			
-			
-				$otrasEspecies= new OtrasEspecies();
-				$otrasEspecies->setColonia($colonia);
-				$otrasEspecies->setEspecie($params["especie"]);
-				$entityManager->persist($otrasEspecies);
-				
-			
-			$entityManager->flush();
-			$entityManager->close();
-			
-			return new JsonResponse(
-					$this->normalizer->normalize(
-							$colonia, 'json', ['groups' => ['colonia']]
-					)
-			);
-		
-		}else{
-			throw new NotFoundHttpException();
-		}
-	}
 	
-	public function getColoniasCercanas(Request $request){
+	public function getTerritoriosCercanos(Request $request){
 		$lat = $request->query->get("lat");
 		$lon = $request->query->get("lon");
 		$rad = $request->query->get("rad");
@@ -261,12 +234,12 @@ class TerritorioController extends Controller{
 		if($rad != NULL)
 		{
 		
-			$colonias= $this->getDoctrine()->getRepository(Colonia::class)->findByRadius($rad, $lat, $lon, $especie);
+			$territorios= $this->getDoctrine()->getRepository(Territorio::class)->findByRadius($rad, $lat, $lon, $especie);
 		}
 		
 		return new JsonResponse(
 			$this->normalizer->normalize(
-				$colonias, 'json', ['groups' => ['colonia']]
+				$territorios, 'json', ['groups' => ['territorio']]
 		));
 	}
 	
@@ -278,9 +251,9 @@ class TerritorioController extends Controller{
 		
 		$sql = "
 		SELECT
-			t.`colonia`
+			t.`territorio`
 		FROM
-			cenurb.FavoritosCol t
+			cenurb.FavoritosTerr t
 		WHERE
 			t.usuario = :id
 		";
@@ -292,20 +265,20 @@ class TerritorioController extends Controller{
 		$array= new ArrayCollection();
 		$array=$stmt->fetchAll();
 		
-		$colonias=array();
-		//ahora recuperamos los datos de todas las colonias marcadas como favoritas
+		$territorios=array();
+		//ahora recuperamos los datos de todos los territorios marcados como favoritos
 		foreach ($array as &$group) {
-			$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($group['colonia']);
-			array_push($colonias, $colonia);
+			$territorio=$this->getDoctrine()->getRepository(Territorio::class)->find($group['territorio']);
+			array_push($territorios, $territorio);
 		}
 		
 		return new JsonResponse(
 			$this->normalizer->normalize(
-				$colonias, 'json', ['groups' => ['colonia']]
+				$territorios, 'json', ['groups' => ['territorio']]
 		));
 	}
 	
-	public function getVisits(Request $request, $id){
+	/*public function getVisits(Request $request, $id){
 		
 		//Creamos este método para comprobar el usuario, sino se podría utilizar el API default
 		
@@ -320,30 +293,38 @@ class TerritorioController extends Controller{
 				$this->normalizer->normalize(
 						$visits, 'json', ['groups' => ['visita']]
 				));
-	}
+	}*/
 	
 	
 	public function newVisit(Request $request, $id){
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
 	
-		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
+		$territorio=$this->getDoctrine()->getRepository(Territorio::class)->find($id);
 		$params=json_decode($request->getContent(), true);
 		$entityManager = $this->getDoctrine()->getManager('default');
 		
-		if ($colonia!=null){
-			$visita=new VisitasColonia();
+		if ($territorio!=null){
+			$visita=new VisitasTerritorio();
 			$visita->setUsuario($params["usuario"]);
-			$visita->setNombreUsuario($params["nombreUsuario"]);
-			$visita->setNumVisita($params["numVisita"]);
-			$visita->setNumNidos($params["numNidos"]);
-			$visita->setNumNidosExito($params["numNidosExito"]);
-			$visita->setNumNidosOcupados($params["numNidosOcupados"]);
-			$visita->setNumNidosVacios($params["numNidosVacios"]);
 			$visita->setFecha(new DateTime($params["fecha"]));
+
 			
-			//TODO: Falta ver que hacemos con este campo
-			$visita->setCompleto(false);
-			$visita->setColonia($colonia);
+			if (isset($params["huso"])){
+				$visita->setHuso($params["huso"]);
+			}
+			$visita->setLat($params["lat"]);
+			$visita->setLon($params["lon"]);
+			if (isset($params["observacionId"])){
+				$observacion=$this->getDoctrine()->getRepository(ObservacionesTerritorio::class)->find($params["observacionId"]);
+				if ($observacion!=null){
+					$visita->setObservaciones($observacion);
+				}else{
+					throw new NotFoundHttpException();
+				}
+			
+			}
+			
+			$visita->setTerritorio($territorio);
 			
 			$entityManager->persist($visita);
 			$entityManager->flush();
@@ -353,31 +334,76 @@ class TerritorioController extends Controller{
 	
 		return new JsonResponse(
 				$this->normalizer->normalize(
-						$visita, 'json', ['groups' => ['visita']]
+						$visita, 'json', ['groups' => ['visitaTerr']]
 				));
 	}
+	
+	
+	public function editVisit(Request $request, $id){
+		//$existeUsuario=Util::existeUsuario($params["usuario"]);
+	
+		$visita=$this->getDoctrine()->getRepository(VisitasTerritorio::class)->find($id);
+		$params=json_decode($request->getContent(), true);
+		$entityManager = $this->getDoctrine()->getManager('default');
+	
+		if ($visita!=null){
+	
+				
+			if (isset($params["huso"])){
+				$visita->setHuso($params["huso"]);
+			}
+			if (isset($params["lat"])){
+				$visita->setLat($params["lat"]);
+			}
+			if (isset($params["lon"])){
+				$visita->setLon($params["lon"]);
+			}
+			
+			
+			if (isset($params["observacionId"])){
+				$observacion=$this->getDoctrine()->getRepository(ObservacionesTerritorio::class)->find($params["observacionId"]);
+				if ($observacion!=null){
+					$visita->setObservaciones($observacion);
+				}else{
+					throw new NotFoundHttpException();
+				}
+					
+			}
+								
+			$entityManager->persist($visita);
+			$entityManager->flush();
+			$entityManager->close();
+				
+		}
+	
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$visita, 'json', ['groups' => ['visitaTerr']]
+				));
+	}
+	
 	
 	//TODO: borrar y editar visita deberan comprobar el usuario
 	public function newFavorito(Request $request){
 		$params=json_decode($request->getContent(), true);
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
-		//existe colonia= buscar colonia
-		//if existeColonia and existeUsuario->seguir
+		//existe territorio= buscar territorio
+		//if existeTerritorio and existeUsuario->seguir
 		
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
 	
 		$sql = "
 		INSERT INTO
-			cenurb.FavoritosCol
-			(colonia, usuario)
+			cenurb.FavoritosTerr
+			(territorio, usuario)
 		VALUES
-			(:colonia, :usuario)
+			(:territorio, :usuario)
 		";
 	
 		$stmt = $entityManager->getConnection()->prepare($sql);
 		$stmt->bindParam(':usuario', $params["usuario"], PDO::PARAM_STR);
-		$stmt->bindParam(':colonia', $params["colonia"], PDO::PARAM_INT);
+		$stmt->bindParam(':territorio', $params["territorio"], PDO::PARAM_INT);
 	
 		$stmt->execute();
 		
@@ -387,12 +413,12 @@ class TerritorioController extends Controller{
 				    Response::HTTP_OK,
 				    array('content-type' => 'text/html')
 				);
-	}*/
+	}
 	
 	//-------------------ESTADISTICAS-------------------------------
 	
 	
-	/*public function estadisticasAnno(Request $request, $id){
+	public function estadisticasAnno(Request $request, $id){
 		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statAnno($id);
 		return new JsonResponse(
 				$this->normalizer->normalize(
@@ -419,7 +445,7 @@ class TerritorioController extends Controller{
 				$this->normalizer->normalize(
 						$stats, 'json', []
 				));
-	}*/
+	}
 	
 
 	

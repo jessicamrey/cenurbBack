@@ -72,13 +72,11 @@ class LocNidosNoCol
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups("territorio")
      */
     private $lat;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups("territorio")
      */
     private $lon;
 
@@ -92,7 +90,7 @@ class LocNidosNoCol
         return $this->id;
     }
 
-    public function getUsuario(): string
+    public function getUsuario()
     {
         return $this->usuario;
     }
@@ -104,7 +102,7 @@ class LocNidosNoCol
         return $this;
     }
     
-    public function getFachada(): bool
+    public function getFachada()
     {
         return $this->fachada;
     }
@@ -116,7 +114,7 @@ class LocNidosNoCol
         return $this;
     }
 
-    public function getTrasera(): bool
+    public function getTrasera()
     {
         return $this->trasera;
     }
@@ -128,7 +126,7 @@ class LocNidosNoCol
         return $this;
     }
 
-    public function getLateralDerecho(): bool
+    public function getLateralDerecho()
     {
         return $this->lateralDerecho;
     }
@@ -140,7 +138,7 @@ class LocNidosNoCol
         return $this;
     }
 
-    public function getLateralIzquierdo(): bool
+    public function getLateralIzquierdo()
     {
         return $this->lateralIzquierdo;
     }
@@ -152,7 +150,7 @@ class LocNidosNoCol
         return $this;
     }
 
-    public function getPatioInterior(): bool
+    public function getPatioInterior()
     {
         return $this->patioInterior;
     }
@@ -164,7 +162,7 @@ class LocNidosNoCol
         return $this;
     }
 
-    public function getNumPiso(): int
+    public function getNumPiso()
     {
         return $this->numPiso;
     }
@@ -176,7 +174,7 @@ class LocNidosNoCol
         return $this;
     }
 
-    public function getEmplazamiento(): Emplazamiento
+    public function getEmplazamiento()
     {
         return $this->emplazamiento;
     }
@@ -188,7 +186,7 @@ class LocNidosNoCol
         return $this;
     }
 
-    public function getHuso(): string
+    public function getHuso()
     {
         return $this->huso;
     }
@@ -200,7 +198,7 @@ class LocNidosNoCol
         return $this;
     }
 
-    public function getLat(): float
+    public function getLat()
     {
         return $this->lat;
     }
@@ -212,7 +210,7 @@ class LocNidosNoCol
         return $this;
     }
 
-    public function getLon(): float
+    public function getLon()
     {
         return $this->lon;
     }
@@ -224,7 +222,7 @@ class LocNidosNoCol
         return $this;
     }
 
-    public function getTerritorio(): Territorio
+    public function getTerritorio()
     {
         return $this->territorio;
     }

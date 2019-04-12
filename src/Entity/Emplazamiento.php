@@ -25,11 +25,7 @@ class Emplazamiento
      */
     private $tipo;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("territorio")
-     */
-    private $detalle;
+
 
     public function getId(): int
     {
@@ -48,15 +44,5 @@ class Emplazamiento
         return $this;
     }
 
-    public function getDetalle(): string
-    {
-        return $this->detalle;
-    }
 
-    public function setDetalle(string $detalle): self
-    {
-        $this->detalle = $detalle;
-
-        return $this;
-    }
 }

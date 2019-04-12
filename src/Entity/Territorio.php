@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
@@ -14,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ApiResource()
  * @ApiFilter(SearchFilter::class, properties={"usuario": "exact", 
+ * 												"id": "exact",
  * 												"nombre": "partial", 
  * 												"barrio": "partial", 
  * 												"calleNumPiso": "partial",
@@ -51,7 +54,7 @@ class Territorio
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("territorio")
+     * @Groups({"territorio", "visitaTerr"})
      */
     private $nombre;
 
@@ -88,13 +91,13 @@ class Territorio
     private $tipoEdificio;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\LocNidosNoCol", inversedBy="amenazada", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\LocNidosNoCol",  cascade={"persist", "remove"})
      * @Groups("territorio")
      */
     private $locNidos;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      * @Groups("territorio")
      */
     private $amenazada;
@@ -137,6 +140,16 @@ class Territorio
      * @Groups("territorio")
      */
     private $tipo;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\VisitasTerritorio", mappedBy="territorio")
+     */
+    private $visitasTerritorios;
+
+    public function __construct()
+    {
+        $this->visitasTerritorios = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -253,12 +266,12 @@ class Territorio
         return $this;
     }
 
-    public function getAmenazada(): bool
+    public function getAmenazada()
     {
         return $this->amenazada;
     }
 
-    public function setAmenazada(bool $amenazada): self
+    public function setAmenazada(bool $amenazada)
     {
         $this->amenazada = $amenazada;
 
@@ -326,7 +339,7 @@ class Territorio
         return $this;
     }
 
-    public function getTipo(): ?TipoTerritorio
+    public function getTipo()
     {
         return $this->tipo;
     }
@@ -334,6 +347,37 @@ class Territorio
     public function setTipo(?TipoTerritorio $tipo): self
     {
         $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VisitasTerritorio[]
+     */
+    public function getVisitasTerritorios(): Collection
+    {
+        return $this->visitasTerritorios;
+    }
+
+    public function addVisitasTerritorio(VisitasTerritorio $visitasTerritorio): self
+    {
+        if (!$this->visitasTerritorios->contains($visitasTerritorio)) {
+            $this->visitasTerritorios[] = $visitasTerritorio;
+            $visitasTerritorio->setTerritorio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVisitasTerritorio(VisitasTerritorio $visitasTerritorio): self
+    {
+        if ($this->visitasTerritorios->contains($visitasTerritorio)) {
+            $this->visitasTerritorios->removeElement($visitasTerritorio);
+            // set the owning side to null (unless already changed)
+            if ($visitasTerritorio->getTerritorio() === $this) {
+                $visitasTerritorio->setTerritorio(null);
+            }
+        }
 
         return $this;
     }

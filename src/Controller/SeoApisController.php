@@ -29,21 +29,7 @@ class SeoApisController extends Controller{
             $this->normalizer = $normalizer;
     }
     
-    /* Use it for json_encode some corrupt UTF-8 chars
-     * useful for = malformed utf-8 characters possibly incorrectly encoded by json_encode
-     * 
-     * https://stackoverflow.com/questions/46305169/php-json-encode-malformed-utf-8-characters-possibly-incorrectly-encoded?rq=1
-     */
-    function utf8ize( $mixed ) {
-        if (is_array($mixed)) {
-            foreach ($mixed as $key => $value) {
-                $mixed[$key] = $this->utf8ize($value);
-            }
-        } elseif (is_string($mixed)) {
-            return mb_convert_encoding($mixed, "UTF-8", "UTF-8");
-        }
-        return $mixed;
-    }
+
     /**
      * https://stackoverflow.com/questions/2820723/how-to-get-base-url-with-php
      * 
@@ -92,7 +78,7 @@ class SeoApisController extends Controller{
             }
 
             return new Response(
-                json_encode( $this->utf8ize( $array ) ), 200, ['content-type' => 'text/html; charset=UTF-8']
+                json_encode(  $array) , 200, ['content-type' => 'text/html; charset=UTF-8']
                 );
     }
     
@@ -132,7 +118,7 @@ class SeoApisController extends Controller{
         }
         
         return new Response(
-            json_encode( $this->utf8ize( $array ) ), 200, ['content-type' => 'text/html; charset=UTF-8']
+            json_encode( $array), 200, ['content-type' => 'text/html; charset=UTF-8']
             );
     }
     
@@ -169,7 +155,7 @@ class SeoApisController extends Controller{
         }
         
         return new Response(
-            json_encode( $this->utf8ize( $array ) ), 200, ['content-type' => 'text/html; charset=UTF-8']
+            json_encode(  $array ) , 200, ['content-type' => 'text/html; charset=UTF-8']
             );
     }
     
@@ -209,7 +195,7 @@ class SeoApisController extends Controller{
         }
         
         return new Response(
-            json_encode( $this->utf8ize( $array ) ), 200, ['content-type' => 'text/html; charset=UTF-8']
+            json_encode(  $array ) , 200, ['content-type' => 'text/html; charset=UTF-8']
             );
     }
     
@@ -230,7 +216,7 @@ class SeoApisController extends Controller{
         $array=$stmt->fetchAll();
         
         return new Response(
-            json_encode( $this->utf8ize( $array ) ), 200, ['content-type' => 'text/html; charset=UTF-8']
+            json_encode(  $array ) , 200, ['content-type' => 'text/html; charset=UTF-8']
             );
     }
     
@@ -255,7 +241,7 @@ class SeoApisController extends Controller{
         
         
         return new Response(
-            json_encode( $this->utf8ize( $array ) ), 200, ['content-type' => 'text/html; charset=UTF-8']
+            json_encode(  $array ) , 200, ['content-type' => 'text/html; charset=UTF-8']
             );
     }
     
@@ -278,7 +264,7 @@ class SeoApisController extends Controller{
         $array=$stmt->fetchAll();
       
         return new Response(
-            json_encode( $this->utf8ize( $array ) ), 200, ['content-type' => 'text/html; charset=UTF-8']
+            json_encode(  $array ) , 200, ['content-type' => 'text/html; charset=UTF-8']
             );
     }
     

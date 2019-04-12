@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
@@ -11,9 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
- *  @ApiFilter(RangeFilter::class, properties={"fecha", "hora"})
+ *  @ApiFilter(RangeFilter::class, properties={"fecha"})
  *  @ApiFilter(NumericFilter::class, properties={"coord_X", "coord_Y"})
- *  @ApiFilter(SearchFilter::class, properties={"usuario": "exact"})
+ *  @ApiFilter(SearchFilter::class, properties={"usuario": "exact", "territorio" : "exact"})
  * @ORM\Entity(repositoryClass="App\Repository\VisitasTerritorioRepository")
  */
 class VisitasTerritorio
@@ -22,43 +23,55 @@ class VisitasTerritorio
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("visitaTerr")
      */
     private $id;
 
      /**
      * @ORM\Column(type="string", length=255)
+     * 
      */
     private $usuario;
     
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $fecha;
+  
+   //TODO: comprobar usuario al hacer un get, ya que solo puede recuperar sus visitas
 
-    /**
-     * @ORM\Column(type="time", nullable=true)
-     */
-    private $hora;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("visitaTerr")
      */
     private $huso;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float" , nullable=true)
+     * @Groups({"visitaTerr"})
      */
-    private $coord_X;
+    private $lat;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float",  nullable=true)
+     * @Groups({"visitaTerr"})
      */
-    private $coord_Y;
+    private $lon;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ObservacionesTerritorio")
+     *  @Groups("visitaTerr")
      */
     private $observaciones;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Territorio", inversedBy="visitasTerritorios")
+     * @Groups("visitaTerr")
+     */
+    private $territorio;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Groups("visitaTerr")
+     */
+    private $fecha;
 
     public function getId(): int
     {
@@ -77,31 +90,10 @@ class VisitasTerritorio
         return $this;
     }
     
-    public function getFecha(): \DateTimeInterface
-    {
-        return $this->fecha;
-    }
 
-    public function setFecha(\DateTimeInterface $fecha): self
-    {
-        $this->fecha = $fecha;
 
-        return $this;
-    }
 
-    public function getHora(): \DateTimeInterface
-    {
-        return $this->hora;
-    }
-
-    public function setHora(\DateTimeInterface $hora): self
-    {
-        $this->hora = $hora;
-
-        return $this;
-    }
-
-    public function getHuso(): string
+    public function getHuso()
     {
         return $this->huso;
     }
@@ -112,29 +104,28 @@ class VisitasTerritorio
 
         return $this;
     }
-
-    public function getCoordX(): float
+    public function getLat()
     {
-        return $this->coord_X;
+    	return $this->lat;
     }
-
-    public function setCoordX(float $coord_X): self
+    
+    public function setLat(float $lat): self
     {
-        $this->coord_X = $coord_X;
-
-        return $this;
+    	$this->lat = $lat;
+    
+    	return $this;
     }
-
-    public function getCoordY(): float
+    
+    public function getLon()
     {
-        return $this->coord_Y;
+    	return $this->lon;
     }
-
-    public function setCoordY(float $coord_Y): self
+    
+    public function setLon(float $lon): self
     {
-        $this->coord_Y = $coord_Y;
-
-        return $this;
+    	$this->lon = $lon;
+    
+    	return $this;
     }
 
     public function getObservaciones(): ObservacionesTerritorio
@@ -145,6 +136,30 @@ class VisitasTerritorio
     public function setObservaciones(ObservacionesTerritorio $observaciones): self
     {
         $this->observaciones = $observaciones;
+
+        return $this;
+    }
+
+    public function getTerritorio(): ?Territorio
+    {
+        return $this->territorio;
+    }
+
+    public function setTerritorio(?Territorio $territorio): self
+    {
+        $this->territorio = $territorio;
+
+        return $this;
+    }
+
+    public function getFecha(): ?\DateTimeInterface
+    {
+        return $this->fecha;
+    }
+
+    public function setFecha(\DateTimeInterface $fecha): self
+    {
+        $this->fecha = $fecha;
 
         return $this;
     }

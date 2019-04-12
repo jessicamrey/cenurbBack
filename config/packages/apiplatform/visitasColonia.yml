@@ -1,0 +1,31 @@
+resources:
+    App\Entity\VisitasColonia:
+        attributes:
+            pagination_enabled: false
+            normalization_context: 
+                groups: ['visita']
+            denormalization_context: 
+                groups: ['visita']
+            
+        collectionOperations:
+            post:
+                method: 'POST'
+
+            get:
+                method: 'GET'
+                normalization_context: 
+                    groups: ['visita']
+
+                denormalization_context: 
+                    groups: ['visita']
+
+                
+        itemOperations:
+            get:
+                method: 'GET'
+                
+            put:
+                method: 'PUT'
+                
+            delete:
+                method: 'DELETE'

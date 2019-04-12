@@ -20,7 +20,8 @@ doctrine:
                 url: '%env(DATABASE_SEO_URL)%'
                 driver: 'pdo_mysql'
                 server_version: '5.7'
-                charset: utf8mb4
+                charset: UTF8
+                
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         default_entity_manager: default
