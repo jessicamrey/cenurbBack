@@ -933,6 +933,42 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 }
                 not_api_stats_provincia:
 
+                // api_stats_annoTerr
+                if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsAnnoTerr$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_annoTerr')), array (  '_controller' => 'App\\Controller\\TerritorioController::estadisticasAnno',  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_collection_operation_name' => 'statsAnno',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_annoTerr;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_annoTerr:
+
+                // api_stats_ccaaTerr
+                if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsCcaaTerr$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_ccaaTerr')), array (  '_controller' => 'App\\Controller\\TerritorioController::estadisticasCcaa',  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_collection_operation_name' => 'statsCcca',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_ccaaTerr;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_ccaaTerr:
+
+                // api_stats_provinciaTerr
+                if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsProvinciaTerr$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_provinciaTerr')), array (  '_controller' => 'App\\Controller\\TerritorioController::estadisticasProvincia',  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_collection_operation_name' => 'statsProvincia',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_provinciaTerr;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_provinciaTerr:
+
             }
 
             elseif (0 === strpos($pathinfo, '/api/l')) {

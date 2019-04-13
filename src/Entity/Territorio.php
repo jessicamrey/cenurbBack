@@ -37,7 +37,7 @@ class Territorio
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("territorio")
+     * @Groups({"territorio", "visitaTerr"})
      */
     private $id;
 

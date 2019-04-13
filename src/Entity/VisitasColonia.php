@@ -10,11 +10,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
- * @ApiFilter(RangeFilter::class, properties={"fecha", "numVisita"})
+ * @ApiFilter(DateFilter::class, properties={"fecha"})
  *  @ApiFilter(NumericFilter::class, properties={"numVisita"})
  *  @ApiFilter(SearchFilter::class, properties={"usuario": "exact", "colonia" : "exact"})
  *  @ApiFilter(BooleanFilter::class, properties={"completo"})
@@ -44,7 +45,7 @@ class VisitasColonia
     private $numVisita;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      * @Groups("visita")
      */
     private $fecha;

@@ -8,11 +8,12 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
- *  @ApiFilter(RangeFilter::class, properties={"fecha"})
+ * @ApiFilter(DateFilter::class, properties={"fecha"})
  *  @ApiFilter(NumericFilter::class, properties={"coord_X", "coord_Y"})
  *  @ApiFilter(SearchFilter::class, properties={"usuario": "exact", "territorio" : "exact"})
  * @ORM\Entity(repositoryClass="App\Repository\VisitasTerritorioRepository")
@@ -68,10 +69,15 @@ class VisitasTerritorio
     private $territorio;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      * @Groups("visitaTerr")
      */
     private $fecha;
+
+    /**
+     * @ORM\Column(type="time", nullable=true)
+     */
+    private $hora;
 
     public function getId(): int
     {
@@ -160,6 +166,18 @@ class VisitasTerritorio
     public function setFecha(\DateTimeInterface $fecha): self
     {
         $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    public function getHora(): ?\DateTimeInterface
+    {
+        return $this->hora;
+    }
+
+    public function setHora(?\DateTimeInterface $hora): self
+    {
+        $this->hora = $hora;
 
         return $this;
     }

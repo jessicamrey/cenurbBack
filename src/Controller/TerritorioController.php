@@ -307,7 +307,7 @@ class TerritorioController extends Controller{
 			$visita=new VisitasTerritorio();
 			$visita->setUsuario($params["usuario"]);
 			$visita->setFecha(new DateTime($params["fecha"]));
-
+			$visita->setHora(new DateTime($params["hora"]));
 			
 			if (isset($params["huso"])){
 				$visita->setHuso($params["huso"]);
