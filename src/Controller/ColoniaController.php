@@ -401,6 +401,22 @@ class ColoniaController extends Controller{
 				));
 	}
 	
+	public function estadisticasGeneral(Request $request){
+		$anno = $request->query->get("temporada");
+		$ccaa = $request->query->get("ccaa");
+		$provincia = $request->query->get("prov");
+		$especie = $request->query->get("especie");
+	
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
+	
+	
+		$stats=$this->getDoctrine()->getRepository(Colonia::class)->stats($temporada, $ccaa, $provincia, $especie);
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$stats, 'json', []
+				));
+	}
+	
 
 	
 	public function getTemporadas(Request $request){

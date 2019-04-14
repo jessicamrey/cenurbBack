@@ -138,6 +138,14 @@ api_stats_provincia:
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'statsProvincia'
         
+api_stats_general:
+    path: '/api/especies/stats'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::estadisticasGeneral
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'statsGeneral'
+        
 api_temporada:
     path: '/api/temporadas'
     methods: ['GET']
@@ -222,3 +230,11 @@ api_stats_provinciaTerr:
         _controller: App\Controller\TerritorioController::estadisticasProvincia
         _api_resource_class: App\Entity\Territorio
         _api_collection_operation_name: 'statsProvincia'
+        
+api_stats_generalTerr:
+    path: '/api/especies/statsTerr'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\TerritorioController::estadisticasGeneral
+        _api_resource_class: App\Entity\Territorio
+        _api_collection_operation_name: 'statsGeneral'

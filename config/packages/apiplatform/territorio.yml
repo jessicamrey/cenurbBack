@@ -40,6 +40,10 @@ resources:
             statsProvincia:
                 method: 'GET'
                 route_name: 'api_stats_provinciaTerr'
+                
+            statsGeneral:
+                method: 'GET'
+                route_name: 'api_stats_generalTerr'
 
 
                 

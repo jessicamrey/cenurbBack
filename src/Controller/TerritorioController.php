@@ -419,7 +419,7 @@ class TerritorioController extends Controller{
 	
 	
 	public function estadisticasAnno(Request $request, $id){
-		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statAnno($id);
+		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statAnno($id);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
@@ -429,7 +429,7 @@ class TerritorioController extends Controller{
 	public function estadisticasCcaa(Request $request, $id){
 		$anno = $request->query->get("temporada");
 		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
-		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statCcaa($id, $temporada);
+		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statCcaa($id, $temporada);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
@@ -440,14 +440,28 @@ class TerritorioController extends Controller{
 		$anno = $request->query->get("temporada");
 		$ccaa = $request->query->get("ccaa");
 		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
-		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statProvincia($id, $temporada, $ccaa);
+		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statProvincia($id, $temporada, $ccaa);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
 				));
 	}
 	
-
+	public function estadisticasGeneral(Request $request){
+		$anno = $request->query->get("temporada");
+		$ccaa = $request->query->get("ccaa");
+		$provincia = $request->query->get("prov");
+		$especie = $request->query->get("especie");
+		
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
+		
+		
+		$stats=$this->getDoctrine()->getRepository(Territorio::class)->stats($temporada, $ccaa, $provincia, $especie);
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$stats, 'json', []
+				));
+	}
 	
 	public function getTemporadas(Request $request){
 		$temporadas=$this->getDoctrine()->getRepository(Temporada::class)->findAll();

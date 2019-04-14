@@ -933,6 +933,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 }
                 not_api_stats_provincia:
 
+                // api_stats_general
+                if ('/api/especies/stats' === $pathinfo) {
+                    $ret = array (  '_controller' => 'App\\Controller\\ColoniaController::estadisticasGeneral',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'statsGeneral',  '_route' => 'api_stats_general',);
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_general;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_general:
+
                 // api_stats_annoTerr
                 if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsAnnoTerr$#sD', $pathinfo, $matches)) {
                     $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_annoTerr')), array (  '_controller' => 'App\\Controller\\TerritorioController::estadisticasAnno',  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_collection_operation_name' => 'statsAnno',));
@@ -968,6 +980,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     return $ret;
                 }
                 not_api_stats_provinciaTerr:
+
+                // api_stats_generalTerr
+                if ('/api/especies/statsTerr' === $pathinfo) {
+                    $ret = array (  '_controller' => 'App\\Controller\\TerritorioController::estadisticasGeneral',  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_collection_operation_name' => 'statsGeneral',  '_route' => 'api_stats_generalTerr',);
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_generalTerr;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_generalTerr:
 
             }
 
