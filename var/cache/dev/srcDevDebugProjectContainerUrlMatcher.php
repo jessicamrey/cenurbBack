@@ -945,6 +945,66 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 }
                 not_api_stats_general:
 
+                // api_stats_annoCol
+                if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsAnnoCol$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_annoCol')), array (  '_controller' => 'App\\Controller\\ColoniaController::estadisticasAnnoCol',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'statsAnnoCol',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_annoCol;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_annoCol:
+
+                // api_stats_ccaaCol
+                if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsCcaaCol$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_ccaaCol')), array (  '_controller' => 'App\\Controller\\ColoniaController::estadisticasCcaaCol',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'statsCccaCol',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_ccaaCol;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_ccaaCol:
+
+                // api_stats_provinciaCol
+                if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsProvinciaCol$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_provinciaCol')), array (  '_controller' => 'App\\Controller\\ColoniaController::estadisticasProvinciaCol',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'statsProvinciaCol',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_provinciaCol;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_provinciaCol:
+
+                // api_stats_tipoEdificioCol
+                if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsTipoEdificioCol$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_tipoEdificioCol')), array (  '_controller' => 'App\\Controller\\ColoniaController::estadisticasTipoEdificioCol',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'statsTipoEdificioCol',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_tipoEdificioCol;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_tipoEdificioCol:
+
+                // api_stats_municipioCol
+                if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsMunicipioCol$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_municipioCol')), array (  '_controller' => 'App\\Controller\\ColoniaController::estadisticasMunicipioCol',  '_api_resource_class' => 'App\\Entity\\Colonia',  '_api_collection_operation_name' => 'statsMunicipioCol',));
+                    if (!in_array($canonicalMethod, array('GET'))) {
+                        $allow = array_merge($allow, array('GET'));
+                        goto not_api_stats_municipioCol;
+                    }
+
+                    return $ret;
+                }
+                not_api_stats_municipioCol:
+
                 // api_stats_annoTerr
                 if (preg_match('#^/api/especies/(?P<id>[^/]++)/statsAnnoTerr$#sD', $pathinfo, $matches)) {
                     $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'api_stats_annoTerr')), array (  '_controller' => 'App\\Controller\\TerritorioController::estadisticasAnno',  '_api_resource_class' => 'App\\Entity\\Territorio',  '_api_collection_operation_name' => 'statsAnno',));

@@ -93,6 +93,11 @@ class VisitasColonia
      */
     private $nombreUsuario;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Temporada")
+     */
+    private $temporada;
+
     public function getId(): int
     {
         return $this->id;
@@ -218,5 +223,17 @@ class VisitasColonia
     	$this->nombreUsuario = $nombreUsuario;
     
     	return $this;
+    }
+
+    public function getTemporada(): ?Temporada
+    {
+        return $this->temporada;
+    }
+
+    public function setTemporada(?Temporada $temporada): self
+    {
+        $this->temporada = $temporada;
+
+        return $this;
     }
 }

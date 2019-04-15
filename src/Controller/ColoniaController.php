@@ -305,11 +305,10 @@ class ColoniaController extends Controller{
 	
 	public function newVisit(Request $request, $id){
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
-	
 		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
 		$params=json_decode($request->getContent(), true);
 		$entityManager = $this->getDoctrine()->getManager('default');
-		
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findOneBy(['anno'=>$params["anno"]]);
 		if ($colonia!=null){
 			$visita=new VisitasColonia();
 			$visita->setUsuario($params["usuario"]);
@@ -320,7 +319,7 @@ class ColoniaController extends Controller{
 			$visita->setNumNidosOcupados($params["numNidosOcupados"]);
 			$visita->setNumNidosVacios($params["numNidosVacios"]);
 			$visita->setFecha(new DateTime($params["fecha"]));
-			
+			$visita->setTemporada($temporada);
 			//TODO: Falta ver que hacemos con este campo
 			$visita->setCompleto(false);
 			$visita->setColonia($colonia);
@@ -373,7 +372,9 @@ class ColoniaController extends Controller{
 	
 	
 	public function estadisticasAnno(Request $request, $id){
-		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statAnno($id);
+		$anno = $request->query->get("temporada");
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
+		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statAnno($id, $temporada);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
@@ -382,8 +383,9 @@ class ColoniaController extends Controller{
 	
 	public function estadisticasCcaa(Request $request, $id){
 		$anno = $request->query->get("temporada");
+		$ccaa = $request->query->get("ccaa");
 		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
-		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statCcaa($id, $temporada);
+		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statCcaa($id, $temporada, $ccaa);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
@@ -393,8 +395,9 @@ class ColoniaController extends Controller{
 	public function estadisticasProvincia(Request $request, $id){
 		$anno = $request->query->get("temporada");
 		$ccaa = $request->query->get("ccaa");
+		$prov = $request->query->get("provincia");
 		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
-		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statProvincia($id, $temporada, $ccaa);
+		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statProvincia($id, $temporada, $ccaa, $prov);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
@@ -417,7 +420,73 @@ class ColoniaController extends Controller{
 				));
 	}
 	
-
+	//-------------------ESTADISTICAS POR COLONIA-------------------------------
+	
+	public function estadisticasAnnoCol(Request $request, $id){
+		$anno = $request->query->get("temporada");
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
+		$stats=$this->getDoctrine()->getRepository(VisitasColonia::class)->statAnno($id, $temporada);
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$stats, 'json', []
+				));
+	}
+	
+	public function estadisticasCcaaCol(Request $request, $id){
+		$anno = $request->query->get("temporada");
+		$ccaa = $request->query->get("ccaa");
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
+		$stats=$this->getDoctrine()->getRepository(VisitasColonia::class)->statCcaa($id, $temporada, $ccaa);
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$stats, 'json', []
+				));
+	}
+	
+	public function estadisticasProvinciaCol(Request $request, $id){
+		$anno = $request->query->get("temporada");
+		$ccaa = $request->query->get("ccaa");
+		$prov = $request->query->get("provincia");
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
+		$stats=$this->getDoctrine()->getRepository(VisitasColonia::class)->statProvincia($id, $temporada, $ccaa, $prov);
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$stats, 'json', []
+				));
+	}
+	
+	public function estadisticasMunicipioCol(Request $request, $id){
+		$anno = $request->query->get("temporada");
+		$ccaa = $request->query->get("ccaa");
+		$prov = $request->query->get("provincia");
+		$mun = $request->query->get("municipio");
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
+		$stats=$this->getDoctrine()->getRepository(VisitasColonia::class)->statMunicipio($id, $temporada, $ccaa, $prov, $mun);
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$stats, 'json', []
+				));
+	}
+	
+	public function estadisticasTipoEdificioCol(Request $request, $id){
+		$anno = $request->query->get("temporada");
+		$ccaa = $request->query->get("ccaa");
+		$prov = $request->query->get("provincia");
+		$mun = $request->query->get("municipio");
+		$tipoId = $request->query->get("tipoEdificio");
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
+		
+		if ($tipoId!=null){
+			$tipo=$this->getDoctrine()->getRepository(TipoEdificio::class)->find($tipoId);
+		}else{
+			$tipo=null;
+		}
+		$stats=$this->getDoctrine()->getRepository(VisitasColonia::class)->statTipoEdificio($id, $temporada, $ccaa, $prov, $mun, $tipo);
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$stats, 'json', []
+				));
+	}
 	
 	public function getTemporadas(Request $request){
 		$temporadas=$this->getDoctrine()->getRepository(Temporada::class)->findAll();

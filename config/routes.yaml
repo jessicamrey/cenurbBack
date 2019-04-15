@@ -146,6 +146,46 @@ api_stats_general:
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'statsGeneral'
         
+api_stats_annoCol:
+    path: '/api/especies/{id}/statsAnnoCol'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::estadisticasAnnoCol
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'statsAnnoCol'
+        
+api_stats_ccaaCol:
+    path: '/api/especies/{id}/statsCcaaCol'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::estadisticasCcaaCol
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'statsCccaCol'
+        
+api_stats_provinciaCol:
+    path: '/api/especies/{id}/statsProvinciaCol'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::estadisticasProvinciaCol
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'statsProvinciaCol'
+        
+api_stats_tipoEdificioCol:
+    path: '/api/especies/{id}/statsTipoEdificioCol'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::estadisticasTipoEdificioCol
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'statsTipoEdificioCol'
+        
+api_stats_municipioCol:
+    path: '/api/especies/{id}/statsMunicipioCol'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::estadisticasMunicipioCol
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'statsMunicipioCol'
+        
 api_temporada:
     path: '/api/temporadas'
     methods: ['GET']

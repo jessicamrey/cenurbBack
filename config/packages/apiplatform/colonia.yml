@@ -61,6 +61,26 @@ resources:
             statsGeneral:
                 method: 'GET'
                 route_name: 'api_stats_general'
+                
+            statsAnnoCol:
+                method: 'GET'
+                route_name: 'api_stats_annoCol'
+                
+            statsCcaaCol:
+                method: 'GET'
+                route_name: 'api_stats_ccaaCol'
+                
+            statsProvinciaCol:
+                method: 'GET'
+                route_name: 'api_stats_provinciaCol'
+                
+            statsMunicipioCol:
+                method: 'GET'
+                route_name: 'api_stats_municipioCol'
+                
+            statsTipoEdificioCol:
+                method: 'GET'
+                route_name: 'api_stats_tipoEdificioCol'
             
 
                 

@@ -419,7 +419,8 @@ class TerritorioController extends Controller{
 	
 	
 	public function estadisticasAnno(Request $request, $id){
-		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statAnno($id);
+		$anno = $request->query->get("temporada");
+		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statAnno($id, $anno);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
@@ -428,8 +429,9 @@ class TerritorioController extends Controller{
 	
 	public function estadisticasCcaa(Request $request, $id){
 		$anno = $request->query->get("temporada");
+		$ccaa = $request->query->get("ccaa");
 		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
-		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statCcaa($id, $temporada);
+		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statCcaa($id, $temporada, $ccaa);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
@@ -439,8 +441,9 @@ class TerritorioController extends Controller{
 	public function estadisticasProvincia(Request $request, $id){
 		$anno = $request->query->get("temporada");
 		$ccaa = $request->query->get("ccaa");
+		$prov = $request->query->get("provincia");
 		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
-		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statProvincia($id, $temporada, $ccaa);
+		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statProvincia($id, $temporada, $ccaa, $prov);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
