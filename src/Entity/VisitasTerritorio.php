@@ -78,6 +78,11 @@ class VisitasTerritorio
      * @ORM\Column(type="time", nullable=true)
      */
     private $hora;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\VisitaTerritorioImages", mappedBy="visita")
+     */
+    private $visitaTerritorioImages;
 
     public function getId(): int
     {
@@ -180,5 +185,35 @@ class VisitasTerritorio
         $this->hora = $hora;
 
         return $this;
+    }
+    /**
+     * @return Collection|VisitaTerritorioImages[]
+     */
+    public function getVisitaTerritorioImages(): Collection
+    {
+    	return $this->visitaTerritorioImages;
+    }
+    
+    public function addVisitaTerritorioImage(VisitaTerritorioImages $visitaTerritorioImage): self
+    {
+    	if (!$this->visitaTerritorioImages->contains($visitaTerritorioImage)) {
+    		$this->visitaTerritorioImages[] = $visitaTerritorioImage;
+    		$visitaTerritorioImage->setVisita($this);
+    	}
+    
+    	return $this;
+    }
+    
+    public function removeVisitaTerritorioImage(VisitaTerritorioImages $visitaTerritorioImage): self
+    {
+    	if ($this->visitaTerritorioImages->contains($visitaTerritorioImage)) {
+    		$this->visitaTerritorioImages->removeElement($visitaTerritorioImage);
+    		// set the owning side to null (unless already changed)
+    		if ($visitaTerritorioImage->getVisita() === $this) {
+    			$visitaTerritorioImage->setVisita(null);
+    		}
+    	}
+    
+    	return $this;
     }
 }

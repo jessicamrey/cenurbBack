@@ -84,6 +84,9 @@ $catalogue = new MessageCatalogue('pl', array (
     'This value does not match the expected {{ charset }} charset.' => 'Ta wartość nie pasuje do oczekiwanego zestawu znaków {{ charset }}.',
     'This is not a valid Business Identifier Code (BIC).' => 'Ta wartość nie jest poprawnym kodem BIC (Business Identifier Code).',
     'Error' => 'Błąd',
+    'This is not a valid UUID.' => 'To nie jest poprawne UUID.',
+    'This value should be a multiple of {{ compared_value }}.' => 'Ta wartość powinna być wielokrotnością {{ compared_value }}.',
+    'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.' => 'Ten kod BIC (Business Identifier Code) nie jest powiązany z międzynarodowym numerem rachunku bankowego (IBAN) {{ iban }}.',
     'This form should not contain extra fields.' => 'Ten formularz nie powinien zawierać dodatkowych pól.',
     'The uploaded file was too large. Please try to upload a smaller file.' => 'Wgrany plik był za duży. Proszę spróbować wgrać mniejszy plik.',
     'The CSRF token is invalid. Please try to resubmit the form.' => 'Token CSRF jest nieprawidłowy. Proszę spróbować wysłać formularz ponownie.',
@@ -106,6 +109,11 @@ $catalogue = new MessageCatalogue('pl', array (
     'Credentials have expired.' => 'Dane uwierzytelniania wygasły.',
     'Account is disabled.' => 'Konto jest wyłączone.',
     'Account is locked.' => 'Konto jest zablokowane.',
+  ),
+  'VichUploaderBundle' => 
+  array (
+    'download' => 'Pobierz',
+    'form.label.delete' => 'Usunąć?',
   ),
 ));
 
@@ -192,6 +200,16 @@ $catalogueEn = new MessageCatalogue('en', array (
     'This is not a valid Business Identifier Code (BIC).' => 'This is not a valid Business Identifier Code (BIC).',
     'Error' => 'Error',
     'This is not a valid UUID.' => 'This is not a valid UUID.',
+    'This value should be a multiple of {{ compared_value }}.' => 'This value should be a multiple of {{ compared_value }}.',
+    'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.' => 'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.',
+    'This value should be valid JSON.' => 'This value should be valid JSON.',
+    'This collection should contain only unique elements.' => 'This collection should contain only unique elements.',
+    'This value should be positive.' => 'This value should be positive.',
+    'This value should be either positive or zero.' => 'This value should be either positive or zero.',
+    'This value should be negative.' => 'This value should be negative.',
+    'This value should be either negative or zero.' => 'This value should be either negative or zero.',
+    'This value is not a valid timezone.' => 'This value is not a valid timezone.',
+    'This password has been leaked in a data breach, it must not be used. Please use another password.' => 'This password has been leaked in a data breach, it must not be used. Please use another password.',
     'This form should not contain extra fields.' => 'This form should not contain extra fields.',
     'The uploaded file was too large. Please try to upload a smaller file.' => 'The uploaded file was too large. Please try to upload a smaller file.',
     'The CSRF token is invalid. Please try to resubmit the form.' => 'The CSRF token is invalid. Please try to resubmit the form.',
@@ -214,6 +232,11 @@ $catalogueEn = new MessageCatalogue('en', array (
     'Credentials have expired.' => 'Credentials have expired.',
     'Account is disabled.' => 'Account is disabled.',
     'Account is locked.' => 'Account is locked.',
+  ),
+  'VichUploaderBundle' => 
+  array (
+    'download' => 'Download',
+    'form.label.delete' => 'Delete?',
   ),
 ));
 $catalogue->addFallbackCatalogue($catalogueEn);

@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Util\Blacklist;
 use Symfony\Bridge\PhpUnit\ClockMock;
 use Symfony\Bridge\PhpUnit\DnsMock;
+use Symfony\Component\Debug\DebugClassLoader;
 
 /**
  * PHP 5.3 compatible trait-like shared implementation.
@@ -52,6 +53,8 @@ class SymfonyTestsListenerTrait
             Blacklist::$blacklistedClassNames['\Symfony\Bridge\PhpUnit\Legacy\SymfonyTestsListenerTrait'] = 2;
         }
 
+        $enableDebugClassLoader = \class_exists('Symfony\Component\Debug\DebugClassLoader');
+
         foreach ($mockedNamespaces as $type => $namespaces) {
             if (!\is_array($namespaces)) {
                 $namespaces = array($namespaces);
@@ -66,12 +69,28 @@ class SymfonyTestsListenerTrait
                     DnsMock::register($ns.'\DummyClass');
                 }
             }
+            if ('debug-class-loader' === $type) {
+                $enableDebugClassLoader = $namespaces && $namespaces[0];
+            }
+        }
+        if ($enableDebugClassLoader) {
+            DebugClassLoader::enable();
         }
         if (self::$globallyEnabled) {
             $this->state = -2;
         } else {
             self::$globallyEnabled = true;
         }
+    }
+
+    public function __sleep()
+    {
+        throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
+    }
+
+    public function __wakeup()
+    {
+        throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
     }
 
     public function __destruct()

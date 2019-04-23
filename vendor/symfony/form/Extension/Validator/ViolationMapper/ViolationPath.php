@@ -23,17 +23,17 @@ class ViolationPath implements \IteratorAggregate, PropertyPathInterface
     /**
      * @var array
      */
-    private $elements = array();
+    private $elements = [];
 
     /**
      * @var array
      */
-    private $isIndex = array();
+    private $isIndex = [];
 
     /**
      * @var array
      */
-    private $mapsForm = array();
+    private $mapsForm = [];
 
     /**
      * @var string
@@ -198,9 +198,7 @@ class ViolationPath implements \IteratorAggregate, PropertyPathInterface
      *
      * Consider the following violation path:
      *
-     * <code>
-     * children[address].children[office].data.street
-     * </code>
+     *     children[address].children[office].data.street
      *
      * In this example, "address" and "office" map to forms, while
      * "street does not.

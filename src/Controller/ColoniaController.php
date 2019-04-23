@@ -10,6 +10,7 @@ use App\Entity\Colonia;
 use App\Entity\LocNidosCol;
 use App\Entity\OtrasEspecies;
 use App\Entity\VisitasColonia;
+use App\Entity\VisitaColoniaImages;
 use App\Entity\Temporada;
 use App\Util\Util;
 use DateTime;
@@ -495,5 +496,66 @@ class ColoniaController extends Controller{
 						$temporadas, 'json', []
 				));
 	}
+	
+	//---------------------FUNCIONES DE SUBIDA Y ELIMINADO DE IMAGENES POR VISITAS------------------------------------
+	
+	
+	
+	
+	
+	public function uploadImageAction(Request $request, $id)
+	{
+		$uploadedFiles = $request->files->get('file');
+	
+		$visita=$this->getDoctrine()->getRepository(VisitasColonia::class)->find($id);
+		
+		for($i=0;$i<count($uploadedFiles); $i++){
+			
+			$visitaImage=new VisitaColoniaImages();
+			if (file_exists($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITACOL'). $id .'/' .$visitaImage->getImage()) &&
+					is_writable($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITACOL'). $id .'/' .$visitaImage->getImage()))
+			{
+				unlink($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITACOL'). $id .'/' .$visitaImage->getImage());
+			}
+			$visitaImage->setImageFile($uploadedFiles[$i]);
+	
+			$visita->addVisitaColoniaImage($visitaImage);
+		}
+		$em = $this->getDoctrine()->getManager();
+	
+		$em->persist($visita);
+		$em->flush();
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$visita, 'json', ['visita']
+				)
+		);
+	}
+	
+	public function removeImageAction(Request $request, $id, $idImg) {
+	
+		$fileName = $request->query->get("fileName");
+
+		$visita=$this->getDoctrine()->getRepository(VisitasColonia::class)->find($id);
+	
+		if (file_exists($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITACOL'). $id .'/' .$fileName) &&
+				is_writable($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITACOL'). $id .'/' .$fileName))
+		{
+			unlink($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITACOL'). $id .'/' .$fileName);
+		}
+		$visitaImage=$this->getDoctrine()->getRepository(VisitaColoniaImages::class)->find($idImg);
+		if ($visitaImage!=null){
+			$em = $this->getDoctrine()->getManager();
+			$em->remove($visitaImage);
+			$em->flush();
+			return new JsonResponse(
+					$this->normalizer->normalize(
+							$visita, 'json', ['visita']
+					)
+			);
+		}
+		throw new NotFoundHttpException();
+	}
+	
 	
 }

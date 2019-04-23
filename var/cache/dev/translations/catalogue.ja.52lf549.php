@@ -84,6 +84,9 @@ $catalogue = new MessageCatalogue('ja', array (
     'This value does not match the expected {{ charset }} charset.' => 'この値は予期される文字コード（{{ charset }}）と異なります。',
     'This is not a valid Business Identifier Code (BIC).' => '有効なSWIFTコードではありません。',
     'Error' => 'エラー',
+    'This is not a valid UUID.' => '有効なUUIDではありません。',
+    'This value should be a multiple of {{ compared_value }}.' => '{{ compared_value }}の倍数でなければなりません。',
+    'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.' => 'このSWIFTコードはIBANコード（{{ iban }}）に関連付けられていません。',
     'This form should not contain extra fields.' => 'フィールドグループに追加のフィールドを含んではなりません。',
     'The uploaded file was too large. Please try to upload a smaller file.' => 'アップロードされたファイルが大きすぎます。小さなファイルで再度アップロードしてください。',
     'The CSRF token is invalid. Please try to resubmit the form.' => 'CSRFトークンが無効です、再送信してください。',
@@ -192,6 +195,16 @@ $catalogueEn = new MessageCatalogue('en', array (
     'This is not a valid Business Identifier Code (BIC).' => 'This is not a valid Business Identifier Code (BIC).',
     'Error' => 'Error',
     'This is not a valid UUID.' => 'This is not a valid UUID.',
+    'This value should be a multiple of {{ compared_value }}.' => 'This value should be a multiple of {{ compared_value }}.',
+    'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.' => 'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.',
+    'This value should be valid JSON.' => 'This value should be valid JSON.',
+    'This collection should contain only unique elements.' => 'This collection should contain only unique elements.',
+    'This value should be positive.' => 'This value should be positive.',
+    'This value should be either positive or zero.' => 'This value should be either positive or zero.',
+    'This value should be negative.' => 'This value should be negative.',
+    'This value should be either negative or zero.' => 'This value should be either negative or zero.',
+    'This value is not a valid timezone.' => 'This value is not a valid timezone.',
+    'This password has been leaked in a data breach, it must not be used. Please use another password.' => 'This password has been leaked in a data breach, it must not be used. Please use another password.',
     'This form should not contain extra fields.' => 'This form should not contain extra fields.',
     'The uploaded file was too large. Please try to upload a smaller file.' => 'The uploaded file was too large. Please try to upload a smaller file.',
     'The CSRF token is invalid. Please try to resubmit the form.' => 'The CSRF token is invalid. Please try to resubmit the form.',
@@ -214,6 +227,11 @@ $catalogueEn = new MessageCatalogue('en', array (
     'Credentials have expired.' => 'Credentials have expired.',
     'Account is disabled.' => 'Account is disabled.',
     'Account is locked.' => 'Account is locked.',
+  ),
+  'VichUploaderBundle' => 
+  array (
+    'download' => 'Download',
+    'form.label.delete' => 'Delete?',
   ),
 ));
 $catalogue->addFallbackCatalogue($catalogueEn);

@@ -84,9 +84,36 @@ $catalogue = new MessageCatalogue('uk', array (
     'This value does not match the expected {{ charset }} charset.' => 'Значення не збігається з очікуваним {{ charset }} кодуванням.',
     'This is not a valid Business Identifier Code (BIC).' => 'Це не дійсний банківський код (BIC).',
     'Error' => 'Помилка',
+    'This is not a valid UUID.' => 'Це не валідне значення UUID.',
+    'This value should be a multiple of {{ compared_value }}.' => 'Це значення повинне бути кратним {{ compared_value }}.',
+    'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.' => 'Банківський код (BIC) не пов’язаний із міжнародним номером банківського рахунку (IBAN) {{ iban }}.',
     'This form should not contain extra fields.' => 'Ця форма не повинна містити додаткових полів.',
     'The uploaded file was too large. Please try to upload a smaller file.' => 'Завантажений файл занадто великий. Будь-ласка, спробуйте завантажити файл меншого розміру.',
     'The CSRF token is invalid. Please try to resubmit the form.' => 'CSRF значення недопустиме. Будь-ласка, спробуйте відправити форму знову.',
+  ),
+  'security' => 
+  array (
+    'An authentication exception occurred.' => 'Помилка автентифікації.',
+    'Authentication credentials could not be found.' => 'Автентифікаційні дані не знайдено.',
+    'Authentication request could not be processed due to a system problem.' => 'Запит на автентифікацію не може бути опрацьовано у зв’язку з проблемою в системі.',
+    'Invalid credentials.' => 'Невірні автентифікаційні дані.',
+    'Cookie has already been used by someone else.' => 'Хтось інший вже використав цей сookie.',
+    'Not privileged to request the resource.' => 'Відсутні права на запит цього ресурсу.',
+    'Invalid CSRF token.' => 'Невірний токен CSRF.',
+    'Digest nonce has expired.' => 'Закінчився термін дії одноразового ключа дайджесту.',
+    'No authentication provider found to support the authentication token.' => 'Не знайдено провайдера автентифікації, що підтримує токен автентифікаціії.',
+    'No session available, it either timed out or cookies are not enabled.' => 'Сесія недоступна, її час вийшов, або cookies вимкнено.',
+    'No token could be found.' => 'Токен не знайдено.',
+    'Username could not be found.' => 'Ім’я користувача не знайдено.',
+    'Account has expired.' => 'Термін дії облікового запису вичерпано.',
+    'Credentials have expired.' => 'Термін дії автентифікаційних даних вичерпано.',
+    'Account is disabled.' => 'Обліковий запис відключено.',
+    'Account is locked.' => 'Обліковий запис заблоковано.',
+  ),
+  'VichUploaderBundle' => 
+  array (
+    'download' => 'Завантажити',
+    'form.label.delete' => 'Видалити?',
   ),
 ));
 
@@ -173,6 +200,16 @@ $catalogueEn = new MessageCatalogue('en', array (
     'This is not a valid Business Identifier Code (BIC).' => 'This is not a valid Business Identifier Code (BIC).',
     'Error' => 'Error',
     'This is not a valid UUID.' => 'This is not a valid UUID.',
+    'This value should be a multiple of {{ compared_value }}.' => 'This value should be a multiple of {{ compared_value }}.',
+    'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.' => 'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.',
+    'This value should be valid JSON.' => 'This value should be valid JSON.',
+    'This collection should contain only unique elements.' => 'This collection should contain only unique elements.',
+    'This value should be positive.' => 'This value should be positive.',
+    'This value should be either positive or zero.' => 'This value should be either positive or zero.',
+    'This value should be negative.' => 'This value should be negative.',
+    'This value should be either negative or zero.' => 'This value should be either negative or zero.',
+    'This value is not a valid timezone.' => 'This value is not a valid timezone.',
+    'This password has been leaked in a data breach, it must not be used. Please use another password.' => 'This password has been leaked in a data breach, it must not be used. Please use another password.',
     'This form should not contain extra fields.' => 'This form should not contain extra fields.',
     'The uploaded file was too large. Please try to upload a smaller file.' => 'The uploaded file was too large. Please try to upload a smaller file.',
     'The CSRF token is invalid. Please try to resubmit the form.' => 'The CSRF token is invalid. Please try to resubmit the form.',
@@ -195,6 +232,11 @@ $catalogueEn = new MessageCatalogue('en', array (
     'Credentials have expired.' => 'Credentials have expired.',
     'Account is disabled.' => 'Account is disabled.',
     'Account is locked.' => 'Account is locked.',
+  ),
+  'VichUploaderBundle' => 
+  array (
+    'download' => 'Download',
+    'form.label.delete' => 'Delete?',
   ),
 ));
 $catalogue->addFallbackCatalogue($catalogueEn);

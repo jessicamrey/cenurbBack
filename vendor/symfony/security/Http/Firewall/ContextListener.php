@@ -79,7 +79,7 @@ class ContextListener implements ListenerInterface
     public function handle(GetResponseEvent $event)
     {
         if (!$this->registered && null !== $this->dispatcher && $event->isMasterRequest()) {
-            $this->dispatcher->addListener(KernelEvents::RESPONSE, array($this, 'onKernelResponse'));
+            $this->dispatcher->addListener(KernelEvents::RESPONSE, [$this, 'onKernelResponse']);
             $this->registered = true;
         }
 
@@ -95,17 +95,17 @@ class ContextListener implements ListenerInterface
         $token = $this->safelyUnserialize($token);
 
         if (null !== $this->logger) {
-            $this->logger->debug('Read existing security token from the session.', array(
+            $this->logger->debug('Read existing security token from the session.', [
                 'key' => $this->sessionKey,
                 'token_class' => \is_object($token) ? \get_class($token) : null,
-            ));
+            ]);
         }
 
         if ($token instanceof TokenInterface) {
             $token = $this->refreshUser($token);
         } elseif (null !== $token) {
             if (null !== $this->logger) {
-                $this->logger->warning('Expected a security token from the session, got something else.', array('key' => $this->sessionKey, 'received' => $token));
+                $this->logger->warning('Expected a security token from the session, got something else.', ['key' => $this->sessionKey, 'received' => $token]);
             }
 
             $token = null;
@@ -129,7 +129,7 @@ class ContextListener implements ListenerInterface
             return;
         }
 
-        $this->dispatcher->removeListener(KernelEvents::RESPONSE, array($this, 'onKernelResponse'));
+        $this->dispatcher->removeListener(KernelEvents::RESPONSE, [$this, 'onKernelResponse']);
         $this->registered = false;
         $session = $request->getSession();
 
@@ -141,7 +141,7 @@ class ContextListener implements ListenerInterface
             $session->set($this->sessionKey, serialize($token));
 
             if (null !== $this->logger) {
-                $this->logger->debug('Stored the security token in the session.', array('key' => $this->sessionKey));
+                $this->logger->debug('Stored the security token in the session.', ['key' => $this->sessionKey]);
             }
         }
     }
@@ -161,6 +161,7 @@ class ContextListener implements ListenerInterface
         }
 
         $userNotFoundByProvider = false;
+        $userDeauthenticated = false;
 
         foreach ($this->userProviders as $provider) {
             if (!$provider instanceof UserProviderInterface) {
@@ -169,23 +170,28 @@ class ContextListener implements ListenerInterface
 
             try {
                 $refreshedUser = $provider->refreshUser($user);
-                $token->setUser($refreshedUser);
+                $newToken = clone $token;
+                $newToken->setUser($refreshedUser);
 
                 // tokens can be deauthenticated if the user has been changed.
-                if (!$token->isAuthenticated()) {
+                if (!$newToken->isAuthenticated()) {
                     if ($this->logoutOnUserChange) {
+                        $userDeauthenticated = true;
+
                         if (null !== $this->logger) {
-                            $this->logger->debug('Token was deauthenticated after trying to refresh it.', array('username' => $refreshedUser->getUsername(), 'provider' => \get_class($provider)));
+                            $this->logger->debug('Cannot refresh token because user has changed.', ['username' => $refreshedUser->getUsername(), 'provider' => \get_class($provider)]);
                         }
 
-                        return null;
+                        continue;
                     }
 
                     @trigger_error('Refreshing a deauthenticated user is deprecated as of 3.4 and will trigger a logout in 4.0.', E_USER_DEPRECATED);
                 }
 
+                $token->setUser($refreshedUser);
+
                 if (null !== $this->logger) {
-                    $context = array('provider' => \get_class($provider), 'username' => $refreshedUser->getUsername());
+                    $context = ['provider' => \get_class($provider), 'username' => $refreshedUser->getUsername()];
 
                     foreach ($token->getRoles() as $role) {
                         if ($role instanceof SwitchUserRole) {
@@ -202,11 +208,19 @@ class ContextListener implements ListenerInterface
                 // let's try the next user provider
             } catch (UsernameNotFoundException $e) {
                 if (null !== $this->logger) {
-                    $this->logger->warning('Username could not be found in the selected user provider.', array('username' => $e->getUsername(), 'provider' => \get_class($provider)));
+                    $this->logger->warning('Username could not be found in the selected user provider.', ['username' => $e->getUsername(), 'provider' => \get_class($provider)]);
                 }
 
                 $userNotFoundByProvider = true;
             }
+        }
+
+        if ($userDeauthenticated) {
+            if (null !== $this->logger) {
+                $this->logger->debug('Token was deauthenticated after trying to refresh it.');
+            }
+
+            return null;
         }
 
         if ($userNotFoundByProvider) {
@@ -220,7 +234,7 @@ class ContextListener implements ListenerInterface
     {
         $e = $token = null;
         $prevUnserializeHandler = ini_set('unserialize_callback_func', __CLASS__.'::handleUnserializeCallback');
-        $prevErrorHandler = set_error_handler(function ($type, $msg, $file, $line, $context = array()) use (&$prevErrorHandler) {
+        $prevErrorHandler = set_error_handler(function ($type, $msg, $file, $line, $context = []) use (&$prevErrorHandler) {
             if (__FILE__ === $file) {
                 throw new \UnexpectedValueException($msg, 0x37313bc);
             }
@@ -240,7 +254,7 @@ class ContextListener implements ListenerInterface
                 throw $e;
             }
             if ($this->logger) {
-                $this->logger->warning('Failed to unserialize the security token from the session.', array('key' => $this->sessionKey, 'received' => $serializedToken, 'exception' => $e));
+                $this->logger->warning('Failed to unserialize the security token from the session.', ['key' => $this->sessionKey, 'received' => $serializedToken, 'exception' => $e]);
             }
         }
 

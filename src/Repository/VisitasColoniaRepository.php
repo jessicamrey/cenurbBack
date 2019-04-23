@@ -29,7 +29,7 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     	->groupBy('t.anno');
     	 
     	if($anno!=null){
-    		$query->andWhere('v.temporada = :temp');
+    		$query->andWhere('t.anno= :temp');
     		$query->setParameter('temp', $anno);
     	}
     	 
@@ -45,8 +45,9 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     	$query= $this->createQueryBuilder('v')
     	->select('sum(v.numNidos),sum(v.numNidosOcupados),sum(v.numNidosVacios),sum(v.numNidosExito), c.ccaa, c.especie')
     	->join('v.colonia', 'c')
+    	->join('v.temporada', 't')
     	->andWhere('c.especie= :esp')
-    	->andWhere('v.temporada = :temp')
+    	->andWhere('t.anno= :temp')
     	->groupBy('c.ccaa');
     
     	 
@@ -68,8 +69,9 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     	$query= $this->createQueryBuilder('v')
     	->select('sum(v.numNidos),sum(v.numNidosOcupados),sum(v.numNidosVacios),sum(v.numNidosExito), c.ccaa,c.provincia, c.especie')
     	->join('v.colonia', 'c')
+    	->join('v.temporada', 't')
     	->andWhere('c.especie = :esp')
-    	->andWhere('v.temporada = :temp')
+    	->andWhere('t.anno= :temp')
     	->andWhere('c.ccaa = :ccaa')
     	->groupBy('c.provincia');
     	 
@@ -92,8 +94,9 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     	$query= $this->createQueryBuilder('v')
     	->select('sum(v.numNidos),sum(v.numNidosOcupados),sum(v.numNidosVacios),sum(v.numNidosExito), c.ccaa,c.provincia,c.municipio, c.especie')
     	->join('v.colonia', 'c')
+    	->join('v.temporada', 't')
     	->andWhere('c.especie = :esp')
-    	->andWhere('v.temporada = :temp')
+    	->andWhere('t.anno= :temp')
     	->andWhere('c.ccaa = :ccaa')
     	->andWhere('c.provincia = :prov')
     	->groupBy('c.municipio');
@@ -119,11 +122,12 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     	->select('sum(v.numNidos),sum(v.numNidosOcupados),sum(v.numNidosVacios),sum(v.numNidosExito), c.especie, t.descripcion')
     	->join('v.colonia', 'c')
     	->join('c.tipoEdificio', 't')
+    	->join('v.temporada', 'te')
     	->andWhere('c.especie = :esp')
     	->groupBy('t.descripcion');
     
     	if($temporada!=null){
-    		$query->andWhere('v.temporada = :temp');
+    		$query->andWhere('te.anno= :temp');
     		$query->setParameter('temp', $temporada);
     	}
     	if($ccaa!=null){

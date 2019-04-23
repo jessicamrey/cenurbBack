@@ -11,6 +11,7 @@ use App\Entity\Territorio;
 use App\Entity\LocNidosNoCol;
 use App\Entity\OtrasEspecies;
 use App\Entity\VisitasTerritorio;
+use App\Entity\VisitaTerritorioImages;
 use App\Entity\VisitasColonia;
 use App\Entity\Temporada;
 use App\Entity\Emplazamiento;
@@ -471,6 +472,84 @@ class TerritorioController extends Controller{
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$temporadas, 'json', []
+				));
+	}
+	
+	
+	//---------------------FUNCIONES DE SUBIDA Y ELIMINADO DE IMAGENES POR VISITAS------------------------------------
+	
+	
+	
+	
+	
+	public function uploadImageAction(Request $request, $id)
+	{
+		$uploadedFiles = $request->files->get('file');
+	
+		$visita=$this->getDoctrine()->getRepository(VisitasTerritorio::class)->find($id);
+	
+		for($i=0;$i<count($uploadedFiles); $i++){
+				
+			$visitaImage=new VisitaTerritorioImages();
+			if (file_exists($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITATERR'). $id .'/' .$visitaImage->getImage()) &&
+					is_writable($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITATERR'). $id .'/' .$visitaImage->getImage()))
+			{
+				unlink($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITATERR'). $id .'/' .$visitaImage->getImage());
+			}
+			$visitaImage->setImageFile($uploadedFiles[$i]);
+	
+			$visita->addVisitaTerritorioImage($visitaImage);
+		}
+		$em = $this->getDoctrine()->getManager();
+	
+		$em->persist($visita);
+		$em->flush();
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$visita, 'json', ['visita']
+				)
+		);
+	}
+	
+	public function removeImageAction(Request $request, $id, $idImg) {
+	
+		$fileName = $request->query->get("fileName");
+	
+		$visita=$this->getDoctrine()->getRepository(VisitasTerritorio::class)->find($id);
+	
+		if (file_exists($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITATERR'). $id .'/' .$fileName) &&
+				is_writable($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITATERR'). $id .'/' .$fileName))
+		{
+			unlink($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITARERR'). $id .'/' .$fileName);
+		}
+		$visitaImage=$this->getDoctrine()->getRepository(VisitaTerritorioImages::class)->find($idImg);
+		if ($visitaImage!=null){
+			$em = $this->getDoctrine()->getManager();
+			$em->remove($visitaImage);
+			$em->flush();
+			return new JsonResponse(
+					$this->normalizer->normalize(
+							$visita, 'json', ['visita']
+					)
+			);
+		}
+		throw new NotFoundHttpException();
+	}
+	
+	//-------------------ESTADISTICAS POR TERRITORIO-------------------------------
+	
+
+	
+	public function estadisticasTerr(Request $request, $id){
+		$anno = $request->query->get("temporada");
+		$ccaa = $request->query->get("ccaa");
+		$prov = $request->query->get("provincia");
+		$mun = $request->query->get("municipio");
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
+		$stats=$this->getDoctrine()->getRepository(VisitasTerritorio::class)->stats($id, $temporada, $ccaa, $prov, $mun);
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$stats, 'json', []
 				));
 	}
 	

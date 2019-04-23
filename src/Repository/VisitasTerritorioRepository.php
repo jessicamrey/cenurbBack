@@ -19,32 +19,40 @@ class VisitasTerritorioRepository extends ServiceEntityRepository
         parent::__construct($registry, VisitasTerritorio::class);
     }
 
-//    /**
-//     * @return VisitasTerritorio[] Returns an array of VisitasTerritorio objects
-//     */
-    /*
-    public function findByExampleField($value)
+    
+public function stats($especie, $temporada, $ccaa, $prov, $mun, $tipo)
     {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+    	$query= $this->createQueryBuilder('v')
+    	->select('count(*), te.anno, t.especie, t.ccaa, t.provincia, t.municipio, o.tipo')
+    	->join('v.territorio', 't')
+    	->join('t.temporada', 'te')
+    	->join('v.observaciones', 'o')
+    	->andWhere('c.especie = :esp');
+    	
+    
+    	if($temporada!=null){
+    		$query->andWhere('te.anno= :temp');
+    		$query->setParameter('temp', $temporada);
+    	}
+    	if($ccaa!=null){
+    		$query->andWhere('t.ccaa = :ccaa');
+    		$query->setParameter('ccaa', $ccaa);
+    	}
+    	if($prov!=null){
+    		$query->andWhere('t.provincia = :prov');
+    		$query->setParameter('prov', $prov);
+    	}
+    	
+    	if($mun!=null){
+    		$query->andWhere('t.municipio = :mun');
+    		$query->setParameter('mun', $mun);
+    	}
+    
+    
+    	return $query->setParameter('esp', $especie)
+    	->groupBy('o.tipo')
+    	->getQuery()
+    	->getResult();
+    
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?VisitasTerritorio
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

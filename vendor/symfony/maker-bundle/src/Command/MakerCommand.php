@@ -64,6 +64,10 @@ final class MakerCommand extends Command
             $dependencies = new DependencyBuilder();
             $this->maker->configureDependencies($dependencies, $input);
 
+            if (!$dependencies->isPhpVersionSatisfied()) {
+                throw new RuntimeCommandException('The make:entity command requires that you use PHP 7.1 or higher.');
+            }
+
             if ($missingPackagesMessage = $dependencies->getMissingPackagesMessage($this->getName())) {
                 throw new RuntimeCommandException($missingPackagesMessage);
             }
@@ -75,7 +79,7 @@ final class MakerCommand extends Command
         if (!$this->fileManager->isNamespaceConfiguredToAutoload($this->generator->getRootNamespace())) {
             $this->io->note([
                 sprintf('It looks like your app may be using a namespace other than "%s".', $this->generator->getRootNamespace()),
-                'To configure this and make your life easier, see: https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html#configuration.',
+                'To configure this and make your life easier, see: https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html#configuration',
             ]);
         }
 

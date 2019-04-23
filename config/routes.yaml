@@ -198,6 +198,18 @@ api_new_favoritosCol:
     defaults:
         _controller: App\Controller\ColoniaController::newFavorito
 
+api_visitaCol_image:
+    path: '/api/visitas-coloniass/{id}/image'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\ColoniaController::uploadImageAction
+        
+api_visitaCol_rmvImage:
+    path: '/api/visitas-coloniass/{id}/rmvImage/{idImg}'
+    methods: ['DELETE']
+    defaults:
+        _controller: App\Controller\ColoniaController::removeImageAction
+        
 ##################TERRITORIOS#######################################
 
 api_new_territorio:
@@ -278,3 +290,23 @@ api_stats_generalTerr:
         _controller: App\Controller\TerritorioController::estadisticasGeneral
         _api_resource_class: App\Entity\Territorio
         _api_collection_operation_name: 'statsGeneral'
+        
+api_stats_observaciones:
+    path: '/api/especies/{id}/statsObservaciones'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\TerritorioController::estadisticasTerr
+        _api_resource_class: App\Entity\Territorio
+        _api_collection_operation_name: 'statsObservaciones'
+        
+api_visitaTerr_image:
+    path: '/api/visitas-territorios/{id}/image'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\TerritorioController::uploadImageAction
+        
+api_visitaTerr_rmvImage:
+    path: '/api/visitas-territorios/{id}/rmvImage/{idImg}'
+    methods: ['DELETE']
+    defaults:
+        _controller: App\Controller\TerritorioController::removeImageAction

@@ -1,0 +1,19 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        VisitaColonia:
+            uri_prefix: '%env(APP_IMAGE_VISITACOL)%'
+            upload_destination: '%kernel.project_dir%/public/%env(APP_IMAGE_VISITACOL)%'
+
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+            
+        VisitaTerritorio:
+            uri_prefix: '%env(APP_IMAGE_VISITATERR)%'
+            upload_destination: '%kernel.project_dir%/public/%env(APP_IMAGE_VISITATERR)%'
+
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true

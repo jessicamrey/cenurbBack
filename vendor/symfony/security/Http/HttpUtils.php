@@ -59,7 +59,7 @@ class HttpUtils
      */
     public function createRedirectResponse(Request $request, $path, $status = 302)
     {
-        if (null !== $this->domainRegexp && preg_match('#^https?://[^/]++#i', $path, $host) && !preg_match(sprintf($this->domainRegexp, preg_quote($request->getHttpHost())), $host[0])) {
+        if (null !== $this->domainRegexp && preg_match('#^https?:[/\\\\]{2,}+[^/]++#i', $path, $host) && !preg_match(sprintf($this->domainRegexp, preg_quote($request->getHttpHost())), $host[0])) {
             $path = '/';
         }
 
@@ -76,7 +76,7 @@ class HttpUtils
      */
     public function createRequest(Request $request, $path)
     {
-        $newRequest = Request::create($this->generateUri($request, $path), 'get', array(), $request->cookies->all(), array(), $request->server->all());
+        $newRequest = Request::create($this->generateUri($request, $path), 'get', [], $request->cookies->all(), [], $request->server->all());
         if ($request->hasSession()) {
             $newRequest->setSession($request->getSession());
         }
@@ -89,6 +89,13 @@ class HttpUtils
         }
         if ($request->attributes->has(Security::LAST_USERNAME)) {
             $newRequest->attributes->set(Security::LAST_USERNAME, $request->attributes->get(Security::LAST_USERNAME));
+        }
+
+        if ($request->get('_format')) {
+            $newRequest->attributes->set('_format', $request->get('_format'));
+        }
+        if ($request->getDefaultLocale() !== $request->getLocale()) {
+            $newRequest->setLocale($request->getLocale());
         }
 
         return $newRequest;

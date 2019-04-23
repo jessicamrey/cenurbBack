@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -97,6 +99,16 @@ class VisitasColonia
      * @ORM\ManyToOne(targetEntity="App\Entity\Temporada")
      */
     private $temporada;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\VisitaColoniaImages", mappedBy="visita")
+     */
+    private $visitaColoniaImages;
+
+    public function __construct()
+    {
+        $this->visitaColoniaImages = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -233,6 +245,37 @@ class VisitasColonia
     public function setTemporada(?Temporada $temporada): self
     {
         $this->temporada = $temporada;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VisitaColoniaImages[]
+     */
+    public function getVisitaColoniaImages(): Collection
+    {
+        return $this->visitaColoniaImages;
+    }
+
+    public function addVisitaColoniaImage(VisitaColoniaImages $visitaColoniaImage): self
+    {
+        if (!$this->visitaColoniaImages->contains($visitaColoniaImage)) {
+            $this->visitaColoniaImages[] = $visitaColoniaImage;
+            $visitaColoniaImage->setVisita($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVisitaColoniaImage(VisitaColoniaImages $visitaColoniaImage): self
+    {
+        if ($this->visitaColoniaImages->contains($visitaColoniaImage)) {
+            $this->visitaColoniaImages->removeElement($visitaColoniaImage);
+            // set the owning side to null (unless already changed)
+            if ($visitaColoniaImage->getVisita() === $this) {
+                $visitaColoniaImage->setVisita(null);
+            }
+        }
 
         return $this;
     }

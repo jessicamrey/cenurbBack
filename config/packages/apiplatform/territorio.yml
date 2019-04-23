@@ -44,6 +44,10 @@ resources:
             statsGeneral:
                 method: 'GET'
                 route_name: 'api_stats_generalTerr'
+                
+            statsObservaciones:
+                method: 'GET'
+                route_name: 'api_stats_observaciones'
 
 
                 

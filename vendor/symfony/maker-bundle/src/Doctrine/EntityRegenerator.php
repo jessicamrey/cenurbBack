@@ -76,6 +76,10 @@ final class EntityRegenerator
             $embeddedClasses = [];
 
             foreach ($classMetadata->embeddedClasses as $fieldName => $mapping) {
+                if (false !== strpos($fieldName, '.')) {
+                    continue;
+                }
+
                 $className = $mapping['class'];
 
                 $embeddedClasses[$fieldName] = $this->getPathOfClass($className);
@@ -95,7 +99,7 @@ final class EntityRegenerator
                     continue;
                 }
 
-                if (!in_array($fieldName, $mappedFields)) {
+                if (!\in_array($fieldName, $mappedFields)) {
                     continue;
                 }
 
@@ -112,7 +116,7 @@ final class EntityRegenerator
             };
 
             foreach ($classMetadata->associationMappings as $fieldName => $mapping) {
-                if (!in_array($fieldName, $mappedFields)) {
+                if (!\in_array($fieldName, $mappedFields)) {
                     continue;
                 }
 
