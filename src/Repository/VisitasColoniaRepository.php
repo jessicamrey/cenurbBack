@@ -47,17 +47,19 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     	->join('v.colonia', 'c')
     	->join('v.temporada', 't')
     	->andWhere('c.especie= :esp')
-    	->andWhere('t.anno= :temp')
     	->groupBy('c.ccaa');
     
-    	 
+    	if($temporada!=null){
+    		$query->andWhere('t.anno= :temp');
+    		$query->setParameter('temp', $temporada);
+    	}
+    	
     	if($ccaa!=null){
     		$query->andWhere('c.ccaa = :ccaa');
     		$query->setParameter('ccaa', $ccaa);
     	}
     	 
-    	return $query->setParameter('esp', $especie)
-    	->setParameter('temp', $temporada)
+    	return $query->setParameter('esp', $especie)	
     	->getQuery()
     	->getResult();
     
@@ -71,10 +73,17 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     	->join('v.colonia', 'c')
     	->join('v.temporada', 't')
     	->andWhere('c.especie = :esp')
-    	->andWhere('t.anno= :temp')
-    	->andWhere('c.ccaa = :ccaa')
     	->groupBy('c.provincia');
     	 
+    	if($temporada!=null){
+    		$query->andWhere('t.anno= :temp');
+    		$query->setParameter('temp', $temporada);
+    	}
+    	if($ccaa!=null){
+    		$query->andWhere('c.ccaa = :ccaa');
+    		$query->setParameter('ccaa', $ccaa);
+    	}
+    	
     	if($prov!=null){
     		$query->andWhere('c.provincia = :prov');
     		$query->setParameter('prov', $prov);
@@ -82,8 +91,6 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     	 
     	 
     	return $query->setParameter('esp', $especie)
-    	->setParameter('temp', $temporada)
-    	->setParameter('ccaa', $ccaa)
     	->getQuery()
     	->getResult();
     
@@ -96,11 +103,15 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     	->join('v.colonia', 'c')
     	->join('v.temporada', 't')
     	->andWhere('c.especie = :esp')
-    	->andWhere('t.anno= :temp')
     	->andWhere('c.ccaa = :ccaa')
     	->andWhere('c.provincia = :prov')
     	->groupBy('c.municipio');
     
+    	if($temporada!=null){
+    		$query->andWhere('t.anno= :temp');
+    		$query->setParameter('temp', $temporada);
+    	}
+    	
     	if($mun!=null){
     		$query->andWhere('c.municipio = :mun');
     		$query->setParameter('mun', $mun);
@@ -108,7 +119,6 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     
     
     	return $query->setParameter('esp', $especie)
-    	->setParameter('temp', $temporada)
     	->setParameter('ccaa', $ccaa)
     	->setParameter('prov', $prov)
     	->getQuery()
@@ -142,6 +152,11 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     	if($mun!=null){
     		$query->andWhere('c.municipio = :mun');
     		$query->setParameter('mun', $mun);
+    	}
+    	
+    	if($topo!=null){
+    		$query->andWhere('c.tipoEdificio = :tipo');
+    		$query->setParameter('tipo', $tipo);
     	}
     
     
