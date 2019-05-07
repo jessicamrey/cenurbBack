@@ -69,6 +69,6 @@ class __TwigTemplate_5706f222da21254986614f8f3dfe108ad3db4ccf31cdc8c91642010b5a7
     <?php if (strlen(\$value) > 0): ?> value=\"<?php echo \$view->escape(\$value) ?>\"<?php endif ?>
     <?php if (\$checked): ?> checked=\"checked\"<?php endif ?>
 />
-", "@Framework/Form/checkbox_widget.html.php", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/checkbox_widget.html.php");
+", "@Framework/Form/checkbox_widget.html.php", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/checkbox_widget.html.php");
     }
 }

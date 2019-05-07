@@ -63,6 +63,6 @@ class __TwigTemplate_c6323295648f54778c5f6ed1cdcfa4bde1ec2255f5242b5e4cb6a4b1ef4
     {
         return new Source("<?php if (!empty(\$id)): ?>id=\"<?php echo \$view->escape(\$id) ?>\"<?php endif ?>
 <?php echo \$attr ? ' '.\$view['form']->block(\$form, 'attributes') : '' ?>
-", "@Framework/Form/widget_container_attributes.html.php", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/widget_container_attributes.html.php");
+", "@Framework/Form/widget_container_attributes.html.php", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/widget_container_attributes.html.php");
     }
 }

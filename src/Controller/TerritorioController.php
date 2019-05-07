@@ -454,13 +454,15 @@ class TerritorioController extends Controller{
 	public function estadisticasGeneral(Request $request){
 		$anno = $request->query->get("temporada");
 		$ccaa = $request->query->get("ccaa");
-		$provincia = $request->query->get("prov");
+		$provincia = $request->query->get("provincia");
 		$especie = $request->query->get("especie");
+		$tipo= $request->query->get("tipo");
 		
 		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
 		
 		
-		$stats=$this->getDoctrine()->getRepository(Territorio::class)->stats($temporada, $ccaa, $provincia, $especie);
+		
+		$stats=$this->getDoctrine()->getRepository(Territorio::class)->stats($temporada, $ccaa, $provincia, $especie, $tipo);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []

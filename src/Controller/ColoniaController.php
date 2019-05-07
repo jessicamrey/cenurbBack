@@ -408,7 +408,7 @@ class ColoniaController extends Controller{
 	public function estadisticasGeneral(Request $request){
 		$anno = $request->query->get("temporada");
 		$ccaa = $request->query->get("ccaa");
-		$provincia = $request->query->get("prov");
+		$provincia = $request->query->get("provincia");
 		$especie = $request->query->get("especie");
 	
 		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
@@ -470,13 +470,8 @@ class ColoniaController extends Controller{
 		$ccaa = $request->query->get("ccaa");
 		$prov = $request->query->get("provincia");
 		$mun = $request->query->get("municipio");
-		$tipoId = $request->query->get("tipoEdificio");
+		$tipo= $request->query->get("tipoEdificio");
 		
-		if ($tipoId!=null){
-			$tipo=$this->getDoctrine()->getRepository(TipoEdificio::class)->find($tipoId);
-		}else{
-			$tipo=null;
-		}
 		$stats=$this->getDoctrine()->getRepository(VisitasColonia::class)->statTipoEdificio($id, $anno, $ccaa, $prov, $mun, $tipo);
 		return new JsonResponse(
 				$this->normalizer->normalize(

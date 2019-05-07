@@ -154,8 +154,8 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     		$query->setParameter('mun', $mun);
     	}
     	
-    	if($topo!=null){
-    		$query->andWhere('c.tipoEdificio = :tipo');
+    	if($tipo!=null){
+    		$query->andWhere('t.descripcion= :tipo');
     		$query->setParameter('tipo', $tipo);
     	}
     

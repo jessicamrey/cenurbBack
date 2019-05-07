@@ -108,7 +108,7 @@ class ColoniaRepository extends ServiceEntityRepository
     public function stats($temporada, $ccaa, $provincia, $especie)
     {
     	$query= $this->createQueryBuilder('c')
-    	->select('count(c), c.provincia, c.ccaa, c.especie')
+    	->select('count(c)')
     	->andWhere('c.especie = :esp');
     	 
     	if($temporada!=null){

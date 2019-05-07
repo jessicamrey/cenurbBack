@@ -917,6 +917,6 @@ class __TwigTemplate_a58eef5aae816be9ad0a57cc2df122b46452d7bee615dcd7a9981b88b82
     {% if form is not rootform %}</span>{% else %}</div>{% endif %}
     {%- endif %}
 {%- endblock form_errors %}
-", "bootstrap_3_layout.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/twig-bridge/Resources/views/Form/bootstrap_3_layout.html.twig");
+", "bootstrap_3_layout.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/twig-bridge/Resources/views/Form/bootstrap_3_layout.html.twig");
     }
 }

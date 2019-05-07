@@ -1004,6 +1004,6 @@ class __TwigTemplate_fbf4102b14b2129c5497fde6b0693b24e98ed3b769270ceeb20c3ee9969
         {% endif %}
     {% endfor %}
 {% endblock %}
-", "@Swiftmailer/Collector/swiftmailer.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/swiftmailer-bundle/Resources/views/Collector/swiftmailer.html.twig");
+", "@Swiftmailer/Collector/swiftmailer.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/swiftmailer-bundle/Resources/views/Collector/swiftmailer.html.twig");
     }
 }

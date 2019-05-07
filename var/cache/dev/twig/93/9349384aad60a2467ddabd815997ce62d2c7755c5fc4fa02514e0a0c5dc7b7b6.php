@@ -69,6 +69,6 @@ class __TwigTemplate_4e56eab754a78a2730ad94cdc29430ef9be9bfe3a4c596cdf0943d95e44
         <?php echo \$view['form']->row(\$child) ?>
     <?php endif; ?>
 <?php endforeach; ?>
-", "@Framework/Form/form_rest.html.php", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_rest.html.php");
+", "@Framework/Form/form_rest.html.php", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_rest.html.php");
     }
 }

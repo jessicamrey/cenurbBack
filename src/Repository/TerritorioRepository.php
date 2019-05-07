@@ -106,10 +106,11 @@ class TerritorioRepository extends ServiceEntityRepository
     
     }
     
-    public function stats($temporada, $ccaa, $provincia, $especie)
+    public function stats($temporada, $ccaa, $provincia, $especie, $tipo)
     {
     	$query= $this->createQueryBuilder('c')
-    	->select('count(c), c.provincia, c.ccaa, c.especie')
+    	->select('count(c)')
+    	->join('c.tipo', 't')
     	->andWhere('c.especie = :esp');
     	
     	if($temporada!=null){
@@ -123,6 +124,10 @@ class TerritorioRepository extends ServiceEntityRepository
     	if($provincia!=null){
     		$query->andWhere('c.provincia = :prov');
     		$query->setParameter('prov', $provincia);
+    	}
+    	if($tipo!=null){
+    	    $query->andWhere('t.descripcion= :tipo');
+    	    $query->setParameter('tipo', $tipo);
     	}
     	
     	return $query->setParameter('esp', $especie)

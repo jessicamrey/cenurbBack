@@ -408,6 +408,6 @@ class __TwigTemplate_78e56f69867936c811a04a4380d163968186a3751bd6ea10439127d7ff7
         </div>
     {% endfor %}
 {% endblock %}
-", "@Debug/Profiler/dump.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/debug-bundle/Resources/views/Profiler/dump.html.twig");
+", "@Debug/Profiler/dump.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/debug-bundle/Resources/views/Profiler/dump.html.twig");
     }
 }

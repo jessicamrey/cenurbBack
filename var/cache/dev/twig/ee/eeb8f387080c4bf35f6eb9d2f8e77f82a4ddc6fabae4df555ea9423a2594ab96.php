@@ -93,6 +93,6 @@ class __TwigTemplate_0f2e1be496787555002d31c6a15c5751ddef0125ea682165b692acda420
             </trace>
 {% endfor %}
         </traces>
-", "@Twig/Exception/traces.xml.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/twig-bundle/Resources/views/Exception/traces.xml.twig");
+", "@Twig/Exception/traces.xml.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/twig-bundle/Resources/views/Exception/traces.xml.twig");
     }
 }

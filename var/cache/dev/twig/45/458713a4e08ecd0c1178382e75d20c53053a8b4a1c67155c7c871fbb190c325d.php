@@ -312,6 +312,6 @@ class __TwigTemplate_2151cdc64254c9626ce38ea1a8e63bf4b61bef1122c1619bf04420f5abe
     {% set label = label|trans|default(label) %}
     {{- block('form_label') }}
 {% endblock %}
-", "@VichUploader/Form/fields.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/vich/uploader-bundle/Resources/views/Form/fields.html.twig");
+", "@VichUploader/Form/fields.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/vich/uploader-bundle/Resources/views/Form/fields.html.twig");
     }
 }

@@ -169,6 +169,6 @@ class __TwigTemplate_634376cc90b4dd0f8a48b19efed2cefda92bbd9ecfd9ae87f12df0aedce
         {%- endfor -%}
     </pre>
 {% endif %}
-", "@Doctrine/Collector/explain.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/doctrine/doctrine-bundle/Resources/views/Collector/explain.html.twig");
+", "@Doctrine/Collector/explain.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/doctrine/doctrine-bundle/Resources/views/Collector/explain.html.twig");
     }
 }

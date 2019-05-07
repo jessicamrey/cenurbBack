@@ -167,6 +167,6 @@ class __TwigTemplate_13a6766c36a3a20b6224d18dd7306b2f99b7242d1051ecd2367a5fb6197
         {% block javascripts %}{% endblock %}
     </body>
 </html>
-", "base.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/templates/base.html.twig");
+", "base.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/templates/base.html.twig");
     }
 }
