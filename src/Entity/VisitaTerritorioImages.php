@@ -54,12 +54,12 @@ class VisitaTerritorioImages
         return $this->id;
     }
 
-    public function getVisita(): ?VisitasColonia
+    public function getVisita(): ?VisitasTerritorio
     {
         return $this->visita;
     }
 
-    public function setVisita(?VisitasColonia $visita): self
+    public function setVisita(?VisitasTerritorio $visita): self
     {
         $this->visita = $visita;
 

@@ -16,6 +16,6 @@ if (!\class_exists(srcDevDebugProjectContainer::class, false)) {
 
 return new \ContainerMygf4ks\srcDevDebugProjectContainer([
     'container.build_hash' => 'Mygf4ks',
-    'container.build_id' => 'b5374024',
-    'container.build_time' => 1557248102,
+    'container.build_id' => '8ba0bc92',
+    'container.build_time' => 1557831356,
 ], __DIR__.\DIRECTORY_SEPARATOR.'ContainerMygf4ks');

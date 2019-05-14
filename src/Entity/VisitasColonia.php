@@ -101,7 +101,7 @@ class VisitasColonia
     private $temporada;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\VisitaColoniaImages", mappedBy="visita")
+     * @ORM\OneToMany(targetEntity="App\Entity\VisitaColoniaImages", mappedBy="visita", cascade={"persist"})
      */
     private $visitaColoniaImages;
 

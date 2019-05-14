@@ -374,8 +374,7 @@ class ColoniaController extends Controller{
 	
 	public function estadisticasAnno(Request $request, $id){
 		$anno = $request->query->get("temporada");
-		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
-		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statAnno($id, $temporada);
+		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statAnno($id, $anno);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
@@ -385,8 +384,7 @@ class ColoniaController extends Controller{
 	public function estadisticasCcaa(Request $request, $id){
 		$anno = $request->query->get("temporada");
 		$ccaa = $request->query->get("ccaa");
-		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
-		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statCcaa($id, $temporada, $ccaa);
+		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statCcaa($id, $anno, $ccaa);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
@@ -397,8 +395,7 @@ class ColoniaController extends Controller{
 		$anno = $request->query->get("temporada");
 		$ccaa = $request->query->get("ccaa");
 		$prov = $request->query->get("provincia");
-		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
-		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statProvincia($id, $temporada, $ccaa, $prov);
+		$stats=$this->getDoctrine()->getRepository(Colonia::class)->statProvincia($id, $anno, $ccaa, $prov);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []

@@ -52,7 +52,7 @@ class ColoniaRepository extends ServiceEntityRepository
     	->groupBy('t.anno');
     	
     	if($anno!=null){
-    		$query->andWhere('c.temporada = :temp');
+    		$query->andWhere('t.anno = :temp');
     		$query->setParameter('temp', $anno);
     	}
     	
@@ -62,13 +62,18 @@ class ColoniaRepository extends ServiceEntityRepository
     
     }
     
-    public function statCcaa($especie, $temporada, $ccaa)
+    public function statCcaa($especie, $anno, $ccaa)
     {
     	$query= $this->createQueryBuilder('c')
     	->select('count(c), c.ccaa')
+    	->join('c.temporada', 't')
     	->andWhere('c.especie = :esp')
-    	->andWhere('c.temporada = :temp')
     	->groupBy('c.ccaa');
+    	
+    	if($anno!=null){
+    	    $query->andWhere('t.anno = :temp');
+    	    $query->setParameter('temp', $anno);
+    	}
     	
     	if($ccaa!=null){
     		$query->andWhere('c.ccaa = :ccaa');
@@ -76,20 +81,29 @@ class ColoniaRepository extends ServiceEntityRepository
     	}
     	
     	return $query->setParameter('esp', $especie)
-    	->setParameter('temp', $temporada)
     	->getQuery()
     	->getResult();
     
     }
     
-    public function statProvincia($especie, $temporada, $ccaa, $prov)
+    public function statProvincia($especie, $anno, $ccaa, $prov)
     {
     	$query= $this->createQueryBuilder('c')
     	->select('count(c), c.provincia, c.ccaa')
+    	->join('c.temporada', 't')
     	->andWhere('c.especie = :esp')
-    	->andWhere('c.temporada = :temp')
-    	->andWhere('c.ccaa = :ccaa')
     	->groupBy('c.provincia');
+    	
+    	if($ccaa!=null){
+    	    $query->andWhere('c.ccaa = :ccaa');
+    	    $query->setParameter('ccaa', $ccaa);
+    	}
+    	
+    	
+    	if($anno!=null){
+    	    $query->andWhere('t.anno = :temp');
+    	    $query->setParameter('temp', $anno);
+    	}
     	
     	if($prov!=null){
     		$query->andWhere('c.provincia = :prov');
@@ -98,8 +112,6 @@ class ColoniaRepository extends ServiceEntityRepository
     	
     	
     	return $query->setParameter('esp', $especie)
-    	->setParameter('temp', $temporada)
-    	->setParameter('ccaa', $ccaa)
     	->getQuery()
     	->getResult();
     

@@ -741,32 +741,29 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 }
                 not_api_visitas_colonias_delete_item:
 
-                if (0 === strpos($pathinfo, '/api/visitas-coloniass')) {
-                    // api_visitaCol_image
-                    if (preg_match('#^/api/visitas\\-coloniass/(?P<id>[^/]++)/image$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, ['_route' => 'api_visitaCol_image']), array (  '_controller' => 'App\\Controller\\ColoniaController::uploadImageAction',));
-                        if (!in_array($requestMethod, ['POST'])) {
-                            $allow = array_merge($allow, ['POST']);
-                            goto not_api_visitaCol_image;
-                        }
-
-                        return $ret;
+                // api_visitaCol_image
+                if (preg_match('#^/api/visitas\\-colonias/(?P<id>[^/]++)/image$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, ['_route' => 'api_visitaCol_image']), array (  '_controller' => 'App\\Controller\\ColoniaController::uploadImageAction',));
+                    if (!in_array($requestMethod, ['POST'])) {
+                        $allow = array_merge($allow, ['POST']);
+                        goto not_api_visitaCol_image;
                     }
-                    not_api_visitaCol_image:
 
-                    // api_visitaCol_rmvImage
-                    if (preg_match('#^/api/visitas\\-coloniass/(?P<id>[^/]++)/rmvImage/(?P<idImg>[^/]++)$#sD', $pathinfo, $matches)) {
-                        $ret = $this->mergeDefaults(array_replace($matches, ['_route' => 'api_visitaCol_rmvImage']), array (  '_controller' => 'App\\Controller\\ColoniaController::removeImageAction',));
-                        if (!in_array($requestMethod, ['DELETE'])) {
-                            $allow = array_merge($allow, ['DELETE']);
-                            goto not_api_visitaCol_rmvImage;
-                        }
-
-                        return $ret;
-                    }
-                    not_api_visitaCol_rmvImage:
-
+                    return $ret;
                 }
+                not_api_visitaCol_image:
+
+                // api_visitaCol_rmvImage
+                if (preg_match('#^/api/visitas\\-colonias/(?P<id>[^/]++)/rmvImage/(?P<idImg>[^/]++)$#sD', $pathinfo, $matches)) {
+                    $ret = $this->mergeDefaults(array_replace($matches, ['_route' => 'api_visitaCol_rmvImage']), array (  '_controller' => 'App\\Controller\\ColoniaController::removeImageAction',));
+                    if (!in_array($requestMethod, ['DELETE'])) {
+                        $allow = array_merge($allow, ['DELETE']);
+                        goto not_api_visitaCol_rmvImage;
+                    }
+
+                    return $ret;
+                }
+                not_api_visitaCol_rmvImage:
 
             }
 

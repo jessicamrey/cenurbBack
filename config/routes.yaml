@@ -199,13 +199,13 @@ api_new_favoritosCol:
         _controller: App\Controller\ColoniaController::newFavorito
 
 api_visitaCol_image:
-    path: '/api/visitas-coloniass/{id}/image'
+    path: '/api/visitas-colonias/{id}/image'
     methods: ['POST']
     defaults:
         _controller: App\Controller\ColoniaController::uploadImageAction
         
 api_visitaCol_rmvImage:
-    path: '/api/visitas-coloniass/{id}/rmvImage/{idImg}'
+    path: '/api/visitas-colonias/{id}/rmvImage/{idImg}'
     methods: ['DELETE']
     defaults:
         _controller: App\Controller\ColoniaController::removeImageAction

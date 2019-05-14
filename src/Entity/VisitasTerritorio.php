@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -80,7 +82,7 @@ class VisitasTerritorio
     private $hora;
     
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\VisitaTerritorioImages", mappedBy="visita")
+     * @ORM\OneToMany(targetEntity="App\Entity\VisitaTerritorioImages", mappedBy="visita", cascade={"persist"})
      */
     private $visitaTerritorioImages;
 
