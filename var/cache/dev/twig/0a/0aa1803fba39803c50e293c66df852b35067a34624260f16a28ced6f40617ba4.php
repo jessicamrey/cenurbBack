@@ -259,6 +259,6 @@ class __TwigTemplate_c78e87f964830ae285a2c9c71521e14ffd9a9987c00c011f34a5ed1a582
 
 </body>
 </html>
-", "@ApiPlatform/SwaggerUi/index.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/api-platform/core/src/Bridge/Symfony/Bundle/Resources/views/SwaggerUi/index.html.twig");
+", "@ApiPlatform/SwaggerUi/index.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/api-platform/core/src/Bridge/Symfony/Bundle/Resources/views/SwaggerUi/index.html.twig");
     }
 }

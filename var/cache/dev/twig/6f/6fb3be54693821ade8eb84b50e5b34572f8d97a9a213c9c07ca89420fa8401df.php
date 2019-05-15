@@ -1242,6 +1242,6 @@ class __TwigTemplate_1be7754d4da054206a1d614ead7c1c433c1781cf5b3fe7d6bc9285e66c9
         </span>
     {%- endif %}
 {%- endblock form_errors %}
-", "bootstrap_4_layout.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/twig-bridge/Resources/views/Form/bootstrap_4_layout.html.twig");
+", "bootstrap_4_layout.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/twig-bridge/Resources/views/Form/bootstrap_4_layout.html.twig");
     }
 }

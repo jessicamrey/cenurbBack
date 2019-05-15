@@ -130,6 +130,6 @@ class __TwigTemplate_29bb1adefa0f0f11ed137ed1e52e3153f1522ca77b254e153fee81f1aac
 
 </body>
 </html>
-", "@ApiPlatform/Graphiql/index.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/api-platform/core/src/Bridge/Symfony/Bundle/Resources/views/Graphiql/index.html.twig");
+", "@ApiPlatform/Graphiql/index.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/api-platform/core/src/Bridge/Symfony/Bundle/Resources/views/Graphiql/index.html.twig");
     }
 }

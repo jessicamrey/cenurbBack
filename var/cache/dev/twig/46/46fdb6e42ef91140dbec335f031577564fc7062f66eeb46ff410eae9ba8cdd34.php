@@ -225,6 +225,6 @@ class __TwigTemplate_6c5ff1bfdc47f1bfc52669f6e56bf64529a8c795fad4efc8c84ed470a47
         </div>
     </form>
 </div>
-", "@WebProfiler/Profiler/search.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/search.html.twig");
+", "@WebProfiler/Profiler/search.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/search.html.twig");
     }
 }

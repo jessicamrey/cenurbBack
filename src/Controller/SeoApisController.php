@@ -245,6 +245,31 @@ class SeoApisController extends Controller{
             );
     }
     
+    public function allProvincias(Request $request)
+    {
+    	//abrimos el manager de Seo
+    	$entityManager = $this->getDoctrine()->getManager('seo');
+    
+    	$sql = "
+    	SELECT ID_PROV, DEN_PROV
+    	FROM tablas_seo.provincias
+    	";
+    
+    	$stmt = $entityManager->getConnection()->prepare($sql);
+    
+    	$stmt->execute();
+    	$array= new ArrayCollection();
+    	$array=$stmt->fetchAll();
+    
+    
+    
+    	return new Response(
+    			json_encode(  $array ) , 200, ['content-type' => 'text/html; charset=UTF-8']
+    	);
+    }
+    
+    
+    
     public function municipios(Request $request, $id) 
     {
         //abrimos el manager de Seo

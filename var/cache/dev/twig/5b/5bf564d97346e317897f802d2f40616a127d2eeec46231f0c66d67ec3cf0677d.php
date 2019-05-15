@@ -1168,6 +1168,6 @@ class __TwigTemplate_a856256dfbb32cbf80ea70971340c10e8d15112451eec6e81d47d54be0f
         </table>
     {% endif %}
 {% endblock %}
-", "@Security/Collector/security.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/security-bundle/Resources/views/Collector/security.html.twig");
+", "@Security/Collector/security.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/security-bundle/Resources/views/Collector/security.html.twig");
     }
 }

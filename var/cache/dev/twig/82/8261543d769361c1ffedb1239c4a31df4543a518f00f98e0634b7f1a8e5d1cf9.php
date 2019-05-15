@@ -77,6 +77,6 @@ class __TwigTemplate_ff8ae4f352787f7f0d65b9040d987489bd425e4abd65a9754112949c14b
 {{ status_code }} {{ status_text }}
 
 */
-", "@Twig/Exception/error.js.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/twig-bundle/Resources/views/Exception/error.js.twig");
+", "@Twig/Exception/error.js.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/twig-bundle/Resources/views/Exception/error.js.twig");
     }
 }

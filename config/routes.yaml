@@ -49,6 +49,12 @@ api_provincias:
     methods: ['GET']
     defaults:
         _controller: App\Controller\SeoApisController::provincias
+        
+api_all_provincias:
+    path: '/api/provincias'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\SeoApisController::allProvincias
 
 api_municipios:
     path: '/api/municipios/{id}'

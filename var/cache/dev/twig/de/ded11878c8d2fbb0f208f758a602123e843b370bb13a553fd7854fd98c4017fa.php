@@ -246,6 +246,6 @@ class __TwigTemplate_e13086340d52eb75f474d9316714e99769cdb07955df79f726dd541fde9
         {{- form_rest(form) -}}
     </table>
 {%- endblock form_widget_compound -%}
-", "form_table_layout.html.twig", "/home/jessica/Escritorio/lastBack/cenurbBack/vendor/symfony/twig-bridge/Resources/views/Form/form_table_layout.html.twig");
+", "form_table_layout.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/twig-bridge/Resources/views/Form/form_table_layout.html.twig");
     }
 }
