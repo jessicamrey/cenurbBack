@@ -15,7 +15,6 @@ namespace ApiPlatform\Core\Tests\Hal\Serializer;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use ApiPlatform\Core\Api\ResourceClassResolverInterface;
-use ApiPlatform\Core\Exception\RuntimeException;
 use ApiPlatform\Core\Hal\Serializer\ItemNormalizer;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyNameCollectionFactoryInterface;
@@ -28,6 +27,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
@@ -41,9 +41,13 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ItemNormalizerTest extends TestCase
 {
+    /**
+     * @group legacy
+     */
     public function testDoesNotSupportDenormalization()
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('jsonhal is a read-only format.');
 
         $propertyNameCollectionFactoryProphecy = $this->prophesize(PropertyNameCollectionFactoryInterface::class);
         $propertyMetadataFactoryProphecy = $this->prophesize(PropertyMetadataFactoryInterface::class);
@@ -64,6 +68,9 @@ class ItemNormalizerTest extends TestCase
         $normalizer->denormalize(['foo'], 'Foo');
     }
 
+    /**
+     * @group legacy
+     */
     public function testSupportsNormalization()
     {
         $std = new \stdClass();
@@ -92,6 +99,7 @@ class ItemNormalizerTest extends TestCase
         $this->assertTrue($normalizer->supportsNormalization($dummy, 'jsonhal'));
         $this->assertFalse($normalizer->supportsNormalization($dummy, 'xml'));
         $this->assertFalse($normalizer->supportsNormalization($std, 'jsonhal'));
+        $this->assertTrue($normalizer->hasCacheableSupportsMethod());
     }
 
     public function testNormalize()
@@ -127,8 +135,8 @@ class ItemNormalizerTest extends TestCase
         $serializerProphecy->normalize('hello', null, Argument::type('array'))->willReturn('hello')->shouldBeCalled();
 
         $nameConverter = $this->prophesize(NameConverterInterface::class);
-        $nameConverter->normalize('name')->shouldBeCalled()->willReturn('name');
-        $nameConverter->normalize('relatedDummy')->shouldBeCalled()->willReturn('related_dummy');
+        $nameConverter->normalize('name', Argument::any(), Argument::any(), Argument::any())->shouldBeCalled()->willReturn('name');
+        $nameConverter->normalize('relatedDummy', Argument::any(), Argument::any(), Argument::any())->shouldBeCalled()->willReturn('related_dummy');
 
         $normalizer = new ItemNormalizer(
             $propertyNameCollectionFactoryProphecy->reveal(),
@@ -136,7 +144,13 @@ class ItemNormalizerTest extends TestCase
             $iriConverterProphecy->reveal(),
             $resourceClassResolverProphecy->reveal(),
             null,
-            $nameConverter->reveal()
+            $nameConverter->reveal(),
+            null,
+            null,
+            false,
+            [],
+            [],
+            null
         );
         $normalizer->setSerializer($serializerProphecy->reveal());
 
@@ -187,8 +201,8 @@ class ItemNormalizerTest extends TestCase
         $serializerProphecy->normalize('hello', null, Argument::type('array'))->willReturn('hello')->shouldBeCalled();
 
         $nameConverter = $this->prophesize(NameConverterInterface::class);
-        $nameConverter->normalize('name')->shouldBeCalled()->willReturn('name');
-        $nameConverter->normalize('relatedDummy')->shouldBeCalled()->willReturn('related_dummy');
+        $nameConverter->normalize('name', Argument::any(), Argument::any(), Argument::any())->shouldBeCalled()->willReturn('name');
+        $nameConverter->normalize('relatedDummy', Argument::any(), Argument::any(), Argument::any())->shouldBeCalled()->willReturn('related_dummy');
 
         $normalizer = new ItemNormalizer(
             $propertyNameCollectionFactoryProphecy->reveal(),
@@ -196,7 +210,13 @@ class ItemNormalizerTest extends TestCase
             $iriConverterProphecy->reveal(),
             $resourceClassResolverProphecy->reveal(),
             null,
-            $nameConverter->reveal()
+            $nameConverter->reveal(),
+            null,
+            null,
+            false,
+            [],
+            [],
+            null
         );
         $normalizer->setSerializer($serializerProphecy->reveal());
 
@@ -270,7 +290,12 @@ class ItemNormalizerTest extends TestCase
             $resourceClassResolverProphecy->reveal(),
             null,
             null,
-            $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()))
+            $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader())),
+            null,
+            false,
+            [],
+            [],
+            null
         );
         $serializer = new Serializer([$normalizer]);
         $normalizer->setSerializer($serializer);

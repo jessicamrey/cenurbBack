@@ -48,9 +48,11 @@ final class ExtractorPropertyMetadataFactory implements PropertyMetadataFactoryI
             }
         }
 
+        $isInterface = interface_exists($resourceClass);
+
         if (
-            !property_exists($resourceClass, $property) ||
-            !$propertyMetadata = $this->extractor->getResources()[$resourceClass]['properties'][$property] ?? false
+            !property_exists($resourceClass, $property) && !$isInterface ||
+            null === ($propertyMetadata = $this->extractor->getResources()[$resourceClass]['properties'][$property] ?? null)
         ) {
             return $this->handleNotFound($parentPropertyMetadata, $resourceClass, $property);
         }
@@ -77,15 +79,9 @@ final class ExtractorPropertyMetadataFactory implements PropertyMetadataFactoryI
     /**
      * Returns the metadata from the decorated factory if available or throws an exception.
      *
-     * @param PropertyMetadata|null $parentPropertyMetadata
-     * @param string                $resourceClass
-     * @param string                $property
-     *
      * @throws PropertyNotFoundException
-     *
-     * @return PropertyMetadata
      */
-    private function handleNotFound(PropertyMetadata $parentPropertyMetadata = null, string $resourceClass, string $property): PropertyMetadata
+    private function handleNotFound(?PropertyMetadata $parentPropertyMetadata, string $resourceClass, string $property): PropertyMetadata
     {
         if ($parentPropertyMetadata) {
             return $parentPropertyMetadata;
@@ -96,11 +92,6 @@ final class ExtractorPropertyMetadataFactory implements PropertyMetadataFactoryI
 
     /**
      * Creates a new instance of metadata if the property is not already set.
-     *
-     * @param PropertyMetadata $propertyMetadata
-     * @param array            $metadata
-     *
-     * @return PropertyMetadata
      */
     private function update(PropertyMetadata $propertyMetadata, array $metadata): PropertyMetadata
     {
@@ -117,11 +108,15 @@ final class ExtractorPropertyMetadataFactory implements PropertyMetadataFactoryI
         ];
 
         foreach ($metadataAccessors as $metadataKey => $accessorPrefix) {
-            if (null === $metadata[$metadataKey] || null !== $propertyMetadata->{$accessorPrefix.ucfirst($metadataKey)}()) {
+            if (null === $metadata[$metadataKey]) {
                 continue;
             }
 
             $propertyMetadata = $propertyMetadata->{'with'.ucfirst($metadataKey)}($metadata[$metadataKey]);
+        }
+
+        if ($propertyMetadata->hasSubresource()) {
+            return $propertyMetadata;
         }
 
         return $propertyMetadata->withSubresource($this->createSubresourceMetadata($metadata['subresource'], $propertyMetadata));
@@ -130,24 +125,22 @@ final class ExtractorPropertyMetadataFactory implements PropertyMetadataFactoryI
     /**
      * Creates a SubresourceMetadata.
      *
-     * @param bool|null|array  $subresource      the subresource metadata coming from XML or YAML
+     * @param bool|array|null  $subresource      the subresource metadata coming from XML or YAML
      * @param PropertyMetadata $propertyMetadata the current property metadata
-     *
-     * @return SubresourceMetadata|null
      */
-    private function createSubresourceMetadata($subresource, PropertyMetadata $propertyMetadata)
+    private function createSubresourceMetadata($subresource, PropertyMetadata $propertyMetadata): ?SubresourceMetadata
     {
         if (!$subresource) {
             return null;
         }
 
         $type = $propertyMetadata->getType();
-        $maxDepth = $subresource['maxDepth'] ?? null;
+        $maxDepth = \is_array($subresource) ? $subresource['maxDepth'] ?? null : null;
 
         if (null !== $type) {
             $isCollection = $type->isCollection();
-            $resourceClass = $isCollection ? $type->getCollectionValueType()->getClassName() : $type->getClassName();
-        } elseif (isset($subresource['resourceClass'])) {
+            $resourceClass = $isCollection && ($collectionValueType = $type->getCollectionValueType()) ? $collectionValueType->getClassName() : $type->getClassName();
+        } elseif (\is_array($subresource) && isset($subresource['resourceClass'])) {
             $resourceClass = $subresource['resourceClass'];
             $isCollection = $subresource['collection'] ?? true;
         } else {

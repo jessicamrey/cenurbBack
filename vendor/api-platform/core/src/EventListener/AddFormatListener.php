@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Core\EventListener;
 
+use ApiPlatform\Core\Api\FormatMatcher;
+use ApiPlatform\Core\Api\FormatsProviderInterface;
+use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Core\Util\RequestAttributesExtractor;
 use Negotiation\Negotiator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -20,36 +24,53 @@ use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Chooses the format to user according to the Accept header and supported formats.
+ * Chooses the format to use according to the Accept header and supported formats.
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
 final class AddFormatListener
 {
     private $negotiator;
-    private $formats;
+    private $formats = [];
     private $mimeTypes;
+    private $formatsProvider;
+    private $formatMatcher;
 
-    public function __construct(Negotiator $negotiator, array $formats)
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function __construct(Negotiator $negotiator, /* FormatsProviderInterface */ $formatsProvider)
     {
         $this->negotiator = $negotiator;
-        $this->formats = $formats;
+        if (\is_array($formatsProvider)) {
+            @trigger_error('Using an array as formats provider is deprecated since API Platform 2.3 and will not be possible anymore in API Platform 3', E_USER_DEPRECATED);
+            $this->formats = $formatsProvider;
+        } else {
+            if (!$formatsProvider instanceof FormatsProviderInterface) {
+                throw new InvalidArgumentException(sprintf('The "$formatsProvider" argument is expected to be an implementation of the "%s" interface.', FormatsProviderInterface::class));
+            }
+
+            $this->formatsProvider = $formatsProvider;
+        }
     }
 
     /**
      * Sets the applicable format to the HttpFoundation Request.
      *
-     * @param GetResponseEvent $event
-     *
      * @throws NotFoundHttpException
      * @throws NotAcceptableHttpException
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         $request = $event->getRequest();
-        if (!$request->attributes->has('_api_resource_class') && !$request->attributes->has('_api_respond') && !$request->attributes->has('_graphql')) {
+        if (!($request->attributes->has('_api_resource_class') || $request->attributes->getBoolean('_api_respond', false) || $request->attributes->getBoolean('_graphql', false))) {
             return;
         }
+        // BC check to be removed in 3.0
+        if (null !== $this->formatsProvider) {
+            $this->formats = $this->formatsProvider->getFormatsFromAttributes(RequestAttributesExtractor::extractAttributes($request));
+        }
+        $this->formatMatcher = new FormatMatcher($this->formats);
 
         $this->populateMimeTypes();
         $this->addRequestFormats($request, $this->formats);
@@ -64,13 +85,14 @@ final class AddFormatListener
         }
 
         // First, try to guess the format from the Accept header
+        /** @var string|null $accept */
         $accept = $request->headers->get('Accept');
         if (null !== $accept) {
-            if (null === $acceptHeader = $this->negotiator->getBest($accept, $mimeTypes)) {
+            if (null === $mediaType = $this->negotiator->getBest($accept, $mimeTypes)) {
                 throw $this->getNotAcceptableHttpException($accept, $mimeTypes);
             }
 
-            $request->setRequestFormat($request->getFormat($acceptHeader->getType()));
+            $request->setRequestFormat($this->formatMatcher->getFormat($mediaType->getType()));
 
             return;
         }
@@ -96,22 +118,21 @@ final class AddFormatListener
     }
 
     /**
-     * Adds API formats to the HttpFoundation Request.
+     * Adds the supported formats to the request.
      *
-     * @param Request $request
-     * @param array   $formats
+     * This is necessary for {@see Request::getMimeType} and {@see Request::getMimeTypes} to work.
      */
-    private function addRequestFormats(Request $request, array $formats)
+    private function addRequestFormats(Request $request, array $formats): void
     {
         foreach ($formats as $format => $mimeTypes) {
-            $request->setFormat($format, $mimeTypes);
+            $request->setFormat($format, (array) $mimeTypes);
         }
     }
 
     /**
      * Populates the $mimeTypes property.
      */
-    private function populateMimeTypes()
+    private function populateMimeTypes(): void
     {
         if (null !== $this->mimeTypes) {
             return;
@@ -128,10 +149,7 @@ final class AddFormatListener
     /**
      * Retrieves an instance of NotAcceptableHttpException.
      *
-     * @param string        $accept
      * @param string[]|null $mimeTypes
-     *
-     * @return NotAcceptableHttpException
      */
     private function getNotAcceptableHttpException(string $accept, array $mimeTypes = null): NotAcceptableHttpException
     {

@@ -13,7 +13,12 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Core\EventListener;
 
+use ApiPlatform\Core\Api\IriConverterInterface;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
+use ApiPlatform\Core\Metadata\Resource\ToggleableOperationAttributeTrait;
+use ApiPlatform\Core\Util\RequestAttributesExtractor;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 
 /**
@@ -24,25 +29,40 @@ use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
  */
 final class WriteListener
 {
-    private $dataPersister;
+    use ToggleableOperationAttributeTrait;
 
-    public function __construct(DataPersisterInterface $dataPersister)
+    public const OPERATION_ATTRIBUTE_KEY = 'write';
+
+    private $dataPersister;
+    private $iriConverter;
+    private $resourceMetadataFactory;
+
+    public function __construct(DataPersisterInterface $dataPersister, IriConverterInterface $iriConverter = null, ResourceMetadataFactoryInterface $resourceMetadataFactory = null)
     {
         $this->dataPersister = $dataPersister;
+        $this->iriConverter = $iriConverter;
+        $this->resourceMetadataFactory = $resourceMetadataFactory;
     }
 
     /**
      * Persists, updates or delete data return by the controller if applicable.
      */
-    public function onKernelView(GetResponseForControllerResultEvent $event)
+    public function onKernelView(GetResponseForControllerResultEvent $event): void
     {
+        $controllerResult = $event->getControllerResult();
         $request = $event->getRequest();
-        if ($request->isMethodSafe(false) || !$request->attributes->has('_api_resource_class')) {
+
+        if (
+            $controllerResult instanceof Response
+            || $request->isMethodSafe(false)
+            || !($attributes = RequestAttributesExtractor::extractAttributes($request))
+            || !$attributes['persist']
+            || $this->isOperationAttributeDisabled($attributes, self::OPERATION_ATTRIBUTE_KEY)
+        ) {
             return;
         }
 
-        $controllerResult = $event->getControllerResult();
-        if (!$this->dataPersister->supports($controllerResult)) {
+        if (!$this->dataPersister->supports($controllerResult, $attributes)) {
             return;
         }
 
@@ -50,8 +70,30 @@ final class WriteListener
             case 'PUT':
             case 'PATCH':
             case 'POST':
-                $this->dataPersister->persist($controllerResult);
-                break;
+                $persistResult = $this->dataPersister->persist($controllerResult, $attributes);
+
+                if (null === $persistResult) {
+                    @trigger_error(sprintf('Returning void from %s::persist() is deprecated since API Platform 2.3 and will not be supported in API Platform 3, an object should always be returned.', DataPersisterInterface::class), E_USER_DEPRECATED);
+                } else {
+                    $controllerResult = $persistResult;
+                    $event->setControllerResult($controllerResult);
+                }
+
+                if (null === $this->iriConverter) {
+                    return;
+                }
+
+                $hasOutput = true;
+                if (null !== $this->resourceMetadataFactory) {
+                    $resourceMetadata = $this->resourceMetadataFactory->create($attributes['resource_class']);
+                    $outputMetadata = $resourceMetadata->getOperationAttribute($attributes, 'output', ['class' => $attributes['resource_class']], true);
+                    $hasOutput = \array_key_exists('class', $outputMetadata) && null !== $outputMetadata['class'] && $controllerResult instanceof $outputMetadata['class'];
+                }
+
+                if ($hasOutput) {
+                    $request->attributes->set('_api_write_item_iri', $this->iriConverter->getIriFromItem($controllerResult));
+                }
+            break;
             case 'DELETE':
                 $this->dataPersister->remove($controllerResult);
                 $event->setControllerResult(null);

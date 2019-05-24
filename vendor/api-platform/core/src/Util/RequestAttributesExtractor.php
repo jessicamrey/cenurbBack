@@ -19,8 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
  * Extracts data used by the library form a Request instance.
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
- *
- * @internal
  */
 final class RequestAttributesExtractor
 {
@@ -31,12 +29,8 @@ final class RequestAttributesExtractor
     /**
      * Extracts resource class, operation name and format request attributes. Returns an empty array if the request does
      * not contain required attributes.
-     *
-     * @param Request $request
-     *
-     * @return array
      */
-    public static function extractAttributes(Request $request)
+    public static function extractAttributes(Request $request): array
     {
         return AttributesExtractor::extractAttributes($request->attributes->all());
     }

@@ -11,15 +11,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the API Platform project.
- *
- * (c) Kévin Dunglas <dunglas@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace ApiPlatform\Core\GraphQl\Resolver;
 
 use ApiPlatform\Core\Metadata\Resource\ResourceMetadata;
@@ -37,11 +28,11 @@ use GraphQL\Type\Definition\ResolveInfo;
 trait ResourceAccessCheckerTrait
 {
     /**
-     * @param mixed $object
+     * @param mixed|null $object
      *
      * @throws Error
      */
-    public function canAccess(ResourceAccessCheckerInterface $resourceAccessChecker = null, ResourceMetadata $resourceMetadata, string $resourceClass, ResolveInfo $info, $object = null, string $operationName = null)
+    public function canAccess(?ResourceAccessCheckerInterface $resourceAccessChecker, ResourceMetadata $resourceMetadata, string $resourceClass, ResolveInfo $info, $object = null, string $operationName = null): void
     {
         if (null === $resourceAccessChecker) {
             return;
@@ -52,6 +43,6 @@ trait ResourceAccessCheckerTrait
             return;
         }
 
-        throw Error::createLocatedError('Access Denied.', $info->fieldNodes, $info->path);
+        throw Error::createLocatedError($resourceMetadata->getGraphqlAttribute($operationName ?? '', 'access_control_message', 'Access Denied.'), $info->fieldNodes, $info->path);
     }
 }

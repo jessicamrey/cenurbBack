@@ -67,7 +67,7 @@ abstract class FileValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
+     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedValueException
      */
     public function testExpectsStringCompatibleTypeOrFile()
     {
@@ -83,7 +83,8 @@ abstract class FileValidatorTest extends ConstraintValidatorTestCase
 
     public function testValidUploadedfile()
     {
-        $file = new UploadedFile($this->path, 'originalName', null, null, null, true);
+        file_put_contents($this->path, '1');
+        $file = new UploadedFile($this->path, 'originalName', null, null, true);
         $this->validator->validate($file, new File());
 
         $this->assertNoViolation();
@@ -176,6 +177,7 @@ abstract class FileValidatorTest extends ConstraintValidatorTestCase
             ->setParameter('{{ size }}', $sizeAsString)
             ->setParameter('{{ suffix }}', $suffix)
             ->setParameter('{{ file }}', '"'.$this->path.'"')
+            ->setParameter('{{ name }}', '"'.basename($this->path).'"')
             ->setCode(File::TOO_LARGE_ERROR)
             ->assertRaised();
     }
@@ -278,6 +280,7 @@ abstract class FileValidatorTest extends ConstraintValidatorTestCase
             ->setParameter('{{ size }}', $sizeAsString)
             ->setParameter('{{ suffix }}', $suffix)
             ->setParameter('{{ file }}', '"'.$this->path.'"')
+            ->setParameter('{{ name }}', '"'.basename($this->path).'"')
             ->setCode(File::TOO_LARGE_ERROR)
             ->assertRaised();
     }
@@ -356,6 +359,7 @@ abstract class FileValidatorTest extends ConstraintValidatorTestCase
             ->setParameter('{{ type }}', '"application/pdf"')
             ->setParameter('{{ types }}', '"image/png", "image/jpg"')
             ->setParameter('{{ file }}', '"'.$this->path.'"')
+            ->setParameter('{{ name }}', '"'.basename($this->path).'"')
             ->setCode(File::INVALID_MIME_TYPE_ERROR)
             ->assertRaised();
     }
@@ -386,6 +390,7 @@ abstract class FileValidatorTest extends ConstraintValidatorTestCase
             ->setParameter('{{ type }}', '"application/pdf"')
             ->setParameter('{{ types }}', '"image/*", "image/jpg"')
             ->setParameter('{{ file }}', '"'.$this->path.'"')
+            ->setParameter('{{ name }}', '"'.basename($this->path).'"')
             ->setCode(File::INVALID_MIME_TYPE_ERROR)
             ->assertRaised();
     }
@@ -402,6 +407,7 @@ abstract class FileValidatorTest extends ConstraintValidatorTestCase
 
         $this->buildViolation('myMessage')
             ->setParameter('{{ file }}', '"'.$this->path.'"')
+            ->setParameter('{{ name }}', '"'.basename($this->path).'"')
             ->setCode(File::EMPTY_ERROR)
             ->assertRaised();
     }
@@ -411,7 +417,7 @@ abstract class FileValidatorTest extends ConstraintValidatorTestCase
      */
     public function testUploadedFileError($error, $message, array $params = [], $maxSize = null)
     {
-        $file = new UploadedFile('/path/to/file', 'originalName', 'mime', 0, $error);
+        $file = new UploadedFile(tempnam(sys_get_temp_dir(), 'file-validator-test-'), 'originalName', 'mime', $error);
 
         $constraint = new File([
             $message => 'myMessage',

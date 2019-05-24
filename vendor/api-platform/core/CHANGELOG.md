@@ -1,8 +1,238 @@
 # Changelog
 
+## 2.4.3
+
+* Doctrine: allow autowiring of filter classes
+* Doctrine: don't use `fetchJoinCollection` on `Paginator` when not needed
+* Doctrine: fix a BC break in `OrderFilter`
+* GraphQL: input objects aren't nullable anymore (compliance with the Relay spec)
+* Cache: Remove some useless purges
+* Mercure: publish to Mercure using the default response format
+* Mercure: use the Serializer context
+* OpenAPI: fix documentation of the `PropertyFilter`
+* OpenAPI: fix generation of the `servers` block (also fixes the compatibility with Postman)
+* OpenAPI: skip not readable and not writable properties from the spec
+* OpenAPI: add the `id` path parameter for POST item operation
+* Serializer: add support for Symfony Serializer's `@SerializedName` metadata
+* Metadata: `ApiResource`'s `attributes` property now defaults to `null`, as expected
+* Metadata: Fix identifier support when using an interface as resource class
+* Metadata: the HTTP method is now always uppercased
+* Allow to disable listeners per operation (fix handling of empty request content)
+* Return the `204` HTTP status code when the output class is set to `null`
+* Be more resilient when normalizing non-resource objects
+* Replace the `data` request attribute by the return of the data persister
+* Fix error message in identifiers extractor
+* Improve the bundle's default configuration when using `symfony/symfony` is required
+
+## 2.4.2
+
+* Fix a dependency injection injection problem in `FilterEagerLoadingExtension`
+* Improve performance by adding a `NoOpScalarNormalizer` handling scalar values
+
+## 2.4.1
+
+* Improve performance of the dev environment and deprecate the `api_platform.metadata_cache` parameter
+* Fix a BC break in `SearchFilter`
+* Don't send HTTP cache headers for unsuccessful responses
+* GraphQL: parse input and messenger metadata on the GraphQl operation
+* GraphQL: do not enable graphql when `webonyx/graphql-php` is not installed
+
+## 2.4.0
+
+* Listeners are now opt-in when not handling API Platform operations
+* `DISTINCT` is not used when there are no joins
+* Preserve manual join in FilterEagerLoadingExtension
+* The `elasticsearch` attribute can be disabled resource-wise or per-operation
+* The `messenger` attribute can now take the `input` string as a value (`messenger="input"`). This will use a default transformer so that the given `input` is directly sent to the messenger handler.
+* The `messenger` attribute can be declared per-operation
+* Mercure updates are now published after the Doctrine flush event instead of on `kernel.terminate`, so the Mercure and the Messenger integration can be used together
+* Use Symfony's MetadataAwareNameConverter when available
+* Change the extension's priorities (`<0`) for improved compatibility with Symfony's autoconfiguration feature. If you have custom extensions we recommend to use positive priorities.
+
+| Service name                                               | Priority | Class                                              |
+|------------------------------------------------------------|------|---------------------------------------------------------|
+| api_platform.doctrine.orm.query_extension.eager_loading (collection) | -8 | ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\EagerLoadingExtension |
+| api_platform.doctrine.orm.query_extension.eager_loading (item) | -8 | ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\EagerLoadingExtension |
+| api_platform.doctrine.orm.query_extension.filter | -16 | ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\FilterExtension |
+| api_platform.doctrine.orm.query_extension.filter_eager_loading | -17 | ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\FilterEagerLoadingExtension |
+| api_platform.doctrine.orm.query_extension.order | -32 | ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\OrderExtension |
+| api_platform.doctrine.orm.query_extension.pagination | -64 | ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\PaginationExtension |
+
+* Fix JSON-LD contexts when using output classes
+* GraphQl: Fix pagination (the `endCursor` behavior was wrong)
+* GraphQl: Improve output/input behavior
+* GraphQl: Improve mutations (make the `clientMutationId` nullable and return mutation payload as an object)
+* MongoDB: Fix search filter when searching by related collection id
+* MongoDB: Fix numeric and range filters
+
+## 2.4.0 beta 2
+
+* Fix version constraints for Doctrine MongoDB ODM
+* Respect `_api_respond` request attribute in the SerializeListener
+* Change the normalizer's priorities (`< 0`). If you have custom normalizer we recommend to use positive priorities.
+
+| Service name                                               | Priority | Class                                              |
+|------------------------------------------------------------|------|---------------------------------------------------------|
+| api_platform.hydra.normalizer.constraint_violation_list   | -780 | ApiPlatform\Core\Hydra\Serializer\ConstraintViolationListNormalizer
+| api_platform.jsonapi.normalizer.constraint_violation_list | -780 | ApiPlatform\Core\JsonApi\Serializer\ConstraintViolationListNormalizer
+| api_platform.problem.normalizer.constraint_violation_list | -780 | ApiPlatform\Core\Problem\Serializer\ConstraintViolationListNormalizer
+| api_platform.swagger.normalizer.api_gateway               | -780 | ApiPlatform\Core\Swagger\Serializer\ApiGatewayNormalizer
+| api_platform.hal.normalizer.collection                    | -790 | ApiPlatform\Core\Hal\Serializer\CollectionNormalizer
+| api_platform.hydra.normalizer.collection_filters          | -790 | ApiPlatform\Core\Hydra\Serializer\CollectionFiltersNormalizer
+| api_platform.jsonapi.normalizer.collection                | -790 | ApiPlatform\Core\JsonApi\Serializer\CollectionNormalizer
+| api_platform.jsonapi.normalizer.error                     | -790 | ApiPlatform\Core\JsonApi\Serializer\ErrorNormalizer
+| api_platform.hal.normalizer.entrypoint                    | -800 | ApiPlatform\Core\Hal\Serializer\EntrypointNormalizer
+| api_platform.hydra.normalizer.documentation               | -800 | ApiPlatform\Core\Hydra\Serializer\DocumentationNormalizer
+| api_platform.hydra.normalizer.entrypoint                  | -800 | ApiPlatform\Core\Hydra\Serializer\EntrypointNormalizer
+| api_platform.hydra.normalizer.error                       | -800 | ApiPlatform\Core\Hydra\Serializer\ErrorNormalizer
+| api_platform.jsonapi.normalizer.entrypoint                | -800 | ApiPlatform\Core\JsonApi\Serializer\EntrypointNormalizer
+| api_platform.problem.normalizer.error                     | -810 | ApiPlatform\Core\Problem\Serializer\ErrorNormalizer
+| serializer.normalizer.json_serializable                   | -900 | Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer
+| serializer.normalizer.datetime                            | -910 | Symfony\Component\Serializer\Normalizer\DateTimeNormalizer
+| serializer.normalizer.constraint_violation_list           | -915 | Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer
+| serializer.normalizer.dateinterval                        | -915 | Symfony\Component\Serializer\Normalizer\DateIntervalNormalizer
+| serializer.normalizer.data_uri                            | -920 | Symfony\Component\Serializer\Normalizer\DataUriNormalizer
+| api_platform.graphql.normalizer.item                      | -922 | ApiPlatform\Core\GraphQl\Serializer\ItemNormalizer
+| api_platform.hal.normalizer.item                          | -922 | ApiPlatform\Core\Hal\Serializer\ItemNormalizer
+| api_platform.jsonapi.normalizer.item                      | -922 | ApiPlatform\Core\JsonApi\Serializer\ItemNormalizer
+| api_platform.jsonld.normalizer.item                       | -922 | ApiPlatform\Core\JsonLd\Serializer\ItemNormalizer
+| api_platform.serializer.normalizer.item                   | -923 | ApiPlatform\Core\Serializer\ItemNormalizer
+| serializer.normalizer.object                              | -1000 | Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+
+* Allow custom stylesheets to be appended or replaced in the swagger UI
+* Load messenger only if available
+* Fix missing metadata cache pool for Elasticsearch
+* Make use of the new AdvancedNameConverterInterface interface for name converters
+* Refactor input/output attributes, where these attributes now take:
+  - an array specifying a class and some specific attributes (`name` and `iri` if needed)
+  - a string representing the class
+  - a `falsy` boolean to disable the input/output
+* Introduce the DataTransformer concept to transform an input/output from/to a resource
+* Api Platform normalizer is not limited to Resources anymore (you can use DTO as relations and more...)
+* MongoDB: allow a `0` limit in the pagination
+* Fix support of a discriminator mapping in an entity
+
+## 2.4.0 beta 1
+
+* MongoDB: full support
+* Elasticsearch: add reading support (including pagination, sort filter and term filter)
+* Mercure: automatically push updates to clients using the [Mercure](https://mercure.rocks) protocol
+* CQRS support and async message handling using the Symfony Messenger Component
+* OpenAPI: add support for OpenAPI v3 in addition to OpenAPI v2
+* OpenAPI: support generating documentation using [ReDoc](https://github.com/Rebilly/ReDoc)
+* OpenAPI: basic hypermedia hints using OpenAPI v3 links
+* OpenAPI: expose the pagination controls
+* Allow to use custom classes for input and output (DTO) with the `input_class` and `output_class` attributes
+* Allow to disable the input or the output by setting `input_class` and `output_class` to false
+* Guess and automatically set the appropriate Schema.org IRIs for common validation constraints
+* Allow to set custom cache HTTP headers using the `cache_headers` attribute
+* Allow to set the HTTP status code to send to the client through the `status` attribute
+* Add support for the `Sunset` HTTP header using the `sunset` attribute
+* Set the `Content-Location` and `Location` headers when appropriate for better RFC7231 conformance
+* Display the matching data provider and data persiter in the debug panel
+* GraphQL: improve performance by lazy loading types
+* Add the `api_persist` request attribute to enable or disable the `WriteListener`
+* Allow to set a default context in all normalizers
+* Permit to use a string instead of an array when there is only one serialization group
+* Add support for setting relations using the constructor of the resource classes
+* Automatically set a [409 Conflict](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409) HTTP status code when an `OptimisticLockException` is thrown
+* Resolve Dependency Injection Container parameters in the XML and YAML files for the resource class configuration
+* `RequestAttributesExtractor` is not internal anymore and can be used in userland code
+* Always use the user-defined metadata when set
+* OpenAPI: add a description explaining how to use the property filter
+* GraphQL: the look'n'feel of GraphiQL now match the API Platform one
+* PHPStan level 6 compliance
+* Add a `show_webby` configuration option to hide the spider in API docs
+* Add an easter egg (find it!)
+
+## 2.3.6
+
+* /!\ Security: a vulnerability impacting the GraphQL subsystem was allowing users authorized to run mutations for a specific resource type, to execute it on any resource, of any type (CVE-2019-1000011)
+* Fix normalization of raw collections (not API resources)
+* Fix content negotiation format matching
+
+## 2.3.5
+
+* GraphQL: compatibility with `webonyx/graphql-php` 0.13
+* OpenAPI/Swagger: expose `properties[]` as a collection parameter
+* OpenAPI/Swagger: add a description for the `properties[]` filter
+* OpenAPI/Swagger: Leverage advanced name converters
+* JSON-LD: Prevent an error in `ItemNormalizer` when `$context['resource_class']` is not defined
+* Allow to pass a the serialization group to use a string instead of as an array of one element
+* Modernize the code base to use PHP 7.1 features when possible
+* Bump minimal dependencies of the used Symfony components
+* Improve the Packagist description
+
+## 2.3.4
+
+* Open API/Swagger: fix YAML export
+* Open API/Swagger: Correctly expose overridden formats
+* GraphQL: display the stack trace when in debug mode
+* GraphQL: prevent a crash when the class name isn't provided
+* Fix handling of one-to-one relations in subresources
+* Fix max depth handling when eager fetching is disabled
+* Compatibility with Symfony 4.2
+* Prevent calling the remove method from all data persisters
+* Persist Doctrine entities with the `DEFERRED_EXPLICIT` change tracking policy
+* Throw an `InvalidArgumentException` when trying to get an item from a collection route
+* Improve the debug bar panel visibility
+* Take into account the `route_prefix` attribute in subresources
+* Allow to use multiple values with `NumericFilter`
+* Improve exception handling in `ReadListener` by adding the previous exception
+
+## 2.3.3
+
+* Doctrine: revert "prevent data duplication in Eager loaded relations"
+
+## 2.3.2
+
+* Open API/Swagger: detect correctly collection parameters
+* Open API/Swagger: fix serialization of nested objects when exporting as YAML
+* GraphQL: fix support of properties also mapped as subresources
+* GraphQL: fix retrieving the internal `_id` when `id` is not part of the requested fields
+* GraphQL: only exposes the mutations if any
+* Doctrine: prevent data duplication in Eager loaded relations
+* Preserve the host in the internal router
+
+## 2.3.1
+
+* Data persisters: call only the 1st matching data persister, this fix may break existing code, see https://github.com/api-platform/docs/issues/540#issuecomment-405945358
+* Subresources: fix inverse side population
+* Subresources: add subresources collections to cache tags
+* Subresources: fix Doctrine identifier parameter type detection
+* Subresources: fix max depth handling
+* GraphQL: send a 200 HTTP status code when a GraphQL response contain some errors
+* GraphQL: fix filters to allow dealing with multiple values
+* GraphQL: remove invalid and useless parameters from the GraphQL schema
+* GraphQL: use the collection resolver in mutations
+* JSON API: remove duplicate data from includes
+* Filters: fix composite keys support
+* Filters: fix the `OrderFilter` when applied on nested entities
+* List Doctrine Inflector as a hard dependency
+* Various quality and usability improvements
+
+## 2.3.0
+
+* Add support for deprecating resources, operations and fields in GraphQL, Hydra and Swagger
+* Add API Platform panels in the Symfony profiler and in the web debug toolbar
+* Make resource class's constructor parameters writable
+* Add support for interface as a resource
+* Add a shortcut syntax to define attributes at the root of `@ApiResource` and `@ApiProperty` annotations
+* Throw an exception if a required filter isn't set
+* Allow to specify the message when access is denied using the `access_control_message` attribute
+* Add a new option to include null results when using the date filter
+* Allow data persisters to return a new instance instead of mutating the existing one
+* Add a new attribute to configure specific formats per resources or operations
+* Add an `--output` option to the `api:swagger:export` command
+* Implement the `CacheableSupportsMethodInterface` introduced in Symfony 4.1 in all (de)normalizers (improves the performance dramatically)
+* Drop support for PHP 7.0
+* Upgrade Swagger UI and GraphiQL
+* GraphQL: Add a `totalCount` field in GraphQL paginated collections
+* JSONAPI: Allow inclusion of related resources
+
 ## 2.2.10
 
-* /!\ Security: a vulnerability impacting the GraphQL subsystem was allowing users authorized to run mutations for a specific resource type, to execute it on any resource, of any type
+* /!\ Security: a vulnerability impacting the GraphQL subsystem was allowing users authorized to run mutations for a specific resource type, to execute it on any resource, of any type (CVE-2019-1000011)
 
 ## 2.2.9
 
@@ -85,7 +315,7 @@
 
 ## 2.2.2
 
-* Autoregister classes implementing `SubresourceDataProviderInterface` 
+* Autoregister classes implementing `SubresourceDataProviderInterface`
 * Fix the `DateTimeImmutable` support in the date filter
 * Fix a BC break in `DocumentationAction` impacting NelmioApiDoc
 * Fix the context passed to data providers (improve the eager loading)
@@ -115,9 +345,9 @@
 * Remove the `api_platform.doctrine.listener.view.write` event listener service.
 * Add a data persistence layer with a new `ApiPlatform\Core\DataPersister\DataPersisterInterface` interface.
 * Add the a new configuration to disable the API entrypoint and the documentation
-* Allow to set maximum items per page at operation/resource level  
+* Allow to set maximum items per page at operation/resource level
 * Add the ability to customize the message when configuring an access control rule trough the `access_control_message` attribute
-* Allow empty operations in XML configs 
+* Allow empty operations in XML configs
 
 ## 2.1.6
 
@@ -134,7 +364,7 @@
 * Add support for the immutable date and time types introduced in Doctrine
 * Fix the Doctrine query generated to retrieve nested subresources
 * Fix several bugs in the automatic eager loading support
-* Fix a bug occurring when passing nor an IRI nor an array in an embedded relation
+* Fix a bug occurring when passing neither an IRI nor an array in an embedded relation
 * Allow to request `0` items per page in collections
 * Also copy the `Host` from the Symfony Router
 * `Paginator::getLastPage()` now always returns a `float`
@@ -144,14 +374,14 @@
 ## 2.1.4
 
 * Symfony 3.4 and 4.0 compatibility
-* Autowiring strict mode compatibility 
+* Autowiring strict mode compatibility
 * Fix a bug preventing to create resource classes in the global namespace
 * Fix Doctrine type conversion in filter's WHERE clauses
 * Fix filters when using eager loading and non-association composite identifier
-* Fix Doctrine type resolution for identifiers (for custom DBALType) 
+* Fix Doctrine type resolution for identifiers (for custom DBALType)
 * Add missing Symfony Routing options to operations configuration
 * Add SubresourceOperations to metadata
-* Fix disabling of cache pools with the dev environment 
+* Fix disabling of cache pools with the dev environment
 
 ## 2.1.3
 

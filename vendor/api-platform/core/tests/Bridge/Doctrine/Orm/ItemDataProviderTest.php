@@ -19,6 +19,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\ItemDataProvider;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Core\Exception\PropertyNotFoundException;
 use ApiPlatform\Core\Exception\RuntimeException;
+use ApiPlatform\Core\Identifier\IdentifierConverterInterface;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyNameCollectionFactoryInterface;
 use ApiPlatform\Core\Metadata\Property\PropertyMetadata;
@@ -46,7 +47,7 @@ class ItemDataProviderTest extends TestCase
 {
     public function testGetItemSingleIdentifier()
     {
-        $context = ['foo' => 'bar', 'fetch_data' => true];
+        $context = ['foo' => 'bar', 'fetch_data' => true, IdentifierConverterInterface::HAS_IDENTIFIER_CONVERTER => true];
         $queryProphecy = $this->prophesize(AbstractQuery::class);
         $queryProphecy->getOneOrNullResult()->willReturn([])->shouldBeCalled();
 
@@ -65,7 +66,7 @@ class ItemDataProviderTest extends TestCase
 
         $queryBuilder = $queryBuilderProphecy->reveal();
 
-        list($propertyNameCollectionFactory, $propertyMetadataFactory) = $this->getMetadataFactories(Dummy::class, [
+        [$propertyNameCollectionFactory, $propertyMetadataFactory] = $this->getMetadataFactories(Dummy::class, [
             'id',
         ]);
         $managerRegistry = $this->getManagerRegistry(Dummy::class, [
@@ -79,7 +80,7 @@ class ItemDataProviderTest extends TestCase
 
         $dataProvider = new ItemDataProvider($managerRegistry, $propertyNameCollectionFactory, $propertyMetadataFactory, [$extensionProphecy->reveal()]);
 
-        $this->assertEquals([], $dataProvider->getItem(Dummy::class, 1, 'foo', $context));
+        $this->assertEquals([], $dataProvider->getItem(Dummy::class, ['id' => 1], 'foo', $context));
     }
 
     public function testGetItemDoubleIdentifier()
@@ -105,7 +106,7 @@ class ItemDataProviderTest extends TestCase
 
         $queryBuilder = $queryBuilderProphecy->reveal();
 
-        list($propertyNameCollectionFactory, $propertyMetadataFactory) = $this->getMetadataFactories(Dummy::class, [
+        [$propertyNameCollectionFactory, $propertyMetadataFactory] = $this->getMetadataFactories(Dummy::class, [
             'ida',
             'idb',
         ]);
@@ -118,19 +119,23 @@ class ItemDataProviderTest extends TestCase
             ],
         ], $queryBuilder);
 
+        $context = [IdentifierConverterInterface::HAS_IDENTIFIER_CONVERTER => true];
         $extensionProphecy = $this->prophesize(QueryItemExtensionInterface::class);
-        $extensionProphecy->applyToItem($queryBuilder, Argument::type(QueryNameGeneratorInterface::class), Dummy::class, ['ida' => 1, 'idb' => 2], 'foo', [])->shouldBeCalled();
+        $extensionProphecy->applyToItem($queryBuilder, Argument::type(QueryNameGeneratorInterface::class), Dummy::class, ['ida' => 1, 'idb' => 2], 'foo', $context)->shouldBeCalled();
 
         $dataProvider = new ItemDataProvider($managerRegistry, $propertyNameCollectionFactory, $propertyMetadataFactory, [$extensionProphecy->reveal()]);
 
-        $this->assertEquals([], $dataProvider->getItem(Dummy::class, 'ida=1;idb=2', 'foo'));
+        $this->assertEquals([], $dataProvider->getItem(Dummy::class, ['ida' => 1, 'idb' => 2], 'foo', $context));
     }
 
+    /**
+     * @group legacy
+     */
     public function testGetItemWrongCompositeIdentifier()
     {
         $this->expectException(PropertyNotFoundException::class);
 
-        list($propertyNameCollectionFactory, $propertyMetadataFactory) = $this->getMetadataFactories(Dummy::class, [
+        [$propertyNameCollectionFactory, $propertyMetadataFactory] = $this->getMetadataFactories(Dummy::class, [
             'ida',
             'idb',
         ]);
@@ -163,7 +168,7 @@ class ItemDataProviderTest extends TestCase
 
         $queryBuilder = $queryBuilderProphecy->reveal();
 
-        list($propertyNameCollectionFactory, $propertyMetadataFactory) = $this->getMetadataFactories(Dummy::class, [
+        [$propertyNameCollectionFactory, $propertyMetadataFactory] = $this->getMetadataFactories(Dummy::class, [
             'id',
         ]);
         $managerRegistry = $this->getManagerRegistry(Dummy::class, [
@@ -172,14 +177,15 @@ class ItemDataProviderTest extends TestCase
             ],
         ], $queryBuilder);
 
+        $context = [IdentifierConverterInterface::HAS_IDENTIFIER_CONVERTER => true];
         $extensionProphecy = $this->prophesize(QueryResultItemExtensionInterface::class);
-        $extensionProphecy->applyToItem($queryBuilder, Argument::type(QueryNameGeneratorInterface::class), Dummy::class, ['id' => 1], 'foo', [])->shouldBeCalled();
-        $extensionProphecy->supportsResult(Dummy::class, 'foo', [])->willReturn(true)->shouldBeCalled();
-        $extensionProphecy->getResult($queryBuilder, Dummy::class, 'foo', [])->willReturn([])->shouldBeCalled();
+        $extensionProphecy->applyToItem($queryBuilder, Argument::type(QueryNameGeneratorInterface::class), Dummy::class, ['id' => 1], 'foo', $context)->shouldBeCalled();
+        $extensionProphecy->supportsResult(Dummy::class, 'foo', $context)->willReturn(true)->shouldBeCalled();
+        $extensionProphecy->getResult($queryBuilder, Dummy::class, 'foo', $context)->willReturn([])->shouldBeCalled();
 
         $dataProvider = new ItemDataProvider($managerRegistry, $propertyNameCollectionFactory, $propertyMetadataFactory, [$extensionProphecy->reveal()]);
 
-        $this->assertEquals([], $dataProvider->getItem(Dummy::class, 1, 'foo'));
+        $this->assertEquals([], $dataProvider->getItem(Dummy::class, ['id' => 1], 'foo', $context));
     }
 
     public function testUnsupportedClass()
@@ -189,7 +195,7 @@ class ItemDataProviderTest extends TestCase
 
         $extensionProphecy = $this->prophesize(QueryItemExtensionInterface::class);
 
-        list($propertyNameCollectionFactory, $propertyMetadataFactory) = $this->getMetadataFactories(Dummy::class, [
+        [$propertyNameCollectionFactory, $propertyMetadataFactory] = $this->getMetadataFactories(Dummy::class, [
             'id',
         ]);
 
@@ -224,20 +230,15 @@ class ItemDataProviderTest extends TestCase
 
         $extensionProphecy = $this->prophesize(QueryItemExtensionInterface::class);
 
-        list($propertyNameCollectionFactory, $propertyMetadataFactory) = $this->getMetadataFactories(Dummy::class, [
+        [$propertyNameCollectionFactory, $propertyMetadataFactory] = $this->getMetadataFactories(Dummy::class, [
             'id',
         ]);
 
-        (new ItemDataProvider($managerRegistryProphecy->reveal(), $propertyNameCollectionFactory, $propertyMetadataFactory, [$extensionProphecy->reveal()]))->getItem(Dummy::class, 'foo');
+        (new ItemDataProvider($managerRegistryProphecy->reveal(), $propertyNameCollectionFactory, $propertyMetadataFactory, [$extensionProphecy->reveal()]))->getItem(Dummy::class, 'foo', null, [IdentifierConverterInterface::HAS_IDENTIFIER_CONVERTER => true]);
     }
 
     /**
      * Gets mocked metadata factories.
-     *
-     * @param string $resourceClass
-     * @param array  $identifiers
-     *
-     * @return array
      */
     private function getMetadataFactories(string $resourceClass, array $identifiers): array
     {
@@ -264,12 +265,6 @@ class ItemDataProviderTest extends TestCase
 
     /**
      * Gets a mocked manager registry.
-     *
-     * @param string       $resourceClass
-     * @param array        $identifierFields
-     * @param QueryBuilder $queryBuilder
-     *
-     * @return ManagerRegistry
      */
     private function getManagerRegistry(string $resourceClass, array $identifierFields, QueryBuilder $queryBuilder): ManagerRegistry
     {

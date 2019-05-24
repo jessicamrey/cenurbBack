@@ -23,7 +23,10 @@ use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Resource\ResourceMetadata;
 use ApiPlatform\Core\Tests\Fixtures\TestBundle\Entity\Dummy;
 use ApiPlatform\Core\Tests\Fixtures\TestBundle\Entity\RelatedDummy;
+use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
+use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Schema;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,9 +47,7 @@ class CollectionResolverFactoryTest extends TestCase
         $factory = $this->createCollectionResolverFactory([], [], ['id' => 1], $paginationEnabled);
         $resolver = $factory(RelatedDummy::class, Dummy::class, 'operationName');
 
-        $resolveInfo = new ResolveInfo([]);
-        $resolveInfo->fieldName = 'relatedDummies';
-        $resolveInfo->fieldNodes = [];
+        $resolveInfo = new ResolveInfo('relatedDummies', [], new ObjectType(['name' => '']), new ObjectType(['name' => '']), [], new Schema([]), [], null, null, []);
 
         $this->assertEquals($expected, $resolver(null, [], null, $resolveInfo));
     }
@@ -54,7 +55,7 @@ class CollectionResolverFactoryTest extends TestCase
     public function paginationProvider(): array
     {
         return [
-            [true, ['edges' => [], 'pageInfo' => ['endCursor' => null, 'hasNextPage' => false]]],
+            [true, ['totalCount' => 0.0, 'edges' => [], 'pageInfo' => ['endCursor' => null, 'hasNextPage' => false]]],
             [false, []],
         ];
     }
@@ -68,9 +69,7 @@ class CollectionResolverFactoryTest extends TestCase
 
         $resolver = $factory(RelatedDummy::class, Dummy::class, 'operationName');
 
-        $resolveInfo = new ResolveInfo([]);
-        $resolveInfo->fieldName = 'rootProperty';
-        $resolveInfo->fieldNodes = [];
+        $resolveInfo = new ResolveInfo('rootProperty', [], new ObjectType(['name' => '']), new ObjectType(['name' => '']), [], new Schema([]), [], null, null, []);
 
         $this->assertEquals(['normalizedObject1', 'normalizedObject2'], $resolver(null, [], null, $resolveInfo));
     }
@@ -87,9 +86,7 @@ class CollectionResolverFactoryTest extends TestCase
 
         $resolver = $factory(RelatedDummy::class, Dummy::class, 'operationName');
 
-        $resolveInfo = new ResolveInfo([]);
-        $resolveInfo->fieldName = 'relatedDummies';
-        $resolveInfo->fieldNodes = [];
+        $resolveInfo = new ResolveInfo('relatedDummies', [], new ObjectType(['name' => '']), new ObjectType(['name' => '']), [], new Schema([]), [], null, null, []);
 
         $dummy = new Dummy();
         $dummy->setId(1);
@@ -122,9 +119,7 @@ class CollectionResolverFactoryTest extends TestCase
 
         $resolver = $factory(RelatedDummy::class, Dummy::class, 'operationName');
 
-        $resolveInfo = new ResolveInfo([]);
-        $resolveInfo->fieldName = 'relatedDummies';
-        $resolveInfo->fieldNodes = [];
+        $resolveInfo = new ResolveInfo('relatedDummies', [], new ObjectType(['name' => '']), new ObjectType(['name' => '']), [], new Schema([]), [], null, null, []);
 
         if ('$bad$' === $cursor) {
             $this->expectException(\Exception::class);
@@ -133,6 +128,7 @@ class CollectionResolverFactoryTest extends TestCase
 
         $this->assertEquals(
             [
+                'totalCount' => 0.0,
                 'edges' => [['node' => 'normalizedObject1', 'cursor' => $expectedCursors[0]], ['node' => 'normalizedObject2', 'cursor' => $expectedCursors[1]]],
                 'pageInfo' => ['endCursor' => null, 'hasNextPage' => false],
             ],
@@ -150,7 +146,7 @@ class CollectionResolverFactoryTest extends TestCase
 
     public function testCreatePaginatorCollectionResolver()
     {
-        $collectionPaginatorProphecy = $this->prophesize(PaginatorInterface::class);
+        $collectionPaginatorProphecy = $this->prophesize(PaginatorInterface::class)->willImplement(\Iterator::class);
         $collectionPaginatorProphecy->rewind()->shouldBeCalled();
         $collectionPaginatorProphecy->valid()->willReturn(true, false);
         $collectionPaginatorProphecy->key()->willReturn(0);
@@ -166,12 +162,10 @@ class CollectionResolverFactoryTest extends TestCase
         $resolverFactory = $this->createCollectionResolverFactory($collectionPaginatorProphecy->reveal(), [], [], true, $cursor);
         $resolver = $resolverFactory(RelatedDummy::class, Dummy::class, 'operationName');
 
-        $resolveInfo = new ResolveInfo([]);
-        $resolveInfo->fieldName = 'relatedDummies';
-        $resolveInfo->fieldNodes = [];
+        $resolveInfo = new ResolveInfo('relatedDummies', [], new ObjectType(['name' => '']), new ObjectType(['name' => '']), [], new Schema([]), [], null, null, []);
 
         $this->assertEquals(
-            ['edges' => [['node' => 'normalizedObject1', 'cursor' => 'Mg==']], 'pageInfo' => ['endCursor' => 'MTY=', 'hasNextPage' => true]],
+            ['edges' => [['node' => 'normalizedObject1', 'cursor' => 'Mg==']], 'pageInfo' => ['endCursor' => 'OQ==', 'hasNextPage' => true], 'totalCount' => 17.],
             $resolver(null, ['after' => $cursor], null, $resolveInfo)
         );
     }
@@ -184,8 +178,7 @@ class CollectionResolverFactoryTest extends TestCase
         $collectionDataProviderProphecy = $this->prophesize(CollectionDataProviderInterface::class);
 
         $filters = $cursor ? ['after' => $cursor] : [];
-        $collectionDataProviderProphecy->getCollection(Dummy::class, null, ['groups' => ['foo'], 'attributes' => [], 'filters' => []])->willReturn($collection);
-        $collectionDataProviderProphecy->getCollection(RelatedDummy::class, null, ['groups' => ['foo'], 'attributes' => [], 'filters' => $filters])->willReturn($collection);
+        $collectionDataProviderProphecy->getCollection(RelatedDummy::class, null, ['groups' => ['foo'], 'attributes' => [], 'filters' => $filters, 'graphql' => true])->willReturn($collection);
 
         $subresourceDataProviderProphecy = $this->prophesize(SubresourceDataProviderInterface::class);
         $subresourceDataProviderProphecy->getSubresource(RelatedDummy::class, $identifiers, [
@@ -195,6 +188,7 @@ class CollectionResolverFactoryTest extends TestCase
             'groups' => ['foo'],
             'attributes' => [],
             'filters' => [],
+            'graphql' => true,
         ])->willReturn($subcollection);
 
         $normalizerProphecy = $this->prophesize(NormalizerInterface::class);
@@ -215,7 +209,6 @@ class CollectionResolverFactoryTest extends TestCase
         $identifiersExtractorProphecy->getIdentifiersFromItem(Argument::type(Dummy::class))->willReturn($identifiers);
 
         $resourceMetadataFactoryProphecy = $this->prophesize(ResourceMetadataFactoryInterface::class);
-        $resourceMetadataFactoryProphecy->create(Dummy::class)->willReturn(new ResourceMetadata('Dummy', null, null, null, null, ['normalization_context' => ['groups' => ['foo']]]));
         $resourceMetadataFactoryProphecy->create(RelatedDummy::class)->willReturn(new ResourceMetadata('RelatedDummy', null, null, null, null, ['normalization_context' => ['groups' => ['foo']]]));
 
         $request = new Request();

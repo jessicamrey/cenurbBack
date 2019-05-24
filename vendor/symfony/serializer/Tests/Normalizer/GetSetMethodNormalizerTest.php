@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -38,8 +39,13 @@ class GetSetMethodNormalizerTest extends TestCase
 
     protected function setUp()
     {
+        $this->createNormalizer();
+    }
+
+    private function createNormalizer(array $defaultContext = [])
+    {
         $this->serializer = $this->getMockBuilder(__NAMESPACE__.'\SerializerNormalizer')->getMock();
-        $this->normalizer = new GetSetMethodNormalizer();
+        $this->normalizer = new GetSetMethodNormalizer(null, null, null, null, null, $defaultContext);
         $this->normalizer->setSerializer($this->serializer);
     }
 
@@ -94,7 +100,6 @@ class GetSetMethodNormalizerTest extends TestCase
     public function testIgnoredAttributesInContext()
     {
         $ignoredAttributes = ['foo', 'bar', 'baz', 'object'];
-        $this->normalizer->setIgnoredAttributes($ignoredAttributes);
         $obj = new GetSetDummy();
         $obj->setFoo('foo');
         $obj->setBar('bar');
@@ -104,7 +109,7 @@ class GetSetMethodNormalizerTest extends TestCase
                 'fooBar' => 'foobar',
                 'camelCase' => true,
             ],
-            $this->normalizer->normalize($obj, 'any')
+            $this->normalizer->normalize($obj, 'any', [AbstractNormalizer::IGNORED_ATTRIBUTES => $ignoredAttributes])
         );
     }
 
@@ -163,9 +168,6 @@ class GetSetMethodNormalizerTest extends TestCase
         $this->assertEquals('test', $obj->getBar());
     }
 
-    /**
-     * @requires PHP 5.6
-     */
     public function testConstructorDenormalizeWithVariadicArgument()
     {
         $obj = $this->normalizer->denormalize(
@@ -174,9 +176,6 @@ class GetSetMethodNormalizerTest extends TestCase
         $this->assertEquals([1, 2, 3], $obj->getFoo());
     }
 
-    /**
-     * @requires PHP 5.6
-     */
     public function testConstructorDenormalizeWithMissingVariadicArgument()
     {
         $obj = $this->normalizer->denormalize(
@@ -308,10 +307,22 @@ class GetSetMethodNormalizerTest extends TestCase
      */
     public function testCallbacks($callbacks, $value, $result, $message)
     {
-        $this->normalizer->setCallbacks($callbacks);
+        $this->doTestCallbacks($callbacks, $value, $result, $message);
+    }
+
+    /**
+     * @dataProvider provideCallbacks
+     */
+    public function testLegacyCallbacks($callbacks, $value, $result, $message)
+    {
+        $this->doTestCallbacks($callbacks, $value, $result, $message, true);
+    }
+
+    private function doTestCallbacks($callbacks, $value, $result, $message, bool $legacy = false)
+    {
+        $legacy ? $this->normalizer->setCallbacks($callbacks) : $this->createNormalizer([GetSetMethodNormalizer::CALLBACKS => $callbacks]);
 
         $obj = new GetConstructorDummy('', $value, true);
-
         $this->assertEquals(
             $result,
             $this->normalizer->normalize($obj, 'any'),
@@ -324,7 +335,21 @@ class GetSetMethodNormalizerTest extends TestCase
      */
     public function testUncallableCallbacks()
     {
-        $this->normalizer->setCallbacks(['bar' => null]);
+        $this->doTestUncallableCallbacks();
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testLegacyUncallableCallbacks()
+    {
+        $this->doTestUncallableCallbacks(true);
+    }
+
+    private function doTestUncallableCallbacks(bool $legacy = false)
+    {
+        $callbacks = ['bar' => null];
+        $legacy ? $this->normalizer->setCallbacks($callbacks) : $this->createNormalizer([GetSetMethodNormalizer::CALLBACKS => $callbacks]);
 
         $obj = new GetConstructorDummy('baz', 'quux', true);
 
@@ -333,7 +358,18 @@ class GetSetMethodNormalizerTest extends TestCase
 
     public function testIgnoredAttributes()
     {
-        $this->normalizer->setIgnoredAttributes(['foo', 'bar', 'baz', 'camelCase', 'object']);
+        $this->doTestIgnoredAttributes();
+    }
+
+    public function testLegacyIgnoredAttributes()
+    {
+        $this->doTestIgnoredAttributes(true);
+    }
+
+    private function doTestIgnoredAttributes(bool $legacy = false)
+    {
+        $ignoredAttributes = ['foo', 'bar', 'baz', 'camelCase', 'object'];
+        $legacy ? $this->normalizer->setIgnoredAttributes($ignoredAttributes) : $this->createNormalizer([GetSetMethodNormalizer::IGNORED_ATTRIBUTES => $ignoredAttributes]);
 
         $obj = new GetSetDummy();
         $obj->setFoo('foo');
@@ -427,12 +463,24 @@ class GetSetMethodNormalizerTest extends TestCase
      */
     public function testUnableToNormalizeCircularReference()
     {
-        $serializer = new Serializer([$this->normalizer]);
-        $this->normalizer->setSerializer($serializer);
-        $this->normalizer->setCircularReferenceLimit(2);
+        $this->doTestUnableToNormalizeCircularReference();
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Serializer\Exception\CircularReferenceException
+     */
+    public function testLegacyUnableToNormalizeCircularReference()
+    {
+        $this->doTestUnableToNormalizeCircularReference(true);
+    }
+
+    private function doTestUnableToNormalizeCircularReference(bool $legacy = false)
+    {
+        $legacy ? $this->normalizer->setCircularReferenceLimit(2) : $this->createNormalizer([GetSetMethodNormalizer::CIRCULAR_REFERENCE_LIMIT => 2]);
+        $this->serializer = new Serializer([$this->normalizer]);
+        $this->normalizer->setSerializer($this->serializer);
 
         $obj = new CircularReferenceDummy();
-
         $this->normalizer->normalize($obj);
     }
 
@@ -453,11 +501,23 @@ class GetSetMethodNormalizerTest extends TestCase
 
     public function testCircularReferenceHandler()
     {
-        $serializer = new Serializer([$this->normalizer]);
-        $this->normalizer->setSerializer($serializer);
-        $this->normalizer->setCircularReferenceHandler(function ($obj) {
+        $this->doTestCircularReferenceHandler();
+    }
+
+    public function testLegacyCircularReferenceHandler()
+    {
+        $this->doTestCircularReferenceHandler(true);
+    }
+
+    private function doTestCircularReferenceHandler(bool $legacy = false)
+    {
+        $handler = function ($obj) {
             return \get_class($obj);
-        });
+        };
+
+        $legacy ? $this->normalizer->setCircularReferenceHandler($handler) : $this->createNormalizer([GetSetMethodNormalizer::CIRCULAR_REFERENCE_HANDLER => $handler]);
+        $this->serializer = new Serializer([$this->normalizer]);
+        $this->normalizer->setSerializer($this->serializer);
 
         $obj = new CircularReferenceDummy();
 

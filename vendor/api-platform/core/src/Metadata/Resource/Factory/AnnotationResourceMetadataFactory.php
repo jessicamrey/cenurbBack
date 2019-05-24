@@ -67,7 +67,7 @@ final class AnnotationResourceMetadataFactory implements ResourceMetadataFactory
      *
      * @throws ResourceClassNotFoundException
      */
-    private function handleNotFound(ResourceMetadata $parentPropertyMetadata = null, string $resourceClass): ResourceMetadata
+    private function handleNotFound(?ResourceMetadata $parentPropertyMetadata, string $resourceClass): ResourceMetadata
     {
         if (null !== $parentPropertyMetadata) {
             return $parentPropertyMetadata;
@@ -93,7 +93,7 @@ final class AnnotationResourceMetadataFactory implements ResourceMetadataFactory
 
         $resourceMetadata = $parentResourceMetadata;
         foreach (['shortName', 'description', 'iri', 'itemOperations', 'collectionOperations', 'subresourceOperations', 'graphql', 'attributes'] as $property) {
-            $resourceMetadata = $this->createWith($resourceMetadata, $property, $annotation->$property);
+            $resourceMetadata = $this->createWith($resourceMetadata, $property, $annotation->{$property});
         }
 
         return $resourceMetadata;
@@ -101,20 +101,18 @@ final class AnnotationResourceMetadataFactory implements ResourceMetadataFactory
 
     /**
      * Creates a new instance of metadata if the property is not already set.
-     *
-     * @param mixed $value
      */
     private function createWith(ResourceMetadata $resourceMetadata, string $property, $value): ResourceMetadata
     {
         $upperProperty = ucfirst($property);
         $getter = "get$upperProperty";
 
-        if (null !== $resourceMetadata->$getter()) {
+        if (null !== $resourceMetadata->{$getter}()) {
             return $resourceMetadata;
         }
 
         $wither = "with$upperProperty";
 
-        return $resourceMetadata->$wither($value);
+        return $resourceMetadata->{$wither}($value);
     }
 }

@@ -95,6 +95,26 @@ class FormHelperDivLayoutTest extends AbstractDivLayoutTest
         $this->assertSame('&euro; <input type="text" id="name" name="name" required="required" />', $this->renderWidget($view));
     }
 
+    public function testHelpAttr()
+    {
+        $form = $this->factory->createNamed('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', null, [
+            'help' => 'Help text test!',
+            'help_attr' => [
+                'class' => 'class-test',
+            ],
+        ]);
+        $view = $form->createView();
+        $html = $this->renderHelp($view);
+
+        $this->assertMatchesXpath($html,
+            '/p
+    [@id="name_help"]
+    [@class="class-test help-text"]
+    [.="[trans]Help text test![/trans]"]
+'
+        );
+    }
+
     protected function renderForm(FormView $view, array $vars = [])
     {
         return (string) $this->engine->get('form')->form($view, $vars);
@@ -103,6 +123,11 @@ class FormHelperDivLayoutTest extends AbstractDivLayoutTest
     protected function renderLabel(FormView $view, $label = null, array $vars = [])
     {
         return (string) $this->engine->get('form')->label($view, $label, $vars);
+    }
+
+    protected function renderHelp(FormView $view)
+    {
+        return (string) $this->engine->get('form')->help($view);
     }
 
     protected function renderErrors(FormView $view)

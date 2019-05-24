@@ -154,17 +154,32 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                     }
                     not_api_new_visitaCol:
 
-                    // api_new_favoritosCol
-                    if ('/api/colonias/favoritos' === $pathinfo) {
-                        $ret = array (  '_controller' => 'App\\Controller\\ColoniaController::newFavorito',  '_route' => 'api_new_favoritosCol',);
-                        if (!in_array($requestMethod, ['POST'])) {
-                            $allow = array_merge($allow, ['POST']);
-                            goto not_api_new_favoritosCol;
-                        }
+                    if (0 === strpos($pathinfo, '/api/colonias/favoritos')) {
+                        // api_new_favoritosCol
+                        if ('/api/colonias/favoritos' === $pathinfo) {
+                            $ret = array (  '_controller' => 'App\\Controller\\ColoniaController::newFavorito',  '_route' => 'api_new_favoritosCol',);
+                            if (!in_array($requestMethod, ['POST'])) {
+                                $allow = array_merge($allow, ['POST']);
+                                goto not_api_new_favoritosCol;
+                            }
 
-                        return $ret;
+                            return $ret;
+                        }
+                        not_api_new_favoritosCol:
+
+                        // api_del_favoritoCol
+                        if (preg_match('#^/api/colonias/favoritos/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                            $ret = $this->mergeDefaults(array_replace($matches, ['_route' => 'api_del_favoritoCol']), array (  '_controller' => 'App\\Controller\\ColoniaController::removeFavorito',));
+                            if (!in_array($requestMethod, ['DELETE'])) {
+                                $allow = array_merge($allow, ['DELETE']);
+                                goto not_api_del_favoritoCol;
+                            }
+
+                            return $ret;
+                        }
+                        not_api_del_favoritoCol:
+
                     }
-                    not_api_new_favoritosCol:
 
                 }
 
@@ -586,6 +601,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                             return $ret;
                         }
                         not_api_get_favoritosTerr:
+
+                        // api_del_favoritoTerr
+                        if (preg_match('#^/api/territorios/favoritos/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                            $ret = $this->mergeDefaults(array_replace($matches, ['_route' => 'api_del_favoritoTerr']), array (  '_controller' => 'App\\Controller\\TerritorioController::removeFavorito',));
+                            if (!in_array($requestMethod, ['DELETE'])) {
+                                $allow = array_merge($allow, ['DELETE']);
+                                goto not_api_del_favoritoTerr;
+                            }
+
+                            return $ret;
+                        }
+                        not_api_del_favoritoTerr:
 
                     }
 

@@ -2,46 +2,45 @@
 
 First of all, thank you for contributing, you're awesome!
 
-To have your code integrated in the API Platform project, there is some rules to follow, but don't panic, it's easy!
+To have your code integrated in the API Platform project, there are some rules to follow, but don't panic, it's easy!
 
-## Reporting bugs
+## Reporting Bugs
 
 If you happen to find a bug, we kindly request you to report it. However, before submitting it, please:
 
 * Check the [project documentation available online](https://api-platform.com/docs/)
 
-Then, if it appears that it's a real bug, you may report it using Github by following these 3 points:
+Then, if it appears that it's a real bug, you may report it using GitHub by following these 3 points:
 
 * Check if the bug is not already reported!
 * A clear title to resume the issue
 * A description of the workflow needed to reproduce the bug
 
-> _NOTE:_ Don’t hesitate giving as much information as you can (OS, PHP version extensions...)
+> _NOTE:_ Don't hesitate giving as much information as you can (OS, PHP version extensions...)
 
-### Security issues
+### Security Issues
 
 If you find a security issue, send a mail to Kévin Dunglas <dunglas@gmail.com>. **Please do not report security problems
 publicly**. We will disclose details of the issue and credit you after having released a new version including a fix.
 
-## Pull requests
+## Pull Requests
 
 ### Writing a Pull Request
 
-First of all, you must decide on what branch your changes will be based. If the changes your are going to make are
-fully backward-compatible, you should base your changes on the latest stable branch (`2.0` at the moment).
-Otherwise, you should base your changes on the `master` branch.
+First of all, you must decide on what branch your changes will be based depending of the nature of the change.
+See [the dedicated documentation entry](https://api-platform.com/docs/extra/releases/).
 
-### Matching coding standards
+### Matching Coding Standards
 
 The API Platform project follows [Symfony coding standards](https://symfony.com/doc/current/contributing/code/standards.html).
-But don't worry, you can fix CS issues automatically using the [PHP CS Fixer](http://cs.sensiolabs.org/) tool
+But don't worry, you can fix CS issues automatically using the [PHP CS Fixer](http://cs.sensiolabs.org/) tool:
 
-```bash
+```shell
 php-cs-fixer.phar fix
 ```
 
-And then, add fixed file to your commit before push.
-Be sure to add only **your modified files**. If another files are fixed by cs tools, just revert it before commit.
+And then, add the fixed file to your commit before pushing.
+Be sure to add only **your modified files**. If any other file is fixed by cs tools, just revert it before committing.
 
 ### Sending a Pull Request
 
@@ -52,8 +51,8 @@ When you send a PR, just make sure that:
 * You make a PR on the related documentation in the [api-platform/docs](https://github.com/api-platform/docs) repository.
 * You make the PR on the same branch you based your changes on. If you see commits
 that you did not make in your PR, you're doing it wrong.
-* Also don't forget to add a comment when you update a PR with a ping to the maintainer (`@dunglas`, `@sroze` or `@theofidry`), so he/she will get a notification.
-* Squash your commits into one commit. (see the next chapter)
+* Also don't forget to add a comment when you update a PR with a ping to [the maintainers](https://github.com/orgs/api-platform/people), so he/she will get a notification.
+* Squash your commits into one commit (see the next chapter).
 
 All Pull Requests must include [this header](.github/PULL_REQUEST_TEMPLATE.md).
 
@@ -63,23 +62,23 @@ On `api-platform/core` there are two kinds of tests: unit (`phpunit`) and integr
 
 Both `phpunit` and `behat` are development dependencies and should be available in the `vendor` directory.
 
-#### Phpunit and coverage generation
+#### PHPUnit and Coverage Generation
 
 To launch unit tests:
 
-```
+```shell
 vendor/bin/phpunit --stop-on-failure -vvv
 ```
 
 If you want coverage, you will need the `phpdbg` package and run:
 
-```
+```shell
 phpdbg -qrr vendor/bin/phpunit --coverage-html coverage -vvv --stop-on-failure
 ```
 
 Sometimes there might be an error with too many open files when generating coverage. To fix this, you can increase the `ulimit`, for example:
 
-```
+```shell
 ulimit -n 4000
 ```
 
@@ -89,21 +88,21 @@ Coverage will be available in `coverage/index.html`.
 
 The command to launch Behat tests is:
 
-```
+```shell
 ./vendor/bin/behat --suite=default --stop-on-failure -vvv
 ```
 
-You may need to clear the cache manually before running behat tests because of the temporary sql database. To do so, just remove the `test` cache directory:
+If you want to launch Behat tests for MongoDB, the command is:
 
+```shell
+APP_ENV=mongodb ./vendor/bin/behat --suite=mongodb --stop-on-failure -vvv
 ```
-rm -r tests/Fixtures/app/cache/test
-```
 
-## Squash your commits
+## Squash your Commits
 
-If you have 3 commits. So start with:
+If you have 3 commits, start with:
 
-```bash
+```shell
 git rebase -i HEAD~3
 ```
 
@@ -113,21 +112,21 @@ Replace all `pick` prefixes by `fixup` (or `f`) **except the first commit** of t
 
 Save and quit the editor.
 
-After that, all your commits where squashed into the first one and the commit message of the first commit.
+After that, all your commits will be squashed into the first one and the commit message will be the first one.
 
-If you would like to rename your commit message type:
+If you would like to rename your commit message, type:
 
-```bash
+```shell
 git commit --amend
 ```
 
 Now force push to update your PR:
 
-```bash
-git push --force
+```shell
+git push --force-with-lease
 ```
 
-# License and copyright attribution
+# License and Copyright Attribution
 
 When you open a Pull Request to the API Platform project, you agree to license your code under the [MIT license](LICENSE)
 and to transfer the copyright on the submitted code to Kévin Dunglas.

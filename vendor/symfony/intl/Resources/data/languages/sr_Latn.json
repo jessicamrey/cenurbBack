@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.48.77",
+    "Version": "2.1.49.82",
     "Names": {
         "aa": "afarski",
         "ab": "abhaski",
@@ -300,7 +300,6 @@
         "ms": "malajski",
         "mt": "malteški",
         "mua": "mundang",
-        "mul": "Više jezika",
         "mus": "kriški",
         "mwl": "mirandski",
         "mwr": "marvari",
@@ -469,7 +468,6 @@
         "uga": "ugaritski",
         "uk": "ukrajinski",
         "umb": "umbundu",
-        "und": "nepoznat jezik",
         "ur": "urdu",
         "uz": "uzbečki",
         "vai": "vai",
@@ -505,7 +503,6 @@
         "zh_Hant": "tradicionalni kineski",
         "zu": "zulu",
         "zun": "zuni",
-        "zxx": "bez lingvističkog sadržaja",
         "zza": "zaza"
     }
 }

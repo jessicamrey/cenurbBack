@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Core\Swagger\Serializer;
 
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -24,13 +25,17 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
-final class ApiGatewayNormalizer implements NormalizerInterface
+final class ApiGatewayNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    private $documentationNormalizer;
+    public const API_GATEWAY = 'api_gateway';
 
-    public function __construct(NormalizerInterface $documentationNormalizer)
+    private $documentationNormalizer;
+    private $defaultContext = [self::API_GATEWAY => false];
+
+    public function __construct(NormalizerInterface $documentationNormalizer, $defaultContext = [])
     {
         $this->documentationNormalizer = $documentationNormalizer;
+        $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
     }
 
     /**
@@ -39,12 +44,12 @@ final class ApiGatewayNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = [])
     {
         $data = $this->documentationNormalizer->normalize($object, $format, $context);
-        if (empty($data['basePath'])) {
-            $data['basePath'] = '/';
+        if (!($context[self::API_GATEWAY] ?? $this->defaultContext[self::API_GATEWAY])) {
+            return $data;
         }
 
-        if (!($context['api_gateway'] ?? false)) {
-            return $data;
+        if (empty($data['basePath'])) {
+            $data['basePath'] = '/';
         }
 
         foreach ($data['paths'] as $path => $operations) {
@@ -92,8 +97,8 @@ final class ApiGatewayNormalizer implements NormalizerInterface
 
         // $data['definitions'] is an instance of \ArrayObject
         foreach (array_keys($data['definitions']->getArrayCopy()) as $definition) {
-            if (!preg_match('/^[A-z]+$/', $definition)) {
-                $data['definitions'][str_replace(['-', '_'], '', $definition)] = $data['definitions'][$definition];
+            if (!preg_match('/^[A-z]+$/', (string) $definition)) {
+                $data['definitions'][str_replace(['-', '_'], '', (string) $definition)] = $data['definitions'][$definition];
                 unset($data['definitions'][$definition]);
             }
         }
@@ -107,5 +112,13 @@ final class ApiGatewayNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $this->documentationNormalizer->supportsNormalization($data, $format);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return $this->documentationNormalizer instanceof CacheableSupportsMethodInterface && $this->documentationNormalizer->hasCacheableSupportsMethod();
     }
 }

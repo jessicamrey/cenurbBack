@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.48.86",
+    "Version": "2.1.49.82",
     "Names": {
         "aa": "afar dili",
         "ab": "abhaz dili",
@@ -227,7 +227,6 @@
         "ms": "malaý dili",
         "mt": "malta dili",
         "mua": "mundang dili",
-        "mul": "birnäçe dil",
         "mus": "krik dili",
         "mwl": "mirand dili",
         "my": "birma dili",
@@ -355,7 +354,6 @@
         "ug": "uýgur dili",
         "uk": "ukrain dili",
         "umb": "umbundu dili",
-        "und": "näbelli dil",
         "ur": "urdu",
         "uz": "özbek dili",
         "vai": "wai dili",
@@ -382,7 +380,6 @@
         "zh_Hant": "adaty hytaý dili",
         "zu": "zulu dili",
         "zun": "zuni dili",
-        "zxx": "dilçilige degişli mazmun ýok",
         "zza": "zazaki dili"
     }
 }

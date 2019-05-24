@@ -11,7 +11,6 @@
 
 namespace Symfony\Bundle\SecurityBundle\Tests\Functional\app;
 
-use Doctrine\ORM\Version;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Kernel;
@@ -47,25 +46,21 @@ class AppKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getContainerClass()
     {
-        if (null === $this->name) {
-            $this->name = parent::getName().substr(md5($this->rootConfig), -16);
-        }
-
-        return $this->name;
+        return parent::getContainerClass().substr(md5($this->rootConfig), -16);
     }
 
     public function registerBundles()
     {
-        if (!is_file($filename = $this->getRootDir().'/'.$this->testCase.'/bundles.php')) {
+        if (!is_file($filename = $this->getProjectDir().'/'.$this->testCase.'/bundles.php')) {
             throw new \RuntimeException(sprintf('The bundles file "%s" does not exist.', $filename));
         }
 
         return include $filename;
     }
 
-    public function getRootDir()
+    public function getProjectDir()
     {
         return __DIR__;
     }
@@ -83,11 +78,6 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load($this->rootConfig);
-
-        // to be removed once https://github.com/doctrine/DoctrineBundle/pull/684 is merged
-        if ('Acl' === $this->testCase && class_exists(Version::class)) {
-            $loader->load(__DIR__.'/Acl/doctrine.yml');
-        }
     }
 
     public function serialize()

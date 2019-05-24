@@ -16,6 +16,7 @@ namespace ApiPlatform\Core\Hydra\Serializer;
 use ApiPlatform\Core\Api\UrlGeneratorInterface;
 use ApiPlatform\Core\Problem\Serializer\ErrorNormalizerTrait;
 use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -24,19 +25,22 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @author Kévin Dunglas <dunglas@gmail.com>
  * @author Samuel ROZE <samuel.roze@gmail.com>
  */
-final class ErrorNormalizer implements NormalizerInterface
+final class ErrorNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    const FORMAT = 'jsonld';
-
     use ErrorNormalizerTrait;
+
+    public const FORMAT = 'jsonld';
+    public const TITLE = 'title';
 
     private $urlGenerator;
     private $debug;
+    private $defaultContext = [self::TITLE => 'An error occurred'];
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, bool $debug = false)
+    public function __construct(UrlGeneratorInterface $urlGenerator, bool $debug = false, array $defaultContext = [])
     {
         $this->urlGenerator = $urlGenerator;
         $this->debug = $debug;
+        $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
     }
 
     /**
@@ -44,18 +48,14 @@ final class ErrorNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        if ($this->debug) {
-            $trace = $object->getTrace();
-        }
-
         $data = [
             '@context' => $this->urlGenerator->generate('api_jsonld_context', ['shortName' => 'Error']),
             '@type' => 'hydra:Error',
-            'hydra:title' => $context['title'] ?? 'An error occurred',
+            'hydra:title' => $context[self::TITLE] ?? $this->defaultContext[self::TITLE],
             'hydra:description' => $this->getErrorMessage($object, $context, $this->debug),
         ];
 
-        if (isset($trace)) {
+        if ($this->debug && null !== $trace = $object->getTrace()) {
             $data['trace'] = $trace;
         }
 
@@ -68,5 +68,13 @@ final class ErrorNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return self::FORMAT === $format && ($data instanceof \Exception || $data instanceof FlattenException);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

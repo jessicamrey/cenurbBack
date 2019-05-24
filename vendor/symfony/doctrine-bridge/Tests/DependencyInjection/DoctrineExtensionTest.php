@@ -178,21 +178,17 @@ class DoctrineExtensionTest extends TestCase
             ['doctrine.orm.cache.apcu.class',      ['type' => 'apcu']],
             ['doctrine.orm.cache.array.class',     ['type' => 'array']],
             ['doctrine.orm.cache.xcache.class',    ['type' => 'xcache']],
-            ['doctrine.orm.cache.wincache.class', ['type' => 'wincache']],
-            ['doctrine.orm.cache.zenddata.class', ['type' => 'zenddata']],
+            ['doctrine.orm.cache.wincache.class',  ['type' => 'wincache']],
+            ['doctrine.orm.cache.zenddata.class',  ['type' => 'zenddata']],
             ['doctrine.orm.cache.redis.class',     ['type' => 'redis'],     ['setRedis']],
-            ['doctrine.orm.cache.memcache.class', ['type' => 'memcache'], ['setMemcache']],
             ['doctrine.orm.cache.memcached.class', ['type' => 'memcached'], ['setMemcached']],
         ];
     }
 
     /**
-     * @param string $class
-     * @param array  $config
-     *
      * @dataProvider providerBasicDrivers
      */
-    public function testLoadBasicCacheDriver($class, array $config, array $expectedCalls = [])
+    public function testLoadBasicCacheDriver(string $class, array $config, array $expectedCalls = [])
     {
         $container = $this->createContainer();
         $cacheName = 'metadata_cache';
@@ -273,10 +269,8 @@ class DoctrineExtensionTest extends TestCase
         return new ContainerBuilder(new ParameterBag(array_merge([
             'kernel.bundles' => ['FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle'],
             'kernel.cache_dir' => __DIR__,
-            'kernel.debug' => false,
-            'kernel.environment' => 'test',
-            'kernel.name' => 'kernel',
-            'kernel.root_dir' => __DIR__,
+            'kernel.container_class' => 'kernel',
+            'kernel.project_dir' => __DIR__,
         ], $data)));
     }
 }

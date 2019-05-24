@@ -361,7 +361,6 @@
         "ms": "malajština",
         "mt": "maltština",
         "mua": "mundang",
-        "mul": "více jazyků",
         "mus": "kríkština",
         "mwl": "mirandština",
         "mwr": "márvárština",
@@ -563,7 +562,6 @@
         "uga": "ugaritština",
         "uk": "ukrajinština",
         "umb": "umbundu",
-        "und": "neznámý jazyk",
         "ur": "urdština",
         "uz": "uzbečtina",
         "vai": "vai",
@@ -607,7 +605,6 @@
         "zh_Hans": "čínština (zjednodušená)",
         "zu": "zuluština",
         "zun": "zunijština",
-        "zxx": "žádný jazykový obsah",
         "zza": "zaza"
     }
 }

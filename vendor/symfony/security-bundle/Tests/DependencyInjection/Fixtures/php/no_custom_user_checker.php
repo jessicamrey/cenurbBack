@@ -17,7 +17,7 @@ $container->loadFromExtension('security', [
             'http_basic' => true,
             'form_login' => true,
             'anonymous' => true,
-            'switch_user' => ['stateless' => true],
+            'switch_user' => true,
             'x509' => true,
             'remote_user' => true,
             'logout' => true,

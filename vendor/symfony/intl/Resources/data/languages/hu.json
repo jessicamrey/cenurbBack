@@ -321,7 +321,6 @@
         "ms": "maláj",
         "mt": "máltai",
         "mua": "mundang",
-        "mul": "többszörös nyelvek",
         "mus": "krík",
         "mwl": "mirandéz",
         "mwr": "márvári",
@@ -495,7 +494,6 @@
         "uga": "ugariti",
         "uk": "ukrán",
         "umb": "umbundu",
-        "und": "ismeretlen nyelv",
         "ur": "urdu",
         "uz": "üzbég",
         "vai": "vai",
@@ -532,7 +530,6 @@
         "zh_Hant": "hagyományos kínai",
         "zu": "zulu",
         "zun": "zuni",
-        "zxx": "nincs nyelvészeti tartalom",
         "zza": "zaza"
     }
 }

@@ -82,4 +82,20 @@ class MoneyTypeTest extends BaseTypeTest
         $this->assertSame($expectedData, $form->getNormData());
         $this->assertSame($expectedData, $form->getData());
     }
+
+    public function testDefaultFormattingWithDefaultRounding()
+    {
+        $form = $this->factory->create(static::TESTED_TYPE, null, ['scale' => 0]);
+        $form->setData('12345.54321');
+
+        $this->assertSame('12346', $form->createView()->vars['value']);
+    }
+
+    public function testDefaultFormattingWithSpecifiedRounding()
+    {
+        $form = $this->factory->create(static::TESTED_TYPE, null, ['scale' => 0, 'rounding_mode' => \NumberFormatter::ROUND_DOWN]);
+        $form->setData('12345.54321');
+
+        $this->assertSame('12345', $form->createView()->vars['value']);
+    }
 }

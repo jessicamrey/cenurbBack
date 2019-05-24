@@ -40,17 +40,15 @@ class WebDebugToolbarListener implements EventSubscriberInterface
     protected $urlGenerator;
     protected $interceptRedirects;
     protected $mode;
-    protected $position;
     protected $excludedAjaxPaths;
     private $cspHandler;
 
-    public function __construct(Environment $twig, $interceptRedirects = false, $mode = self::ENABLED, $position = 'bottom', UrlGeneratorInterface $urlGenerator = null, $excludedAjaxPaths = '^/bundles|^/_wdt', ContentSecurityPolicyHandler $cspHandler = null)
+    public function __construct(Environment $twig, bool $interceptRedirects = false, int $mode = self::ENABLED, UrlGeneratorInterface $urlGenerator = null, string $excludedAjaxPaths = '^/bundles|^/_wdt', ContentSecurityPolicyHandler $cspHandler = null)
     {
         $this->twig = $twig;
         $this->urlGenerator = $urlGenerator;
-        $this->interceptRedirects = (bool) $interceptRedirects;
-        $this->mode = (int) $mode;
-        $this->position = $position;
+        $this->interceptRedirects = $interceptRedirects;
+        $this->mode = $mode;
         $this->excludedAjaxPaths = $excludedAjaxPaths;
         $this->cspHandler = $cspHandler;
     }
@@ -87,7 +85,7 @@ class WebDebugToolbarListener implements EventSubscriberInterface
             return;
         }
 
-        if ($response->headers->has('X-Debug-Token') && $response->isRedirect() && $this->interceptRedirects) {
+        if ($response->headers->has('X-Debug-Token') && $response->isRedirect() && $this->interceptRedirects && 'html' === $request->getRequestFormat()) {
             $session = $request->getSession();
             if (null !== $session && $session->isStarted() && $session->getFlashBag() instanceof AutoExpireFlashBag) {
                 // keep current flashes for one more request if using AutoExpireFlashBag
@@ -124,7 +122,6 @@ class WebDebugToolbarListener implements EventSubscriberInterface
             $toolbar = "\n".str_replace("\n", '', $this->twig->render(
                 '@WebProfiler/Profiler/toolbar_js.html.twig',
                 [
-                    'position' => $this->position,
                     'excluded_ajax_paths' => $this->excludedAjaxPaths,
                     'token' => $response->headers->get('X-Debug-Token'),
                     'request' => $request,

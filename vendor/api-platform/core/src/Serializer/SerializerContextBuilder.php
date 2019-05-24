@@ -45,41 +45,35 @@ final class SerializerContextBuilder implements SerializerContextBuilderInterfac
 
         $resourceMetadata = $this->resourceMetadataFactory->create($attributes['resource_class']);
         $key = $normalization ? 'normalization_context' : 'denormalization_context';
-
-        $operationKey = null;
-        $operationType = null;
-
         if (isset($attributes['collection_operation_name'])) {
             $operationKey = 'collection_operation_name';
             $operationType = OperationType::COLLECTION;
-        } elseif (isset($attributes['subresource_operation_name'])) {
+        } elseif (isset($attributes['item_operation_name'])) {
+            $operationKey = 'item_operation_name';
+            $operationType = OperationType::ITEM;
+        } else {
             $operationKey = 'subresource_operation_name';
             $operationType = OperationType::SUBRESOURCE;
         }
 
-        if (null !== $operationKey) {
-            $attribute = $attributes[$operationKey];
-            $context = $resourceMetadata->getCollectionOperationAttribute($attribute, $key, [], true);
-            $context[$operationKey] = $attribute;
-        } else {
-            $context = $resourceMetadata->getItemOperationAttribute($attributes['item_operation_name'], $key, [], true);
-            $context['item_operation_name'] = $attributes['item_operation_name'];
-        }
-
-        $context['operation_type'] = $operationType ?: OperationType::ITEM;
+        $context = $resourceMetadata->getTypedOperationAttribute($operationType, $attributes[$operationKey], $key, [], true);
+        $context['operation_type'] = $operationType;
+        $context[$operationKey] = $attributes[$operationKey];
 
         if (!$normalization && !isset($context['api_allow_update'])) {
             $context['api_allow_update'] = \in_array($request->getMethod(), ['PUT', 'PATCH'], true);
         }
 
         $context['resource_class'] = $attributes['resource_class'];
+        $context['input'] = $resourceMetadata->getTypedOperationAttribute($operationType, $attributes[$operationKey], 'input', $resourceMetadata->getAttribute('input'));
+        $context['output'] = $resourceMetadata->getTypedOperationAttribute($operationType, $attributes[$operationKey], 'output', $resourceMetadata->getAttribute('output'));
         $context['request_uri'] = $request->getRequestUri();
         $context['uri'] = $request->getUri();
 
         if (isset($attributes['subresource_context'])) {
             $context['subresource_identifiers'] = [];
 
-            foreach ($attributes['subresource_context']['identifiers'] as $key => list($id, $resourceClass)) {
+            foreach ($attributes['subresource_context']['identifiers'] as $key => [$id, $resourceClass]) {
                 if (!isset($context['subresource_resources'][$resourceClass])) {
                     $context['subresource_resources'][$resourceClass] = [];
                 }

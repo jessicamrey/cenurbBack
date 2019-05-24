@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace ApiPlatform\Core\EventListener;
 
 use ApiPlatform\Core\Exception\RuntimeException;
+use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
+use ApiPlatform\Core\Metadata\Resource\ToggleableOperationAttributeTrait;
 use ApiPlatform\Core\Serializer\ResourceList;
 use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
 use ApiPlatform\Core\Util\RequestAttributesExtractor;
+use Fig\Link\GenericLinkProvider;
+use Fig\Link\Link;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
@@ -30,61 +34,84 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 final class SerializeListener
 {
+    use ToggleableOperationAttributeTrait;
+
+    public const OPERATION_ATTRIBUTE_KEY = 'serialize';
+
     private $serializer;
     private $serializerContextBuilder;
 
-    public function __construct(SerializerInterface $serializer, SerializerContextBuilderInterface $serializerContextBuilder)
+    public function __construct(SerializerInterface $serializer, SerializerContextBuilderInterface $serializerContextBuilder, ResourceMetadataFactoryInterface $resourceMetadataFactory = null)
     {
         $this->serializer = $serializer;
         $this->serializerContextBuilder = $serializerContextBuilder;
+        $this->resourceMetadataFactory = $resourceMetadataFactory;
     }
 
     /**
      * Serializes the data to the requested format.
-     *
-     * @param GetResponseForControllerResultEvent $event
      */
-    public function onKernelView(GetResponseForControllerResultEvent $event)
+    public function onKernelView(GetResponseForControllerResultEvent $event): void
     {
         $controllerResult = $event->getControllerResult();
         $request = $event->getRequest();
 
-        if ($controllerResult instanceof Response) {
+        if (
+            $controllerResult instanceof Response
+            || !(($attributes = RequestAttributesExtractor::extractAttributes($request))['respond'] ?? $request->attributes->getBoolean('_api_respond', false))
+            || $attributes && $this->isOperationAttributeDisabled($attributes, self::OPERATION_ATTRIBUTE_KEY)
+        ) {
             return;
         }
 
-        if (!$attributes = RequestAttributesExtractor::extractAttributes($request)) {
+        if (!$attributes) {
             $this->serializeRawData($event, $request, $controllerResult);
 
             return;
         }
 
         $context = $this->serializerContextBuilder->createFromRequest($request, true, $attributes);
+
+        if (isset($context['output']) && \array_key_exists('class', $context['output']) && null === $context['output']['class']) {
+            $event->setControllerResult(null);
+
+            return;
+        }
+
+        if ($included = $request->attributes->get('_api_included')) {
+            $context['api_included'] = $included;
+        }
         $resources = new ResourceList();
         $context['resources'] = &$resources;
+
+        $resourcesToPush = new ResourceList();
+        $context['resources_to_push'] = &$resourcesToPush;
+
         $request->attributes->set('_api_normalization_context', $context);
 
         $event->setControllerResult($this->serializer->serialize($controllerResult, $request->getRequestFormat(), $context));
 
-        $request->attributes->set('_api_respond', true);
         $request->attributes->set('_resources', $request->attributes->get('_resources', []) + (array) $resources);
+        if (!\count($resourcesToPush)) {
+            return;
+        }
+
+        $linkProvider = $request->attributes->get('_links', new GenericLinkProvider());
+        foreach ($resourcesToPush as $resourceToPush) {
+            $linkProvider = $linkProvider->withLink(new Link('preload', $resourceToPush));
+        }
+        $request->attributes->set('_links', $linkProvider);
     }
 
     /**
      * Tries to serialize data that are not API resources (e.g. the entrypoint or data returned by a custom controller).
      *
-     * @param GetResponseForControllerResultEvent $event
-     * @param Request                             $request
-     * @param object                              $controllerResult
+     * @param object $controllerResult
      *
      * @throws RuntimeException
      */
-    private function serializeRawData(GetResponseForControllerResultEvent $event, Request $request, $controllerResult)
+    private function serializeRawData(GetResponseForControllerResultEvent $event, Request $request, $controllerResult): void
     {
-        if (!$request->attributes->get('_api_respond')) {
-            return;
-        }
-
         if (\is_object($controllerResult)) {
             $event->setControllerResult($this->serializer->serialize($controllerResult, $request->getRequestFormat(), $request->attributes->get('_api_normalization_context', [])));
 

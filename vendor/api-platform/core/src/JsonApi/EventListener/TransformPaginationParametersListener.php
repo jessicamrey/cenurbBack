@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  */
 final class TransformPaginationParametersListener
 {
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         $request = $event->getRequest();
 
@@ -36,6 +36,10 @@ final class TransformPaginationParametersListener
             return;
         }
 
+        $filters = $request->attributes->get('_api_filters', []);
+        $request->attributes->set('_api_filters', array_merge($pageParameter, $filters));
+
+        /* @TODO remove the `_api_pagination` attribute in 3.0 (@meyerbaptiste) */
         $request->attributes->set('_api_pagination', $pageParameter);
     }
 }

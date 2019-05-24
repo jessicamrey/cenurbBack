@@ -318,20 +318,6 @@ abstract class AbstractDoctrineExtension extends Extension
                 $container->setAlias($cacheDriverServiceId, new Alias($cacheDriver['id'], false));
 
                 return $cacheDriverServiceId;
-            case 'memcache':
-                $memcacheClass = !empty($cacheDriver['class']) ? $cacheDriver['class'] : '%'.$this->getObjectManagerElementName('cache.memcache.class').'%';
-                $memcacheInstanceClass = !empty($cacheDriver['instance_class']) ? $cacheDriver['instance_class'] : '%'.$this->getObjectManagerElementName('cache.memcache_instance.class').'%';
-                $memcacheHost = !empty($cacheDriver['host']) ? $cacheDriver['host'] : '%'.$this->getObjectManagerElementName('cache.memcache_host').'%';
-                $memcachePort = !empty($cacheDriver['port']) || (isset($cacheDriver['port']) && 0 === $cacheDriver['port']) ? $cacheDriver['port'] : '%'.$this->getObjectManagerElementName('cache.memcache_port').'%';
-                $cacheDef = new Definition($memcacheClass);
-                $memcacheInstance = new Definition($memcacheInstanceClass);
-                $memcacheInstance->setPrivate(true);
-                $memcacheInstance->addMethodCall('connect', [
-                    $memcacheHost, $memcachePort,
-                ]);
-                $container->setDefinition($this->getObjectManagerElementName(sprintf('%s_memcache_instance', $objectManagerName)), $memcacheInstance);
-                $cacheDef->addMethodCall('setMemcache', [new Reference($this->getObjectManagerElementName(sprintf('%s_memcache_instance', $objectManagerName)))]);
-                break;
             case 'memcached':
                 $memcachedClass = !empty($cacheDriver['class']) ? $cacheDriver['class'] : '%'.$this->getObjectManagerElementName('cache.memcached.class').'%';
                 $memcachedInstanceClass = !empty($cacheDriver['instance_class']) ? $cacheDriver['instance_class'] : '%'.$this->getObjectManagerElementName('cache.memcached_instance.class').'%';
@@ -379,9 +365,9 @@ abstract class AbstractDoctrineExtension extends Extension
             if ($container->hasParameter('cache.prefix.seed')) {
                 $seed = '.'.$container->getParameterBag()->resolveValue($container->getParameter('cache.prefix.seed'));
             } else {
-                $seed = '_'.$container->getParameter('kernel.root_dir');
+                $seed = '_'.$container->getParameter('kernel.project_dir');
             }
-            $seed .= '.'.$container->getParameter('kernel.name').'.'.$container->getParameter('kernel.environment').'.'.$container->getParameter('kernel.debug');
+            $seed .= '.'.$container->getParameter('kernel.container_class');
             $namespace = 'sf_'.$this->getMappingResourceExtension().'_'.$objectManagerName.'_'.ContainerBuilder::hash($seed);
 
             $cacheDriver['namespace'] = $namespace;

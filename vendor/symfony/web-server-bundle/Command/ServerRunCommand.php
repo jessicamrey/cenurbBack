@@ -13,6 +13,7 @@ namespace Symfony\Bundle\WebServerBundle\Command;
 
 use Symfony\Bundle\WebServerBundle\WebServer;
 use Symfony\Bundle\WebServerBundle\WebServerConfig;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,14 +27,14 @@ use Symfony\Component\Process\Process;
  *
  * @author Michał Pipa <michal.pipa.xsolve@gmail.com>
  */
-class ServerRunCommand extends ServerCommand
+class ServerRunCommand extends Command
 {
     private $documentRoot;
     private $environment;
 
     protected static $defaultName = 'server:run';
 
-    public function __construct($documentRoot = null, $environment = null)
+    public function __construct(string $documentRoot = null, string $environment = null)
     {
         $this->documentRoot = $documentRoot;
         $this->environment = $environment;
@@ -89,12 +90,6 @@ EOF
     {
         $io = new SymfonyStyle($input, $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output);
 
-        // deprecated, logic to be removed in 4.0
-        // this allows the commands to work out of the box with web/ and public/
-        if ($this->documentRoot && !is_dir($this->documentRoot) && is_dir(\dirname($this->documentRoot).'/web')) {
-            $this->documentRoot = \dirname($this->documentRoot).'/web';
-        }
-
         if (null === $documentRoot = $input->getOption('docroot')) {
             if (!$this->documentRoot) {
                 $io->error('The document root directory must be either passed as first argument of the constructor or through the "--docroot" input option.');
@@ -137,7 +132,14 @@ EOF
             $server = new WebServer();
             $config = new WebServerConfig($documentRoot, $env, $input->getArgument('addressport'), $input->getOption('router'));
 
-            $io->success(sprintf('Server listening on http://%s', $config->getAddress()));
+            $message = sprintf('Server listening on http://%s', $config->getAddress());
+            if ('' !== $displayAddress = $config->getDisplayAddress()) {
+                $message = sprintf('Server listening on all interfaces, port %s -- see http://%s', $config->getPort(), $displayAddress);
+            }
+            $io->success($message);
+            if (ini_get('xdebug.profiler_enable_trigger')) {
+                $io->comment('Xdebug profiler trigger enabled.');
+            }
             $io->comment('Quit the server with CONTROL-C.');
 
             $exitCode = $server->run($config, $disableOutput, $callback);

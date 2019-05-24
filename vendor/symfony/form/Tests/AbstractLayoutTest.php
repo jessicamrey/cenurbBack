@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Form\Tests;
 
+use PHPUnit\Framework\SkippedTestError;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormView;
@@ -114,6 +115,11 @@ abstract class AbstractLayoutTest extends FormIntegrationTestCase
     abstract protected function renderForm(FormView $view, array $vars = []);
 
     abstract protected function renderLabel(FormView $view, $label = null, array $vars = []);
+
+    protected function renderHelp(FormView $view)
+    {
+        $this->markTestSkipped(sprintf('%s::renderHelp() is not implemented.', \get_class($this)));
+    }
 
     abstract protected function renderErrors(FormView $view);
 
@@ -406,6 +412,66 @@ abstract class AbstractLayoutTest extends FormIntegrationTestCase
     [@type="button"]
     [@name="myform[mybutton]"]
     [.="[trans]form.myform_mybutton[/trans]"]
+'
+        );
+    }
+
+    public function testHelp()
+    {
+        $form = $this->factory->createNamed('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', null, [
+            'help' => 'Help text test!',
+        ]);
+        $view = $form->createView();
+        $html = $this->renderHelp($view);
+
+        $this->assertMatchesXpath($html,
+'/p
+    [@id="name_help"]
+    [@class="help-text"]
+    [.="[trans]Help text test![/trans]"]
+'
+        );
+    }
+
+    public function testHelpNotSet()
+    {
+        $form = $this->factory->createNamed('name', 'Symfony\Component\Form\Extension\Core\Type\TextType');
+        $view = $form->createView();
+        $html = $this->renderHelp($view);
+
+        $this->assertMatchesXpath($html, '/p', 0);
+    }
+
+    public function testHelpSetLinkFromWidget()
+    {
+        $form = $this->factory->createNamed('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', null, [
+            'help' => 'Help text test!',
+        ]);
+        $view = $form->createView();
+        $html = $this->renderRow($view);
+
+        // Test if renderHelp method is implemented (throw SkippedTestError if not)
+        $this->renderHelp($view);
+
+        $this->assertMatchesXpath($html,
+'//input
+    [@aria-describedby="name_help"]
+'
+        );
+    }
+
+    public function testHelpNotSetNotLinkedFromWidget()
+    {
+        $form = $this->factory->createNamed('name', 'Symfony\Component\Form\Extension\Core\Type\TextType');
+        $view = $form->createView();
+        $html = $this->renderRow($view);
+
+        // Test if renderHelp method is implemented (throw SkippedTestError if not)
+        $this->renderHelp($view);
+
+        $this->assertMatchesXpath($html,
+'//input
+    [not(@aria-describedby)]
 '
         );
     }

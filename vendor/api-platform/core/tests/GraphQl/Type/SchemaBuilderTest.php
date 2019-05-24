@@ -95,6 +95,32 @@ class SchemaBuilderTest extends TestCase
         $this->assertArrayNotHasKey('objectProperty', $type->getFields());
     }
 
+    public function testConvertFilterArgsToTypes()
+    {
+        $propertyMetadataMockBuilder = function ($builtinType, $resourceClassName) {
+            return new PropertyMetadata();
+        };
+        $mockedSchemaBuilder = $this->createSchemaBuilder($propertyMetadataMockBuilder, false);
+
+        $reflectionClass = new \ReflectionClass(SchemaBuilder::class);
+        $method = $reflectionClass->getMethod('convertFilterArgsToTypes');
+        $method->setAccessible(true);
+        $filterArgs = [
+            'aField' => 'string',
+            'GraphqlRelatedResource.nestedFieldA' => 'string',
+            'GraphqlRelatedResource.nestedFieldB' => 'string',
+        ];
+
+        $this->assertSame(
+            [
+                'aField' => 'string',
+                'GraphqlRelatedResource_nestedFieldA' => 'string',
+                'GraphqlRelatedResource_nestedFieldB' => 'string',
+            ],
+            $method->invoke($mockedSchemaBuilder, $filterArgs)
+        );
+    }
+
     /**
      * @dataProvider paginationProvider
      */
@@ -120,10 +146,11 @@ class SchemaBuilderTest extends TestCase
         };
         $mockedSchemaBuilder = $this->createSchemaBuilder($propertyMetadataMockBuilder, $paginationEnabled);
         $schema = $mockedSchemaBuilder->getSchema();
+
         $queryFields = $schema->getConfig()->getQuery()->getFields();
         $mutationFields = $schema->getConfig()->getMutation()->getFields();
 
-        $this->assertEquals([
+        $this->assertSame([
             'node',
             'shortName1',
             'shortName1s',
@@ -142,7 +169,7 @@ class SchemaBuilderTest extends TestCase
         /** @var ObjectType $type */
         $type = $queryFields['shortName2']->getType();
         $resourceTypeFields = $type->getFields();
-        $this->assertEquals(
+        $this->assertSame(
             ['id', '_id', 'floatProperty', 'stringProperty', 'boolProperty', 'objectProperty', 'arrayProperty', 'iterableProperty'],
             array_keys($resourceTypeFields)
         );
@@ -153,39 +180,66 @@ class SchemaBuilderTest extends TestCase
         if ($paginationEnabled) {
             /** @var ObjectType $objectPropertyFieldType */
             $objectPropertyFieldType = $type->getFields()['objectProperty']->getType();
-            $this->assertEquals($objectPropertyFieldType->name, 'ShortName1Connection');
+            $this->assertSame('ShortName1Connection', $objectPropertyFieldType->name);
+            $this->assertEquals(GraphQLType::nonNull(GraphQLType::int()), $objectPropertyFieldType->getField('totalCount')->getType());
             /** @var ListOfType $edgesType */
             $edgesType = $objectPropertyFieldType->getFields()['edges']->getType();
+            /** @var ObjectType $edgeType */
             $edgeType = $edgesType->getWrappedType();
-            $this->assertEquals($edgeType->name, 'ShortName1Edge');
-            $this->assertEquals($edgeType->getFields()['cursor']->getType(), GraphQLType::nonNull(GraphQLType::string()));
-            $this->assertEquals(
-                $type,
-                $edgeType->getFields()['node']->getType()
-            );
+            $this->assertSame('ShortName1Edge', $edgeType->name);
+            $this->assertEquals(GraphQLType::nonNull(GraphQLType::string()), $edgeType->getField('cursor')->getType());
+            $this->assertEquals($type, $edgeType->getField('node')->getType());
         } else {
             /** @var ListOfType $objectPropertyFieldType */
             $objectPropertyFieldType = $type->getFields()['objectProperty']->getType();
-            $this->assertEquals(
-                $type,
-                $objectPropertyFieldType->getWrappedType()
-            );
+            $this->assertEquals($type, $objectPropertyFieldType->getWrappedType());
         }
 
         // DateTime is considered as a string instead of an object.
         /** @var ObjectType $type */
         $type = $queryFields['shortName3']->getType();
         /** @var ListOfType $objectPropertyFieldType */
-        $objectPropertyFieldType = $type->getFields()['objectProperty']->getType();
+        $objectPropertyFieldType = $type->getField('objectProperty')->getType();
         $this->assertEquals(GraphQLType::nonNull(GraphQLType::string()), $objectPropertyFieldType);
 
         /** @var ObjectType $type */
         $type = $mutationFields['createShortName2']->getType();
         $resourceTypeFields = $type->getFields();
         $this->assertEquals(
-            ['id', '_id', 'floatProperty', 'stringProperty', 'boolProperty', 'objectProperty', 'arrayProperty', 'iterableProperty', 'clientMutationId'],
+            ['shortName2', 'clientMutationId'],
             array_keys($resourceTypeFields)
         );
+    }
+
+    /**
+     * Tests that the GraphQL SchemaBuilder supports an edge case where a property is typed as an Type::BUILTIN_TYPE_OBJECT but has no class related.
+     */
+    public function testObjectTypeWithoutClass()
+    {
+        $propertyMetadataMockBuilder = function ($builtinType, $resourceClassName) {
+            return new PropertyMetadata(
+                new Type(
+                    $builtinType
+                ),
+                "{$builtinType}Description",
+                true,
+                true,
+                null,
+                null,
+                null
+            );
+        };
+
+        $mockedSchemaBuilder = $this->createSchemaBuilder($propertyMetadataMockBuilder, false);
+        $this->assertEquals([
+            'node',
+            'shortName1',
+            'shortName1s',
+            'shortName2',
+            'shortName2s',
+            'shortName3',
+            'shortName3s',
+        ], array_keys($mockedSchemaBuilder->getSchema()->getConfig()->getQuery()->getFields()));
     }
 
     public function paginationProvider(): array
@@ -235,8 +289,10 @@ class SchemaBuilderTest extends TestCase
         $resourceNameCollection = new ResourceNameCollection($resourceClassNames);
         $resourceNameCollectionFactoryProphecy->create()->willReturn($resourceNameCollection);
 
-        $collectionResolverFactoryProphecy->__invoke(Argument::cetera())->willReturn(function () {});
-        $itemMutationResolverFactoryProphecy->__invoke(Argument::cetera())->willReturn(function () {});
+        $collectionResolverFactoryProphecy->__invoke(Argument::cetera())->willReturn(function () {
+        });
+        $itemMutationResolverFactoryProphecy->__invoke(Argument::cetera())->willReturn(function () {
+        });
 
         return new SchemaBuilder(
             $propertyNameCollectionFactoryProphecy->reveal(),
@@ -245,8 +301,10 @@ class SchemaBuilderTest extends TestCase
             $resourceMetadataFactoryProphecy->reveal(),
             $collectionResolverFactoryProphecy->reveal(),
             $itemMutationResolverFactoryProphecy->reveal(),
-            function () {},
-            function () {},
+            function () {
+            },
+            function () {
+            },
             null,
             $paginationEnabled
         );

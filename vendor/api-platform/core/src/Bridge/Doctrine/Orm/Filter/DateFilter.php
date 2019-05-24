@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Core\Bridge\Doctrine\Orm\Filter;
 
+use ApiPlatform\Core\Bridge\Doctrine\Common\Filter\DateFilterInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Common\Filter\DateFilterTrait;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Type as DBALType;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -24,51 +26,20 @@ use Doctrine\ORM\QueryBuilder;
  * @author Kévin Dunglas <dunglas@gmail.com>
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class DateFilter extends AbstractContextAwareFilter
+class DateFilter extends AbstractContextAwareFilter implements DateFilterInterface
 {
-    const PARAMETER_BEFORE = 'before';
-    const PARAMETER_STRICTLY_BEFORE = 'strictly_before';
-    const PARAMETER_AFTER = 'after';
-    const PARAMETER_STRICTLY_AFTER = 'strictly_after';
-    const EXCLUDE_NULL = 'exclude_null';
-    const INCLUDE_NULL_BEFORE = 'include_null_before';
-    const INCLUDE_NULL_AFTER = 'include_null_after';
-    const DOCTRINE_DATE_TYPES = [
-        'date' => true,
-        'datetime' => true,
-        'datetimetz' => true,
-        'time' => true,
-        'date_immutable' => true,
-        'datetime_immutable' => true,
-        'datetimetz_immutable' => true,
-        'time_immutable' => true,
+    use DateFilterTrait;
+
+    public const DOCTRINE_DATE_TYPES = [
+        DBALType::DATE => true,
+        DBALType::DATETIME => true,
+        DBALType::DATETIMETZ => true,
+        DBALType::TIME => true,
+        DBALType::DATE_IMMUTABLE => true,
+        DBALType::DATETIME_IMMUTABLE => true,
+        DBALType::DATETIMETZ_IMMUTABLE => true,
+        DBALType::TIME_IMMUTABLE => true,
     ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription(string $resourceClass): array
-    {
-        $description = [];
-
-        $properties = $this->properties;
-        if (null === $properties) {
-            $properties = array_fill_keys($this->getClassMetadata($resourceClass)->getFieldNames(), null);
-        }
-
-        foreach ($properties as $property => $nullManagement) {
-            if (!$this->isPropertyMapped($property, $resourceClass) || !$this->isDateField($property, $resourceClass)) {
-                continue;
-            }
-
-            $description += $this->getFilterDescription($property, self::PARAMETER_BEFORE);
-            $description += $this->getFilterDescription($property, self::PARAMETER_STRICTLY_BEFORE);
-            $description += $this->getFilterDescription($property, self::PARAMETER_AFTER);
-            $description += $this->getFilterDescription($property, self::PARAMETER_STRICTLY_AFTER);
-        }
-
-        return $description;
-    }
 
     /**
      * {@inheritdoc}
@@ -89,11 +60,11 @@ class DateFilter extends AbstractContextAwareFilter
         $field = $property;
 
         if ($this->isPropertyNested($property, $resourceClass)) {
-            list($alias, $field) = $this->addJoinsForNestedProperty($property, $alias, $queryBuilder, $queryNameGenerator, $resourceClass);
+            [$alias, $field] = $this->addJoinsForNestedProperty($property, $alias, $queryBuilder, $queryNameGenerator, $resourceClass);
         }
 
         $nullManagement = $this->properties[$property] ?? null;
-        $type = $this->getDoctrineFieldType($property, $resourceClass);
+        $type = (string) $this->getDoctrineFieldType($property, $resourceClass);
 
         if (self::EXCLUDE_NULL === $nullManagement) {
             $queryBuilder->andWhere($queryBuilder->expr()->isNotNull(sprintf('%s.%s', $alias, $field)));
@@ -155,17 +126,11 @@ class DateFilter extends AbstractContextAwareFilter
     /**
      * Adds the where clause according to the chosen null management.
      *
-     * @param QueryBuilder                $queryBuilder
-     * @param QueryNameGeneratorInterface $queryNameGenerator
-     * @param string                      $alias
-     * @param string                      $field
-     * @param string                      $operator
-     * @param string                      $value
-     * @param string|null                 $nullManagement
-     * @param string|Type                 $type
+     * @param string|DBALType $type
      */
     protected function addWhere(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $alias, string $field, string $operator, string $value, string $nullManagement = null, $type = null)
     {
+        $type = (string) $type;
         try {
             $value = false === strpos($type, '_immutable') ? new \DateTime($value) : new \DateTimeImmutable($value);
         } catch (\Exception $e) {
@@ -189,8 +154,9 @@ class DateFilter extends AbstractContextAwareFilter
         if (null === $nullManagement || self::EXCLUDE_NULL === $nullManagement) {
             $queryBuilder->andWhere($baseWhere);
         } elseif (
-            (\in_array($operator, [self::PARAMETER_BEFORE, self::PARAMETER_STRICTLY_BEFORE], true) && self::INCLUDE_NULL_BEFORE === $nullManagement) ||
-            (\in_array($operator, [self::PARAMETER_AFTER, self::PARAMETER_STRICTLY_AFTER], true) && self::INCLUDE_NULL_AFTER === $nullManagement)
+            (self::INCLUDE_NULL_BEFORE === $nullManagement && \in_array($operator, [self::PARAMETER_BEFORE, self::PARAMETER_STRICTLY_BEFORE], true)) ||
+            (self::INCLUDE_NULL_AFTER === $nullManagement && \in_array($operator, [self::PARAMETER_AFTER, self::PARAMETER_STRICTLY_AFTER], true)) ||
+            (self::INCLUDE_NULL_BEFORE_AND_AFTER === $nullManagement && \in_array($operator, [self::PARAMETER_AFTER, self::PARAMETER_STRICTLY_AFTER, self::PARAMETER_BEFORE, self::PARAMETER_STRICTLY_BEFORE], true))
         ) {
             $queryBuilder->andWhere($queryBuilder->expr()->orX(
                 $baseWhere,
@@ -204,37 +170,5 @@ class DateFilter extends AbstractContextAwareFilter
         }
 
         $queryBuilder->setParameter($valueParameter, $value, $type);
-    }
-
-    /**
-     * Determines whether the given property refers to a date field.
-     *
-     * @param string $property
-     * @param string $resourceClass
-     *
-     * @return bool
-     */
-    protected function isDateField(string $property, string $resourceClass): bool
-    {
-        return isset(self::DOCTRINE_DATE_TYPES[$this->getDoctrineFieldType($property, $resourceClass)]);
-    }
-
-    /**
-     * Gets filter description.
-     *
-     * @param string $property
-     * @param string $period
-     *
-     * @return array
-     */
-    protected function getFilterDescription(string $property, string $period): array
-    {
-        return [
-            sprintf('%s[%s]', $property, $period) => [
-                'property' => $property,
-                'type' => \DateTimeInterface::class,
-                'required' => false,
-            ],
-        ];
     }
 }

@@ -31,10 +31,6 @@ final class RequestParser
 
     /**
      * Gets a fixed request.
-     *
-     * @param Request $request
-     *
-     * @return Request
      */
     public static function parseAndDuplicateRequest(Request $request): Request
     {
@@ -50,10 +46,6 @@ final class RequestParser
      * @author Rok Kralj
      *
      * @see https://stackoverflow.com/a/18209799/1529493
-     *
-     * @param string $source
-     *
-     * @return array
      */
     public static function parseRequestParams(string $source): array
     {
@@ -80,10 +72,8 @@ final class RequestParser
      *
      * It builds a normalized query string, where keys/value pairs are alphabetized
      * and have consistent escaping.
-     *
-     * @return string|null A normalized query string for the Request
      */
-    public static function getQueryString(Request $request)
+    public static function getQueryString(Request $request): ?string
     {
         $qs = $request->server->get('QUERY_STRING', '');
         if ('' === $qs) {

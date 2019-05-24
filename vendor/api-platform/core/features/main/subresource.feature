@@ -221,17 +221,17 @@ Feature: Subresource support
     """
 
   Scenario: Create a dummy with a relation that is a subresource
-       When I add "Content-Type" header equal to "application/ld+json"
-       And I send a "POST" request to "/dummies" with body:
-       """
-       {
-         "name": "Dummy with relations",
-         "relatedDummy": "/dummies/1/related_dummies/2"
-       }
-       """
-       Then the response status code should be 201
-       And the response should be in JSON
-       And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
+    When I add "Content-Type" header equal to "application/ld+json"
+    And I send a "POST" request to "/dummies" with body:
+    """
+    {
+      "name": "Dummy with relations",
+      "relatedDummy": "/dummies/1/related_dummies/2"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
 
   Scenario: Get the embedded relation subresource item at the third level
     When I send a "GET" request to "/dummies/1/related_dummies/1/third_level"
@@ -245,6 +245,7 @@ Feature: Subresource support
       "@id": "/third_levels/1",
       "@type": "ThirdLevel",
       "fourthLevel": "/fourth_levels/1",
+      "badFourthLevel": null,
       "id": 1,
       "level": 3,
       "test": true
@@ -262,6 +263,7 @@ Feature: Subresource support
       "@context": "/contexts/FourthLevel",
       "@id": "/fourth_levels/1",
       "@type": "FourthLevel",
+      "badThirdLevel": [],
       "id": 1,
       "level": 4
     }
@@ -342,7 +344,71 @@ Feature: Subresource support
     }
     """
 
-  @dropSchema
+
+  Scenario: The OneToOne subresource should be accessible from owned side
+    Given there is a RelatedOwnedDummy object with OneToOne relation
+    When I send a "GET" request to "/related_owned_dummies/1/owning_dummy"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
+    And the JSON should be equal to:
+    """
+    {
+      "@context": "/contexts/Dummy",
+      "@id": "/dummies/3",
+      "@type": "Dummy",
+      "description": null,
+      "dummy": null,
+      "dummyBoolean": null,
+      "dummyDate": null,
+      "dummyFloat": null,
+      "dummyPrice": null,
+      "relatedDummy": null,
+      "relatedDummies": [],
+      "jsonData": [],
+      "arrayData": [],
+      "name_converted": null,
+      "relatedOwnedDummy": "/related_owned_dummies/1",
+      "relatedOwningDummy": null,
+      "id": 3,
+      "name": "plop",
+      "alias": null,
+      "foo": null
+    }
+    """
+
+  Scenario: The OneToOne subresource should be accessible from owning side
+    Given there is a RelatedOwningDummy object with OneToOne relation
+    When I send a "GET" request to "/related_owning_dummies/1/owned_dummy"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
+    And the JSON should be equal to:
+    """
+    {
+      "@context": "/contexts/Dummy",
+      "@id": "/dummies/4",
+      "@type": "Dummy",
+      "description": null,
+      "dummy": null,
+      "dummyBoolean": null,
+      "dummyDate": null,
+      "dummyFloat": null,
+      "dummyPrice": null,
+      "relatedDummy": null,
+      "relatedDummies": [],
+      "jsonData": [],
+      "arrayData": [],
+      "name_converted": null,
+      "relatedOwnedDummy": null,
+      "relatedOwningDummy": "/related_owning_dummies/1",
+      "id": 4,
+      "name": "plop",
+      "alias": null,
+      "foo": null
+    }
+    """
+
   Scenario: Recursive resource
     When I send a "GET" request to "/dummy_products/2"
     And the response status code should be 200

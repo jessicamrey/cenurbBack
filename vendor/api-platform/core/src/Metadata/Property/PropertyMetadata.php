@@ -34,8 +34,9 @@ final class PropertyMetadata
     private $childInherited;
     private $attributes;
     private $subresource;
+    private $initializable;
 
-    public function __construct(Type $type = null, string $description = null, bool $readable = null, bool $writable = null, bool $readableLink = null, bool $writableLink = null, bool $required = null, bool $identifier = null, string $iri = null, $childInherited = null, array $attributes = null, SubresourceMetadata $subresource = null)
+    public function __construct(Type $type = null, string $description = null, bool $readable = null, bool $writable = null, bool $readableLink = null, bool $writableLink = null, bool $required = null, bool $identifier = null, string $iri = null, $childInherited = null, array $attributes = null, SubresourceMetadata $subresource = null, bool $initializable = null)
     {
         $this->type = $type;
         $this->description = $description;
@@ -49,24 +50,19 @@ final class PropertyMetadata
         $this->childInherited = $childInherited;
         $this->attributes = $attributes;
         $this->subresource = $subresource;
+        $this->initializable = $initializable;
     }
 
     /**
      * Gets type.
-     *
-     * @return Type|null
      */
-    public function getType()
+    public function getType(): ?Type
     {
         return $this->type;
     }
 
     /**
      * Returns a new instance with the given type.
-     *
-     * @param Type $type
-     *
-     * @return self
      */
     public function withType(Type $type): self
     {
@@ -78,22 +74,16 @@ final class PropertyMetadata
 
     /**
      * Gets description.
-     *
-     * @return string|null
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
      * Returns a new instance with the given description.
-     *
-     * @param string $description
-     *
-     * @return self
      */
-    public function withDescription($description): self
+    public function withDescription(string $description): self
     {
         $metadata = clone $this;
         $metadata->description = $description;
@@ -103,20 +93,14 @@ final class PropertyMetadata
 
     /**
      * Is readable?
-     *
-     * @return bool|null
      */
-    public function isReadable()
+    public function isReadable(): ?bool
     {
         return $this->readable;
     }
 
     /**
      * Returns a new instance of Metadata with the given readable flag.
-     *
-     * @param bool $readable
-     *
-     * @return self
      */
     public function withReadable(bool $readable): self
     {
@@ -128,20 +112,14 @@ final class PropertyMetadata
 
     /**
      * Is writable?
-     *
-     * @return bool|null
      */
-    public function isWritable()
+    public function isWritable(): ?bool
     {
         return $this->writable;
     }
 
     /**
      * Returns a new instance with the given writable flag.
-     *
-     * @param bool $writable
-     *
-     * @return self
      */
     public function withWritable(bool $writable): self
     {
@@ -153,10 +131,8 @@ final class PropertyMetadata
 
     /**
      * Is required?
-     *
-     * @return bool|null
      */
-    public function isRequired()
+    public function isRequired(): ?bool
     {
         if (true === $this->required && false === $this->writable) {
             return false;
@@ -167,10 +143,6 @@ final class PropertyMetadata
 
     /**
      * Returns a new instance with the given required flag.
-     *
-     * @param bool $required
-     *
-     * @return self
      */
     public function withRequired(bool $required): self
     {
@@ -182,20 +154,14 @@ final class PropertyMetadata
 
     /**
      * Should an IRI or an object be provided in write context?
-     *
-     * @return bool|null
      */
-    public function isWritableLink()
+    public function isWritableLink(): ?bool
     {
         return $this->writableLink;
     }
 
     /**
      * Returns a new instance with the given writable link flag.
-     *
-     * @param bool $writableLink
-     *
-     * @return self
      */
     public function withWritableLink(bool $writableLink): self
     {
@@ -207,20 +173,14 @@ final class PropertyMetadata
 
     /**
      * Is an IRI or an object generated in read context?
-     *
-     * @return bool|null
      */
-    public function isReadableLink()
+    public function isReadableLink(): ?bool
     {
         return $this->readableLink;
     }
 
     /**
      * Returns a new instance with the given readable link flag.
-     *
-     * @param bool $readableLink
-     *
-     * @return self
      */
     public function withReadableLink(bool $readableLink): self
     {
@@ -232,20 +192,14 @@ final class PropertyMetadata
 
     /**
      * Gets IRI of this property.
-     *
-     * @return string|null
      */
-    public function getIri()
+    public function getIri(): ?string
     {
         return $this->iri;
     }
 
     /**
      * Returns a new instance with the given IRI.
-     *
-     * @param string|null $iri
-     *
-     * @return self
      */
     public function withIri(string $iri = null): self
     {
@@ -257,20 +211,14 @@ final class PropertyMetadata
 
     /**
      * Is this attribute an identifier?
-     *
-     * @return bool|null
      */
-    public function isIdentifier()
+    public function isIdentifier(): ?bool
     {
         return $this->identifier;
     }
 
     /**
      * Returns a new instance with the given identifier flag.
-     *
-     * @param bool $identifier
-     *
-     * @return self
      */
     public function withIdentifier(bool $identifier): self
     {
@@ -282,10 +230,8 @@ final class PropertyMetadata
 
     /**
      * Gets attributes.
-     *
-     * @return array|null
      */
-    public function getAttributes()
+    public function getAttributes(): ?array
     {
         return $this->attributes;
     }
@@ -293,26 +239,15 @@ final class PropertyMetadata
     /**
      * Gets an attribute.
      *
-     * @param string $key
-     * @param mixed  $defaultValue
-     *
-     * @return mixed
+     * @param mixed|null $defaultValue
      */
     public function getAttribute(string $key, $defaultValue = null)
     {
-        if (isset($this->attributes[$key])) {
-            return $this->attributes[$key];
-        }
-
-        return $defaultValue;
+        return $this->attributes[$key] ?? $defaultValue;
     }
 
     /**
      * Returns a new instance with the given attribute.
-     *
-     * @param array $attributes
-     *
-     * @return self
      */
     public function withAttributes(array $attributes): self
     {
@@ -323,21 +258,35 @@ final class PropertyMetadata
     }
 
     /**
-     * Is the property inherited from a child class?
-     *
-     * @return string|null
+     * Gets child inherited.
      */
-    public function isChildInherited()
+    public function getChildInherited(): ?string
     {
         return $this->childInherited;
     }
 
     /**
+     * Is the property inherited from a child class?
+     */
+    public function hasChildInherited(): bool
+    {
+        return null !== $this->childInherited;
+    }
+
+    /**
+     * Is the property inherited from a child class?
+     *
+     * @deprecated since version 2.4, to be removed in 3.0.
+     */
+    public function isChildInherited(): ?string
+    {
+        @trigger_error(sprintf('The use of "%1$s::isChildInherited()" is deprecated since 2.4 and will be removed in 3.0. Use "%1$s::getChildInherited()" or "%1$s::hasChildInherited()" directly instead.', __CLASS__), E_USER_DEPRECATED);
+
+        return $this->getChildInherited();
+    }
+
+    /**
      * Returns a new instance with the given child inherited class.
-     *
-     * @param string $childInherited
-     *
-     * @return self
      */
     public function withChildInherited(string $childInherited): self
     {
@@ -349,8 +298,6 @@ final class PropertyMetadata
 
     /**
      * Represents whether the property has a subresource.
-     *
-     * @return bool
      */
     public function hasSubresource(): bool
     {
@@ -359,10 +306,8 @@ final class PropertyMetadata
 
     /**
      * Gets the subresource metadata.
-     *
-     * @return SubresourceMetadata|null
      */
-    public function getSubresource()
+    public function getSubresource(): ?SubresourceMetadata
     {
         return $this->subresource;
     }
@@ -371,13 +316,30 @@ final class PropertyMetadata
      * Returns a new instance with the given subresource.
      *
      * @param SubresourceMetadata $subresource
-     *
-     * @return self
      */
     public function withSubresource(SubresourceMetadata $subresource = null): self
     {
         $metadata = clone $this;
         $metadata->subresource = $subresource;
+
+        return $metadata;
+    }
+
+    /**
+     * Is initializable?
+     */
+    public function isInitializable(): ?bool
+    {
+        return $this->initializable;
+    }
+
+    /**
+     * Returns a new instance with the given initializable flag.
+     */
+    public function withInitializable(bool $initializable): self
+    {
+        $metadata = clone $this;
+        $metadata->initializable = $initializable;
 
         return $metadata;
     }

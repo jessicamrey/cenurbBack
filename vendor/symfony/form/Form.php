@@ -61,7 +61,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class Form implements \IteratorAggregate, FormInterface
+class Form implements \IteratorAggregate, FormInterface, ClearableErrorsInterface
 {
     /**
      * @var FormConfigInterface
@@ -734,9 +734,7 @@ class Form implements \IteratorAggregate, FormInterface
     public function isValid()
     {
         if (!$this->submitted) {
-            @trigger_error('Call Form::isValid() with an unsubmitted form is deprecated since Symfony 3.2 and will throw an exception in 4.0. Use Form::isSubmitted() before Form::isValid() instead.', E_USER_DEPRECATED);
-
-            return false;
+            throw new LogicException('Cannot check if an unsubmitted form is valid. Call Form::isSubmitted() before Form::isValid().');
         }
 
         if ($this->isDisabled()) {
@@ -794,6 +792,27 @@ class Form implements \IteratorAggregate, FormInterface
         }
 
         return new FormErrorIterator($this, $errors);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return $this
+     */
+    public function clearErrors(bool $deep = false): self
+    {
+        $this->errors = [];
+
+        if ($deep) {
+            // Clear errors from children
+            foreach ($this as $child) {
+                if ($child instanceof ClearableErrorsInterface) {
+                    $child->clearErrors(true);
+                }
+            }
+        }
+
+        return $this;
     }
 
     /**

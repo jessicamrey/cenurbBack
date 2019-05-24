@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Core\Bridge\Doctrine\Orm\Filter;
 
+use ApiPlatform\Core\Bridge\Doctrine\Common\Filter\NumericFilterTrait;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use ApiPlatform\Core\Exception\InvalidArgumentException;
 use Doctrine\DBAL\Types\Type as DBALType;
 use Doctrine\ORM\QueryBuilder;
 
@@ -31,12 +31,14 @@ use Doctrine\ORM\QueryBuilder;
  */
 class NumericFilter extends AbstractContextAwareFilter
 {
+    use NumericFilterTrait;
+
     /**
      * Type of numeric in Doctrine.
      *
      * @see http://doctrine-orm.readthedocs.org/projects/doctrine-dbal/en/latest/reference/types.html
      */
-    const DOCTRINE_NUMERIC_TYPES = [
+    public const DOCTRINE_NUMERIC_TYPES = [
         DBALType::BIGINT => true,
         DBALType::DECIMAL => true,
         DBALType::FLOAT => true,
@@ -47,38 +49,45 @@ class NumericFilter extends AbstractContextAwareFilter
     /**
      * {@inheritdoc}
      */
-    public function getDescription(string $resourceClass): array
+    protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null)
     {
-        $description = [];
-
-        $properties = $this->properties;
-        if (null === $properties) {
-            $properties = array_fill_keys($this->getClassMetadata($resourceClass)->getFieldNames(), null);
+        if (
+            !$this->isPropertyEnabled($property, $resourceClass) ||
+            !$this->isPropertyMapped($property, $resourceClass) ||
+            !$this->isNumericField($property, $resourceClass)
+        ) {
+            return;
         }
 
-        foreach ($properties as $property => $unused) {
-            if (!$this->isPropertyMapped($property, $resourceClass) || !$this->isNumericField($property, $resourceClass)) {
-                continue;
-            }
-
-            $description[$property] = [
-                'property' => $property,
-                'type' => $this->getType($this->getDoctrineFieldType($property, $resourceClass)),
-                'required' => false,
-            ];
+        $values = $this->normalizeValues($value, $property);
+        if (null === $values) {
+            return;
         }
 
-        return $description;
+        $alias = $queryBuilder->getRootAliases()[0];
+        $field = $property;
+
+        if ($this->isPropertyNested($property, $resourceClass)) {
+            [$alias, $field] = $this->addJoinsForNestedProperty($property, $alias, $queryBuilder, $queryNameGenerator, $resourceClass);
+        }
+
+        $valueParameter = $queryNameGenerator->generateParameterName($field);
+
+        if (1 === \count($values)) {
+            $queryBuilder
+                ->andWhere(sprintf('%s.%s = :%s', $alias, $field, $valueParameter))
+                ->setParameter($valueParameter, $values[0], (string) $this->getDoctrineFieldType($property, $resourceClass));
+        } else {
+            $queryBuilder
+                ->andWhere(sprintf('%s.%s IN (:%s)', $alias, $field, $valueParameter))
+                ->setParameter($valueParameter, $values);
+        }
     }
 
     /**
-     * Gets the PHP type corresponding to this Doctrine type.
-     *
-     * @param string $doctrineType
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    private function getType(string $doctrineType = null): string
+    protected function getType(string $doctrineType = null): string
     {
         if (null === $doctrineType || DBALType::DECIMAL === $doctrineType) {
             return 'string';
@@ -89,63 +98,5 @@ class NumericFilter extends AbstractContextAwareFilter
         }
 
         return 'int';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null)
-    {
-        if (
-            !$this->isPropertyEnabled($property, $resourceClass) ||
-            !$this->isPropertyMapped($property, $resourceClass)
-        ) {
-            return;
-        }
-
-        if (!is_numeric($value)) {
-            $this->logger->notice('Invalid filter ignored', [
-                'exception' => new InvalidArgumentException(sprintf('Invalid numeric value for "%s::%s" property', $resourceClass, $property)),
-            ]);
-
-            return;
-        }
-
-        $alias = $queryBuilder->getRootAliases()[0];
-        $field = $property;
-
-        if ($this->isPropertyNested($property, $resourceClass)) {
-            list($alias, $field) = $this->addJoinsForNestedProperty($property, $alias, $queryBuilder, $queryNameGenerator, $resourceClass);
-        }
-
-        if (!isset(self::DOCTRINE_NUMERIC_TYPES[$this->getDoctrineFieldType($property, $resourceClass)])) {
-            $this->logger->notice('Invalid filter ignored', [
-                'exception' => new InvalidArgumentException(sprintf('The field "%s" of class "%s" is not a doctrine numeric type.', $field, $resourceClass)),
-            ]);
-
-            return;
-        }
-
-        $valueParameter = $queryNameGenerator->generateParameterName($field);
-
-        $queryBuilder
-            ->andWhere(sprintf('%s.%s = :%s', $alias, $field, $valueParameter))
-            ->setParameter($valueParameter, $value, $this->getDoctrineFieldType($property, $resourceClass));
-    }
-
-    /**
-     * Determines whether the given property refers to a numeric field.
-     *
-     * @param string $property
-     * @param string $resourceClass
-     *
-     * @return bool
-     */
-    protected function isNumericField(string $property, string $resourceClass): bool
-    {
-        $propertyParts = $this->splitPropertyParts($property, $resourceClass);
-        $metadata = $this->getNestedMetadata($resourceClass, $propertyParts['associations']);
-
-        return isset(self::DOCTRINE_NUMERIC_TYPES[$metadata->getTypeOfField($propertyParts['field'])]);
     }
 }

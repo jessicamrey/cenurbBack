@@ -35,10 +35,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
  */
 final class ApiPlatformParser implements ParserInterface
 {
-    const IN_PREFIX = 'api_platform_in';
-    const OUT_PREFIX = 'api_platform_out';
-    const TYPE_IRI = 'IRI';
-    const TYPE_MAP = [
+    public const IN_PREFIX = 'api_platform_in';
+    public const OUT_PREFIX = 'api_platform_out';
+    public const TYPE_IRI = 'IRI';
+    public const TYPE_MAP = [
         Type::BUILTIN_TYPE_BOOL => DataTypes::BOOLEAN,
         Type::BUILTIN_TYPE_FLOAT => DataTypes::FLOAT,
         Type::BUILTIN_TYPE_INT => DataTypes::INTEGER,
@@ -89,7 +89,7 @@ final class ApiPlatformParser implements ParserInterface
      */
     public function parse(array $item): array
     {
-        list($io, $resourceClass, $operationName) = explode(':', $item['class'], 3);
+        [$io, $resourceClass, $operationName] = explode(':', $item['class'], 3);
         $resourceMetadata = $this->resourceMetadataFactory->create($resourceClass);
 
         $classOperations = $this->getGroupsForItemAndCollectionOperation($resourceMetadata, $operationName, $io);
@@ -104,12 +104,7 @@ final class ApiPlatformParser implements ParserInterface
     /**
      * Parses a class.
      *
-     * @param ResourceMetadata $resourceMetadata
-     * @param string           $resourceClass
-     * @param string           $io
-     * @param string[]         $visited
-     *
-     * @return array
+     * @param string[] $visited
      */
     private function parseResource(ResourceMetadata $resourceMetadata, string $resourceClass, string $io, array $visited = []): array
     {
@@ -133,7 +128,7 @@ final class ApiPlatformParser implements ParserInterface
         return $this->getPropertyMetadata($resourceMetadata, $resourceClass, $io, $visited, $options);
     }
 
-    private function getGroupsContext(ResourceMetadata $resourceMetadata, string $operationName, bool $isNormalization)
+    private function getGroupsContext(ResourceMetadata $resourceMetadata, string $operationName, bool $isNormalization): array
     {
         $groupsContext = $isNormalization ? 'normalization_context' : 'denormalization_context';
         $itemOperationAttribute = $resourceMetadata->getItemOperationAttribute($operationName, $groupsContext, [AbstractNormalizer::GROUPS => []], true)[AbstractNormalizer::GROUPS];
@@ -141,19 +136,13 @@ final class ApiPlatformParser implements ParserInterface
 
         return [
             $groupsContext => [
-                AbstractNormalizer::GROUPS => array_merge($itemOperationAttribute ?? [], $collectionOperationAttribute ?? []),
+                AbstractNormalizer::GROUPS => array_merge((array) ($itemOperationAttribute ?? []), (array) ($collectionOperationAttribute ?? [])),
             ],
         ];
     }
 
     /**
      * Returns groups of item & collection.
-     *
-     * @param ResourceMetadata $resourceMetadata
-     * @param string           $operationName
-     * @param string           $io
-     *
-     * @return array
      */
     private function getGroupsForItemAndCollectionOperation(ResourceMetadata $resourceMetadata, string $operationName, string $io): array
     {
@@ -178,13 +167,8 @@ final class ApiPlatformParser implements ParserInterface
     /**
      * Returns a property metadata.
      *
-     * @param ResourceMetadata $resourceMetadata
-     * @param string           $resourceClass
-     * @param string           $io
-     * @param string[]         $visited
-     * @param string[]         $options
-     *
-     * @return array
+     * @param string[] $visited
+     * @param string[] $options
      */
     private function getPropertyMetadata(ResourceMetadata $resourceMetadata, string $resourceClass, string $io, array $visited, array $options): array
     {
@@ -196,7 +180,7 @@ final class ApiPlatformParser implements ParserInterface
                 ($propertyMetadata->isReadable() && self::OUT_PREFIX === $io) ||
                 ($propertyMetadata->isWritable() && self::IN_PREFIX === $io)
             ) {
-                $normalizedPropertyName = $this->nameConverter ? $this->nameConverter->normalize($propertyName) : $propertyName;
+                $normalizedPropertyName = $this->nameConverter ? $this->nameConverter->normalize($propertyName, $resourceClass) : $propertyName;
                 $data[$normalizedPropertyName] = $this->parseProperty($resourceMetadata, $propertyMetadata, $io, null, $visited);
             }
         }
@@ -207,15 +191,10 @@ final class ApiPlatformParser implements ParserInterface
     /**
      * Parses a property.
      *
-     * @param ResourceMetadata $resourceMetadata
-     * @param PropertyMetadata $propertyMetadata
-     * @param string           $io
-     * @param Type|null        $type
-     * @param string[]         $visited
-     *
-     * @return array
+     * @param string   $io
+     * @param string[] $visited
      */
-    private function parseProperty(ResourceMetadata $resourceMetadata, PropertyMetadata $propertyMetadata, $io, Type $type = null, array $visited = [])
+    private function parseProperty(ResourceMetadata $resourceMetadata, PropertyMetadata $propertyMetadata, $io, Type $type = null, array $visited = []): array
     {
         $data = [
             'dataType' => null,

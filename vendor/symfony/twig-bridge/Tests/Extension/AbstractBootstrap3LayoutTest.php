@@ -105,6 +105,43 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
         );
     }
 
+    public function testHelp()
+    {
+        $form = $this->factory->createNamed('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', null, [
+            'help' => 'Help text test!',
+        ]);
+        $view = $form->createView();
+        $html = $this->renderHelp($view);
+
+        $this->assertMatchesXpath($html,
+'/span
+    [@id="name_help"]
+    [@class="help-block"]
+    [.="[trans]Help text test![/trans]"]
+'
+        );
+    }
+
+    public function testHelpAttr()
+    {
+        $form = $this->factory->createNamed('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', null, [
+            'help' => 'Help text test!',
+            'help_attr' => [
+                'class' => 'class-test',
+            ],
+        ]);
+        $view = $form->createView();
+        $html = $this->renderHelp($view);
+
+        $this->assertMatchesXpath($html,
+            '/span
+    [@id="name_help"]
+    [@class="class-test help-block"]
+    [.="[trans]Help text test![/trans]"]
+'
+        );
+    }
+
     public function testErrors()
     {
         $form = $this->factory->createNamed('name', 'Symfony\Component\Form\Extension\Core\Type\TextType');
@@ -2376,11 +2413,7 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
     [@name="name"]
     [@class="my&class form-control"]
     [not(@required)]
-    [./optgroup
-        [@label="Europe"]
-        [./option[@value="Europe/Vienna"][@selected="selected"][.="Vienna"]]
-    ]
-    [count(./optgroup)>10]
+    [.//option[@value="Europe/Vienna"][@selected="selected"]]
     [count(.//option)>200]
 '
         );
@@ -2397,7 +2430,6 @@ abstract class AbstractBootstrap3LayoutTest extends AbstractLayoutTest
 '/select
     [@class="my&class form-control"]
     [./option[@value=""][not(@selected)][not(@disabled)][.="[trans]Select&Timezone[/trans]"]]
-    [count(./optgroup)>10]
     [count(.//option)>201]
 '
         );

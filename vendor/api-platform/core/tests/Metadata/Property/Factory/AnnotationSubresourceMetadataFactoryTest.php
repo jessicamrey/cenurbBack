@@ -25,15 +25,14 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Prophecy\Prophecy\ProphecyInterface;
 use Symfony\Component\PropertyInfo\Type;
 
 class AnnotationSubresourceMetadataFactoryTest extends TestCase
 {
     /**
-     * @dataProvider getDependencies
+     * @dataProvider dependenciesProvider
      */
-    public function testCreateProperty(ProphecyInterface $reader, ProphecyInterface $decorated = null)
+    public function testCreateProperty($reader, $decorated)
     {
         $factory = new AnnotationSubresourceMetadataFactory($reader->reveal(), $decorated->reveal());
         $metadata = $factory->create(Dummy::class, 'relatedDummies');
@@ -41,7 +40,7 @@ class AnnotationSubresourceMetadataFactoryTest extends TestCase
         $this->assertEquals(new SubresourceMetadata(RelatedDummy::class, true, null), $metadata->getSubresource());
     }
 
-    public function getDependencies()
+    public function dependenciesProvider(): array
     {
         $annotation = new ApiSubresource();
 

@@ -17,6 +17,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
+use Symfony\Component\DependencyInjection\Argument\ServiceLocatorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -90,9 +91,6 @@ class TextDescriptor extends Descriptor
             ['Defaults', $this->formatRouterConfig($route->getDefaults())],
             ['Options', $this->formatRouterConfig($route->getOptions())],
         ];
-        if (isset($options['callable'])) {
-            $tableRows[] = ['Callable', $options['callable']];
-        }
 
         $table = new Table($this->getOutput());
         $table->setHeaders($tableHeaders)->setRows($tableRows);
@@ -120,15 +118,15 @@ class TextDescriptor extends Descriptor
      */
     protected function describeContainerTags(ContainerBuilder $builder, array $options = [])
     {
-        $showPrivate = isset($options['show_private']) && $options['show_private'];
+        $showHidden = isset($options['show_hidden']) && $options['show_hidden'];
 
-        if ($showPrivate) {
-            $options['output']->title('Symfony Container Public and Private Tags');
+        if ($showHidden) {
+            $options['output']->title('Symfony Container Hidden Tags');
         } else {
-            $options['output']->title('Symfony Container Public Tags');
+            $options['output']->title('Symfony Container Tags');
         }
 
-        foreach ($this->findDefinitionsByTag($builder, $showPrivate) as $tag => $definitions) {
+        foreach ($this->findDefinitionsByTag($builder, $showHidden) as $tag => $definitions) {
             $options['output']->section(sprintf('"%s" tag', $tag));
             $options['output']->listing(array_keys($definitions));
         }
@@ -163,13 +161,13 @@ class TextDescriptor extends Descriptor
      */
     protected function describeContainerServices(ContainerBuilder $builder, array $options = [])
     {
-        $showPrivate = isset($options['show_private']) && $options['show_private'];
+        $showHidden = isset($options['show_hidden']) && $options['show_hidden'];
         $showTag = isset($options['tag']) ? $options['tag'] : null;
 
-        if ($showPrivate) {
-            $title = 'Symfony Container Public and Private Services';
+        if ($showHidden) {
+            $title = 'Symfony Container Hidden Services';
         } else {
-            $title = 'Symfony Container Public Services';
+            $title = 'Symfony Container Services';
         }
 
         if ($showTag) {
@@ -187,12 +185,14 @@ class TextDescriptor extends Descriptor
 
         foreach ($serviceIds as $key => $serviceId) {
             $definition = $this->resolveServiceDefinition($builder, $serviceId);
+
+            // filter out hidden services unless shown explicitly
+            if ($showHidden xor '.' === ($serviceId[0] ?? null)) {
+                unset($serviceIds[$key]);
+                continue;
+            }
+
             if ($definition instanceof Definition) {
-                // filter out private services unless shown explicitly
-                if (!$showPrivate && (!$definition->isPublic() || $definition->isPrivate())) {
-                    unset($serviceIds[$key]);
-                    continue;
-                }
                 if ($showTag) {
                     $tags = $definition->getTag($showTag);
                     foreach ($tags as $tag) {
@@ -205,11 +205,6 @@ class TextDescriptor extends Descriptor
                             }
                         }
                     }
-                }
-            } elseif ($definition instanceof Alias) {
-                if (!$showPrivate && (!$definition->isPublic() || $definition->isPrivate())) {
-                    unset($serviceIds[$key]);
-                    continue;
                 }
             }
         }
@@ -260,6 +255,10 @@ class TextDescriptor extends Descriptor
             $options['output']->title(sprintf('Information for Service "<info>%s</info>"', $options['id']));
         }
 
+        if ('' !== $classDescription = $this->getClassDescription((string) $definition->getClass())) {
+            $options['output']->text($classDescription."\n");
+        }
+
         $tableHeaders = ['Option', 'Value'];
 
         $tableRows[] = ['Service ID', isset($options['id']) ? $options['id'] : '-'];
@@ -305,11 +304,6 @@ class TextDescriptor extends Descriptor
         $tableRows[] = ['Autowired', $definition->isAutowired() ? 'yes' : 'no'];
         $tableRows[] = ['Autoconfigured', $definition->isAutoconfigured() ? 'yes' : 'no'];
 
-        // forward compatibility with DependencyInjection component in version 4.0
-        if (method_exists($definition, 'getAutowiringTypes') && $autowiringTypes = $definition->getAutowiringTypes(false)) {
-            $tableRows[] = ['Autowiring Types', implode(', ', $autowiringTypes)];
-        }
-
         if ($definition->getFile()) {
             $tableRows[] = ['Required File', $definition->getFile() ?: '-'];
         }
@@ -340,6 +334,8 @@ class TextDescriptor extends Descriptor
                     $argumentsInformation[] = sprintf('Service(%s)', (string) $argument);
                 } elseif ($argument instanceof IteratorArgument) {
                     $argumentsInformation[] = sprintf('Iterator (%d element(s))', \count($argument->getValues()));
+                } elseif ($argument instanceof ServiceLocatorArgument) {
+                    $argumentsInformation[] = sprintf('Service locator (%d element(s))', \count($argument->getValues()));
                 } elseif ($argument instanceof Definition) {
                     $argumentsInformation[] = 'Inlined Service';
                 } else {
@@ -358,7 +354,11 @@ class TextDescriptor extends Descriptor
      */
     protected function describeContainerAlias(Alias $alias, array $options = [], ContainerBuilder $builder = null)
     {
-        $options['output']->comment(sprintf('This service is an alias for the service <info>%s</info>', (string) $alias));
+        if ($alias->isPublic()) {
+            $options['output']->comment(sprintf('This service is a <info>public</info> alias for the service <info>%s</info>', (string) $alias));
+        } else {
+            $options['output']->comment(sprintf('This service is a <comment>private</comment> alias for the service <info>%s</info>', (string) $alias));
+        }
 
         if (!$builder) {
             return;
@@ -428,12 +428,7 @@ class TextDescriptor extends Descriptor
         $io->table($tableHeaders, $tableRows);
     }
 
-    /**
-     * @param array $config
-     *
-     * @return string
-     */
-    private function formatRouterConfig(array $config)
+    private function formatRouterConfig(array $config): string
     {
         if (empty($config)) {
             return 'NONE';
@@ -449,12 +444,7 @@ class TextDescriptor extends Descriptor
         return trim($configAsString);
     }
 
-    /**
-     * @param callable $callable
-     *
-     * @return string
-     */
-    private function formatCallable($callable)
+    private function formatCallable($callable): string
     {
         if (\is_array($callable)) {
             if (\is_object($callable[0])) {
@@ -487,11 +477,7 @@ class TextDescriptor extends Descriptor
         throw new \InvalidArgumentException('Callable is not describable.');
     }
 
-    /**
-     * @param string $content
-     * @param array  $options
-     */
-    private function writeText($content, array $options = [])
+    private function writeText(string $content, array $options = [])
     {
         $this->write(
             isset($options['raw_text']) && $options['raw_text'] ? strip_tags($content) : $content,

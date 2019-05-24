@@ -23,7 +23,7 @@ class ResourceListTest extends TestCase
      */
     private $resourceList;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->resourceList = new ResourceList();
     }
@@ -37,6 +37,6 @@ class ResourceListTest extends TestCase
     {
         $this->resourceList['foo'] = 'bar';
 
-        $this->assertEquals('N;', \serialize($this->resourceList));
+        $this->assertEquals('N;', serialize($this->resourceList));
     }
 }

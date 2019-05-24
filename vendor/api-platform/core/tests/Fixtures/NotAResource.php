@@ -13,14 +13,23 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Core\Tests\Fixtures;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
- * This class is mapped as an API resource.
+ * This class is not mapped as an API resource.
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
 class NotAResource
 {
+    /**
+     * @Groups("contain_non_resource")
+     */
     private $foo;
+
+    /**
+     * @Groups("contain_non_resource")
+     */
     private $bar;
 
     public function __construct($foo, $bar)
@@ -29,17 +38,11 @@ class NotAResource
         $this->bar = $bar;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFoo()
     {
         return $this->foo;
     }
 
-    /**
-     * @return mixed
-     */
     public function getBar()
     {
         return $this->bar;

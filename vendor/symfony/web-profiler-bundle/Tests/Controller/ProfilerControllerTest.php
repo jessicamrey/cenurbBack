@@ -59,7 +59,7 @@ class ProfilerControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $controller = new ProfilerController($urlGenerator, $profiler, $twig, [], 'bottom', null, __DIR__.'/../..');
+        $controller = new ProfilerController($urlGenerator, $profiler, $twig, [], null, __DIR__.'/../..');
 
         try {
             $response = $controller->openAction(Request::create('/_wdt/open', Request::METHOD_GET, ['file' => $path]));
@@ -194,7 +194,7 @@ class ProfilerControllerTest extends TestCase
         if ($withCSP) {
             $nonceGenerator = $this->getMockBuilder('Symfony\Bundle\WebProfilerBundle\Csp\NonceGenerator')->getMock();
 
-            return new ProfilerController($urlGenerator, $profiler, $twig, [], 'bottom', new ContentSecurityPolicyHandler($nonceGenerator));
+            return new ProfilerController($urlGenerator, $profiler, $twig, [], new ContentSecurityPolicyHandler($nonceGenerator));
         }
 
         return new ProfilerController($urlGenerator, $profiler, $twig, []);

@@ -23,6 +23,7 @@ use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment as TwigEnvironment;
 
 /**
  * @author Alan Poulain <contact@alanpoulain.eu>
@@ -76,7 +77,7 @@ class EntrypointActionTest extends TestCase
         $mockedEntrypoint = $this->getEntrypointAction();
 
         $this->assertEquals(400, $mockedEntrypoint($request)->getStatusCode());
-        $this->assertEquals('{"errors":[{"message":"GraphQL query is not valid","category":"graphql"}]}', $mockedEntrypoint($request)->getContent());
+        $this->assertEquals('{"errors":[{"message":"GraphQL query is not valid","extensions":{"category":"graphql"}}]}', $mockedEntrypoint($request)->getContent());
     }
 
     public function testBadMethodAction()
@@ -86,7 +87,7 @@ class EntrypointActionTest extends TestCase
         $mockedEntrypoint = $this->getEntrypointAction();
 
         $this->assertEquals(400, $mockedEntrypoint($request)->getStatusCode());
-        $this->assertEquals('{"errors":[{"message":"GraphQL query is not valid","category":"graphql"}]}', $mockedEntrypoint($request)->getContent());
+        $this->assertEquals('{"errors":[{"message":"GraphQL query is not valid","extensions":{"category":"graphql"}}]}', $mockedEntrypoint($request)->getContent());
     }
 
     public function testBadVariablesAction()
@@ -96,7 +97,7 @@ class EntrypointActionTest extends TestCase
         $mockedEntrypoint = $this->getEntrypointAction();
 
         $this->assertEquals(400, $mockedEntrypoint($request)->getStatusCode());
-        $this->assertEquals('{"errors":[{"message":"GraphQL variables are not valid JSON","category":"graphql"}]}', $mockedEntrypoint($request)->getContent());
+        $this->assertEquals('{"errors":[{"message":"GraphQL variables are not valid JSON","extensions":{"category":"graphql"}}]}', $mockedEntrypoint($request)->getContent());
     }
 
     private function getEntrypointAction(): EntrypointAction
@@ -106,11 +107,11 @@ class EntrypointActionTest extends TestCase
         $schemaBuilderProphecy->getSchema()->willReturn($schema->reveal());
 
         $executionResultProphecy = $this->prophesize(ExecutionResult::class);
-        $executionResultProphecy->toArray(true)->willReturn(['GraphQL']);
+        $executionResultProphecy->toArray(3)->willReturn(['GraphQL']);
         $executorProphecy = $this->prophesize(ExecutorInterface::class);
         $executorProphecy->executeQuery(Argument::is($schema->reveal()), 'graphqlQuery', null, null, ['graphqlVariable'], 'graphqlOperationName')->willReturn($executionResultProphecy->reveal());
 
-        $twigProphecy = $this->prophesize(\Twig_Environment::class);
+        $twigProphecy = $this->prophesize(TwigEnvironment::class);
 
         return new EntrypointAction($schemaBuilderProphecy->reveal(), $executorProphecy->reveal(), $twigProphecy->reveal(), true, true, '');
     }

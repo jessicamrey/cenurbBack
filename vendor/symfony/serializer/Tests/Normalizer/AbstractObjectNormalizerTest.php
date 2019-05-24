@@ -161,6 +161,16 @@ class AbstractObjectNormalizerTest extends TestCase
             'allow_extra_attributes' => false,
         ]);
     }
+
+    public function testSkipNullValues()
+    {
+        $dummy = new Dummy();
+        $dummy->bar = 'present';
+
+        $normalizer = new ObjectNormalizer();
+        $result = $normalizer->normalize($dummy, null, [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]);
+        $this->assertSame(['bar' => 'present'], $result);
+    }
 }
 
 class AbstractObjectNormalizerDummy extends AbstractObjectNormalizer
@@ -183,7 +193,7 @@ class AbstractObjectNormalizerDummy extends AbstractObjectNormalizer
         return \in_array($attribute, ['foo', 'baz']);
     }
 
-    public function instantiateObject(array &$data, $class, array &$context, \ReflectionClass $reflectionClass, $allowedAttributes, $format = null)
+    public function instantiateObject(array &$data, $class, array &$context, \ReflectionClass $reflectionClass, $allowedAttributes, string $format = null)
     {
         return parent::instantiateObject($data, $class, $context, $reflectionClass, $allowedAttributes, $format);
     }
@@ -283,7 +293,7 @@ class AbstractObjectNormalizerCollectionDummy extends AbstractObjectNormalizer
         return true;
     }
 
-    public function instantiateObject(array &$data, $class, array &$context, \ReflectionClass $reflectionClass, $allowedAttributes, $format = null)
+    public function instantiateObject(array &$data, $class, array &$context, \ReflectionClass $reflectionClass, $allowedAttributes, string $format = null)
     {
         return parent::instantiateObject($data, $class, $context, $reflectionClass, $allowedAttributes, $format);
     }

@@ -35,7 +35,7 @@ final class RouteNameResolver implements RouteNameResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function getRouteName(string $resourceClass, $operationType /**, array $context = [] **/): string
+    public function getRouteName(string $resourceClass, $operationType /*, array $context = [] */): string
     {
         if (\func_num_args() > 2) {
             $context = func_get_arg(2);
@@ -71,10 +71,6 @@ final class RouteNameResolver implements RouteNameResolverInterface
             $currentSubresources[] = $identiferContext[1];
         }
 
-        if ($currentSubresources === $subresources) {
-            return true;
-        }
-
-        return false;
+        return $currentSubresources === $subresources;
     }
 }

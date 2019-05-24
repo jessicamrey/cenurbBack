@@ -295,7 +295,40 @@ class TerritorioController extends Controller{
 						$visits, 'json', ['groups' => ['visita']]
 				));
 	}*/
+	public function removeFavorito(Request $request, $id){
+		$id=intval($id);
+		$usuario = $request->query->get("usuario");
+		//$existeUsuario=Util::existeUsuario($params["usuario"]);
+		//existe colonia= buscar colonia
+		//if existeColonia and existeUsuario->seguir
 	
+		//abrimos nuestro manager
+		$entityManager = $this->getDoctrine()->getManager('default');
+	
+		$sql = "
+		DELETE FROM
+			cenurb.FavoritosTerr
+		WHERE
+			usuario = :usuario
+			AND
+			territorio = :terr
+		";
+	
+		$stmt = $entityManager->getConnection()->prepare($sql);
+		$stmt->bindParam(':usuario', $usuario, PDO::PARAM_STR);
+		$stmt->bindParam(':terr', $id, PDO::PARAM_INT);
+	
+		$stmt->execute();
+	
+	
+		return new Response(
+				'Se ha borrado el favorito',
+				Response::HTTP_OK,
+				array('content-type' => 'text/html')
+		);
+	
+	
+	}
 	
 	public function newVisit(Request $request, $id){
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
@@ -431,8 +464,7 @@ class TerritorioController extends Controller{
 	public function estadisticasCcaa(Request $request, $id){
 		$anno = $request->query->get("temporada");
 		$ccaa = $request->query->get("ccaa");
-		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
-		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statCcaa($id, $temporada, $ccaa);
+		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statCcaa($id, $anno, $ccaa);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []
@@ -443,8 +475,7 @@ class TerritorioController extends Controller{
 		$anno = $request->query->get("temporada");
 		$ccaa = $request->query->get("ccaa");
 		$prov = $request->query->get("provincia");
-		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findBy(['anno'=>$anno]);
-		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statProvincia($id, $temporada, $ccaa, $prov);
+		$stats=$this->getDoctrine()->getRepository(Territorio::class)->statProvincia($id, $anno, $ccaa, $prov);
 		return new JsonResponse(
 				$this->normalizer->normalize(
 						$stats, 'json', []

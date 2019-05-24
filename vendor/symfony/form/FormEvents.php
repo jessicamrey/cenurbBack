@@ -31,7 +31,7 @@ final class FormEvents
      *
      * @Event("Symfony\Component\Form\FormEvent")
      */
-    const PRE_SUBMIT = 'form.pre_bind';
+    const PRE_SUBMIT = 'form.pre_submit';
 
     /**
      * The SUBMIT event is dispatched after the Form::submit() method
@@ -50,7 +50,7 @@ final class FormEvents
      *
      * @Event("Symfony\Component\Form\FormEvent")
      */
-    const SUBMIT = 'form.bind';
+    const SUBMIT = 'form.submit';
 
     /**
      * The FormEvents::POST_SUBMIT event is dispatched at the very end of the Form::submit().
@@ -65,7 +65,7 @@ final class FormEvents
      *
      * @Event("Symfony\Component\Form\FormEvent")
      */
-    const POST_SUBMIT = 'form.post_bind';
+    const POST_SUBMIT = 'form.post_submit';
 
     /**
      * The FormEvents::PRE_SET_DATA event is dispatched at the beginning of the Form::setData() method.

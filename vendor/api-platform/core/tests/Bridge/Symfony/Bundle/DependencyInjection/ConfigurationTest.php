@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace ApiPlatform\Core\Tests\Bridge\Symfony\Bundle\DependencyInjection;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\DependencyInjection\Configuration;
+use ApiPlatform\Core\Exception\FilterValidationException;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
+use Doctrine\ORM\OptimisticLockException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -40,7 +42,7 @@ class ConfigurationTest extends TestCase
      */
     private $processor;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->configuration = new Configuration();
         $this->processor = new Processor();
@@ -48,8 +50,33 @@ class ConfigurationTest extends TestCase
 
     public function testDefaultConfig()
     {
+        $this->runDefaultConfigTests();
+    }
+
+    /**
+     * @group mongodb
+     */
+    public function testDefaultConfigWithMongoDbOdm()
+    {
+        $this->runDefaultConfigTests(['orm', 'odm']);
+    }
+
+    private function runDefaultConfigTests(array $doctrineIntegrationsToLoad = ['orm'])
+    {
         $treeBuilder = $this->configuration->getConfigTreeBuilder();
-        $config = $this->processor->processConfiguration($this->configuration, ['api_platform' => ['title' => 'title', 'description' => 'description', 'version' => '1.0.0']]);
+        $config = $this->processor->processConfiguration($this->configuration, [
+            'api_platform' => [
+                'title' => 'title',
+                'description' => 'description',
+                'version' => '1.0.0',
+                'doctrine' => [
+                    'enabled' => \in_array('orm', $doctrineIntegrationsToLoad, true),
+                ],
+                'doctrine_mongodb_odm' => [
+                    'enabled' => \in_array('odm', $doctrineIntegrationsToLoad, true),
+                ],
+            ],
+        ]);
 
         $this->assertInstanceOf(ConfigurationInterface::class, $this->configuration);
         $this->assertInstanceOf(TreeBuilder::class, $treeBuilder);
@@ -57,6 +84,7 @@ class ConfigurationTest extends TestCase
             'title' => 'title',
             'description' => 'description',
             'version' => '1.0.0',
+            'show_webby' => true,
             'formats' => [
                 'jsonld' => ['mime_types' => ['application/ld+json']],
                 'json' => ['mime_types' => ['application/json']],
@@ -69,6 +97,8 @@ class ConfigurationTest extends TestCase
             'exception_to_status' => [
                 ExceptionInterface::class => Response::HTTP_BAD_REQUEST,
                 InvalidArgumentException::class => Response::HTTP_BAD_REQUEST,
+                FilterValidationException::class => Response::HTTP_BAD_REQUEST,
+                OptimisticLockException::class => Response::HTTP_CONFLICT,
             ],
             'default_operation_path_resolver' => 'api_platform.operation_path_resolver.underscore',
             'path_segment_name_generator' => 'api_platform.path_segment_name_generator.underscore',
@@ -81,12 +111,19 @@ class ConfigurationTest extends TestCase
             'enable_swagger' => true,
             'enable_swagger_ui' => true,
             'enable_entrypoint' => true,
+            'enable_re_doc' => true,
             'enable_docs' => true,
+            'enable_profiler' => true,
             'graphql' => [
                 'enabled' => true,
                 'graphiql' => [
                     'enabled' => true,
                 ],
+            ],
+            'elasticsearch' => [
+                'enabled' => false,
+                'hosts' => [],
+                'mapping' => [],
             ],
             'oauth' => [
                 'enabled' => false,
@@ -128,12 +165,29 @@ class ConfigurationTest extends TestCase
                 'paths' => [],
             ],
             'http_cache' => [
-                'invalidation' => ['enabled' => false, 'varnish_urls' => []],
+                'invalidation' => [
+                    'enabled' => false,
+                    'varnish_urls' => [],
+                    'request_options' => [],
+                ],
                 'etag' => true,
                 'max_age' => null,
                 'shared_max_age' => null,
                 'vary' => ['Accept'],
                 'public' => null,
+            ],
+            'doctrine' => [
+                'enabled' => \in_array('orm', $doctrineIntegrationsToLoad, true),
+            ],
+            'doctrine_mongodb_odm' => [
+                'enabled' => \in_array('odm', $doctrineIntegrationsToLoad, true),
+            ],
+            'messenger' => [
+                'enabled' => true,
+            ],
+            'mercure' => [
+                'enabled' => true,
+                'hub_url' => null,
             ],
             'allow_plain_identifiers' => false,
             'resource_class_directories' => [],
@@ -142,7 +196,7 @@ class ConfigurationTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Using a string "HTTP_INTERNAL_SERVER_ERROR" as a constant of the "Symfony\Component\HttpFoundation\Response" class is deprecated since API Platform 2.1 and will not be possible anymore in API Platform 3. Use the Symfony's custom YAML extension for PHP constants instead (i.e. "!php/const:Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR").
+     * @expectedDeprecation Using a string "HTTP_INTERNAL_SERVER_ERROR" as a constant of the "Symfony\Component\HttpFoundation\Response" class is deprecated since API Platform 2.1 and will not be possible anymore in API Platform 3. Use the Symfony's custom YAML extension for PHP constants instead (i.e. "!php/const Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR").
      */
     public function testLegacyExceptionToStatusConfig()
     {
@@ -264,7 +318,18 @@ class ConfigurationTest extends TestCase
             'api_platform' => [],
         ]);
 
-        $this->assertSame($config['title'], '');
-        $this->assertSame($config['description'], '');
+        $this->assertSame('', $config['title']);
+        $this->assertSame('', $config['description']);
+    }
+
+    public function testEnableElasticsearch()
+    {
+        $config = $this->processor->processConfiguration($this->configuration, [
+            'api_platform' => [
+                'elasticsearch' => true,
+            ],
+        ]);
+
+        $this->assertTrue($config['elasticsearch']['enabled']);
     }
 }

@@ -53,15 +53,15 @@ final class WrappedListener implements ListenerInterface
      */
     public function __call($method, $arguments)
     {
-        return \call_user_func_array([$this->listener, $method], $arguments);
+        return $this->listener->{$method}(...$arguments);
     }
 
-    public function getWrappedListener()
+    public function getWrappedListener(): ListenerInterface
     {
         return $this->listener;
     }
 
-    public function getInfo()
+    public function getInfo(): array
     {
         if (null === $this->stub) {
             $this->stub = self::$hasVarDumper ? new ClassStub(\get_class($this->listener)) : \get_class($this->listener);

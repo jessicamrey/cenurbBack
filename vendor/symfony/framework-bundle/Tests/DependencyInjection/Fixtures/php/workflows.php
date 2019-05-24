@@ -41,7 +41,6 @@ $container->loadFromExtension('framework', [
             ],
         ],
         'pull_request' => [
-            'type' => 'state_machine',
             'marking_store' => [
                 'type' => 'single_state',
             ],
@@ -49,18 +48,29 @@ $container->loadFromExtension('framework', [
                 FrameworkExtensionTest::class,
             ],
             'initial_place' => 'start',
+            'metadata' => [
+                'title' => 'workflow title',
+            ],
             'places' => [
-                'start',
-                'coding',
-                'travis',
-                'review',
-                'merged',
-                'closed',
+                'start_name_not_used' => [
+                    'name' => 'start',
+                    'metadata' => [
+                        'title' => 'place start title',
+                    ],
+                ],
+                'coding' => null,
+                'travis' => null,
+                'review' => null,
+                'merged' => null,
+                'closed' => null,
             ],
             'transitions' => [
                 'submit' => [
                     'from' => 'start',
                     'to' => 'travis',
+                    'metadata' => [
+                        'title' => 'transition submit title',
+                    ],
                 ],
                 'update' => [
                     'from' => ['coding', 'travis', 'review'],
@@ -97,8 +107,8 @@ $container->loadFromExtension('framework', [
                 FrameworkExtensionTest::class,
             ],
             'places' => [
-                'first',
-                'last',
+                ['name' => 'first'],
+                ['name' => 'last'],
             ],
             'transitions' => [
                 'go' => [

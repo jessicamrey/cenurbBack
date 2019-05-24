@@ -32,7 +32,8 @@ Feature: Documentation support
     # Root properties
     And the JSON node "@id" should be equal to "/docs.jsonld"
     And the JSON node "hydra:title" should be equal to "My Dummy API"
-    And the JSON node "hydra:description" should be equal to "This is a test API."
+    And the JSON node "hydra:description" should contain "This is a test API."
+    And the JSON node "hydra:description" should contain "Made with love"
     And the JSON node "hydra:entrypoint" should be equal to "/"
     # Supported classes
     And the Hydra class "The API entrypoint" exists
@@ -83,3 +84,8 @@ Feature: Documentation support
     And the value of the node "hydra:title" of the operation "PUT" of the Hydra class "Dummy" is "Replaces the Dummy resource."
     And the value of the node "hydra:title" of the operation "DELETE" of the Hydra class "Dummy" is "Deletes the Dummy resource."
     And the value of the node "returns" of the operation "DELETE" of the Hydra class "Dummy" is "owl:Nothing"
+    # Deprecations
+    And the boolean value of the node "owl:deprecated" of the Hydra class "DeprecatedResource" is true
+    And the boolean value of the node "owl:deprecated" of the property "deprecatedField" of the Hydra class "DeprecatedResource" is true
+    And the boolean value of the node "owl:deprecated" of the property "The collection of DeprecatedResource resources" of the Hydra class "The API entrypoint" is true
+    And the boolean value of the node "owl:deprecated" of the operation "GET" of the Hydra class "DeprecatedResource" is true

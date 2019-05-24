@@ -71,6 +71,14 @@ final class HydraContext implements Context
     }
 
     /**
+     * @Then the boolean value of the node :node of the Hydra class :class is true
+     */
+    public function assertBooleanNodeValueIs(string $nodeName, string $className)
+    {
+        Assert::assertTrue($this->propertyAccessor->getValue($this->getClassInfo($className), $nodeName));
+    }
+
+    /**
      * @Then the value of the node :node of the Hydra class :class is :value
      */
     public function assertNodeValueIs(string $nodeName, string $className, string $value)
@@ -82,6 +90,14 @@ final class HydraContext implements Context
     }
 
     /**
+     * @Then the boolean value of the node :node of the property :prop of the Hydra class :class is true
+     */
+    public function assertPropertyNodeValueIsTrue(string $nodeName, string $propertyName, string $className)
+    {
+        Assert::assertTrue($this->propertyAccessor->getValue($this->getPropertyInfo($propertyName, $className), $nodeName));
+    }
+
+    /**
      * @Then the value of the node :node of the property :prop of the Hydra class :class is :value
      */
     public function assertPropertyNodeValueIs(string $nodeName, string $propertyName, string $className, string $value)
@@ -90,6 +106,14 @@ final class HydraContext implements Context
             $this->propertyAccessor->getValue($this->getPropertyInfo($propertyName, $className), $nodeName),
             $value
         );
+    }
+
+    /**
+     * @Then the boolean value of the node :node of the operation :operation of the Hydra class :class is true
+     */
+    public function assertOperationNodeBooleanValueIs(string $nodeName, string $operationMethod, string $className)
+    {
+        Assert::assertTrue($this->propertyAccessor->getValue($this->getOperation($operationMethod, $className), $nodeName));
     }
 
     /**
@@ -118,7 +142,7 @@ final class HydraContext implements Context
      */
     public function assertNbOperationsExist(int $nb, string $className)
     {
-        Assert::assertEquals($nb, \count($this->getOperations($className)));
+        Assert::assertEquals($nb, count($this->getOperations($className)));
     }
 
     /**
@@ -126,7 +150,7 @@ final class HydraContext implements Context
      */
     public function assertNbPropertiesExist(int $nb, string $className)
     {
-        Assert::assertEquals($nb, \count($this->getProperties($className)));
+        Assert::assertEquals($nb, count($this->getProperties($className)));
     }
 
     /**
@@ -198,7 +222,7 @@ final class HydraContext implements Context
      *
      * @throws \InvalidArgumentException
      */
-    private function getPropertyInfo(string $propertyName, string $className): \stdClass
+    private function getPropertyInfo(string $propertyName, string $className): stdClass
     {
         foreach ($this->getProperties($className) as $property) {
             if ($property->{'hydra:title'} === $propertyName) {
@@ -214,7 +238,7 @@ final class HydraContext implements Context
      *
      * @throws \InvalidArgumentException
      */
-    private function getOperation(string $method, string $className): \stdClass
+    private function getOperation(string $method, string $className): stdClass
     {
         foreach ($this->getOperations($className) as $operation) {
             if ($operation->{'hydra:method'} === $method) {
@@ -246,7 +270,7 @@ final class HydraContext implements Context
      *
      * @throws \InvalidArgumentException
      */
-    private function getClassInfo(string $className): \stdClass
+    private function getClassInfo(string $className): stdClass
     {
         $json = $this->getLastJsonResponse();
 
@@ -266,7 +290,7 @@ final class HydraContext implements Context
      *
      * @throws \RuntimeException
      */
-    private function getLastJsonResponse(): \stdClass
+    private function getLastJsonResponse(): stdClass
     {
         if (null === $decoded = json_decode($this->restContext->getMink()->getSession()->getDriver()->getContent())) {
             throw new \RuntimeException('JSON response seems to be invalid');

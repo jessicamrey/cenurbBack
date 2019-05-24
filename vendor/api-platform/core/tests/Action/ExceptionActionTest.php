@@ -25,14 +25,17 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * @author Amrouche Hamza <hamza.simperfit@gmail.com>
  * @author Baptiste Meyer <baptiste.meyer@gmail.com>
+ *
+ * @group time-sensitive
  */
 class ExceptionActionTest extends TestCase
 {
     public function testActionWithCatchableException()
     {
         $serializerException = $this->prophesize(ExceptionInterface::class);
-        $serializerException->willExtend(\Exception::class);
-
+        if (!is_a(ExceptionInterface::class, \Throwable::class, true)) {
+            $serializerException->willExtend(\Exception::class);
+        }
         $flattenException = FlattenException::create($serializerException->reveal());
 
         $serializer = $this->prophesize(SerializerInterface::class);
@@ -55,7 +58,9 @@ class ExceptionActionTest extends TestCase
     public function testActionWithUncatchableException()
     {
         $serializerException = $this->prophesize(ExceptionInterface::class);
-        $serializerException->willExtend(\Exception::class);
+        if (!is_a(ExceptionInterface::class, \Throwable::class, true)) {
+            $serializerException->willExtend(\Exception::class);
+        }
 
         $flattenException = FlattenException::create($serializerException->reveal());
 

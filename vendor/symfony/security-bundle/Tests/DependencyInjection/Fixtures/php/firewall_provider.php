@@ -15,12 +15,10 @@ $container->loadFromExtension('security', [
         'main' => [
             'provider' => 'default',
             'form_login' => true,
-            'logout_on_user_change' => true,
         ],
         'other' => [
             'provider' => 'with-dash',
             'form_login' => true,
-            'logout_on_user_change' => true,
         ],
     ],
 ]);

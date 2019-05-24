@@ -24,6 +24,10 @@ use Doctrine\ORM\QueryBuilder;
  *
  * @author Teoh Han Hui <teohhanhui@gmail.com>
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
+ *
+ * @internal
+ *
+ * @deprecated
  */
 final class QueryJoinParser
 {
@@ -34,136 +38,54 @@ final class QueryJoinParser
     /**
      * Gets the class metadata from a given join alias.
      *
-     * @param string          $alias
-     * @param QueryBuilder    $queryBuilder
-     * @param ManagerRegistry $managerRegistry
-     *
-     * @return ClassMetadata
+     * @deprecated
      */
     public static function getClassMetadataFromJoinAlias(string $alias, QueryBuilder $queryBuilder, ManagerRegistry $managerRegistry): ClassMetadata
     {
-        $rootEntities = $queryBuilder->getRootEntities();
-        $rootAliases = $queryBuilder->getRootAliases();
+        @trigger_error(sprintf('The use of "%s::getClassMetadataFromJoinAlias()" is deprecated since 2.4 and will be removed in 3.0. Use "%s::getEntityClassByAlias()" instead.', __CLASS__, QueryBuilderHelper::class), E_USER_DEPRECATED);
 
-        $joinParts = $queryBuilder->getDQLPart('join');
+        $entityClass = QueryBuilderHelper::getEntityClassByAlias($alias, $queryBuilder, $managerRegistry);
 
-        $aliasMap = [];
-        $targetAlias = $alias;
-
-        foreach ($joinParts as $rootAlias => $joins) {
-            $aliasMap[$rootAlias] = 'root';
-
-            foreach ($joins as $join) {
-                $alias = self::getJoinAlias($join);
-                $relationship = self::getJoinRelationship($join);
-
-                $pos = strpos($relationship, '.');
-
-                if (false !== $pos) {
-                    $aliasMap[$alias] = [
-                        'parentAlias' => substr($relationship, 0, $pos),
-                        'association' => substr($relationship, $pos + 1),
-                    ];
-                }
-            }
-        }
-
-        $associationStack = [];
-        $rootAlias = null;
-
-        while (null === $rootAlias) {
-            $mapping = $aliasMap[$targetAlias];
-
-            if ('root' === $mapping) {
-                $rootAlias = $targetAlias;
-            } else {
-                $associationStack[] = $mapping['association'];
-                $targetAlias = $mapping['parentAlias'];
-            }
-        }
-
-        $rootEntity = $rootEntities[array_search($rootAlias, $rootAliases, true)];
-
-        $rootMetadata = $managerRegistry
-            ->getManagerForClass($rootEntity)
-            ->getClassMetadata($rootEntity);
-
-        $metadata = $rootMetadata;
-
-        while (null !== ($association = array_pop($associationStack))) {
-            $associationClass = $metadata->getAssociationTargetClass($association);
-
-            $metadata = $managerRegistry
-                ->getManagerForClass($associationClass)
-                ->getClassMetadata($associationClass);
-        }
-
-        return $metadata;
+        return $managerRegistry
+            ->getManagerForClass($entityClass)
+            ->getClassMetadata($entityClass);
     }
 
     /**
      * Gets the relationship from a Join expression.
      *
-     * @param Join $join
-     *
-     * @return string
+     * @deprecated
      */
     public static function getJoinRelationship(Join $join): string
     {
-        static $relationshipProperty = null;
-        static $initialized = false;
+        @trigger_error(sprintf('The use of "%s::getJoinRelationship()" is deprecated since 2.3 and will be removed in 3.0. Use "%s::getJoin()" directly instead.', __CLASS__, Join::class), E_USER_DEPRECATED);
 
-        if (!$initialized && !method_exists(Join::class, 'getJoin')) {
-            $relationshipProperty = new \ReflectionProperty(Join::class, '_join');
-            $relationshipProperty->setAccessible(true);
-
-            $initialized = true;
-        }
-
-        return (null === $relationshipProperty) ? $join->getJoin() : $relationshipProperty->getValue($join);
+        return $join->getJoin();
     }
 
     /**
      * Gets the alias from a Join expression.
      *
-     * @param Join $join
-     *
-     * @return string
+     * @deprecated
      */
     public static function getJoinAlias(Join $join): string
     {
-        static $aliasProperty = null;
-        static $initialized = false;
+        @trigger_error(sprintf('The use of "%s::getJoinAlias()" is deprecated since 2.3 and will be removed in 3.0. Use "%s::getAlias()" directly instead.', __CLASS__, Join::class), E_USER_DEPRECATED);
 
-        if (!$initialized && !method_exists(Join::class, 'getAlias')) {
-            $aliasProperty = new \ReflectionProperty(Join::class, '_alias');
-            $aliasProperty->setAccessible(true);
-
-            $initialized = true;
-        }
-
-        return (null === $aliasProperty) ? $join->getAlias() : $aliasProperty->getValue($join);
+        return $join->getAlias();
     }
 
     /**
      * Gets the parts from an OrderBy expression.
      *
-     * @param OrderBy $orderBy
-     *
      * @return string[]
+     *
+     * @deprecated
      */
     public static function getOrderByParts(OrderBy $orderBy): array
     {
-        static $partsProperty = null;
-        static $initialized = false;
+        @trigger_error(sprintf('The use of "%s::getOrderByParts()" is deprecated since 2.3 and will be removed in 3.0. Use "%s::getParts()" directly instead.', __CLASS__, OrderBy::class), E_USER_DEPRECATED);
 
-        if (!$initialized && !method_exists(OrderBy::class, 'getParts')) {
-            $partsProperty = new \ReflectionProperty(OrderBy::class, '_parts');
-            $partsProperty->setAccessible(true);
-
-            $initialized = true;
-        }
-
-        return (null === $partsProperty) ? $orderBy->getParts() : $partsProperty->getValue($orderBy);
+        return $orderBy->getParts();
     }
 }

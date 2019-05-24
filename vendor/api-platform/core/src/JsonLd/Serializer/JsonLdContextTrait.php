@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Core\JsonLd\Serializer;
 
+use ApiPlatform\Core\JsonLd\AnonymousContextBuilderInterface;
 use ApiPlatform\Core\JsonLd\ContextBuilderInterface;
 
 /**
@@ -26,13 +27,6 @@ trait JsonLdContextTrait
 {
     /**
      * Updates the given JSON-LD document to add its @context key.
-     *
-     * @param ContextBuilderInterface $contextBuilder
-     * @param string                  $resourceClass
-     * @param array                   $context
-     * @param array                   $data
-     *
-     * @return array
      */
     private function addJsonLdContext(ContextBuilderInterface $contextBuilder, string $resourceClass, array &$context, array $data = []): array
     {
@@ -51,5 +45,17 @@ trait JsonLdContextTrait
         $data['@context'] = $contextBuilder->getResourceContextUri($resourceClass);
 
         return $data;
+    }
+
+    private function createJsonLdContext(AnonymousContextBuilderInterface $contextBuilder, $object, array &$context, array $data = []): array
+    {
+        // We're in a collection, just add the IRI if available
+        if (isset($context['jsonld_has_context'])) {
+            return isset($context['output']['iri']) ? ['@id' => $context['output']['iri']] : $data;
+        }
+
+        $context['jsonld_has_context'] = true;
+
+        return $contextBuilder->getAnonymousResourceContext($object, ($context['output'] ?? []) + ['api_resource' => $context['api_resource'] ?? null]);
     }
 }

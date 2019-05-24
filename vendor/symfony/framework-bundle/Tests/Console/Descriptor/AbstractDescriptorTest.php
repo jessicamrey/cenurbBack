@@ -69,6 +69,19 @@ abstract class AbstractDescriptorTest extends TestCase
         return $this->getContainerBuilderDescriptionTestData(ObjectsProvider::getContainerBuilders());
     }
 
+    /**
+     * @dataProvider getDescribeContainerExistingClassDefinitionTestData
+     */
+    public function testDescribeContainerExistingClassDefinition(Definition $definition, $expectedDescription)
+    {
+        $this->assertDescription($expectedDescription, $definition);
+    }
+
+    public function getDescribeContainerExistingClassDefinitionTestData()
+    {
+        return $this->getDescriptionTestData(ObjectsProvider::getContainerDefinitionsWithExistingClasses());
+    }
+
     /** @dataProvider getDescribeContainerDefinitionTestData */
     public function testDescribeContainerDefinition(Definition $definition, $expectedDescription)
     {
@@ -119,7 +132,7 @@ abstract class AbstractDescriptorTest extends TestCase
     {
         $builder = current(ObjectsProvider::getContainerBuilders());
         $builder->setDefinition('service_1', $builder->getDefinition('definition_1'));
-        $builder->setDefinition('service_2', $builder->getDefinition('definition_2'));
+        $builder->setDefinition('.service_2', $builder->getDefinition('.definition_2'));
 
         $aliases = ObjectsProvider::getContainerAliases();
         $aliasesWithDefinitions = [];
@@ -130,8 +143,10 @@ abstract class AbstractDescriptorTest extends TestCase
         $i = 0;
         $data = $this->getDescriptionTestData($aliasesWithDefinitions);
         foreach ($aliases as $name => $alias) {
+            $file = array_pop($data[$i]);
             $data[$i][] = $builder;
             $data[$i][] = ['id' => $name];
+            $data[$i][] = $file;
             ++$i;
         }
 
@@ -148,8 +163,12 @@ abstract class AbstractDescriptorTest extends TestCase
     {
         $data = $this->getDescriptionTestData(ObjectsProvider::getContainerParameter());
 
+        $file = array_pop($data[0]);
         $data[0][] = ['parameter' => 'database_name'];
+        $data[0][] = $file;
+        $file = array_pop($data[1]);
         $data[1][] = ['parameter' => 'twig.form.resources'];
+        $data[1][] = $file;
 
         return $data;
     }
@@ -174,6 +193,22 @@ abstract class AbstractDescriptorTest extends TestCase
     public function getDescribeCallableTestData()
     {
         return $this->getDescriptionTestData(ObjectsProvider::getCallables());
+    }
+
+    /** @dataProvider getClassDescriptionTestData */
+    public function testGetClassDecription($object, $expectedDescription)
+    {
+        $this->assertEquals($expectedDescription, $this->getDescriptor()->getClassDescription($object));
+    }
+
+    public function getClassDescriptionTestData()
+    {
+        return [
+            [ClassWithDocCommentOnMultipleLines::class, 'This is the first line of the description. This is the second line.'],
+            [ClassWithDocCommentWithoutInitialSpace::class, 'Foo.'],
+            [ClassWithoutDocComment::class, ''],
+            [ClassWithDocComment::class, 'This is a class with a doc comment.'],
+        ];
     }
 
     abstract protected function getDescriptor();
@@ -203,8 +238,9 @@ abstract class AbstractDescriptorTest extends TestCase
     {
         $data = [];
         foreach ($objects as $name => $object) {
-            $description = file_get_contents(sprintf('%s/../../Fixtures/Descriptor/%s.%s', __DIR__, $name, $this->getFormat()));
-            $data[] = [$object, $description];
+            $file = sprintf('%s.%s', trim($name, '.'), $this->getFormat());
+            $description = file_get_contents(__DIR__.'/../../Fixtures/Descriptor/'.$file);
+            $data[] = [$object, $description, $file];
         }
 
         return $data;
@@ -213,18 +249,19 @@ abstract class AbstractDescriptorTest extends TestCase
     private function getContainerBuilderDescriptionTestData(array $objects)
     {
         $variations = [
-            'services' => ['show_private' => true],
-            'public' => ['show_private' => false],
-            'tag1' => ['show_private' => true, 'tag' => 'tag1'],
-            'tags' => ['group_by' => 'tags', 'show_private' => true],
-            'arguments' => ['show_private' => false, 'show_arguments' => true],
+            'services' => ['show_hidden' => true],
+            'public' => ['show_hidden' => false],
+            'tag1' => ['show_hidden' => true, 'tag' => 'tag1'],
+            'tags' => ['group_by' => 'tags', 'show_hidden' => true],
+            'arguments' => ['show_hidden' => false, 'show_arguments' => true],
         ];
 
         $data = [];
         foreach ($objects as $name => $object) {
             foreach ($variations as $suffix => $options) {
-                $description = file_get_contents(sprintf('%s/../../Fixtures/Descriptor/%s_%s.%s', __DIR__, $name, $suffix, $this->getFormat()));
-                $data[] = [$object, $description, $options];
+                $file = sprintf('%s_%s.%s', trim($name, '.'), $suffix, $this->getFormat());
+                $description = file_get_contents(__DIR__.'/../../Fixtures/Descriptor/'.$file);
+                $data[] = [$object, $description, $options, $file];
             }
         }
 
@@ -241,8 +278,9 @@ abstract class AbstractDescriptorTest extends TestCase
         $data = [];
         foreach ($objects as $name => $object) {
             foreach ($variations as $suffix => $options) {
-                $description = file_get_contents(sprintf('%s/../../Fixtures/Descriptor/%s_%s.%s', __DIR__, $name, $suffix, $this->getFormat()));
-                $data[] = [$object, $description, $options];
+                $file = sprintf('%s_%s.%s', trim($name, '.'), $suffix, $this->getFormat());
+                $description = file_get_contents(__DIR__.'/../../Fixtures/Descriptor/'.$file);
+                $data[] = [$object, $description, $options, $file];
             }
         }
 

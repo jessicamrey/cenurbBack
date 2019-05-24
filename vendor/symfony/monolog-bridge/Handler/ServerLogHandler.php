@@ -24,7 +24,7 @@ class ServerLogHandler extends AbstractHandler
     private $context;
     private $socket;
 
-    public function __construct($host, $level = Logger::DEBUG, $bubble = true, $context = [])
+    public function __construct(string $host, int $level = Logger::DEBUG, bool $bubble = true, array $context = [])
     {
         parent::__construct($level, $bubble);
 
@@ -102,7 +102,7 @@ class ServerLogHandler extends AbstractHandler
     {
         if ($this->processors) {
             foreach ($this->processors as $processor) {
-                $record = \call_user_func($processor, $record);
+                $record = $processor($record);
             }
         }
 

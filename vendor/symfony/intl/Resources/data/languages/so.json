@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.48.17",
+    "Version": "2.1.49.82",
     "Names": {
         "af": "Afrikaanka",
         "agq": "Ageem",
@@ -143,7 +143,6 @@
         "ms": "Malaay",
         "mt": "Maltiis",
         "mua": "Miyundhaang",
-        "mul": "Luuqado kala duwan",
         "my": "Burmese",
         "mzn": "Masanderaani",
         "naq": "Nama",
@@ -214,7 +213,6 @@
         "tzm": "Bartamaha Atlaas Tamasayt",
         "ug": "Uighur",
         "uk": "Yukreeniyaan",
-        "und": "Af aan la aqoon ama aan sax ahayn",
         "ur": "Urduu",
         "uz": "Usbakis",
         "vai": "Faayi",
@@ -233,7 +231,6 @@
         "zh": "Shiinaha Mandarin",
         "zh_Hans": "Shiinaha Rasmiga ah",
         "zh_Hant": "Shiinahii Hore",
-        "zu": "Zuulu",
-        "zxx": "Luuqad Looma Hayo"
+        "zu": "Zuulu"
     }
 }

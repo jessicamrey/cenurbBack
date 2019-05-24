@@ -369,6 +369,43 @@ class ColoniaController extends Controller{
 				);
 	}
 	
+	public function removeFavorito(Request $request, $id){
+		$id=intval($id);
+		$usuario = $request->query->get("usuario");
+		//$existeUsuario=Util::existeUsuario($params["usuario"]);
+		//existe colonia= buscar colonia
+		//if existeColonia and existeUsuario->seguir
+		
+		//abrimos nuestro manager
+		$entityManager = $this->getDoctrine()->getManager('default');
+		
+		$sql = "
+		DELETE FROM
+			cenurb.FavoritosCol
+		WHERE
+			usuario = :usuario
+			AND
+			colonia = :col
+		";
+		
+		$stmt = $entityManager->getConnection()->prepare($sql);
+		$stmt->bindParam(':usuario', $usuario, PDO::PARAM_STR);
+		$stmt->bindParam(':col', $id, PDO::PARAM_INT);
+		
+		$stmt->execute();
+		
+		
+		return new Response(
+				'Se ha borrado el favorito',
+				Response::HTTP_OK,
+				array('content-type' => 'text/html')
+		);
+		
+		
+	}
+	
+	
+	
 	//-------------------ESTADISTICAS-------------------------------
 	
 	

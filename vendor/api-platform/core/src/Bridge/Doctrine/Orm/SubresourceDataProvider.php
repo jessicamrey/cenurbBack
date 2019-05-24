@@ -13,16 +13,17 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Core\Bridge\Doctrine\Orm;
 
+use ApiPlatform\Core\Bridge\Doctrine\Common\Util\IdentifierManagerTrait;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\FilterEagerLoadingExtension;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultItemExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\IdentifierManagerTrait;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGenerator;
 use ApiPlatform\Core\DataProvider\SubresourceDataProviderInterface;
 use ApiPlatform\Core\Exception\ResourceClassNotSupportedException;
 use ApiPlatform\Core\Exception\RuntimeException;
+use ApiPlatform\Core\Identifier\IdentifierConverterInterface;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyNameCollectionFactoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -44,13 +45,10 @@ final class SubresourceDataProvider implements SubresourceDataProviderInterface
     private $itemExtensions;
 
     /**
-     * @param ManagerRegistry                        $managerRegistry
-     * @param PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory
-     * @param PropertyMetadataFactoryInterface       $propertyMetadataFactory
-     * @param QueryCollectionExtensionInterface[]    $collectionExtensions
-     * @param QueryItemExtensionInterface[]          $itemExtensions
+     * @param QueryCollectionExtensionInterface[] $collectionExtensions
+     * @param QueryItemExtensionInterface[]       $itemExtensions
      */
-    public function __construct(ManagerRegistry $managerRegistry, PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory, PropertyMetadataFactoryInterface $propertyMetadataFactory, array $collectionExtensions = [], array $itemExtensions = [])
+    public function __construct(ManagerRegistry $managerRegistry, PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory, PropertyMetadataFactoryInterface $propertyMetadataFactory, /* iterable */ $collectionExtensions = [], /* iterable */ $itemExtensions = [])
     {
         $this->managerRegistry = $managerRegistry;
         $this->propertyNameCollectionFactory = $propertyNameCollectionFactory;
@@ -68,7 +66,7 @@ final class SubresourceDataProvider implements SubresourceDataProviderInterface
     {
         $manager = $this->managerRegistry->getManagerForClass($resourceClass);
         if (null === $manager) {
-            throw new ResourceClassNotSupportedException();
+            throw new ResourceClassNotSupportedException(sprintf('The object manager associated with the "%s" resource class cannot be retrieved.', $resourceClass));
         }
 
         $repository = $manager->getRepository($resourceClass);
@@ -76,7 +74,7 @@ final class SubresourceDataProvider implements SubresourceDataProviderInterface
             throw new RuntimeException('The repository class must have a "createQueryBuilder" method.');
         }
 
-        if (!isset($context['identifiers']) || !isset($context['property'])) {
+        if (!isset($context['identifiers'], $context['property'])) {
             throw new ResourceClassNotSupportedException('The given resource class is not a subresource.');
         }
 
@@ -132,7 +130,7 @@ final class SubresourceDataProvider implements SubresourceDataProviderInterface
 
         $topQueryBuilder = $topQueryBuilder ?? $previousQueryBuilder;
 
-        list($identifier, $identifierResourceClass) = $context['identifiers'][$remainingIdentifiers - 1];
+        [$identifier, $identifierResourceClass] = $context['identifiers'][$remainingIdentifiers - 1];
         $previousAssociationProperty = $context['identifiers'][$remainingIdentifiers][0] ?? $context['property'];
 
         $manager = $this->managerRegistry->getManagerForClass($identifierResourceClass);
@@ -151,11 +149,16 @@ final class SubresourceDataProvider implements SubresourceDataProviderInterface
 
         $qb = $manager->createQueryBuilder();
         $alias = $queryNameGenerator->generateJoinAlias($identifier);
-        $normalizedIdentifiers = isset($identifiers[$identifier]) ? $this->normalizeIdentifiers(
-            $identifiers[$identifier],
-            $manager,
-            $identifierResourceClass
-        ) : [];
+        $normalizedIdentifiers = [];
+
+        if (isset($identifiers[$identifier])) {
+            // if it's an array it's already normalized, the IdentifierManagerTrait is deprecated
+            if ($context[IdentifierConverterInterface::HAS_IDENTIFIER_CONVERTER] ?? false) {
+                $normalizedIdentifiers = $identifiers[$identifier];
+            } else {
+                $normalizedIdentifiers = $this->normalizeIdentifiers($identifiers[$identifier], $manager, $identifierResourceClass);
+            }
+        }
 
         if ($classMetadata->hasAssociation($previousAssociationProperty)) {
             $relationType = $classMetadata->getAssociationMapping($previousAssociationProperty)['type'];
@@ -175,6 +178,19 @@ final class SubresourceDataProvider implements SubresourceDataProviderInterface
                     $qb->select($alias)
                         ->from($identifierResourceClass, $alias);
                     break;
+                case ClassMetadataInfo::ONE_TO_ONE:
+                    $association = $classMetadata->getAssociationMapping($previousAssociationProperty);
+                    if (!isset($association['mappedBy'])) {
+                        $qb->select("IDENTITY($alias.$previousAssociationProperty)")
+                            ->from($identifierResourceClass, $alias);
+                        break;
+                    }
+                    $mappedBy = $association['mappedBy'];
+                    $previousAlias = "$previousAlias.$mappedBy";
+
+                    $qb->select($alias)
+                        ->from($identifierResourceClass, $alias);
+                    break;
                 default:
                     $qb->select("IDENTITY($alias.$previousAssociationProperty)")
                         ->from($identifierResourceClass, $alias);
@@ -188,7 +204,7 @@ final class SubresourceDataProvider implements SubresourceDataProviderInterface
         foreach ($normalizedIdentifiers as $key => $value) {
             $placeholder = $queryNameGenerator->generateParameterName($key);
             $qb->andWhere("$alias.$key = :$placeholder");
-            $topQueryBuilder->setParameter($placeholder, $value);
+            $topQueryBuilder->setParameter($placeholder, $value, (string) $classMetadata->getTypeOfField($key));
         }
 
         // Recurse queries

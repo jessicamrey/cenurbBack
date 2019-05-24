@@ -25,7 +25,7 @@ use Symfony\Component\Config\Util\XmlUtils;
  */
 final class XmlExtractor extends AbstractExtractor
 {
-    const RESOURCE_SCHEMA = __DIR__.'/../schema/metadata.xsd';
+    public const RESOURCE_SCHEMA = __DIR__.'/../schema/metadata.xsd';
 
     /**
      * {@inheritdoc}
@@ -33,13 +33,14 @@ final class XmlExtractor extends AbstractExtractor
     protected function extractPath(string $path)
     {
         try {
+            /** @var \SimpleXMLElement $xml */
             $xml = simplexml_import_dom(XmlUtils::loadFile($path, self::RESOURCE_SCHEMA));
         } catch (\InvalidArgumentException $e) {
             throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
         }
 
         foreach ($xml->resource as $resource) {
-            $resourceClass = (string) $resource['class'];
+            $resourceClass = $this->resolve((string) $resource['class']);
 
             $this->resources[$resourceClass] = [
                 'shortName' => $this->phpize($resource, 'shortName', 'string'),
@@ -57,10 +58,8 @@ final class XmlExtractor extends AbstractExtractor
 
     /**
      * Returns the array containing configured operations. Returns NULL if there is no operation configuration.
-     *
-     * @return array|null
      */
-    private function getOperations(\SimpleXMLElement $resource, string $operationType)
+    private function getOperations(\SimpleXMLElement $resource, string $operationType): ?array
     {
         $graphql = 'operation' === $operationType;
         if (!$graphql && $legacyOperations = $this->getAttributes($resource, $operationType)) {
@@ -73,11 +72,11 @@ final class XmlExtractor extends AbstractExtractor
         }
 
         $operationsParent = $graphql ? 'graphql' : "{$operationType}s";
-        if (!isset($resource->$operationsParent)) {
+        if (!isset($resource->{$operationsParent})) {
             return null;
         }
 
-        return $this->getAttributes($resource->$operationsParent, $operationType, true);
+        return $this->getAttributes($resource->{$operationsParent}, $operationType, true);
     }
 
     /**
@@ -86,7 +85,7 @@ final class XmlExtractor extends AbstractExtractor
     private function getAttributes(\SimpleXMLElement $resource, string $elementName, bool $topLevel = false): array
     {
         $attributes = [];
-        foreach ($resource->$elementName as $attribute) {
+        foreach ($resource->{$elementName} as $attribute) {
             $value = isset($attribute->attribute[0]) ? $this->getAttributes($attribute, 'attribute') : XmlUtils::phpize($attribute);
             // allow empty operations definition, like <collectionOperation name="post" />
             if ($topLevel && '' === $value) {

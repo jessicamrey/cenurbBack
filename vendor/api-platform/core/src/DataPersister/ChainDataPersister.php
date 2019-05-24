@@ -18,14 +18,15 @@ namespace ApiPlatform\Core\DataPersister;
  *
  * @author Baptiste Meyer <baptiste.meyer@gmail.com>
  */
-final class ChainDataPersister implements DataPersisterInterface
+final class ChainDataPersister implements ContextAwareDataPersisterInterface
 {
-    private $persisters;
+    /** @internal */
+    public $persisters;
 
     /**
      * @param DataPersisterInterface[] $persisters
      */
-    public function __construct(array $persisters)
+    public function __construct(/* iterable */ $persisters)
     {
         $this->persisters = $persisters;
     }
@@ -33,10 +34,10 @@ final class ChainDataPersister implements DataPersisterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($data): bool
+    public function supports($data, array $context = []): bool
     {
         foreach ($this->persisters as $persister) {
-            if ($persister->supports($data)) {
+            if ($persister->supports($data, $context)) {
                 return true;
             }
         }
@@ -47,11 +48,11 @@ final class ChainDataPersister implements DataPersisterInterface
     /**
      * {@inheritdoc}
      */
-    public function persist($data)
+    public function persist($data, array $context = [])
     {
         foreach ($this->persisters as $persister) {
-            if ($persister->supports($data)) {
-                $persister->persist($data);
+            if ($persister->supports($data, $context)) {
+                return $persister->persist($data, $context) ?? $data;
             }
         }
     }
@@ -59,11 +60,13 @@ final class ChainDataPersister implements DataPersisterInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($data)
+    public function remove($data, array $context = [])
     {
         foreach ($this->persisters as $persister) {
-            if ($persister->supports($data)) {
-                $persister->remove($data);
+            if ($persister->supports($data, $context)) {
+                $persister->remove($data, $context);
+
+                return;
             }
         }
     }

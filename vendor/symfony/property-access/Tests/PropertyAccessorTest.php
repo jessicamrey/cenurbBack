@@ -532,7 +532,7 @@ class PropertyAccessorTest extends TestCase
 
     /**
      * @expectedException \Symfony\Component\PropertyAccess\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Expected argument of type "DateTime", "string" given
+     * @expectedExceptionMessage Expected argument of type "DateTime", "string" given at property path "date"
      */
     public function testThrowTypeError()
     {
@@ -606,9 +606,6 @@ class PropertyAccessorTest extends TestCase
         $this->propertyAccessor->setValue($object, 'countable', 'This is a string, \Countable expected.');
     }
 
-    /**
-     * @requires PHP 7.0
-     */
     public function testAnonymousClassRead()
     {
         $value = 'bar';
@@ -620,9 +617,6 @@ class PropertyAccessorTest extends TestCase
         $this->assertEquals($value, $propertyAccessor->getValue($obj, 'foo'));
     }
 
-    /**
-     * @requires PHP 7.0
-     */
     public function testAnonymousClassWrite()
     {
         $value = 'bar';
@@ -667,7 +661,6 @@ class PropertyAccessorTest extends TestCase
     }
 
     /**
-     * @requires PHP 7.0
      * @expectedException \TypeError
      */
     public function testThrowTypeErrorInsideSetterCall()
@@ -678,8 +671,6 @@ class PropertyAccessorTest extends TestCase
     }
 
     /**
-     * @requires PHP 7
-     *
      * @expectedException \TypeError
      */
     public function testDoNotDiscardReturnTypeError()
@@ -690,8 +681,6 @@ class PropertyAccessorTest extends TestCase
     }
 
     /**
-     * @requires PHP 7
-     *
      * @expectedException \TypeError
      */
     public function testDoNotDiscardReturnTypeErrorWhenWriterMethodIsMisconfigured()

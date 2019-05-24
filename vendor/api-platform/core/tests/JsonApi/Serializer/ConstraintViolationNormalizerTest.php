@@ -39,6 +39,7 @@ class ConstraintViolationNormalizerTest extends TestCase
         $this->assertTrue($normalizer->supportsNormalization(new ConstraintViolationList(), ConstraintViolationListNormalizer::FORMAT));
         $this->assertFalse($normalizer->supportsNormalization(new ConstraintViolationList(), 'xml'));
         $this->assertFalse($normalizer->supportsNormalization(new \stdClass(), ConstraintViolationListNormalizer::FORMAT));
+        $this->assertTrue($normalizer->hasCacheableSupportsMethod());
     }
 
     public function testNormalize()
@@ -48,8 +49,8 @@ class ConstraintViolationNormalizerTest extends TestCase
         $propertyMetadataFactoryProphecy->create(Dummy::class, 'name')->willReturn(new PropertyMetadata(new Type(Type::BUILTIN_TYPE_STRING)))->shouldBeCalled(1);
 
         $nameConverterProphecy = $this->prophesize(NameConverterInterface::class);
-        $nameConverterProphecy->normalize('relatedDummy')->willReturn('relatedDummy')->shouldBeCalled(1);
-        $nameConverterProphecy->normalize('name')->willReturn('name')->shouldBeCalled(1);
+        $nameConverterProphecy->normalize('relatedDummy', Dummy::class, 'jsonapi')->willReturn('relatedDummy')->shouldBeCalled(1);
+        $nameConverterProphecy->normalize('name', Dummy::class, 'jsonapi')->willReturn('name')->shouldBeCalled(1);
 
         $dummy = new Dummy();
 

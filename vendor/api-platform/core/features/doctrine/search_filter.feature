@@ -4,13 +4,13 @@ Feature: Search filter on collections
   I need to search for collections properties
 
   @createSchema
-  @dropSchema
   Scenario: Test ManyToMany with filter on join table
     Given there is a RelatedDummy with 4 friends
     When I add "Accept" header equal to "application/hal+json"
     And I send a "GET" request to "/related_dummies?relatedToDummyFriend.dummyFriend=/dummy_friends/4"
     Then the response status code should be 200
     And the JSON node "_embedded.item" should have 1 element
+    And the JSON node "_embedded.item[0].id" should be equal to the number 1
     And the JSON node "_embedded.item[0]._links.relatedToDummyFriend" should have 4 elements
     And the JSON node "_embedded.item[0]._embedded.relatedToDummyFriend" should have 4 elements
 
@@ -20,7 +20,7 @@ Feature: Search filter on collections
     When I send a "GET" request to "/dummy_cars?colors.prop=red"
     Then the response status code should be 200
     And the JSON should be deep equal to:
-		"""
+    """
     {
         "@context": "/contexts/DummyCar",
         "@id": "/dummy_cars",
@@ -48,9 +48,9 @@ Feature: Search filter on collections
             "@id": "/dummy_cars?colors.prop=red",
             "@type": "hydra:PartialCollectionView"
         },
-				"hydra:search": {
+        "hydra:search": {
         "@type": "hydra:IriTemplate",
-        "hydra:template": "\/dummy_cars{?availableAt[before],availableAt[strictly_before],availableAt[after],availableAt[strictly_after],canSell,foobar[],foobargroups[],foobargroups_override[],colors.prop,name}",
+        "hydra:template": "/dummy_cars{?availableAt[before],availableAt[strictly_before],availableAt[after],availableAt[strictly_after],canSell,foobar[],foobargroups[],foobargroups_override[],colors.prop,name}",
         "hydra:variableRepresentation": "BasicRepresentation",
         "hydra:mapping": [
           {
@@ -346,7 +346,6 @@ Feature: Search filter on collections
     }
     """
 
-  @dropSchema
   Scenario: Search for entities within an impossible range
     When I send a "GET" request to "/dummies?name=MuYm"
     Then the response status code should be 200
@@ -375,8 +374,36 @@ Feature: Search filter on collections
     }
     """
 
+  @sqlite
+  Scenario: Search for entities with an existing collection route name
+    When I send a "GET" request to "/dummies?relatedDummies=dummy_cars"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
+    And the JSON should be valid according to this schema:
+    """
+    {
+      "type": "object",
+      "properties": {
+        "@context": {"pattern": "^/contexts/Dummy$"},
+        "@id": {"pattern": "^/dummies$"},
+        "@type": {"pattern": "^hydra:Collection$"},
+        "hydra:member": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "hydra:view": {
+          "type": "object",
+          "properties": {
+            "@id": {"pattern": "^/dummies\\?relatedDummies=dummy_cars"},
+            "@type": {"pattern": "^hydra:PartialCollectionView$"}
+          }
+        }
+      }
+    }
+    """
+
   @createSchema
-  @dropSchema
   Scenario: Search related collection by name
     Given there are 3 dummy objects having each 3 relatedDummies
     When I add "Accept" header equal to "application/hal+json"
@@ -387,6 +414,17 @@ Feature: Search filter on collections
     And the JSON node "_embedded.item[0]._links.relatedDummies" should have 3 elements
     And the JSON node "_embedded.item[1]._links.relatedDummies" should have 3 elements
     And the JSON node "_embedded.item[2]._links.relatedDummies" should have 3 elements
+
+  @createSchema
+  Scenario: Search by related collection id
+    Given there are 2 dummy objects having each 2 relatedDummies
+    When I add "Accept" header equal to "application/hal+json"
+    And I send a "GET" request to "/dummies?relatedDummies=3"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON node "totalItems" should be equal to "1"
+    And the JSON node "_links.item" should have 1 element
+    And the JSON node "_links.item[0].href" should be equal to "/dummies/2"
 
   @createSchema
   Scenario: Get collection by id equals 9.99 which is not possible
@@ -466,8 +504,6 @@ Feature: Search filter on collections
     }
     """
 
-
-  @dropSchema
   Scenario: Get collection ordered by a non valid properties
     When I send a "GET" request to "/dummies?unknown=0"
     Then the response status code should be 200
@@ -538,6 +574,81 @@ Feature: Search filter on collections
           "type": "object",
           "properties": {
             "@id": {"pattern": "^/dummies\\?unknown=1"},
+            "@type": {"pattern": "^hydra:PartialCollectionView$"}
+          }
+        }
+      }
+    }
+    """
+
+  Scenario: Search at third level
+    Given there is a dummy object with a fourth level relation
+    When I send a "GET" request to "/dummies?relatedDummy.thirdLevel.level=3"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
+    And the JSON should be valid according to this schema:
+    """
+    {
+      "type": "object",
+      "properties": {
+        "@context": {"pattern": "^/contexts/Dummy$"},
+        "@id": {"pattern": "^/dummies$"},
+        "@type": {"pattern": "^hydra:Collection$"},
+        "hydra:member": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "@id": {
+                "oneOf": [
+                  {"pattern": "^/dummies/31$"}
+                ]
+              }
+            }
+          }
+        },
+        "hydra:view": {
+          "type": "object",
+          "properties": {
+            "@id": {"pattern": "^/dummies\\?relatedDummy.thirdLevel.level=3"},
+            "@type": {"pattern": "^hydra:PartialCollectionView$"}
+          }
+        }
+      }
+    }
+    """
+
+  Scenario: Search at fourth level
+    When I send a "GET" request to "/dummies?relatedDummy.thirdLevel.fourthLevel.level=4"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
+    And the JSON should be valid according to this schema:
+    """
+    {
+      "type": "object",
+      "properties": {
+        "@context": {"pattern": "^/contexts/Dummy$"},
+        "@id": {"pattern": "^/dummies$"},
+        "@type": {"pattern": "^hydra:Collection$"},
+        "hydra:member": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "@id": {
+                "oneOf": [
+                  {"pattern": "^/dummies/31$"}
+                ]
+              }
+            }
+          }
+        },
+        "hydra:view": {
+          "type": "object",
+          "properties": {
+            "@id": {"pattern": "^/dummies\\?relatedDummy.thirdLevel.fourthLevel.level=4"},
             "@type": {"pattern": "^hydra:PartialCollectionView$"}
           }
         }

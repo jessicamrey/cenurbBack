@@ -38,7 +38,7 @@ class ResizeFormListener implements EventSubscriberInterface
      * @param bool          $allowDelete Whether children could be removed from the group
      * @param bool|callable $deleteEmpty
      */
-    public function __construct($type, array $options = [], $allowAdd = false, $allowDelete = false, $deleteEmpty = false)
+    public function __construct(string $type, array $options = [], bool $allowAdd = false, bool $allowDelete = false, $deleteEmpty = false)
     {
         $this->type = $type;
         $this->allowAdd = $allowAdd;
@@ -88,11 +88,7 @@ class ResizeFormListener implements EventSubscriberInterface
         $form = $event->getForm();
         $data = $event->getData();
 
-        if ($data instanceof \Traversable && $data instanceof \ArrayAccess) {
-            @trigger_error('Support for objects implementing both \Traversable and \ArrayAccess is deprecated since Symfony 3.1 and will be removed in 4.0. Use an array instead.', E_USER_DEPRECATED);
-        }
-
-        if (!\is_array($data) && !($data instanceof \Traversable && $data instanceof \ArrayAccess)) {
+        if (!\is_array($data)) {
             $data = [];
         }
 
@@ -139,7 +135,7 @@ class ResizeFormListener implements EventSubscriberInterface
             /** @var FormInterface $child */
             foreach ($form as $name => $child) {
                 $isNew = !isset($previousData[$name]);
-                $isEmpty = \is_callable($this->deleteEmpty) ? \call_user_func($this->deleteEmpty, $child->getData()) : $child->isEmpty();
+                $isEmpty = \is_callable($this->deleteEmpty) ? ($this->deleteEmpty)($child->getData()) : $child->isEmpty();
 
                 // $isNew can only be true if allowAdd is true, so we don't
                 // need to check allowAdd again

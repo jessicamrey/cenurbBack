@@ -29,7 +29,9 @@ class TwigExtensionTest extends TestCase
     {
         $container = $this->createContainer();
         $container->registerExtension(new TwigExtension());
-        $container->loadFromExtension('twig', []);
+        $container->loadFromExtension('twig', [
+            'strict_variables' => false, // to be removed in 5.0 relying on default
+        ]);
         $this->compileContainer($container);
 
         $this->assertEquals('Twig\Environment', $container->getDefinition('twig')->getClass(), '->load() loads the twig.xml file');
@@ -151,7 +153,10 @@ class TwigExtensionTest extends TestCase
 
         $container = $this->createContainer();
         $container->registerExtension(new TwigExtension());
-        $container->loadFromExtension('twig', ['globals' => $globals]);
+        $container->loadFromExtension('twig', [
+            'globals' => $globals,
+            'strict_variables' => false, // // to be removed in 5.0 relying on default
+        ]);
         $this->compileContainer($container);
 
         $calls = $container->getDefinition('twig')->getMethodCalls();
@@ -188,25 +193,46 @@ class TwigExtensionTest extends TestCase
             ['namespaced_path1', 'namespace1'],
             ['namespaced_path2', 'namespace2'],
             ['namespaced_path3', 'namespace3'],
-            [__DIR__.'/Fixtures/Bundle/ChildChildChildChildTwigBundle/Resources/views', 'ChildChildChildChildTwig'],
-            [__DIR__.'/Fixtures/Bundle/ChildChildChildChildTwigBundle/Resources/views', 'ChildChildChildTwig'],
-            [__DIR__.'/Fixtures/Bundle/ChildChildChildTwigBundle/Resources/views', 'ChildChildChildTwig'],
-            [__DIR__.'/Fixtures/Bundle/ChildChildChildChildTwigBundle/Resources/views', 'Twig'],
-            [__DIR__.'/Fixtures/Bundle/ChildChildChildTwigBundle/Resources/views', 'Twig'],
-            [__DIR__.'/Fixtures/Bundle/ChildChildTwigBundle/Resources/views', 'Twig'],
-            [__DIR__.'/Fixtures/Bundle/ChildTwigBundle/Resources/views', 'Twig'],
-            [__DIR__.'/Fixtures/Resources/TwigBundle/views', 'Twig'],
             [__DIR__.'/Fixtures/templates/bundles/TwigBundle', 'Twig'],
             [realpath(__DIR__.'/../..').'/Resources/views', 'Twig'],
             [realpath(__DIR__.'/../..').'/Resources/views', '!Twig'],
-            [__DIR__.'/Fixtures/Bundle/ChildChildChildChildTwigBundle/Resources/views', 'ChildTwig'],
-            [__DIR__.'/Fixtures/Bundle/ChildChildChildTwigBundle/Resources/views', 'ChildTwig'],
-            [__DIR__.'/Fixtures/Bundle/ChildChildTwigBundle/Resources/views', 'ChildTwig'],
-            [__DIR__.'/Fixtures/Bundle/ChildTwigBundle/Resources/views', 'ChildTwig'],
-            [__DIR__.'/Fixtures/Bundle/ChildChildChildChildTwigBundle/Resources/views', 'ChildChildTwig'],
-            [__DIR__.'/Fixtures/Bundle/ChildChildChildTwigBundle/Resources/views', 'ChildChildTwig'],
-            [__DIR__.'/Fixtures/Bundle/ChildChildTwigBundle/Resources/views', 'ChildChildTwig'],
-            [__DIR__.'/Fixtures/Resources/views'],
+            [__DIR__.'/Fixtures/templates'],
+        ], $paths);
+    }
+
+    /**
+     * @group legacy
+     * @dataProvider getFormats
+     * @expectedDeprecation Loading Twig templates for "TwigBundle" from the "%s/Resources/TwigBundle/views" directory is deprecated since Symfony 4.2, use "%s/templates/bundles/TwigBundle" instead.
+     * @expectedDeprecation Loading Twig templates from the "%s/Resources/views" directory is deprecated since Symfony 4.2, use "%s/templates" instead.
+     */
+    public function testLegacyTwigLoaderPaths($format)
+    {
+        $container = $this->createContainer(__DIR__.'/../Fixtures/templates');
+        $container->registerExtension(new TwigExtension());
+        $this->loadFromFile($container, 'full', $format);
+        $this->loadFromFile($container, 'extra', $format);
+        $this->compileContainer($container);
+
+        $def = $container->getDefinition('twig.loader.native_filesystem');
+        $paths = [];
+        foreach ($def->getMethodCalls() as $call) {
+            if ('addPath' === $call[0] && false === strpos($call[1][0], 'Form')) {
+                $paths[] = $call[1];
+            }
+        }
+
+        $this->assertEquals([
+            ['path1'],
+            ['path2'],
+            ['namespaced_path1', 'namespace1'],
+            ['namespaced_path2', 'namespace2'],
+            ['namespaced_path3', 'namespace3'],
+            [__DIR__.'/../Fixtures/templates/Resources/TwigBundle/views', 'Twig'],
+            [__DIR__.'/Fixtures/templates/bundles/TwigBundle', 'Twig'],
+            [realpath(__DIR__.'/../..').'/Resources/views', 'Twig'],
+            [realpath(__DIR__.'/../..').'/Resources/views', '!Twig'],
+            [__DIR__.'/../Fixtures/templates/Resources/views'],
             [__DIR__.'/Fixtures/templates'],
         ], $paths);
     }
@@ -231,7 +257,9 @@ class TwigExtensionTest extends TestCase
             $container->register('debug.stopwatch', 'Symfony\Component\Stopwatch\Stopwatch');
         }
         $container->registerExtension(new TwigExtension());
-        $container->loadFromExtension('twig', []);
+        $container->loadFromExtension('twig', [
+            'strict_variables' => false, // to be removed in 5.0 relying on default
+        ]);
         $container->setAlias('test.twig.extension.debug.stopwatch', 'twig.extension.debug.stopwatch')->setPublic(true);
         $this->compileContainer($container);
 
@@ -256,7 +284,9 @@ class TwigExtensionTest extends TestCase
     {
         $container = $this->createContainer();
         $container->registerExtension(new TwigExtension());
-        $container->loadFromExtension('twig', []);
+        $container->loadFromExtension('twig', [
+            'strict_variables' => false, // to be removed in 5.0 relying on default
+        ]);
         $container->setParameter('kernel.environment', 'test');
         $container->setParameter('debug.file_link_format', 'test');
         $container->setParameter('foo', 'FooClass');
@@ -276,46 +306,21 @@ class TwigExtensionTest extends TestCase
         $this->assertEquals('foo', $args['FooClass']->getValues()[0]);
     }
 
-    private function createContainer()
+    private function createContainer(string $rootDir = __DIR__.'/Fixtures')
     {
         $container = new ContainerBuilder(new ParameterBag([
             'kernel.cache_dir' => __DIR__,
-            'kernel.root_dir' => __DIR__.'/Fixtures',
+            'kernel.root_dir' => $rootDir,
             'kernel.project_dir' => __DIR__,
             'kernel.charset' => 'UTF-8',
             'kernel.debug' => false,
             'kernel.bundles' => [
                 'TwigBundle' => 'Symfony\\Bundle\\TwigBundle\\TwigBundle',
-                'ChildTwigBundle' => 'Symfony\\Bundle\\TwigBundle\\Tests\\DependencyInjection\\Fixtures\\Bundle\\ChildTwigBundle\\ChildTwigBundle',
-                'ChildChildTwigBundle' => 'Symfony\\Bundle\\TwigBundle\\Tests\\DependencyInjection\\Fixtures\\Bundle\\ChildChildTwigBundle\\ChildChildTwigBundle',
-                'ChildChildChildTwigBundle' => 'Symfony\\Bundle\\TwigBundle\\Tests\\DependencyInjection\\Fixtures\\Bundle\\ChildChildChildTwigBundle\\ChildChildChildTwigBundle',
-                'ChildChildChildChildTwigBundle' => 'Symfony\\Bundle\\TwigBundle\\Tests\\DependencyInjection\\Fixtures\\Bundle\\ChildChildChildChildTwigBundle\\ChildChildChildChildTwigBundle',
             ],
             'kernel.bundles_metadata' => [
-                'ChildChildChildChildTwigBundle' => [
-                    'namespace' => 'Symfony\\Bundle\\TwigBundle\\Tests\\DependencyInjection\\Fixtures\\Bundle\\ChildChildChildChildTwigBundle\\ChildChildChildChildTwigBundle',
-                    'parent' => 'ChildChildChildTwigBundle',
-                    'path' => __DIR__.'/Fixtures/Bundle/ChildChildChildChildTwigBundle',
-                ],
                 'TwigBundle' => [
                     'namespace' => 'Symfony\\Bundle\\TwigBundle',
-                    'parent' => null,
                     'path' => realpath(__DIR__.'/../..'),
-                ],
-                'ChildTwigBundle' => [
-                    'namespace' => 'Symfony\\Bundle\\TwigBundle\\Tests\\DependencyInjection\\Fixtures\\Bundle\\ChildTwigBundle\\ChildTwigBundle',
-                    'parent' => 'TwigBundle',
-                    'path' => __DIR__.'/Fixtures/Bundle/ChildTwigBundle',
-                ],
-                'ChildChildChildTwigBundle' => [
-                    'namespace' => 'Symfony\\Bundle\\TwigBundle\\Tests\\DependencyInjection\\Fixtures\\Bundle\\ChildChildChildTwigBundle\\ChildChildChildTwigBundle',
-                    'parent' => 'ChildChildTwigBundle',
-                    'path' => __DIR__.'/Fixtures/Bundle/ChildChildChildTwigBundle',
-                ],
-                'ChildChildTwigBundle' => [
-                    'namespace' => 'Symfony\\Bundle\\TwigBundle\\Tests\\DependencyInjection\\Fixtures\\Bundle\\ChildChildTwigBundle\\ChildChildTwigBundle',
-                    'parent' => 'ChildTwigBundle',
-                    'path' => __DIR__.'/Fixtures/Bundle/ChildChildTwigBundle',
                 ],
             ],
         ]));

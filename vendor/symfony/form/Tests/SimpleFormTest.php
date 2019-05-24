@@ -333,15 +333,6 @@ class SimpleFormTest extends AbstractFormTest
         $this->assertTrue($form->isValid());
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Call Form::isValid() with an unsubmitted form %s.
-     */
-    public function testNotValidIfNotSubmitted()
-    {
-        $this->assertFalse($this->form->isValid());
-    }
-
     public function testNotValidIfErrors()
     {
         $form = $this->getBuilder()->getForm();

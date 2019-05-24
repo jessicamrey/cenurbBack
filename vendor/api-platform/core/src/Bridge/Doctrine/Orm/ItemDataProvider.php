@@ -13,17 +13,19 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Core\Bridge\Doctrine\Orm;
 
+use ApiPlatform\Core\Bridge\Doctrine\Common\Util\IdentifierManagerTrait;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultItemExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\IdentifierManagerTrait;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGenerator;
-use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
+use ApiPlatform\Core\DataProvider\DenormalizedIdentifiersAwareItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use ApiPlatform\Core\Exception\RuntimeException;
+use ApiPlatform\Core\Identifier\IdentifierConverterInterface;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyNameCollectionFactoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 
@@ -32,8 +34,9 @@ use Doctrine\ORM\QueryBuilder;
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  * @author Samuel ROZE <samuel.roze@gmail.com>
+ * @final
  */
-class ItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+class ItemDataProvider implements DenormalizedIdentifiersAwareItemDataProviderInterface, RestrictedDataProviderInterface
 {
     use IdentifierManagerTrait;
 
@@ -41,12 +44,9 @@ class ItemDataProvider implements ItemDataProviderInterface, RestrictedDataProvi
     private $itemExtensions;
 
     /**
-     * @param ManagerRegistry                        $managerRegistry
-     * @param PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory
-     * @param PropertyMetadataFactoryInterface       $propertyMetadataFactory
-     * @param QueryItemExtensionInterface[]          $itemExtensions
+     * @param QueryItemExtensionInterface[] $itemExtensions
      */
-    public function __construct(ManagerRegistry $managerRegistry, PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory, PropertyMetadataFactoryInterface $propertyMetadataFactory, array $itemExtensions = [])
+    public function __construct(ManagerRegistry $managerRegistry, PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory, PropertyMetadataFactoryInterface $propertyMetadataFactory, /* iterable */ $itemExtensions = [])
     {
         $this->managerRegistry = $managerRegistry;
         $this->propertyNameCollectionFactory = $propertyNameCollectionFactory;
@@ -68,13 +68,16 @@ class ItemDataProvider implements ItemDataProviderInterface, RestrictedDataProvi
      */
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
     {
+        /** @var ObjectManager $manager */
         $manager = $this->managerRegistry->getManagerForClass($resourceClass);
 
-        $identifiers = $this->normalizeIdentifiers($id, $manager, $resourceClass);
+        if (!\is_array($id) && !($context[IdentifierConverterInterface::HAS_IDENTIFIER_CONVERTER] ?? false)) {
+            $id = $this->normalizeIdentifiers($id, $manager, $resourceClass);
+        }
 
         $fetchData = $context['fetch_data'] ?? true;
         if (!$fetchData && $manager instanceof EntityManagerInterface) {
-            return $manager->getReference($resourceClass, $identifiers);
+            return $manager->getReference($resourceClass, $id);
         }
 
         $repository = $manager->getRepository($resourceClass);
@@ -86,10 +89,10 @@ class ItemDataProvider implements ItemDataProviderInterface, RestrictedDataProvi
         $queryNameGenerator = new QueryNameGenerator();
         $doctrineClassMetadata = $manager->getClassMetadata($resourceClass);
 
-        $this->addWhereForIdentifiers($identifiers, $queryBuilder, $doctrineClassMetadata);
+        $this->addWhereForIdentifiers((array) $id, $queryBuilder, $doctrineClassMetadata);
 
         foreach ($this->itemExtensions as $extension) {
-            $extension->applyToItem($queryBuilder, $queryNameGenerator, $resourceClass, $identifiers, $operationName, $context);
+            $extension->applyToItem($queryBuilder, $queryNameGenerator, $resourceClass, $id, $operationName, $context);
 
             if ($extension instanceof QueryResultItemExtensionInterface && $extension->supportsResult($resourceClass, $operationName, $context)) {
                 return $extension->getResult($queryBuilder, $resourceClass, $operationName, $context);
@@ -101,10 +104,6 @@ class ItemDataProvider implements ItemDataProviderInterface, RestrictedDataProvi
 
     /**
      * Add WHERE conditions to the query for one or more identifiers (simple or composite).
-     *
-     * @param array         $identifiers
-     * @param QueryBuilder  $queryBuilder
-     * @param ClassMetadata $classMetadata
      */
     private function addWhereForIdentifiers(array $identifiers, QueryBuilder $queryBuilder, ClassMetadata $classMetadata)
     {

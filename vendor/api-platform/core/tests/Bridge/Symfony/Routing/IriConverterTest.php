@@ -22,7 +22,9 @@ use ApiPlatform\Core\Bridge\Symfony\Routing\RouteNameResolverInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\SubresourceDataProviderInterface;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Core\Exception\InvalidIdentifierException;
 use ApiPlatform\Core\Exception\ItemNotFoundException;
+use ApiPlatform\Core\Identifier\IdentifierConverterInterface;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyNameCollectionFactoryInterface;
 use ApiPlatform\Core\Tests\Fixtures\TestBundle\Entity\Dummy;
@@ -58,6 +60,21 @@ class IriConverterTest extends TestCase
 
         $converter = $this->getIriConverter($routerProphecy);
         $converter->getItemFromIri('/users/3');
+    }
+
+    public function testGetItemFromIriCollectionRouteException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The iri "/users" references a collection not an item.');
+
+        $routerProphecy = $this->prophesize(RouterInterface::class);
+        $routerProphecy->match('/users')->willReturn([
+            '_api_resource_class' => Dummy::class,
+            '_api_collection_operation_name' => 'get',
+        ])->shouldBeCalledTimes(1);
+
+        $converter = $this->getIriConverter($routerProphecy);
+        $converter->getItemFromIri('/users');
     }
 
     public function testGetItemFromIriItemNotFoundException()
@@ -100,16 +117,10 @@ class IriConverterTest extends TestCase
 
     public function testGetItemFromIriWithOperationName()
     {
-        $propertyNameCollectionFactoryProphecy = $this->prophesize(PropertyNameCollectionFactoryInterface::class);
-
-        $propertyMetadataFactoryProphecy = $this->prophesize(PropertyMetadataFactoryInterface::class);
-
         $itemDataProviderProphecy = $this->prophesize(ItemDataProviderInterface::class);
         $itemDataProviderProphecy->getItem('AppBundle\Entity\User', '3', 'operation_name', ['fetch_data' => true])
             ->willReturn('foo')
             ->shouldBeCalledTimes(1);
-
-        $routeNameResolverProphecy = $this->prophesize(RouteNameResolverInterface::class);
 
         $routerProphecy = $this->prophesize(RouterInterface::class);
         $routerProphecy->match('/users/3')->willReturn([
@@ -118,19 +129,8 @@ class IriConverterTest extends TestCase
             'id' => 3,
         ])->shouldBeCalledTimes(1);
 
-        $propertyNameCollectionFactory = $propertyNameCollectionFactoryProphecy->reveal();
-        $propertyMetadataFactory = $propertyMetadataFactoryProphecy->reveal();
-
-        $converter = new IriConverter(
-            $propertyNameCollectionFactory,
-            $propertyMetadataFactory,
-            $itemDataProviderProphecy->reveal(),
-            $routeNameResolverProphecy->reveal(),
-            $routerProphecy->reveal(),
-            null,
-            new IdentifiersExtractor($propertyNameCollectionFactory, $propertyMetadataFactory, null, $this->getResourceClassResolver())
-        );
-        $converter->getItemFromIri('/users/3', ['fetch_data' => true]);
+        $converter = $this->getIriConverter($routerProphecy, null, $itemDataProviderProphecy);
+        $this->assertEquals($converter->getItemFromIri('/users/3', ['fetch_data' => true]), 'foo');
     }
 
     public function testGetIriFromResourceClass()
@@ -214,11 +214,28 @@ class IriConverterTest extends TestCase
         $converter->getItemIriFromResourceClass(Dummy::class, ['id' => 1]);
     }
 
+    public function testGetItemFromIriWithIdentifierConverter()
+    {
+        $item = new \stdClass();
+        $itemDataProviderProphecy = $this->prophesize(ItemDataProviderInterface::class);
+        $itemDataProviderProphecy->getItem(Dummy::class, ['id' => 3], 'get', ['fetch_data' => true, IdentifierConverterInterface::HAS_IDENTIFIER_CONVERTER => true])->shouldBeCalled()->willReturn($item);
+        $identifierConverterProphecy = $this->prophesize(IdentifierConverterInterface::class);
+        $identifierConverterProphecy->convert('3', Dummy::class)->shouldBeCalled()->willReturn(['id' => 3]);
+        $routerProphecy = $this->prophesize(RouterInterface::class);
+        $routerProphecy->match('/users/3')->willReturn([
+            '_api_resource_class' => Dummy::class,
+            '_api_item_operation_name' => 'get',
+            'id' => 3,
+        ])->shouldBeCalledTimes(1);
+
+        $converter = $this->getIriConverter($routerProphecy, null, $itemDataProviderProphecy, null, $identifierConverterProphecy);
+        $this->assertEquals($converter->getItemFromIri('/users/3', ['fetch_data' => true]), $item);
+    }
+
     public function testGetItemFromIriWithSubresourceDataProvider()
     {
         $item = new \stdClass();
         $subresourceContext = ['identifiers' => [['id', Dummy::class, true]]];
-        $itemDataProviderProphecy = $this->prophesize(ItemDataProviderInterface::class);
         $routeNameResolverProphecy = $this->prophesize(RouteNameResolverInterface::class);
         $routerProphecy = $this->prophesize(RouterInterface::class);
         $routerProphecy->match('/users/3/adresses')->willReturn([
@@ -239,7 +256,6 @@ class IriConverterTest extends TestCase
         $this->expectExceptionMessage('Item not found for "/users/3/adresses".');
 
         $subresourceContext = ['identifiers' => [['id', Dummy::class, true]]];
-        $itemDataProviderProphecy = $this->prophesize(ItemDataProviderInterface::class);
         $routeNameResolverProphecy = $this->prophesize(RouteNameResolverInterface::class);
         $routerProphecy = $this->prophesize(RouterInterface::class);
         $routerProphecy->match('/users/3/adresses')->willReturn([
@@ -248,9 +264,11 @@ class IriConverterTest extends TestCase
             '_api_subresource_operation_name' => 'get_subresource',
             'id' => 3,
         ])->shouldBeCalledTimes(1);
+        $identifierConverterProphecy = $this->prophesize(IdentifierConverterInterface::class);
+        $identifierConverterProphecy->convert('3', Dummy::class)->shouldBeCalled()->willReturn(['id' => 3]);
         $subresourceDataProviderProphecy = $this->prophesize(SubresourceDataProviderInterface::class);
-        $subresourceDataProviderProphecy->getSubresource(Dummy::class, ['id' => 3], $subresourceContext + ['fetch_data' => true], 'get_subresource')->shouldBeCalled()->willReturn(null);
-        $converter = $this->getIriConverter($routerProphecy, $routeNameResolverProphecy, null, $subresourceDataProviderProphecy);
+        $subresourceDataProviderProphecy->getSubresource(Dummy::class, ['id' => ['id' => 3]], $subresourceContext + ['fetch_data' => true, IdentifierConverterInterface::HAS_IDENTIFIER_CONVERTER => true], 'get_subresource')->shouldBeCalled()->willReturn(null);
+        $converter = $this->getIriConverter($routerProphecy, $routeNameResolverProphecy, null, $subresourceDataProviderProphecy, $identifierConverterProphecy);
         $converter->getItemFromIri('/users/3/adresses', ['fetch_data' => true]);
     }
 
@@ -267,14 +285,31 @@ class IriConverterTest extends TestCase
             '_api_item_operation_name' => 'get_subresource',
             'id' => 3,
         ])->shouldBeCalledTimes(1);
-        $converter = $this->getIriConverter($routerProphecy, $routeNameResolverProphecy, null);
+        $identifierConverterProphecy = $this->prophesize(IdentifierConverterInterface::class);
+        $identifierConverterProphecy->convert('3', Dummy::class)->shouldBeCalled()->willThrow(new InvalidIdentifierException('Item not found for "/users/3".'));
+        $converter = $this->getIriConverter($routerProphecy, $routeNameResolverProphecy, null, null, $identifierConverterProphecy);
         $this->assertEquals($converter->getItemFromIri('/users/3', ['fetch_data' => true]), $item);
+    }
+
+    public function testNoIdentifiersException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('No identifiers defined for resource of type "\App\Entity\Sample"');
+
+        $routeNameResolverProphecy = $this->prophesize(RouteNameResolverInterface::class);
+        $routerProphecy = $this->prophesize(RouterInterface::class);
+
+        $converter = $this->getIriConverter($routerProphecy, $routeNameResolverProphecy);
+
+        $method = new \ReflectionMethod(IriConverter::class, 'generateIdentifiersUrl');
+        $method->setAccessible(true);
+        $method->invoke($converter, [], '\App\Entity\Sample');
     }
 
     /**
      * @group legacy
      * @expectedDeprecation Not injecting "ApiPlatform\Core\Api\IdentifiersExtractorInterface" is deprecated since API Platform 2.1 and will not be possible anymore in API Platform 3
-     * @expectedDeprecation Not injecting ApiPlatform\Core\Api\ResourceClassResolverInterface in the CachedIdentifiersExtractor might introduce cache issues with object identifiers.
+     * @expectedDeprecation Not injecting ApiPlatform\Core\Api\ResourceClassResolverInterface in the IdentifiersExtractor might introduce cache issues with object identifiers.
      */
     public function testLegacyConstructor()
     {
@@ -304,7 +339,7 @@ class IriConverterTest extends TestCase
         return $resourceClassResolver->reveal();
     }
 
-    private function getIriConverter($routerProphecy = null, $routeNameResolverProphecy = null, $itemDataProviderProphecy = null, $subresourceDataProviderProphecy = null)
+    private function getIriConverter($routerProphecy = null, $routeNameResolverProphecy = null, $itemDataProviderProphecy = null, $subresourceDataProviderProphecy = null, $identifierConverterProphecy = null)
     {
         $propertyNameCollectionFactoryProphecy = $this->prophesize(PropertyNameCollectionFactoryInterface::class);
         $propertyMetadataFactoryProphecy = $this->prophesize(PropertyMetadataFactoryInterface::class);
@@ -330,7 +365,8 @@ class IriConverterTest extends TestCase
             $routerProphecy->reveal(),
             null,
             new IdentifiersExtractor($propertyNameCollectionFactory, $propertyMetadataFactory, null, $this->getResourceClassResolver()),
-            $subresourceDataProviderProphecy ? $subresourceDataProviderProphecy->reveal() : null
+            $subresourceDataProviderProphecy ? $subresourceDataProviderProphecy->reveal() : null,
+            $identifierConverterProphecy ? $identifierConverterProphecy->reveal() : null
         );
     }
 }

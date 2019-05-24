@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Core\Metadata\Resource;
 
+use ApiPlatform\Core\Api\OperationType;
+
 /**
  * Resource metadata.
  *
@@ -43,10 +45,8 @@ final class ResourceMetadata
 
     /**
      * Gets the short name.
-     *
-     * @return string|null
      */
-    public function getShortName()
+    public function getShortName(): ?string
     {
         return $this->shortName;
     }
@@ -64,10 +64,8 @@ final class ResourceMetadata
 
     /**
      * Gets the description.
-     *
-     * @return string|null
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -85,10 +83,8 @@ final class ResourceMetadata
 
     /**
      * Gets the associated IRI.
-     *
-     * @return string|null
      */
-    public function getIri()
+    public function getIri(): ?string
     {
         return $this->iri;
     }
@@ -106,10 +102,8 @@ final class ResourceMetadata
 
     /**
      * Gets item operations.
-     *
-     * @return array|null
      */
-    public function getItemOperations()
+    public function getItemOperations(): ?array
     {
         return $this->itemOperations;
     }
@@ -127,10 +121,8 @@ final class ResourceMetadata
 
     /**
      * Gets collection operations.
-     *
-     * @return array|null
      */
-    public function getCollectionOperations()
+    public function getCollectionOperations(): ?array
     {
         return $this->collectionOperations;
     }
@@ -148,10 +140,8 @@ final class ResourceMetadata
 
     /**
      * Gets subresource operations.
-     *
-     * @return array|null
      */
-    public function getSubresourceOperations()
+    public function getSubresourceOperations(): ?array
     {
         return $this->subresourceOperations;
     }
@@ -170,11 +160,9 @@ final class ResourceMetadata
     /**
      * Gets a collection operation attribute, optionally fallback to a resource attribute.
      *
-     * @param mixed $defaultValue
-     *
-     * @return mixed
+     * @param mixed|null $defaultValue
      */
-    public function getCollectionOperationAttribute(string $operationName = null, string $key, $defaultValue = null, bool $resourceFallback = false)
+    public function getCollectionOperationAttribute(?string $operationName, string $key, $defaultValue = null, bool $resourceFallback = false)
     {
         return $this->findOperationAttribute($this->collectionOperations, $operationName, $key, $defaultValue, $resourceFallback);
     }
@@ -182,11 +170,9 @@ final class ResourceMetadata
     /**
      * Gets an item operation attribute, optionally fallback to a resource attribute.
      *
-     * @param mixed $defaultValue
-     *
-     * @return mixed
+     * @param mixed|null $defaultValue
      */
-    public function getItemOperationAttribute(string $operationName = null, string $key, $defaultValue = null, bool $resourceFallback = false)
+    public function getItemOperationAttribute(?string $operationName, string $key, $defaultValue = null, bool $resourceFallback = false)
     {
         return $this->findOperationAttribute($this->itemOperations, $operationName, $key, $defaultValue, $resourceFallback);
     }
@@ -194,38 +180,13 @@ final class ResourceMetadata
     /**
      * Gets a subresource operation attribute, optionally fallback to a resource attribute.
      *
-     * @param mixed $defaultValue
-     *
-     * @return mixed
+     * @param mixed|null $defaultValue
      */
-    public function getSubresourceOperationAttribute(string $operationName = null, string $key, $defaultValue = null, bool $resourceFallback = false)
+    public function getSubresourceOperationAttribute(?string $operationName, string $key, $defaultValue = null, bool $resourceFallback = false)
     {
         return $this->findOperationAttribute($this->subresourceOperations, $operationName, $key, $defaultValue, $resourceFallback);
     }
 
-    /**
-     * Gets an operation attribute, optionally fallback to a resource attribute.
-     *
-     * @param mixed $defaultValue
-     *
-     * @return mixed
-     */
-    private function findOperationAttribute(array $operations = null, string $operationName = null, string $key, $defaultValue = null, bool $resourceFallback = false)
-    {
-        if (null !== $operationName && isset($operations[$operationName][$key])) {
-            return $operations[$operationName][$key];
-        }
-
-        if ($resourceFallback && isset($this->attributes[$key])) {
-            return $this->attributes[$key];
-        }
-
-        return $defaultValue;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getGraphqlAttribute(string $operationName, string $key, $defaultValue = null, bool $resourceFallback = false)
     {
         if (isset($this->graphql[$operationName][$key])) {
@@ -242,9 +203,7 @@ final class ResourceMetadata
     /**
      * Gets the first available operation attribute according to the following order: collection, item, subresource, optionally fallback to a default value.
      *
-     * @param mixed $defaultValue
-     *
-     * @return mixed
+     * @param mixed|null $defaultValue
      */
     public function getOperationAttribute(array $attributes, string $key, $defaultValue = null, bool $resourceFallback = false)
     {
@@ -260,15 +219,34 @@ final class ResourceMetadata
             return $this->getSubresourceOperationAttribute($attributes['subresource_operation_name'], $key, $defaultValue, $resourceFallback);
         }
 
+        if ($resourceFallback && isset($this->attributes[$key])) {
+            return $this->attributes[$key];
+        }
+
         return $defaultValue;
     }
 
     /**
-     * Gets attributes.
+     * Gets an attribute for a given operation type and operation name.
      *
-     * @return array|null
+     * @param mixed|null $defaultValue
      */
-    public function getAttributes()
+    public function getTypedOperationAttribute(string $operationType, string $operationName, string $key, $defaultValue = null, bool $resourceFallback = false)
+    {
+        switch ($operationType) {
+            case OperationType::COLLECTION:
+                return $this->getCollectionOperationAttribute($operationName, $key, $defaultValue, $resourceFallback);
+            case OperationType::ITEM:
+                return $this->getItemOperationAttribute($operationName, $key, $defaultValue, $resourceFallback);
+            default:
+                return $this->getSubresourceOperationAttribute($operationName, $key, $defaultValue, $resourceFallback);
+        }
+    }
+
+    /**
+     * Gets attributes.
+     */
+    public function getAttributes(): ?array
     {
         return $this->attributes;
     }
@@ -276,17 +254,11 @@ final class ResourceMetadata
     /**
      * Gets an attribute.
      *
-     * @param mixed $defaultValue
-     *
-     * @return mixed
+     * @param mixed|null $defaultValue
      */
     public function getAttribute(string $key, $defaultValue = null)
     {
-        if (isset($this->attributes[$key])) {
-            return $this->attributes[$key];
-        }
-
-        return $defaultValue;
+        return $this->attributes[$key] ?? $defaultValue;
     }
 
     /**
@@ -302,10 +274,8 @@ final class ResourceMetadata
 
     /**
      * Gets options of for the GraphQL query.
-     *
-     * @return array|null
      */
-    public function getGraphql()
+    public function getGraphql(): ?array
     {
         return $this->graphql;
     }
@@ -319,5 +289,23 @@ final class ResourceMetadata
         $metadata->graphql = $graphql;
 
         return $metadata;
+    }
+
+    /**
+     * Gets an operation attribute, optionally fallback to a resource attribute.
+     *
+     * @param mixed|null $defaultValue
+     */
+    private function findOperationAttribute(?array $operations, ?string $operationName, string $key, $defaultValue, bool $resourceFallback)
+    {
+        if (null !== $operationName && isset($operations[$operationName][$key])) {
+            return $operations[$operationName][$key];
+        }
+
+        if ($resourceFallback && isset($this->attributes[$key])) {
+            return $this->attributes[$key];
+        }
+
+        return $defaultValue;
     }
 }

@@ -14,6 +14,9 @@ namespace Symfony\Component\PropertyInfo\Tests\Extractor;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\Tests\Fixtures\AdderRemoverDummy;
+use Symfony\Component\PropertyInfo\Tests\Fixtures\NotInstantiable;
+use Symfony\Component\PropertyInfo\Tests\Fixtures\Php71Dummy;
+use Symfony\Component\PropertyInfo\Tests\Fixtures\Php71DummyExtended2;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
@@ -47,6 +50,9 @@ class ReflectionExtractorTest extends TestCase
                 'i',
                 'j',
                 'emptyVar',
+                'iteratorCollection',
+                'iteratorCollectionWithKey',
+                'nestedIterators',
                 'foo',
                 'foo2',
                 'foo3',
@@ -88,6 +94,9 @@ class ReflectionExtractorTest extends TestCase
                 'i',
                 'j',
                 'emptyVar',
+                'iteratorCollection',
+                'iteratorCollectionWithKey',
+                'nestedIterators',
                 'foo',
                 'foo2',
                 'foo3',
@@ -121,6 +130,9 @@ class ReflectionExtractorTest extends TestCase
                 'i',
                 'j',
                 'emptyVar',
+                'iteratorCollection',
+                'iteratorCollectionWithKey',
+                'nestedIterators',
                 'foo',
                 'foo2',
                 'foo3',
@@ -159,7 +171,6 @@ class ReflectionExtractorTest extends TestCase
 
     /**
      * @dataProvider php7TypesProvider
-     * @requires PHP 7.0
      */
     public function testExtractPhp7Type($property, array $type = null)
     {
@@ -180,7 +191,6 @@ class ReflectionExtractorTest extends TestCase
 
     /**
      * @dataProvider php71TypesProvider
-     * @requires PHP 7.1
      */
     public function testExtractPhp71Type($property, array $type = null)
     {
@@ -262,5 +272,50 @@ class ReflectionExtractorTest extends TestCase
         $this->assertTrue($this->extractor->isWritable(AdderRemoverDummy::class, 'analyses'));
         $this->assertTrue($this->extractor->isWritable(AdderRemoverDummy::class, 'feet'));
         $this->assertEquals(['analyses', 'feet'], $this->extractor->getProperties(AdderRemoverDummy::class));
+    }
+
+    /**
+     * @dataProvider getInitializableProperties
+     */
+    public function testIsInitializable(string $class, string $property, bool $expected)
+    {
+        $this->assertSame($expected, $this->extractor->isInitializable($class, $property));
+    }
+
+    public function getInitializableProperties(): array
+    {
+        return [
+            [Php71Dummy::class, 'string', true],
+            [Php71Dummy::class, 'intPrivate', true],
+            [Php71Dummy::class, 'notExist', false],
+            [Php71DummyExtended2::class, 'intWithAccessor', true],
+            [Php71DummyExtended2::class, 'intPrivate', false],
+            [NotInstantiable::class, 'foo', false],
+        ];
+    }
+
+    /**
+     * @dataProvider constructorTypesProvider
+     */
+    public function testExtractTypeConstructor(string $class, string $property, array $type = null)
+    {
+        /* Check that constructor extractions works by default, and if passed in via context.
+           Check that null is returned if constructor extraction is disabled */
+        $this->assertEquals($type, $this->extractor->getTypes($class, $property, []));
+        $this->assertEquals($type, $this->extractor->getTypes($class, $property, ['enable_constructor_extraction' => true]));
+        $this->assertNull($this->extractor->getTypes($class, $property, ['enable_constructor_extraction' => false]));
+    }
+
+    public function constructorTypesProvider(): array
+    {
+        return [
+            // php71 dummy has following constructor: __construct(string $string, int $intPrivate)
+            [Php71Dummy::class, 'string', [new Type(Type::BUILTIN_TYPE_STRING, false)]],
+            [Php71Dummy::class, 'intPrivate', [new Type(Type::BUILTIN_TYPE_INT, false)]],
+            // Php71DummyExtended2 adds int $intWithAccessor
+            [Php71DummyExtended2::class, 'intWithAccessor', [new Type(Type::BUILTIN_TYPE_INT, false)]],
+            [Php71DummyExtended2::class, 'intPrivate', [new Type(Type::BUILTIN_TYPE_INT, false)]],
+            [DefaultValue::class, 'foo', null],
+        ];
     }
 }

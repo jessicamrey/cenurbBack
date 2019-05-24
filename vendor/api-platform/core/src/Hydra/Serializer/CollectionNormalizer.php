@@ -18,9 +18,11 @@ use ApiPlatform\Core\Api\OperationType;
 use ApiPlatform\Core\Api\ResourceClassResolverInterface;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use ApiPlatform\Core\DataProvider\PartialPaginatorInterface;
+use ApiPlatform\Core\Exception\InvalidArgumentException;
 use ApiPlatform\Core\JsonLd\ContextBuilderInterface;
 use ApiPlatform\Core\JsonLd\Serializer\JsonLdContextTrait;
 use ApiPlatform\Core\Serializer\ContextTrait;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -31,13 +33,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @author Kevin Dunglas <dunglas@gmail.com>
  * @author Samuel ROZE <samuel.roze@gmail.com>
  */
-final class CollectionNormalizer implements NormalizerInterface, NormalizerAwareInterface
+final class CollectionNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
 {
     use ContextTrait;
     use JsonLdContextTrait;
     use NormalizerAwareTrait;
 
-    const FORMAT = 'jsonld';
+    public const FORMAT = 'jsonld';
 
     private $contextBuilder;
     private $resourceClassResolver;
@@ -55,24 +57,29 @@ final class CollectionNormalizer implements NormalizerInterface, NormalizerAware
      */
     public function supportsNormalization($data, $format = null)
     {
-        return self::FORMAT === $format && (\is_array($data) || ($data instanceof \Traversable));
+        return self::FORMAT === $format && is_iterable($data);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param iterable $object
      */
     public function normalize($object, $format = null, array $context = [])
     {
         if (isset($context['api_sub_level'])) {
-            $data = [];
-            foreach ($object as $index => $obj) {
-                $data[$index] = $this->normalizer->normalize($obj, $format, $context);
-            }
-
-            return $data;
+            return $this->normalizeRawCollection($object, $format, $context);
         }
 
-        $resourceClass = $this->resourceClassResolver->getResourceClass($object, $context['resource_class'] ?? null, true);
+        try {
+            $resourceClass = $this->resourceClassResolver->getResourceClass($object, $context['resource_class'] ?? null, true);
+        } catch (InvalidArgumentException $e) {
+            if (!isset($context['resource_class'])) {
+                return $this->normalizeRawCollection($object, $format, $context);
+            }
+
+            throw $e;
+        }
         $data = $this->addJsonLdContext($this->contextBuilder, $resourceClass, $context);
         $context = $this->initContext($resourceClass, $context);
 
@@ -96,6 +103,27 @@ final class CollectionNormalizer implements NormalizerInterface, NormalizerAware
             $object instanceof \Countable && !$object instanceof PartialPaginatorInterface
         ) {
             $data['hydra:totalItems'] = $paginated ? $object->getTotalItems() : \count($object);
+        }
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Normalizes a raw collection (not API resources).
+     */
+    private function normalizeRawCollection(iterable $object, ?string $format, array $context): array
+    {
+        $data = [];
+        foreach ($object as $index => $obj) {
+            $data[$index] = $this->normalizer->normalize($obj, $format, $context);
         }
 
         return $data;

@@ -13,17 +13,18 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Core\Bridge\Doctrine\Common;
 
-use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use ApiPlatform\Core\Util\ClassInfoTrait;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager as DoctrineObjectManager;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
  * Data persister for Doctrine.
  *
  * @author Baptiste Meyer <baptiste.meyer@gmail.com>
  */
-final class DataPersister implements DataPersisterInterface
+final class DataPersister implements ContextAwareDataPersisterInterface
 {
     use ClassInfoTrait;
 
@@ -37,7 +38,7 @@ final class DataPersister implements DataPersisterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($data): bool
+    public function supports($data, array $context = []): bool
     {
         return null !== $this->getManager($data);
     }
@@ -45,24 +46,26 @@ final class DataPersister implements DataPersisterInterface
     /**
      * {@inheritdoc}
      */
-    public function persist($data)
+    public function persist($data, array $context = [])
     {
         if (!$manager = $this->getManager($data)) {
-            return;
+            return $data;
         }
 
-        if (!$manager->contains($data)) {
+        if (!$manager->contains($data) || $this->isDeferredExplicit($manager, $data)) {
             $manager->persist($data);
         }
 
         $manager->flush();
         $manager->refresh($data);
+
+        return $data;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function remove($data)
+    public function remove($data, array $context = [])
     {
         if (!$manager = $this->getManager($data)) {
             return;
@@ -74,13 +77,22 @@ final class DataPersister implements DataPersisterInterface
 
     /**
      * Gets the Doctrine object manager associated with given data.
-     *
-     * @param mixed $data
-     *
-     * @return DoctrineObjectManager|null
      */
-    private function getManager($data)
+    private function getManager($data): ?DoctrineObjectManager
     {
         return \is_object($data) ? $this->managerRegistry->getManagerForClass($this->getObjectClass($data)) : null;
+    }
+
+    /**
+     * Checks if doctrine does not manage data automatically.
+     */
+    private function isDeferredExplicit(DoctrineObjectManager $manager, $data): bool
+    {
+        $classMetadata = $manager->getClassMetadata($this->getObjectClass($data));
+        if ($classMetadata instanceof ClassMetadataInfo && method_exists($classMetadata, 'isChangeTrackingDeferredExplicit')) {
+            return $classMetadata->isChangeTrackingDeferredExplicit();
+        }
+
+        return false;
     }
 }

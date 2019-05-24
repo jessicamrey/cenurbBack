@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiPlatform\Core\Serializer;
 
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -24,9 +25,9 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  *
  * @internal
  */
-abstract class AbstractConstraintViolationListNormalizer implements NormalizerInterface
+abstract class AbstractConstraintViolationListNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    const FORMAT = null; // Must be overrode
+    public const FORMAT = null; // Must be overrode
 
     private $serializePayloadFields;
     private $nameConverter;
@@ -45,13 +46,22 @@ abstract class AbstractConstraintViolationListNormalizer implements NormalizerIn
         return static::FORMAT === $format && $data instanceof ConstraintViolationListInterface;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
+    }
+
     protected function getMessagesAndViolations(ConstraintViolationListInterface $constraintViolationList): array
     {
         $violations = $messages = [];
 
         foreach ($constraintViolationList as $violation) {
+            $class = \is_object($root = $violation->getRoot()) ? \get_class($root) : null;
             $violationData = [
-                'propertyPath' => $this->nameConverter ? $this->nameConverter->normalize($violation->getPropertyPath()) : $violation->getPropertyPath(),
+                'propertyPath' => $this->nameConverter ? $this->nameConverter->normalize($violation->getPropertyPath(), $class, static::FORMAT) : $violation->getPropertyPath(),
                 'message' => $violation->getMessage(),
             ];
 

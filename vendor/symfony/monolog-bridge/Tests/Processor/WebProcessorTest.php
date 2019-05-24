@@ -70,10 +70,7 @@ class WebProcessorTest extends TestCase
         $this->assertEquals($server['HTTP_REFERER'], $record['extra']['referrer']);
     }
 
-    /**
-     * @return array
-     */
-    private function createRequestEvent($additionalServerParameters = [])
+    private function createRequestEvent($additionalServerParameters = []): array
     {
         $server = array_merge(
             [
@@ -103,13 +100,7 @@ class WebProcessorTest extends TestCase
         return [$event, $server];
     }
 
-    /**
-     * @param int    $level
-     * @param string $message
-     *
-     * @return array Record
-     */
-    private function getRecord($level = Logger::WARNING, $message = 'test')
+    private function getRecord(int $level = Logger::WARNING, string $message = 'test'): array
     {
         return [
             'message' => $message,

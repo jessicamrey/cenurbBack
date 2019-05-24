@@ -18,6 +18,7 @@ use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use ApiPlatform\Core\DataProvider\SubresourceDataProviderInterface;
 use ApiPlatform\Core\Exception\ResourceClassNotSupportedException;
+use ApiPlatform\Core\GraphQl\Resolver\FieldsToAttributesTrait;
 use ApiPlatform\Core\GraphQl\Resolver\ResourceAccessCheckerTrait;
 use ApiPlatform\Core\GraphQl\Serializer\ItemNormalizer;
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
@@ -28,7 +29,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Creates a function retrieving a collection to resolve a GraphQL query.
+ * Creates a function retrieving a collection to resolve a GraphQL query or a field returned by a mutation.
  *
  * @experimental
  *
@@ -37,6 +38,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class CollectionResolverFactory implements ResolverFactoryInterface
 {
+    use FieldsToAttributesTrait;
     use ResourceAccessCheckerTrait;
 
     private $collectionDataProvider;
@@ -62,7 +64,7 @@ final class CollectionResolverFactory implements ResolverFactoryInterface
 
     public function __invoke(string $resourceClass = null, string $rootClass = null, string $operationName = null): callable
     {
-        return function ($source, $args, $context, ResolveInfo $info) use ($resourceClass, $rootClass) {
+        return function ($source, $args, $context, ResolveInfo $info) use ($resourceClass, $rootClass, $operationName) {
             if (null === $resourceClass) {
                 return null;
             }
@@ -75,9 +77,10 @@ final class CollectionResolverFactory implements ResolverFactoryInterface
             }
 
             $resourceMetadata = $this->resourceMetadataFactory->create($resourceClass);
-            $dataProviderContext = $resourceMetadata->getGraphqlAttribute('query', 'normalization_context', [], true);
+            $dataProviderContext = $resourceMetadata->getGraphqlAttribute($operationName ?? 'query', 'normalization_context', [], true);
             $dataProviderContext['attributes'] = $this->fieldsToAttributes($info);
             $dataProviderContext['filters'] = $this->getNormalizedFilters($args);
+            $dataProviderContext['graphql'] = true;
 
             if (isset($rootClass, $source[$rootProperty = $info->fieldName], $source[ItemNormalizer::ITEM_KEY])) {
                 $rootResolvedFields = $this->identifiersExtractor->getIdentifiersFromItem(unserialize($source[ItemNormalizer::ITEM_KEY]));
@@ -87,7 +90,7 @@ final class CollectionResolverFactory implements ResolverFactoryInterface
                 $collection = $this->collectionDataProvider->getCollection($resourceClass, null, $dataProviderContext);
             }
 
-            $this->canAccess($this->resourceAccessChecker, $resourceMetadata, $resourceClass, $info, $collection, 'query');
+            $this->canAccess($this->resourceAccessChecker, $resourceMetadata, $resourceClass, $info, $collection, $operationName ?? 'query');
 
             if (!$this->paginationEnabled) {
                 $data = [];
@@ -107,10 +110,12 @@ final class CollectionResolverFactory implements ResolverFactoryInterface
                 $offset = 1 + (int) $after;
             }
 
-            $data = ['edges' => [], 'pageInfo' => ['endCursor' => null, 'hasNextPage' => false]];
+            $data = ['totalCount' => 0.0, 'edges' => [], 'pageInfo' => ['endCursor' => null, 'hasNextPage' => false]];
             if ($collection instanceof PaginatorInterface && ($totalItems = $collection->getTotalItems()) > 0) {
-                $data['pageInfo']['endCursor'] = base64_encode((string) ($totalItems - 1));
-                $data['pageInfo']['hasNextPage'] = $collection->getCurrentPage() !== $collection->getLastPage() && (float) $collection->count() === $collection->getItemsPerPage();
+                $nbPageItems = $collection->count();
+                $data['pageInfo']['endCursor'] = base64_encode((string) ($offset + $nbPageItems - 1));
+                $data['pageInfo']['hasNextPage'] = $collection->getCurrentPage() !== $collection->getLastPage() && (float) $nbPageItems === $collection->getItemsPerPage();
+                $data['totalCount'] = $totalItems;
             }
 
             foreach ($collection as $index => $object) {
@@ -122,16 +127,6 @@ final class CollectionResolverFactory implements ResolverFactoryInterface
 
             return $data;
         };
-    }
-
-    private function fieldsToAttributes(ResolveInfo $info): array
-    {
-        $fields = $info->getFieldSelection(PHP_INT_MAX);
-        if (isset($fields['edges']['node'])) {
-            $fields = $fields['edges']['node'];
-        }
-
-        return $fields;
     }
 
     /**
@@ -161,13 +156,16 @@ final class CollectionResolverFactory implements ResolverFactoryInterface
     private function getNormalizedFilters(array $args): array
     {
         $filters = $args;
+
         foreach ($filters as $name => $value) {
             if (\is_array($value)) {
+                if (strpos($name, '_list')) {
+                    $name = substr($name, 0, \strlen($name) - \strlen('_list'));
+                }
                 $filters[$name] = $this->getNormalizedFilters($value);
-                continue;
             }
 
-            if (strpos($name, '_')) {
+            if (\is_string($name) && strpos($name, '_')) {
                 // Gives a chance to relations/nested fields.
                 $filters[str_replace('_', '.', $name)] = $value;
             }

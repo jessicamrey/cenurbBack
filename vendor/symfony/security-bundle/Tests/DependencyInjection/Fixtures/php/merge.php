@@ -11,7 +11,6 @@ $container->loadFromExtension('security', [
         'main' => [
             'form_login' => false,
             'http_basic' => null,
-            'logout_on_user_change' => true,
         ],
     ],
 

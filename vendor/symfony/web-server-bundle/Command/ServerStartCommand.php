@@ -13,6 +13,7 @@ namespace Symfony\Bundle\WebServerBundle\Command;
 
 use Symfony\Bundle\WebServerBundle\WebServer;
 use Symfony\Bundle\WebServerBundle\WebServerConfig;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,14 +27,14 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  *
  * @author Christian Flothmann <christian.flothmann@xabbuh.de>
  */
-class ServerStartCommand extends ServerCommand
+class ServerStartCommand extends Command
 {
     private $documentRoot;
     private $environment;
 
     protected static $defaultName = 'server:start';
 
-    public function __construct($documentRoot = null, $environment = null)
+    public function __construct(string $documentRoot = null, string $environment = null)
     {
         $this->documentRoot = $documentRoot;
         $this->environment = $environment;
@@ -102,12 +103,6 @@ EOF
             return 1;
         }
 
-        // deprecated, logic to be removed in 4.0
-        // this allows the commands to work out of the box with web/ and public/
-        if ($this->documentRoot && !is_dir($this->documentRoot) && is_dir(\dirname($this->documentRoot).'/web')) {
-            $this->documentRoot = \dirname($this->documentRoot).'/web';
-        }
-
         if (null === $documentRoot = $input->getOption('docroot')) {
             if (!$this->documentRoot) {
                 $io->error('The document root directory must be either passed as first argument of the constructor or through the "docroot" input option.');
@@ -140,7 +135,7 @@ EOF
         try {
             $server = new WebServer();
             if ($server->isRunning($input->getOption('pidfile'))) {
-                $io->error(sprintf('The web server is already running (listening on http://%s).', $server->getAddress($input->getOption('pidfile'))));
+                $io->error(sprintf('The web server has already been started. It is currently listening on http://%s. Please stop the web server before you try to start it again.', $server->getAddress($input->getOption('pidfile'))));
 
                 return 1;
             }
@@ -148,7 +143,14 @@ EOF
             $config = new WebServerConfig($documentRoot, $env, $input->getArgument('addressport'), $input->getOption('router'));
 
             if (WebServer::STARTED === $server->start($config, $input->getOption('pidfile'))) {
-                $io->success(sprintf('Server listening on http://%s', $config->getAddress()));
+                $message = sprintf('Server listening on http://%s', $config->getAddress());
+                if ('' !== $displayAddress = $config->getDisplayAddress()) {
+                    $message = sprintf('Server listening on all interfaces, port %s -- see http://%s', $config->getPort(), $displayAddress);
+                }
+                $io->success($message);
+                if (ini_get('xdebug.profiler_enable_trigger')) {
+                    $io->comment('Xdebug profiler trigger enabled.');
+                }
             }
         } catch (\Exception $e) {
             $io->error($e->getMessage());

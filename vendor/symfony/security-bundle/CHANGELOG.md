@@ -1,6 +1,47 @@
 CHANGELOG
 =========
 
+4.2.0
+-----
+
+ * Using the `security.authentication.trust_resolver.anonymous_class` and 
+   `security.authentication.trust_resolver.rememberme_class` parameters to define
+   the token classes is deprecated. To use custom tokens extend the existing
+   `Symfony\Component\Security\Core\Authentication\Token\AnonymousToken`.
+   or `Symfony\Component\Security\Core\Authentication\Token\RememberMeToken`.
+ * Added `Symfony\Bundle\SecurityBundle\DependencyInjection\Compiler\AddExpressionLanguageProvidersPass`
+ * Added `json_login_ldap` authentication provider to use LDAP authentication with a REST API.
+ * Made remember-me cookies inherit their default config from `framework.session.cookie_*`
+   and added an "auto" mode to their "secure" config option to make them secure on HTTPS automatically.
+ * Deprecated the `simple_form` and `simple_preauth` authentication listeners, use Guard instead.
+ * Deprecated the `SimpleFormFactory` and `SimplePreAuthenticationFactory` classes, use Guard instead.
+ * Added `port` in access_control
+ * Added individual voter decisions to the profiler
+ 
+4.1.0
+-----
+
+ * The `logout_on_user_change` firewall option is deprecated.
+ * deprecated `SecurityUserValueResolver`, use
+   `Symfony\Component\Security\Http\Controller\UserValueResolver` instead.
+
+4.0.0
+-----
+
+ * removed `FirewallContext::getContext()`
+ * made `FirewallMap::$container` and `::$map` private
+ * made the first `UserPasswordEncoderCommand::_construct()` argument mandatory
+ * `UserPasswordEncoderCommand` does not extend `ContainerAwareCommand` anymore
+ * removed support for voters that don't implement the `VoterInterface`
+ * removed HTTP digest authentication
+ * removed command `acl:set` along with `SetAclCommand` class
+ * removed command `init:acl` along with `InitAclCommand` class
+ * removed `acl` configuration key and related services, use symfony/acl-bundle instead
+ * removed auto picking the first registered provider when no configured provider on a firewall and ambiguous
+ * the firewall option `logout_on_user_change` is now always true, which will trigger a logout if the user changes
+   between requests
+ * the `switch_user.stateless` firewall option is `true` for stateless firewalls
+
 3.4.0
 -----
 

@@ -22,12 +22,13 @@ use ApiPlatform\Core\Exception\ResourceClassNotSupportedException;
  */
 final class ChainCollectionDataProvider implements ContextAwareCollectionDataProviderInterface
 {
-    private $dataProviders;
+    /** @internal */
+    public $dataProviders;
 
     /**
      * @param ContextAwareCollectionDataProviderInterface[]|CollectionDataProviderInterface[] $dataProviders
      */
-    public function __construct(array $dataProviders)
+    public function __construct(/* iterable */ $dataProviders)
     {
         $this->dataProviders = $dataProviders;
     }

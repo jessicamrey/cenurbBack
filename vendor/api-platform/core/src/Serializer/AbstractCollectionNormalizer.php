@@ -16,6 +16,8 @@ namespace ApiPlatform\Core\Serializer;
 use ApiPlatform\Core\Api\ResourceClassResolverInterface;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use ApiPlatform\Core\DataProvider\PartialPaginatorInterface;
+use ApiPlatform\Core\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -25,15 +27,17 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Baptiste Meyer <baptiste.meyer@gmail.com>
  */
-abstract class AbstractCollectionNormalizer implements NormalizerInterface, NormalizerAwareInterface
+abstract class AbstractCollectionNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
 {
-    use ContextTrait { initContext as protected; }
+    use ContextTrait {
+        initContext as protected;
+    }
     use NormalizerAwareTrait;
 
     /**
      * This constant must be overridden in the child class.
      */
-    const FORMAT = 'to-override';
+    public const FORMAT = 'to-override';
 
     protected $resourceClassResolver;
     protected $pageParameterName;
@@ -49,7 +53,15 @@ abstract class AbstractCollectionNormalizer implements NormalizerInterface, Norm
      */
     public function supportsNormalization($data, $format = null)
     {
-        return static::FORMAT === $format && (\is_array($data) || $data instanceof \Traversable);
+        return static::FORMAT === $format && is_iterable($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**
@@ -59,19 +71,21 @@ abstract class AbstractCollectionNormalizer implements NormalizerInterface, Norm
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = [];
         if (isset($context['api_sub_level'])) {
-            foreach ($object as $index => $obj) {
-                $data[$index] = $this->normalizer->normalize($obj, $format, $context);
-            }
-
-            return $data;
+            return $this->normalizeRawCollection($object, $format, $context);
         }
 
-        $context = $this->initContext(
-            $this->resourceClassResolver->getResourceClass($object, $context['resource_class'] ?? null, true),
-            $context
-        );
+        try {
+            $resourceClass = $this->resourceClassResolver->getResourceClass($object, $context['resource_class'] ?? null, true);
+        } catch (InvalidArgumentException $e) {
+            if (!isset($context['resource_class'])) {
+                return $this->normalizeRawCollection($object, $format, $context);
+            }
+
+            throw $e;
+        }
+        $data = [];
+        $context = $this->initContext($resourceClass, $context);
 
         return array_merge_recursive(
             $data,
@@ -81,12 +95,24 @@ abstract class AbstractCollectionNormalizer implements NormalizerInterface, Norm
     }
 
     /**
+     * Normalizes a raw collection (not API resources).
+     *
+     * @param string|null $format
+     */
+    protected function normalizeRawCollection($object, $format = null, array $context = []): array
+    {
+        $data = [];
+        foreach ($object as $index => $obj) {
+            $data[$index] = $this->normalizer->normalize($obj, $format, $context);
+        }
+
+        return $data;
+    }
+
+    /**
      * Gets the pagination configuration.
      *
      * @param iterable $object
-     * @param array    $context
-     *
-     * @return array
      */
     protected function getPaginationConfig($object, array $context = []): array
     {
@@ -115,20 +141,13 @@ abstract class AbstractCollectionNormalizer implements NormalizerInterface, Norm
      * Gets the pagination data.
      *
      * @param iterable $object
-     * @param array    $context
-     *
-     * @return array
      */
     abstract protected function getPaginationData($object, array $context = []): array;
 
     /**
      * Gets items data.
      *
-     * @param iterable    $object
-     * @param string|null $format
-     * @param array       $context
-     *
-     * @return array
+     * @param iterable $object
      */
     abstract protected function getItemsData($object, string $format = null, array $context = []): array;
 }

@@ -88,7 +88,7 @@ final class EagerLoadingExtension implements ContextAwareQueryCollectionExtensio
         $this->apply(false, $queryBuilder, $queryNameGenerator, $resourceClass, $operationName, $context);
     }
 
-    private function apply(bool $collection, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass = null, string $operationName = null, array $context)
+    private function apply(bool $collection, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, ?string $resourceClass, ?string $operationName, array $context)
     {
         if (null === $resourceClass) {
             throw new InvalidArgumentException('The "$resourceClass" parameter must not be null');
@@ -167,14 +167,19 @@ final class EagerLoadingExtension implements ContextAwareQueryCollectionExtensio
                 if ($inAttributes = isset($normalizationContext[AbstractNormalizer::ATTRIBUTES][$association])) {
                     // prepare the child context
                     $normalizationContext[AbstractNormalizer::ATTRIBUTES] = $normalizationContext[AbstractNormalizer::ATTRIBUTES][$association];
-                } else {
-                    unset($normalizationContext[AbstractNormalizer::ATTRIBUTES]);
                 }
             } else {
                 $inAttributes = null;
             }
 
-            if (false === $fetchEager = $propertyMetadata->getAttribute('fetchEager')) {
+            if (
+                (null === $fetchEager = $propertyMetadata->getAttribute('fetch_eager')) &&
+                (null !== $fetchEager = $propertyMetadata->getAttribute('fetchEager'))
+            ) {
+                @trigger_error('The "fetchEager" attribute is deprecated since 2.3. Please use "fetch_eager" instead.', E_USER_DEPRECATED);
+            }
+
+            if (false === $fetchEager) {
                 continue;
             }
 
@@ -247,7 +252,7 @@ final class EagerLoadingExtension implements ContextAwareQueryCollectionExtensio
             }
 
             // If it's an embedded property see below
-            if (!array_key_exists($property, $targetClassMetadata->embeddedClasses)) {
+            if (!\array_key_exists($property, $targetClassMetadata->embeddedClasses)) {
                 //the field test allows to add methods to a Resource which do not reflect real database fields
                 if ($targetClassMetadata->hasField($property) && (true === $propertyMetadata->getAttribute('fetchable') || $propertyMetadata->isReadable())) {
                     $select[] = $property;

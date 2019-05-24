@@ -22,8 +22,10 @@ use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\OperationDataProviderTrait;
 use ApiPlatform\Core\DataProvider\SubresourceDataProviderInterface;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Core\Exception\InvalidIdentifierException;
 use ApiPlatform\Core\Exception\ItemNotFoundException;
 use ApiPlatform\Core\Exception\RuntimeException;
+use ApiPlatform\Core\Identifier\IdentifierConverterInterface;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyNameCollectionFactoryInterface;
 use ApiPlatform\Core\Util\AttributesExtractor;
@@ -47,18 +49,18 @@ final class IriConverter implements IriConverterInterface
     private $router;
     private $identifiersExtractor;
 
-    public function __construct(PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory, PropertyMetadataFactoryInterface $propertyMetadataFactory, ItemDataProviderInterface $itemDataProvider, RouteNameResolverInterface $routeNameResolver, RouterInterface $router, PropertyAccessorInterface $propertyAccessor = null, IdentifiersExtractorInterface $identifiersExtractor = null, SubresourceDataProviderInterface $subresourceDataProvider = null)
+    public function __construct(PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory, PropertyMetadataFactoryInterface $propertyMetadataFactory, ItemDataProviderInterface $itemDataProvider, RouteNameResolverInterface $routeNameResolver, RouterInterface $router, PropertyAccessorInterface $propertyAccessor = null, IdentifiersExtractorInterface $identifiersExtractor = null, SubresourceDataProviderInterface $subresourceDataProvider = null, IdentifierConverterInterface $identifierConverter = null)
     {
         $this->itemDataProvider = $itemDataProvider;
         $this->routeNameResolver = $routeNameResolver;
         $this->router = $router;
+        $this->identifiersExtractor = $identifiersExtractor;
         $this->subresourceDataProvider = $subresourceDataProvider;
+        $this->identifierConverter = $identifierConverter;
 
         if (null === $identifiersExtractor) {
             @trigger_error(sprintf('Not injecting "%s" is deprecated since API Platform 2.1 and will not be possible anymore in API Platform 3', IdentifiersExtractorInterface::class), E_USER_DEPRECATED);
             $this->identifiersExtractor = new IdentifiersExtractor($propertyNameCollectionFactory, $propertyMetadataFactory, $propertyAccessor ?? PropertyAccess::createPropertyAccessor());
-        } else {
-            $this->identifiersExtractor = $identifiersExtractor;
         }
     }
 
@@ -77,11 +79,24 @@ final class IriConverter implements IriConverterInterface
             throw new InvalidArgumentException(sprintf('No resource associated to "%s".', $iri));
         }
 
+        if (isset($parameters['_api_collection_operation_name'])) {
+            throw new InvalidArgumentException(sprintf('The iri "%s" references a collection not an item.', $iri));
+        }
+
         $attributes = AttributesExtractor::extractAttributes($parameters);
-        $identifiers = $this->extractIdentifiers($parameters, $attributes);
+
+        try {
+            $identifiers = $this->extractIdentifiers($parameters, $attributes);
+        } catch (InvalidIdentifierException $e) {
+            throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        if ($this->identifierConverter) {
+            $context[IdentifierConverterInterface::HAS_IDENTIFIER_CONVERTER] = true;
+        }
 
         if (isset($attributes['subresource_operation_name'])) {
-            if ($item = $this->getSubresourceData($identifiers, $attributes, $context)) {
+            if (($item = $this->getSubresourceData($identifiers, $attributes, $context)) && !\is_array($item)) {
                 return $item;
             }
 
@@ -104,7 +119,7 @@ final class IriConverter implements IriConverterInterface
         $routeName = $this->routeNameResolver->getRouteName($resourceClass, OperationType::ITEM);
 
         try {
-            $identifiers = $this->generateIdentifiersUrl($this->identifiersExtractor->getIdentifiersFromItem($item));
+            $identifiers = $this->generateIdentifiersUrl($this->identifiersExtractor->getIdentifiersFromItem($item), $resourceClass);
 
             return $this->router->generate($routeName, ['id' => implode(';', $identifiers)], $referenceType);
         } catch (RuntimeException $e) {
@@ -159,20 +174,27 @@ final class IriConverter implements IriConverterInterface
     /**
      * Generate the identifier url.
      *
-     * @param array $identifiers
+     * @throws InvalidArgumentException
      *
      * @return string[]
      */
-    private function generateIdentifiersUrl(array $identifiers): array
+    private function generateIdentifiersUrl(array $identifiers, string $resourceClass): array
     {
+        if (0 === \count($identifiers)) {
+            throw new InvalidArgumentException(sprintf(
+                'No identifiers defined for resource of type "%s"',
+                $resourceClass
+            ));
+        }
+
         if (1 === \count($identifiers)) {
-            return [rawurlencode((string) array_values($identifiers)[0])];
+            return [rawurlencode((string) reset($identifiers))];
         }
 
         foreach ($identifiers as $name => $value) {
             $identifiers[$name] = sprintf('%s=%s', $name, $value);
         }
 
-        return $identifiers;
+        return array_values($identifiers);
     }
 }

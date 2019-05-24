@@ -203,6 +203,14 @@ api_new_favoritosCol:
     methods: ['POST']
     defaults:
         _controller: App\Controller\ColoniaController::newFavorito
+        
+api_del_favoritoCol:
+    path: '/api/colonias/favoritos/{id}'
+    methods: ['DELETE']
+    defaults:
+        _controller: App\Controller\ColoniaController::removeFavorito
+        
+
 
 api_visitaCol_image:
     path: '/api/visitas-colonias/{id}/image'
@@ -247,6 +255,12 @@ api_get_favoritosTerr:
         _controller: App\Controller\TerritorioController::getFavoritos
         _api_resource_class: App\Entity\Territorio
         _api_collection_operation_name: 'getFav'
+        
+api_del_favoritoTerr:
+    path: '/api/territorios/favoritos/{id}'
+    methods: ['DELETE']
+    defaults:
+        _controller: App\Controller\TerritorioController::removeFavorito
         
 api_new_visitaTerr:
     path: '/api/territorios/{id}/visitas'

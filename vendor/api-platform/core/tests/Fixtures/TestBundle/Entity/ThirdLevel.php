@@ -60,6 +60,11 @@ class ThirdLevel
     public $fourthLevel;
 
     /**
+     * @ORM\ManyToOne(targetEntity=FourthLevel::class, cascade={"persist"})
+     */
+    public $badFourthLevel;
+
+    /**
      * @return int
      */
     public function getId()
@@ -107,9 +112,6 @@ class ThirdLevel
         return $this->fourthLevel;
     }
 
-    /**
-     * @param FourthLevel|null $fourthLevel
-     */
     public function setFourthLevel(FourthLevel $fourthLevel = null)
     {
         $this->fourthLevel = $fourthLevel;

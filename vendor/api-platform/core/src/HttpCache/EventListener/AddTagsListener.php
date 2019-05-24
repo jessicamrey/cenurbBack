@@ -39,10 +39,8 @@ final class AddTagsListener
 
     /**
      * Adds the "Cache-Tags" header.
-     *
-     * @param FilterResponseEvent $event
      */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(FilterResponseEvent $event): void
     {
         $request = $event->getRequest();
         $response = $event->getResponse();
@@ -56,7 +54,7 @@ final class AddTagsListener
         }
 
         $resources = $request->attributes->get('_resources');
-        if (isset($attributes['collection_operation_name'])) {
+        if (isset($attributes['collection_operation_name']) || ($attributes['subresource_context']['collection'] ?? false)) {
             // Allows to purge collections
             $iri = $this->iriConverter->getIriFromResourceClass($attributes['resource_class']);
             $resources[$iri] = $iri;

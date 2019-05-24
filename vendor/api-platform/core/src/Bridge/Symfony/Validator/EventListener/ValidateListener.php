@@ -46,11 +46,9 @@ final class ValidateListener
     /**
      * Validates data returned by the controller if applicable.
      *
-     * @param GetResponseForControllerResultEvent $event
-     *
      * @throws ValidationException
      */
-    public function onKernelView(GetResponseForControllerResultEvent $event)
+    public function onKernelView(GetResponseForControllerResultEvent $event): void
     {
         $request = $event->getRequest();
         if (

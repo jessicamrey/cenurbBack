@@ -58,7 +58,7 @@ class WebDebugToolbarListenerTest extends TestCase
     /**
      * @dataProvider provideRedirects
      */
-    public function testRedirectionIsIntercepted($statusCode, $hasSession)
+    public function testHtmlRedirectionIsIntercepted($statusCode, $hasSession)
     {
         $response = new Response('Some content', $statusCode);
         $response->headers->set('X-Debug-Token', 'xxxxxxxx');
@@ -69,6 +69,19 @@ class WebDebugToolbarListenerTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('Redirection', $response->getContent());
+    }
+
+    public function testNonHtmlRedirectionIsNotIntercepted()
+    {
+        $response = new Response('Some content', '301');
+        $response->headers->set('X-Debug-Token', 'xxxxxxxx');
+        $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(false, 'json', true), HttpKernelInterface::MASTER_REQUEST, $response);
+
+        $listener = new WebDebugToolbarListener($this->getTwigMock('Redirection'), true);
+        $listener->onKernelResponse($event);
+
+        $this->assertEquals(301, $response->getStatusCode());
+        $this->assertEquals('Some content', $response->getContent());
     }
 
     public function testToolbarIsInjected()
@@ -236,7 +249,7 @@ class WebDebugToolbarListenerTest extends TestCase
 
         $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(), HttpKernelInterface::MASTER_REQUEST, $response);
 
-        $listener = new WebDebugToolbarListener($this->getTwigMock(), false, WebDebugToolbarListener::ENABLED, 'bottom', $urlGenerator);
+        $listener = new WebDebugToolbarListener($this->getTwigMock(), false, WebDebugToolbarListener::ENABLED, $urlGenerator);
         $listener->onKernelResponse($event);
 
         $this->assertEquals('http://mydomain.com/_profiler/xxxxxxxx', $response->headers->get('X-Debug-Token-Link'));
@@ -257,7 +270,7 @@ class WebDebugToolbarListenerTest extends TestCase
 
         $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(), HttpKernelInterface::MASTER_REQUEST, $response);
 
-        $listener = new WebDebugToolbarListener($this->getTwigMock(), false, WebDebugToolbarListener::ENABLED, 'bottom', $urlGenerator);
+        $listener = new WebDebugToolbarListener($this->getTwigMock(), false, WebDebugToolbarListener::ENABLED, $urlGenerator);
         $listener->onKernelResponse($event);
 
         $this->assertEquals('Exception: foo', $response->headers->get('X-Debug-Error'));
@@ -278,7 +291,7 @@ class WebDebugToolbarListenerTest extends TestCase
 
         $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(), HttpKernelInterface::MASTER_REQUEST, $response);
 
-        $listener = new WebDebugToolbarListener($this->getTwigMock(), false, WebDebugToolbarListener::ENABLED, 'bottom', $urlGenerator);
+        $listener = new WebDebugToolbarListener($this->getTwigMock(), false, WebDebugToolbarListener::ENABLED, $urlGenerator);
         $listener->onKernelResponse($event);
 
         $this->assertEquals('Exception: This multiline tabbed text should come out on a single plain line', $response->headers->get('X-Debug-Error'));

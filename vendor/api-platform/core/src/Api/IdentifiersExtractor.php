@@ -42,7 +42,7 @@ final class IdentifiersExtractor implements IdentifiersExtractorInterface
         $this->resourceClassResolver = $resourceClassResolver;
 
         if (null === $this->resourceClassResolver) {
-            @trigger_error(sprintf('Not injecting %s in the CachedIdentifiersExtractor might introduce cache issues with object identifiers.', ResourceClassResolverInterface::class), E_USER_DEPRECATED);
+            @trigger_error(sprintf('Not injecting %s in the IdentifiersExtractor might introduce cache issues with object identifiers.', ResourceClassResolverInterface::class), E_USER_DEPRECATED);
         }
     }
 
@@ -95,9 +95,11 @@ final class IdentifiersExtractor implements IdentifiersExtractorInterface
                     if (isset($identifiers[$propertyName])) {
                         throw new RuntimeException(sprintf('Composite identifiers not supported in "%s" through relation "%s" of "%s" used as identifier', $relatedResourceClass, $propertyName, $resourceClass));
                     }
+
                     $identifiers[$propertyName] = $this->propertyAccessor->getValue($relatedItem, $relatedPropertyName);
                 }
             }
+
             if (!isset($identifiers[$propertyName])) {
                 throw new RuntimeException(sprintf('No identifier found in "%s" through relation "%s" of "%s" used as identifier', $relatedResourceClass, $propertyName, $resourceClass));
             }

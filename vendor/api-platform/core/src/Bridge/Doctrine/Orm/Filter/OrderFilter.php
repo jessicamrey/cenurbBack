@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Core\Bridge\Doctrine\Orm\Filter;
 
+use ApiPlatform\Core\Bridge\Doctrine\Common\Filter\OrderFilterInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Common\Filter\OrderFilterTrait;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,30 +36,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * @author Kévin Dunglas <dunglas@gmail.com>
  * @author Théo FIDRY <theo.fidry@gmail.com>
  */
-class OrderFilter extends AbstractContextAwareFilter
+class OrderFilter extends AbstractContextAwareFilter implements OrderFilterInterface
 {
-    const NULLS_SMALLEST = 'nulls_smallest';
-    const NULLS_LARGEST = 'nulls_largest';
-    const NULLS_DIRECTION_MAP = [
-        self::NULLS_SMALLEST => [
-            'ASC' => 'ASC',
-            'DESC' => 'DESC',
-        ],
-        self::NULLS_LARGEST => [
-            'ASC' => 'DESC',
-            'DESC' => 'ASC',
-        ],
-    ];
+    use OrderFilterTrait;
 
-    /**
-     * @var string Keyword used to retrieve the value
-     */
-    protected $orderParameterName;
-
-    /**
-     * @param RequestStack|null $requestStack No prefix to prevent autowiring of this deprecated property
-     */
-    public function __construct(ManagerRegistry $managerRegistry, $requestStack = null, string $orderParameterName = 'order', LoggerInterface $logger = null, array $properties = null)
+    public function __construct(ManagerRegistry $managerRegistry, ?RequestStack $requestStack = null, string $orderParameterName = 'order', LoggerInterface $logger = null, array $properties = null)
     {
         if (null !== $properties) {
             $properties = array_map(function ($propertyOptions) {
@@ -99,46 +83,14 @@ class OrderFilter extends AbstractContextAwareFilter
     /**
      * {@inheritdoc}
      */
-    public function getDescription(string $resourceClass): array
-    {
-        $description = [];
-
-        $properties = $this->properties;
-        if (null === $properties) {
-            $properties = array_fill_keys($this->getClassMetadata($resourceClass)->getFieldNames(), null);
-        }
-
-        foreach ($properties as $property => $propertyOptions) {
-            if (!$this->isPropertyMapped($property, $resourceClass)) {
-                continue;
-            }
-
-            $description[sprintf('%s[%s]', $this->orderParameterName, $property)] = [
-                'property' => $property,
-                'type' => 'string',
-                'required' => false,
-            ];
-        }
-
-        return $description;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function filterProperty(string $property, $direction, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null)
     {
         if (!$this->isPropertyEnabled($property, $resourceClass) || !$this->isPropertyMapped($property, $resourceClass)) {
             return;
         }
 
-        if (empty($direction) && null !== $defaultDirection = $this->properties[$property]['default_direction'] ?? null) {
-            // fallback to default direction
-            $direction = $defaultDirection;
-        }
-
-        $direction = strtoupper($direction);
-        if (!\in_array($direction, ['ASC', 'DESC'], true)) {
+        $direction = $this->normalizeValue($direction, $property);
+        if (null === $direction) {
             return;
         }
 
@@ -146,7 +98,7 @@ class OrderFilter extends AbstractContextAwareFilter
         $field = $property;
 
         if ($this->isPropertyNested($property, $resourceClass)) {
-            list($alias, $field) = $this->addJoinsForNestedProperty($property, $alias, $queryBuilder, $queryNameGenerator, $resourceClass);
+            [$alias, $field] = $this->addJoinsForNestedProperty($property, $alias, $queryBuilder, $queryNameGenerator, $resourceClass, Join::LEFT_JOIN);
         }
 
         if (null !== $nullsComparison = $this->properties[$property]['nulls_comparison'] ?? null) {

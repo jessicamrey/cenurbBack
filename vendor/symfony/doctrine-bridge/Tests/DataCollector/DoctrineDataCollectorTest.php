@@ -141,19 +141,19 @@ class DoctrineDataCollectorTest extends TestCase
             [true, [], true, true],
             [null, [], null, true],
             [new \DateTime('2011-09-11'), ['date'], '2011-09-11', true],
-            [fopen(__FILE__, 'r'), [], 'Resource(stream)', false],
-            [new \stdClass(), [], 'Object(stdClass)', false],
+            [fopen(__FILE__, 'r'), [], '/* Resource(stream) */', false],
+            [new \stdClass(), [], '/* Object(stdClass) */', false],
             [
                 new StringRepresentableClass(),
                 [],
-                'Object(Symfony\Bridge\Doctrine\Tests\DataCollector\StringRepresentableClass): "string representation"',
+                '/* Object(Symfony\Bridge\Doctrine\Tests\DataCollector\StringRepresentableClass): */"string representation"',
                 false,
             ],
         ];
 
         if (version_compare(Version::VERSION, '2.6', '>=')) {
             $tests[] = ['this is not a date', ['date'], 'this is not a date', false];
-            $tests[] = [new \stdClass(), ['date'], 'Object(stdClass)', false];
+            $tests[] = [new \stdClass(), ['date'], '/* Object(stdClass) */', false];
         }
 
         return $tests;

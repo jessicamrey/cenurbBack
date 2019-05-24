@@ -15,6 +15,7 @@ namespace ApiPlatform\Core\JsonApi\Serializer;
 
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -24,9 +25,9 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  *
  * @author Héctor Hurtarte <hectorh30@gmail.com>
  */
-final class ConstraintViolationListNormalizer implements NormalizerInterface
+final class ConstraintViolationListNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    const FORMAT = 'jsonapi';
+    public const FORMAT = 'jsonapi';
 
     private $nameConverter;
     private $propertyMetadataFactory;
@@ -60,6 +61,14 @@ final class ConstraintViolationListNormalizer implements NormalizerInterface
         return self::FORMAT === $format && $data instanceof ConstraintViolationListInterface;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
+    }
+
     private function getSourcePointerFromViolation(ConstraintViolationInterface $violation)
     {
         $fieldName = $violation->getPropertyPath();
@@ -68,18 +77,19 @@ final class ConstraintViolationListNormalizer implements NormalizerInterface
             return 'data';
         }
 
+        $class = \get_class($violation->getRoot());
         $propertyMetadata = $this->propertyMetadataFactory
             ->create(
                 // Im quite sure this requires some thought in case of validations over relationships
-                \get_class($violation->getRoot()),
+                $class,
                 $fieldName
             );
 
         if (null !== $this->nameConverter) {
-            $fieldName = $this->nameConverter->normalize($fieldName);
+            $fieldName = $this->nameConverter->normalize($fieldName, $class, self::FORMAT);
         }
 
-        if (null !== $propertyMetadata->getType()->getClassName()) {
+        if (($type = $propertyMetadata->getType()) && null !== $type->getClassName()) {
             return "data/relationships/$fieldName";
         }
 

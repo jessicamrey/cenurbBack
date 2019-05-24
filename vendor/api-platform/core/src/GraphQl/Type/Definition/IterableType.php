@@ -20,6 +20,7 @@ use GraphQL\Language\AST\IntValueNode;
 use GraphQL\Language\AST\ListValueNode;
 use GraphQL\Language\AST\ObjectValueNode;
 use GraphQL\Language\AST\StringValueNode;
+use GraphQL\Language\AST\ValueNode;
 use GraphQL\Type\Definition\ScalarType;
 use GraphQL\Utils\Utils;
 
@@ -32,17 +33,20 @@ use GraphQL\Utils\Utils;
  */
 final class IterableType extends ScalarType
 {
-    public $name = 'Iterable';
+    public function __construct()
+    {
+        $this->name = 'Iterable';
+        $this->description = 'The `Iterable` scalar type represents an array or a Traversable with any kind of data.';
 
-    public $description = 'The `Iterable` scalar type represents an array or a Traversable with any kind of data.';
+        parent::__construct();
+    }
 
     /**
      * {@inheritdoc}
      */
     public function serialize($value)
     {
-        // is_iterable
-        if (!(\is_array($value) || $value instanceof \Traversable)) {
+        if (!is_iterable($value)) {
             throw new Error(sprintf('Iterable cannot represent non iterable value: %s', Utils::printSafe($value)));
         }
 
@@ -54,8 +58,7 @@ final class IterableType extends ScalarType
      */
     public function parseValue($value)
     {
-        // is_iterable
-        if (!(\is_array($value) || $value instanceof \Traversable)) {
+        if (!is_iterable($value)) {
             throw new Error(sprintf('Iterable cannot represent non iterable value: %s', Utils::printSafeJson($value)));
         }
 
@@ -76,9 +79,7 @@ final class IterableType extends ScalarType
     }
 
     /**
-     * @param StringValueNode|BooleanValueNode|IntValueNode|FloatValueNode|ObjectValueNode|ListValueNode $valueNode
-     *
-     * @return mixed
+     * @param StringValueNode|BooleanValueNode|IntValueNode|FloatValueNode|ObjectValueNode|ListValueNode|ValueNode $valueNode
      */
     private function parseIterableLiteral($valueNode)
     {

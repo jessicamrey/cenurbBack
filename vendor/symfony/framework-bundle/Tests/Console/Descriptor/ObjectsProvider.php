@@ -96,6 +96,14 @@ class ObjectsProvider
         return ['builder_1' => $builder1];
     }
 
+    public static function getContainerDefinitionsWithExistingClasses()
+    {
+        return [
+            'existing_class_def_1' => new Definition(ClassWithDocComment::class),
+            'existing_class_def_2' => new Definition(ClassWithoutDocComment::class),
+        ];
+    }
+
     public static function getContainerDefinitions()
     {
         $definition1 = new Definition('Full\\Qualified\\Class1');
@@ -107,20 +115,20 @@ class ObjectsProvider
                 ->setSynthetic(false)
                 ->setLazy(true)
                 ->setAbstract(true)
-                ->addArgument(new Reference('definition2'))
+                ->addArgument(new Reference('.definition_2'))
                 ->addArgument('%parameter%')
                 ->addArgument(new Definition('inline_service', ['arg1', 'arg2']))
                 ->addArgument([
                     'foo',
-                    new Reference('definition2'),
+                    new Reference('.definition_2'),
                     new Definition('inline_service'),
                 ])
                 ->addArgument(new IteratorArgument([
                     new Reference('definition_1'),
-                    new Reference('definition_2'),
+                    new Reference('.definition_2'),
                 ]))
                 ->setFactory(['Full\\Qualified\\FactoryClass', 'get']),
-            'definition_2' => $definition2
+            '.definition_2' => $definition2
                 ->setPublic(false)
                 ->setSynthetic(true)
                 ->setFile('/path/to/file')
@@ -131,6 +139,7 @@ class ObjectsProvider
                 ->addTag('tag2')
                 ->addMethodCall('setMailer', [new Reference('mailer')])
                 ->setFactory([new Reference('factory.service'), 'get']),
+            'definition_without_class' => new Definition(),
         ];
     }
 
@@ -138,7 +147,7 @@ class ObjectsProvider
     {
         return [
             'alias_1' => new Alias('service_1', true),
-            'alias_2' => new Alias('service_2', false),
+            '.alias_2' => new Alias('.service_2', false),
         ];
     }
 
@@ -155,7 +164,7 @@ class ObjectsProvider
 
     public static function getCallables()
     {
-        $callables = [
+        return [
             'callable_1' => 'array_key_exists',
             'callable_2' => ['Symfony\\Bundle\\FrameworkBundle\\Tests\\Console\\Descriptor\\CallableClass', 'staticMethod'],
             'callable_3' => [new CallableClass(), 'method'],
@@ -163,13 +172,8 @@ class ObjectsProvider
             'callable_5' => ['Symfony\\Bundle\\FrameworkBundle\\Tests\\Console\\Descriptor\\ExtendedCallableClass', 'parent::staticMethod'],
             'callable_6' => function () { return 'Closure'; },
             'callable_7' => new CallableClass(),
+            'callable_from_callable' => \Closure::fromCallable(new CallableClass()),
         ];
-
-        if (\PHP_VERSION_ID >= 70100) {
-            $callables['callable_from_callable'] = \Closure::fromCallable(new CallableClass());
-        }
-
-        return $callables;
     }
 }
 
@@ -201,4 +205,36 @@ class RouteStub extends Route
     {
         return new CompiledRoute('', '#PATH_REGEX#', [], [], '#HOST_REGEX#');
     }
+}
+
+class ClassWithoutDocComment
+{
+}
+
+/**
+ * This is a class with a doc comment.
+ */
+class ClassWithDocComment
+{
+}
+
+/**
+ * This is the first line of the description.
+ * This is the second line.
+ *
+ * This is the third and shouldn't be shown.
+ *
+ * @annot should not be parsed
+ */
+class ClassWithDocCommentOnMultipleLines
+{
+}
+
+/**
+ *Foo.
+ *
+ * @annot should not be parsed
+ */
+class ClassWithDocCommentWithoutInitialSpace
+{
 }

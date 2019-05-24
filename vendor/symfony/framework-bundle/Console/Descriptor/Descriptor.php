@@ -11,10 +11,12 @@
 
 namespace Symfony\Bundle\FrameworkBundle\Console\Descriptor;
 
+use Symfony\Component\Config\Resource\ClassExistenceResource;
 use Symfony\Component\Console\Descriptor\DescriptorInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -230,17 +232,21 @@ abstract class Descriptor implements DescriptorInterface
             return $builder->getAlias($serviceId);
         }
 
+        if ('service_container' === $serviceId) {
+            return (new Definition(ContainerInterface::class))->setPublic(true)->setSynthetic(true);
+        }
+
         // the service has been injected in some special way, just return the service
         return $builder->get($serviceId);
     }
 
     /**
      * @param ContainerBuilder $builder
-     * @param bool             $showPrivate
+     * @param bool             $showHidden
      *
      * @return array
      */
-    protected function findDefinitionsByTag(ContainerBuilder $builder, $showPrivate)
+    protected function findDefinitionsByTag(ContainerBuilder $builder, $showHidden)
     {
         $definitions = [];
         $tags = $builder->findTags();
@@ -250,7 +256,7 @@ abstract class Descriptor implements DescriptorInterface
             foreach ($builder->findTaggedServiceIds($tag) as $serviceId => $attributes) {
                 $definition = $this->resolveServiceDefinition($builder, $serviceId);
 
-                if (!$definition instanceof Definition || !$showPrivate && !$definition->isPublic()) {
+                if ($showHidden xor '.' === ($serviceId[0] ?? null)) {
                     continue;
                 }
 
@@ -278,5 +284,31 @@ abstract class Descriptor implements DescriptorInterface
         asort($serviceIds);
 
         return $serviceIds;
+    }
+
+    /**
+     * Gets class description from a docblock.
+     */
+    public static function getClassDescription(string $class, string &$resolvedClass = null): string
+    {
+        $resolvedClass = $class;
+        try {
+            $resource = new ClassExistenceResource($class, false);
+
+            // isFresh() will explode ONLY if a parent class/trait does not exist
+            $resource->isFresh(0);
+
+            $r = new \ReflectionClass($class);
+            $resolvedClass = $r->name;
+
+            if ($docComment = $r->getDocComment()) {
+                $docComment = preg_split('#\n\s*\*\s*[\n@]#', substr($docComment, 3, -2), 2)[0];
+
+                return trim(preg_replace('#\s*\n\s*\*\s*#', ' ', $docComment));
+            }
+        } catch (\ReflectionException $e) {
+        }
+
+        return '';
     }
 }

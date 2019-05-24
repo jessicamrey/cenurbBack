@@ -22,13 +22,14 @@ class DependencyInjectionExtensionTest extends TestCase
 {
     public function testGetTypeExtensions()
     {
-        $typeExtension1 = new DummyExtension('test');
-        $typeExtension2 = new DummyExtension('test');
-        $typeExtension3 = new DummyExtension('other');
+        $typeExtension1 = new TestTypeExtension();
+        $typeExtension2 = new TestTypeExtension();
+        $typeExtension3 = new OtherTypeExtension();
+        $typeExtension4 = new MultipleTypesTypeExtension();
 
         $extensions = [
-            'test' => new \ArrayIterator([$typeExtension1, $typeExtension2]),
-            'other' => new \ArrayIterator([$typeExtension3]),
+            'test' => new \ArrayIterator([$typeExtension1, $typeExtension2, $typeExtension4]),
+            'other' => new \ArrayIterator([$typeExtension3, $typeExtension4]),
         ];
 
         $extension = new DependencyInjectionExtension(new ContainerBuilder(), $extensions, []);
@@ -36,8 +37,8 @@ class DependencyInjectionExtensionTest extends TestCase
         $this->assertTrue($extension->hasTypeExtensions('test'));
         $this->assertTrue($extension->hasTypeExtensions('other'));
         $this->assertFalse($extension->hasTypeExtensions('unknown'));
-        $this->assertSame([$typeExtension1, $typeExtension2], $extension->getTypeExtensions('test'));
-        $this->assertSame([$typeExtension3], $extension->getTypeExtensions('other'));
+        $this->assertSame([$typeExtension1, $typeExtension2, $typeExtension4], $extension->getTypeExtensions('test'));
+        $this->assertSame([$typeExtension3, $typeExtension4], $extension->getTypeExtensions('other'));
     }
 
     /**
@@ -46,55 +47,12 @@ class DependencyInjectionExtensionTest extends TestCase
     public function testThrowExceptionForInvalidExtendedType()
     {
         $extensions = [
-            'test' => new \ArrayIterator([new DummyExtension('unmatched')]),
+            'unmatched' => new \ArrayIterator([new TestTypeExtension()]),
         ];
 
         $extension = new DependencyInjectionExtension(new ContainerBuilder(), $extensions, []);
 
-        $extension->getTypeExtensions('test');
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing four arguments to the Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension::__construct() method is deprecated since Symfony 3.3 and will be disallowed in Symfony 4.0. The new constructor only accepts three arguments.
-     */
-    public function testLegacyGetTypeExtensions()
-    {
-        $container = new ContainerBuilder();
-
-        $typeExtension1 = new DummyExtension('test');
-        $typeExtension2 = new DummyExtension('test');
-        $typeExtension3 = new DummyExtension('other');
-
-        $container->set('extension1', $typeExtension1);
-        $container->set('extension2', $typeExtension2);
-        $container->set('extension3', $typeExtension3);
-
-        $extension = new DependencyInjectionExtension($container, [], ['test' => ['extension1', 'extension2'], 'other' => ['extension3']], []);
-
-        $this->assertTrue($extension->hasTypeExtensions('test'));
-        $this->assertFalse($extension->hasTypeExtensions('unknown'));
-        $this->assertSame([$typeExtension1, $typeExtension2], $extension->getTypeExtensions('test'));
-    }
-
-    /**
-     * @group legacy
-     * @expectedException \Symfony\Component\Form\Exception\InvalidArgumentException
-     * @expectedDeprecation Passing four arguments to the Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension::__construct() method is deprecated since Symfony 3.3 and will be disallowed in Symfony 4.0. The new constructor only accepts three arguments.
-     */
-    public function testLegacyThrowExceptionForInvalidExtendedType()
-    {
-        $formTypeExtension = new DummyExtension('unmatched');
-
-        $container = new ContainerBuilder();
-        $container->set('extension', $formTypeExtension);
-
-        $extension = new DependencyInjectionExtension($container, [], ['test' => ['extension']], []);
-
-        $extensions = $extension->getTypeExtensions('test');
-
-        $this->assertCount(1, $extensions);
-        $this->assertSame($formTypeExtension, $extensions[0]);
+        $extension->getTypeExtensions('unmatched');
     }
 
     public function testGetTypeGuesser()
@@ -110,61 +68,29 @@ class DependencyInjectionExtensionTest extends TestCase
 
         $this->assertNull($extension->getTypeGuesser());
     }
+}
 
-    /**
-     * @group legacy
-     */
-    public function testLegacyGetTypeGuesser()
+class TestTypeExtension extends AbstractTypeExtension
+{
+    public static function getExtendedTypes(): iterable
     {
-        $container = new ContainerBuilder();
-        $container->set('foo', new DummyTypeGuesser());
-
-        $extension = new DependencyInjectionExtension($container, [], [], ['foo']);
-
-        $this->assertInstanceOf(FormTypeGuesserChain::class, $extension->getTypeGuesser());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testLegacyGetTypeGuesserReturnsNullWhenNoTypeGuessersHaveBeenConfigured()
-    {
-        $extension = new DependencyInjectionExtension(new ContainerBuilder(), [], [], []);
-
-        $this->assertNull($extension->getTypeGuesser());
+        return ['test'];
     }
 }
 
-class DummyExtension extends AbstractTypeExtension
+class OtherTypeExtension extends AbstractTypeExtension
 {
-    private $extendedType;
-
-    public function __construct($extendedType)
+    public static function getExtendedTypes(): iterable
     {
-        $this->extendedType = $extendedType;
-    }
-
-    public function getExtendedType()
-    {
-        return $this->extendedType;
+        return ['other'];
     }
 }
 
-class DummyTypeGuesser implements FormTypeGuesserInterface
+class MultipleTypesTypeExtension extends AbstractTypeExtension
 {
-    public function guessType($class, $property)
+    public static function getExtendedTypes(): iterable
     {
-    }
-
-    public function guessRequired($class, $property)
-    {
-    }
-
-    public function guessMaxLength($class, $property)
-    {
-    }
-
-    public function guessPattern($class, $property)
-    {
+        yield 'test';
+        yield 'other';
     }
 }

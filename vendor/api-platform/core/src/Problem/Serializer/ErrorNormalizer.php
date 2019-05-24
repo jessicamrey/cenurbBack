@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiPlatform\Core\Problem\Serializer;
 
 use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -23,17 +24,24 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
-final class ErrorNormalizer implements NormalizerInterface
+final class ErrorNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    const FORMAT = 'jsonproblem';
+    public const FORMAT = 'jsonproblem';
+    public const TYPE = 'type';
+    public const TITLE = 'title';
 
     use ErrorNormalizerTrait;
 
     private $debug;
+    private $defaultContext = [
+        self::TYPE => 'https://tools.ietf.org/html/rfc2616#section-10',
+        self::TITLE => 'An error occurred',
+    ];
 
-    public function __construct(bool $debug = false)
+    public function __construct(bool $debug = false, array $defaultContext = [])
     {
         $this->debug = $debug;
+        $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
     }
 
     /**
@@ -41,17 +49,13 @@ final class ErrorNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        if ($this->debug) {
-            $trace = $object->getTrace();
-        }
-
         $data = [
-            'type' => $context['type'] ?? 'https://tools.ietf.org/html/rfc2616#section-10',
-            'title' => $context['title'] ?? 'An error occurred',
+            'type' => $context[self::TYPE] ?? $this->defaultContext[self::TYPE],
+            'title' => $context[self::TITLE] ?? $this->defaultContext[self::TITLE],
             'detail' => $this->getErrorMessage($object, $context, $this->debug),
         ];
 
-        if (isset($trace)) {
+        if ($this->debug && null !== $trace = $object->getTrace()) {
             $data['trace'] = $trace;
         }
 
@@ -64,5 +68,13 @@ final class ErrorNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return self::FORMAT === $format && ($data instanceof \Exception || $data instanceof FlattenException);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

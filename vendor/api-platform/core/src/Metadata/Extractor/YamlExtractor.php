@@ -32,7 +32,7 @@ final class YamlExtractor extends AbstractExtractor
     protected function extractPath(string $path)
     {
         try {
-            $resourcesYaml = Yaml::parse(file_get_contents($path), Yaml::PARSE_CONSTANT);
+            $resourcesYaml = Yaml::parse((string) file_get_contents($path), Yaml::PARSE_CONSTANT);
         } catch (ParseException $e) {
             $e->setParsedFile($path);
 
@@ -50,9 +50,11 @@ final class YamlExtractor extends AbstractExtractor
         $this->extractResources($resourcesYaml, $path);
     }
 
-    private function extractResources(array $resourcesYaml, string $path)
+    private function extractResources(array $resourcesYaml, string $path): void
     {
         foreach ($resourcesYaml as $resourceName => $resourceYaml) {
+            $resourceName = $this->resolve($resourceName);
+
             if (null === $resourceYaml) {
                 $resourceYaml = [];
             }
@@ -86,7 +88,7 @@ final class YamlExtractor extends AbstractExtractor
         }
     }
 
-    private function extractProperties(array $resourceYaml, string $resourceName, string $path)
+    private function extractProperties(array $resourceYaml, string $resourceName, string $path): void
     {
         foreach ($resourceYaml['properties'] as $propertyName => $propertyValues) {
             if (null === $propertyValues) {
@@ -108,7 +110,7 @@ final class YamlExtractor extends AbstractExtractor
                 'required' => $this->phpize($propertyValues, 'required', 'bool'),
                 'identifier' => $this->phpize($propertyValues, 'identifier', 'bool'),
                 'iri' => $this->phpize($propertyValues, 'iri', 'string'),
-                'attributes' => $propertyValues['attributes'] ?? null,
+                'attributes' => $propertyValues['attributes'] ?? [],
                 'subresource' => $propertyValues['subresource'] ?? null,
             ];
         }
@@ -116,10 +118,6 @@ final class YamlExtractor extends AbstractExtractor
 
     /**
      * Transforms a YAML attribute's value in PHP value.
-     *
-     * @param array  $array
-     * @param string $key
-     * @param string $type
      *
      * @throws InvalidArgumentException
      *

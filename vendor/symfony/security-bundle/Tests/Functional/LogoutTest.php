@@ -26,6 +26,7 @@ class LogoutTest extends WebTestCase
         $cookieJar->expire(session_name());
 
         $this->assertNotNull($cookieJar->get('REMEMBERME'));
+        $this->assertSame('lax', $cookieJar->get('REMEMBERME')->getSameSite());
 
         $client->request('GET', '/logout');
 
@@ -35,19 +36,19 @@ class LogoutTest extends WebTestCase
     public function testCsrfTokensAreClearedOnLogout()
     {
         $client = $this->createClient(['test_case' => 'LogoutWithoutSessionInvalidation', 'root_config' => 'config.yml']);
-        static::$kernel->getContainer()->get('test.security.csrf.token_storage')->setToken('foo', 'bar');
+        static::$container->get('security.csrf.token_storage')->setToken('foo', 'bar');
 
         $client->request('POST', '/login', [
             '_username' => 'johannes',
             '_password' => 'test',
         ]);
 
-        $this->assertTrue(static::$kernel->getContainer()->get('test.security.csrf.token_storage')->hasToken('foo'));
-        $this->assertSame('bar', static::$kernel->getContainer()->get('test.security.csrf.token_storage')->getToken('foo'));
+        $this->assertTrue(static::$container->get('security.csrf.token_storage')->hasToken('foo'));
+        $this->assertSame('bar', static::$container->get('security.csrf.token_storage')->getToken('foo'));
 
         $client->request('GET', '/logout');
 
-        $this->assertFalse(static::$kernel->getContainer()->get('test.security.csrf.token_storage')->hasToken('foo'));
+        $this->assertFalse(static::$container->get('security.csrf.token_storage')->hasToken('foo'));
     }
 
     public function testAccessControlDoesNotApplyOnLogout()

@@ -34,6 +34,7 @@ class ConstraintViolationNormalizerTest extends TestCase
         $this->assertTrue($normalizer->supportsNormalization(new ConstraintViolationList(), ConstraintViolationListNormalizer::FORMAT));
         $this->assertFalse($normalizer->supportsNormalization(new ConstraintViolationList(), 'xml'));
         $this->assertFalse($normalizer->supportsNormalization(new \stdClass(), ConstraintViolationListNormalizer::FORMAT));
+        $this->assertTrue($normalizer->hasCacheableSupportsMethod());
     }
 
     public function testNormalize()
@@ -41,7 +42,7 @@ class ConstraintViolationNormalizerTest extends TestCase
         $nameConverterProphecy = $this->prophesize(NameConverterInterface::class);
         $normalizer = new ConstraintViolationListNormalizer(['severity', 'anotherField1'], $nameConverterProphecy->reveal());
 
-        $nameConverterProphecy->normalize(Argument::type('string'))->will(function ($args) {
+        $nameConverterProphecy->normalize(Argument::type('string'), null, Argument::type('string'))->will(function ($args) {
             return '_'.$args[0];
         });
 

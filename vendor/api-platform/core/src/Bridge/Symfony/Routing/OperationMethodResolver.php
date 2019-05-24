@@ -70,13 +70,7 @@ final class OperationMethodResolver implements OperationMethodResolverInterface
     }
 
     /**
-     * @param string $resourceClass
-     * @param string $operationName
-     * @param string $operationType
-     *
      * @throws RuntimeException
-     *
-     * @return string
      */
     private function getOperationMethod(string $resourceClass, string $operationName, string $operationType): string
     {
@@ -102,13 +96,7 @@ final class OperationMethodResolver implements OperationMethodResolverInterface
     /**
      * Gets the route related to the given operation.
      *
-     * @param string $resourceClass
-     * @param string $operationName
-     * @param string $operationType
-     *
      * @throws RuntimeException
-     *
-     * @return Route
      */
     private function getOperationRoute(string $resourceClass, string $operationName, string $operationType): Route
     {
@@ -133,14 +121,8 @@ final class OperationMethodResolver implements OperationMethodResolverInterface
 
     /**
      * Gets the route name or null if not defined.
-     *
-     * @param ResourceMetadata $resourceMetadata
-     * @param string           $operationName
-     * @param string           $operationType
-     *
-     * @return string|null
      */
-    private function getRouteName(ResourceMetadata $resourceMetadata, string $operationName, string $operationType)
+    private function getRouteName(ResourceMetadata $resourceMetadata, string $operationName, string $operationType): ?string
     {
         if (OperationType::ITEM === $operationType) {
             return $resourceMetadata->getItemOperationAttribute($operationName, 'route_name');
@@ -152,11 +134,7 @@ final class OperationMethodResolver implements OperationMethodResolverInterface
     /**
      * Gets the route with the given name.
      *
-     * @param string $routeName
-     *
      * @throws RuntimeException
-     *
-     * @return Route
      */
     private function getRoute(string $routeName): Route
     {

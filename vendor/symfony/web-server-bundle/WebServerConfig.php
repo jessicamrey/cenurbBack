@@ -22,7 +22,7 @@ class WebServerConfig
     private $env;
     private $router;
 
-    public function __construct($documentRoot, $env, $address = null, $router = null)
+    public function __construct(string $documentRoot, string $env, string $address = null, string $router = null)
     {
         if (!is_dir($documentRoot)) {
             throw new \InvalidArgumentException(sprintf('The document root directory "%s" does not exist.', $documentRoot));
@@ -99,6 +99,22 @@ class WebServerConfig
     public function getAddress()
     {
         return $this->hostname.':'.$this->port;
+    }
+
+    /**
+     * @return string contains resolved hostname if available, empty string otherwise
+     */
+    public function getDisplayAddress()
+    {
+        if ('0.0.0.0' !== $this->hostname) {
+            return '';
+        }
+
+        if (false === $localHostname = gethostname()) {
+            return '';
+        }
+
+        return gethostbyname($localHostname).':'.$this->port;
     }
 
     private function findFrontController($documentRoot, $env)

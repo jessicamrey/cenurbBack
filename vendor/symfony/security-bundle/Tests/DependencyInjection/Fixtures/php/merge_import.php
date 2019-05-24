@@ -6,7 +6,6 @@ $container->loadFromExtension('security', [
             'form_login' => [
                 'login_path' => '/login',
             ],
-        'logout_on_user_change' => true,
         ],
     ],
     'role_hierarchy' => [

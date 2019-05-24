@@ -137,7 +137,6 @@
         "ms": "Melayu",
         "mt": "Malta",
         "mua": "Mundang",
-        "mul": "Basa Multilingua",
         "my": "Myanmar",
         "mzn": "Mazanderani",
         "naq": "Nama",
@@ -206,7 +205,6 @@
         "tzm": "Tamazight Atlas Tengah",
         "ug": "Uighur",
         "uk": "Ukraina",
-        "und": "Basa Ora Dikenali",
         "ur": "Urdu",
         "uz": "Uzbek",
         "vai": "Vai",
@@ -224,7 +222,6 @@
         "zgh": "Tamazight Moroko Standar",
         "zh": "Tyonghwa",
         "zh_Hant": "Tyonghwa (Tradisional)",
-        "zu": "Zulu",
-        "zxx": "Konten tanpa linguistik"
+        "zu": "Zulu"
     }
 }

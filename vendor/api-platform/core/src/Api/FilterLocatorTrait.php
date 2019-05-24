@@ -31,9 +31,8 @@ trait FilterLocatorTrait
      * Sets a filter locator with a backward compatibility.
      *
      * @param ContainerInterface|FilterCollection|null $filterLocator
-     * @param bool                                     $allowNull
      */
-    private function setFilterLocator($filterLocator = null, bool $allowNull = false)
+    private function setFilterLocator($filterLocator, bool $allowNull = false): void
     {
         if ($filterLocator instanceof ContainerInterface || $filterLocator instanceof FilterCollection || (null === $filterLocator && $allowNull)) {
             if ($filterLocator instanceof FilterCollection) {
@@ -48,12 +47,8 @@ trait FilterLocatorTrait
 
     /**
      * Gets a filter with a backward compatibility.
-     *
-     * @param string $filterId
-     *
-     * @return FilterInterface|null
      */
-    private function getFilter(string $filterId)
+    private function getFilter(string $filterId): ?FilterInterface
     {
         if ($this->filterLocator instanceof ContainerInterface && $this->filterLocator->has($filterId)) {
             return $this->filterLocator->get($filterId);
@@ -62,5 +57,7 @@ trait FilterLocatorTrait
         if ($this->filterLocator instanceof FilterCollection && $this->filterLocator->offsetExists($filterId)) {
             return $this->filterLocator->offsetGet($filterId);
         }
+
+        return null;
     }
 }
