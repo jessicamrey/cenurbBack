@@ -1,0 +1,205 @@
+<?php return [PHP_INT_MAX, static function () {
+
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata')),
+        ],
+        null,
+        [
+            'ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata' => [
+                'shortName' => [
+                    'Colonia',
+                ],
+                'description' => [
+                    '',
+                ],
+                'itemOperations' => [
+                    [
+                        'get' => [
+                            'method' => 'GET',
+                            'normalization_context' => [
+                                'groups' => [
+                                    'colonia',
+                                ],
+                            ],
+                            'denormalization_context' => [
+                                'groups' => [
+                                    'colonia',
+                                ],
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'put' => [
+                            'method' => 'PUT',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'delete' => [
+                            'method' => 'DELETE',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                    ],
+                ],
+                'collectionOperations' => [
+                    [
+                        'post' => [
+                            'method' => 'POST',
+                            'route_name' => 'api_new_colonia',
+                            'swagger_context' => [
+                                'summary' => 'Registrar una nueva colonia',
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'postCol' => [
+                            'method' => 'POST',
+                            'route_name' => 'api_add_locNidosCol',
+                            'swagger_context' => [
+                                'summary' => 'Añade información sobre nidos a una colonia',
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'postEspecies' => [
+                            'method' => 'POST',
+                            'route_name' => 'api_add_especies',
+                            'swagger_context' => [
+                                'summary' => 'Añade información sobre hay más de ua especie en la misma colonia',
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'get' => [
+                            'method' => 'GET',
+                            'normalization_context' => [
+                                'groups' => [
+                                    'colonia',
+                                ],
+                            ],
+                            'denormalization_context' => [
+                                'groups' => [
+                                    'colonia',
+                                ],
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'getClose' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_get_closeColonias',
+                            'normalization_context' => [
+                                'groups' => [
+                                    'colonia',
+                                ],
+                            ],
+                            'denormalization_context' => [
+                                'groups' => [
+                                    'colonia',
+                                ],
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'getFav' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_get_favoritosCol',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'getVisits' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_get_visits',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'newVisit' => [
+                            'method' => 'POST',
+                            'route_name' => 'api_new_visitaCol',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsAnno' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_anno',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsCcaa' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_ccaa',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsProvincia' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_provincia',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsGeneral' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_general',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsAnnoCol' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_annoCol',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsCcaaCol' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_ccaaCol',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsProvinciaCol' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_provinciaCol',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsMunicipioCol' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_municipioCol',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsTipoEdificioCol' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_tipoEdificioCol',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                    ],
+                ],
+                'graphql' => [
+                    [
+                        'query' => [],
+                        'delete' => [],
+                        'update' => [],
+                        'create' => [],
+                    ],
+                ],
+                'attributes' => [
+                    [
+                        'input' => null,
+                        'output' => null,
+                        'filters' => [
+                            'annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                            'annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_numeric_filter',
+                            'annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_range_filter',
+                            'annotated_app_entity_colonia_api_platform_core_bridge_doctrine_orm_filter_boolean_filter',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        $o[0],
+        []
+    );
+
+}];

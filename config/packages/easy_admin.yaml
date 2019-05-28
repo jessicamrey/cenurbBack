@@ -5,3 +5,5 @@ easy_admin:
             class: App\Entity\Colonia
         Territorio:
             class: App\Entity\Territorio
+        SegUsu:
+            class: App\Entity\SegUsu
