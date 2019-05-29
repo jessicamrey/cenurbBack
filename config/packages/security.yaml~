@@ -1,0 +1,52 @@
+security:
+    encoders:
+        App\Entity\SegUsu:
+            algorithm: bcrypt
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\SegUsu
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+            
+        oauth_token:
+            pattern:    ^/api/login
+            security:   false
+
+        oauth_authorize:
+            pattern:    ^/api/auth
+            form_login:
+                provider: 
+			entity:
+                		class: App\Entity\SegUsu
+                		property: email
+                check_path: /api/auth
+                login_path: /api/login
+                
+        api:
+            entry_point: fos_oauth_server.security.entry_point
+            pattern:    ^/api
+            anonymous: ~
+            fos_oauth:  true
+            stateless:  true
+                
+        main:
+            anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login
+                default_target_path: '/admin'
+            logout:
+                path:   app_logout
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+         - { path: ^/admin, roles: ROLE_ADMIN}
+        # - { path: ^/profile, roles: ROLE_USER }

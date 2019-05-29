@@ -11,6 +11,7 @@ return [[
 'ArrayAccess' => 4,
 'Countable' => 5,
 'Symfony.Component.Form.ClearableErrorsInterface' => 6,
+'FOS.OAuthServerBundle.Form.Model.Authorize' => 7,
 
 ], [
 
@@ -195,6 +196,67 @@ return [[
                 ],
                 'defaultGroup' => [
                     'ClearableErrorsInterface',
+                ],
+            ],
+        ],
+        $o[0],
+        []
+    );
+},
+7 => static function () {
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            (($f = &\Symfony\Component\VarExporter\Internal\Registry::$factories)['Symfony\\Component\\Validator\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::f('Symfony\\Component\\Validator\\Mapping\\ClassMetadata'))(),
+            ($f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::f('Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'))(),
+            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Symfony\\Component\\Validator\\Constraints\\Type'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\Type')),
+        ],
+        null,
+        [
+            'stdClass' => [
+                'name' => [
+                    'FOS\\OAuthServerBundle\\Form\\Model\\Authorize',
+                    'accepted',
+                ],
+                'defaultGroup' => [
+                    'Authorize',
+                ],
+                'members' => [
+                    [
+                        'accepted' => [
+                            $o[1],
+                        ],
+                    ],
+                ],
+                'properties' => [
+                    [
+                        'accepted' => $o[1],
+                    ],
+                ],
+                'class' => [
+                    1 => 'FOS\\OAuthServerBundle\\Form\\Model\\Authorize',
+                ],
+                'property' => [
+                    1 => 'accepted',
+                ],
+                'constraints' => [
+                    1 => [
+                        $o[2],
+                    ],
+                ],
+                'constraintsByGroup' => [
+                    1 => [
+                        'Authorize' => [
+                            $o[2],
+                        ],
+                    ],
+                ],
+                'type' => [
+                    2 => 'bool',
+                ],
+                'groups' => [
+                    2 => [
+                        'Authorize',
+                    ],
                 ],
             ],
         ],

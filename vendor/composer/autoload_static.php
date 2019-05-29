@@ -111,6 +111,10 @@ class ComposerStaticInit445ed60c1cb128f8ef29aa2ddfb6158d
             'Pagerfanta\\' => 11,
             'PackageVersions\\' => 16,
         ),
+        'O' => 
+        array (
+            'OAuth2\\' => 7,
+        ),
         'N' => 
         array (
             'Nelmio\\CorsBundle\\' => 18,
@@ -127,6 +131,7 @@ class ComposerStaticInit445ed60c1cb128f8ef29aa2ddfb6158d
         'F' => 
         array (
             'Fig\\Link\\' => 9,
+            'FOS\\OAuthServerBundle\\' => 22,
         ),
         'E' => 
         array (
@@ -448,6 +453,10 @@ class ComposerStaticInit445ed60c1cb128f8ef29aa2ddfb6158d
         array (
             0 => __DIR__ . '/..' . '/ocramius/package-versions/src/PackageVersions',
         ),
+        'OAuth2\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/friendsofsymfony/oauth2-php/lib',
+        ),
         'Nelmio\\CorsBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/nelmio/cors-bundle',
@@ -467,6 +476,10 @@ class ComposerStaticInit445ed60c1cb128f8ef29aa2ddfb6158d
         'Fig\\Link\\' => 
         array (
             0 => __DIR__ . '/..' . '/fig/link-util/src',
+        ),
+        'FOS\\OAuthServerBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/friendsofsymfony/oauth-server-bundle',
         ),
         'Egulias\\EmailValidator\\' => 
         array (

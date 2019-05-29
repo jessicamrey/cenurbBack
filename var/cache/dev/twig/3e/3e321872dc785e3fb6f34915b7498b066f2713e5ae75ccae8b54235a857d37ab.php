@@ -94,19 +94,19 @@ class __TwigTemplate_b769b38ea18bf4c6dd3a94ffa391cee9718228f2e89989126f39df49db7
         // line 10
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("login");
         echo "\" method=\"post\">
-    <label for=\"username\">Username:</label>
-    <input type=\"text\" id=\"username\" name=\"_username\" value=\"";
+    <label for=\"username\">Correo electrónico:</label>
+    <input type=\"text\" id=\"tbxUser\" name=\"_username\" value=\"";
         // line 12
         echo twig_escape_filter($this->env, (isset($context["last_username"]) || array_key_exists("last_username", $context) ? $context["last_username"] : (function () { throw new RuntimeError('Variable "last_username" does not exist.', 12, $this->source); })()), "html", null, true);
         echo "\"/>
 
-    <label for=\"password\">Password:</label>
-    <input type=\"password\" id=\"password\" name=\"_password\"/>
+    <label for=\"password\">Contraseña:</label>
+    <input type=\"password\" id=\"tbxPass\" name=\"_password\"/>
 
     ";
         // line 22
         echo "
-    <button type=\"submit\">login</button>
+    <button type=\"submit\" id=\"loginButton\">login</button>
 </form>
 ";
         
@@ -144,11 +144,11 @@ class __TwigTemplate_b769b38ea18bf4c6dd3a94ffa391cee9718228f2e89989126f39df49db7
 {% endif %}
 
 <form action=\"{{ path('login') }}\" method=\"post\">
-    <label for=\"username\">Username:</label>
-    <input type=\"text\" id=\"username\" name=\"_username\" value=\"{{ last_username }}\"/>
+    <label for=\"username\">Correo electrónico:</label>
+    <input type=\"text\" id=\"tbxUser\" name=\"_username\" value=\"{{ last_username }}\"/>
 
-    <label for=\"password\">Password:</label>
-    <input type=\"password\" id=\"password\" name=\"_password\"/>
+    <label for=\"password\">Contraseña:</label>
+    <input type=\"password\" id=\"tbxPass\" name=\"_password\"/>
 
     {#
         If you want to control the URL the user
@@ -156,7 +156,7 @@ class __TwigTemplate_b769b38ea18bf4c6dd3a94ffa391cee9718228f2e89989126f39df49db7
         <input type=\"hidden\" name=\"_target_path\" value=\"/account\"/>
     #}
 
-    <button type=\"submit\">login</button>
+    <button type=\"submit\" id=\"loginButton\">login</button>
 </form>
 {% endblock %}
 ", "security/login.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/templates/security/login.html.twig");
