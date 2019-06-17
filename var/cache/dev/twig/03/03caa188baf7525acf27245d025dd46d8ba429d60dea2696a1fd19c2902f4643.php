@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* @EasyAdmin/css/easyadmin.css.twig */
+/* EasyAdminBundle:css:easyadmin.css.twig */
 class __TwigTemplate_c0eb71c2ef80fbc019018cb40e544ff33e19fdc8438db78a292525236354120c extends \Twig\Template
 {
     private $source;
@@ -32,10 +32,10 @@ class __TwigTemplate_c0eb71c2ef80fbc019018cb40e544ff33e19fdc8438db78a29252523635
     protected function doDisplay(array $context, array $blocks = [])
     {
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@EasyAdmin/css/easyadmin.css.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "EasyAdminBundle:css:easyadmin.css.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@EasyAdmin/css/easyadmin.css.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "EasyAdminBundle:css:easyadmin.css.twig"));
 
         // line 4
         echo "
@@ -1919,7 +1919,7 @@ body.error .error-message {
 
     public function getTemplateName()
     {
-        return "@EasyAdmin/css/easyadmin.css.twig";
+        return "EasyAdminBundle:css:easyadmin.css.twig";
     }
 
     public function isTraitable()
@@ -3344,6 +3344,6 @@ body.error .error-message {
     }
 }
 {% endautoescape %}
-", "@EasyAdmin/css/easyadmin.css.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/css/easyadmin.css.twig");
+", "EasyAdminBundle:css:easyadmin.css.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/css/easyadmin.css.twig");
     }
 }

@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* @ApiPlatform/SwaggerUi/index.html.twig */
+/* ApiPlatformBundle:SwaggerUi:index.html.twig */
 class __TwigTemplate_30bdbc84f1c2aae299e0e739af0ccdde4c150e5101fdc5f6dc3e2cd659934e87 extends \Twig\Template
 {
     private $source;
@@ -34,10 +34,10 @@ class __TwigTemplate_30bdbc84f1c2aae299e0e739af0ccdde4c150e5101fdc5f6dc3e2cd6599
     protected function doDisplay(array $context, array $blocks = [])
     {
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@ApiPlatform/SwaggerUi/index.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "ApiPlatformBundle:SwaggerUi:index.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@ApiPlatform/SwaggerUi/index.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "ApiPlatformBundle:SwaggerUi:index.html.twig"));
 
         // line 1
         echo "<!DOCTYPE html>
@@ -265,7 +265,7 @@ class __TwigTemplate_30bdbc84f1c2aae299e0e739af0ccdde4c150e5101fdc5f6dc3e2cd6599
 
     public function getTemplateName()
     {
-        return "@ApiPlatform/SwaggerUi/index.html.twig";
+        return "ApiPlatformBundle:SwaggerUi:index.html.twig";
     }
 
     public function isTraitable()
@@ -371,6 +371,6 @@ class __TwigTemplate_30bdbc84f1c2aae299e0e739af0ccdde4c150e5101fdc5f6dc3e2cd6599
 
 </body>
 </html>
-", "@ApiPlatform/SwaggerUi/index.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/api-platform/core/src/Bridge/Symfony/Bundle/Resources/views/SwaggerUi/index.html.twig");
+", "ApiPlatformBundle:SwaggerUi:index.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/api-platform/core/src/Bridge/Symfony/Bundle/Resources/views/SwaggerUi/index.html.twig");
     }
 }

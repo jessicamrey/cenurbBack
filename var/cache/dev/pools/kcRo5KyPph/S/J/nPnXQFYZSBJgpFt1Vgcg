@@ -9,18 +9,18 @@
             'ApiPlatform\\Core\\Metadata\\Resource\\ResourceNameCollection' => [
                 'classes' => [
                     [
-                        'App\\Entity\\Colonia',
                         'App\\Entity\\TipoPropiedad',
-                        'App\\Entity\\TipoEdificio',
-                        'App\\Entity\\LocNidosCol',
-                        'App\\Entity\\OtrasEspecies',
-                        'App\\Entity\\VisitasColonia',
                         'App\\Entity\\VisitasTerritorio',
+                        'App\\Entity\\VisitasColonia',
                         'App\\Entity\\TipoTerritorio',
                         'App\\Entity\\TempUser',
+                        'App\\Entity\\Colonia',
                         'App\\Entity\\ObservacionesTerritorio',
                         'App\\Entity\\Emplazamiento',
+                        'App\\Entity\\OtrasEspecies',
                         'App\\Entity\\Territorio',
+                        'App\\Entity\\LocNidosCol',
+                        'App\\Entity\\TipoEdificio',
                         'App\\Entity\\CensoMunicipio',
                     ],
                 ],

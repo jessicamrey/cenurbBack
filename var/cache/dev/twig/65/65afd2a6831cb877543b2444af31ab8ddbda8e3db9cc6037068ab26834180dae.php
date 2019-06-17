@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* @EasyAdmin/form/bootstrap_3_horizontal_layout.html.twig */
+/* EasyAdminBundle:form:bootstrap_3_horizontal_layout.html.twig */
 class __TwigTemplate_e2d21c5cc0223ff5fd4a16b65b47547bfe1871442c4295247ba0e8551994d860 extends \Twig\Template
 {
     private $source;
@@ -26,7 +26,7 @@ class __TwigTemplate_e2d21c5cc0223ff5fd4a16b65b47547bfe1871442c4295247ba0e855199
         $this->parent = false;
 
         // line 1
-        $_trait_0 = $this->loadTemplate("@EasyAdmin/form/bootstrap_3_layout.html.twig", "@EasyAdmin/form/bootstrap_3_horizontal_layout.html.twig", 1);
+        $_trait_0 = $this->loadTemplate("@EasyAdmin/form/bootstrap_3_layout.html.twig", "EasyAdminBundle:form:bootstrap_3_horizontal_layout.html.twig", 1);
         if (!$_trait_0->isTraitable()) {
             throw new RuntimeError('Template "'."@EasyAdmin/form/bootstrap_3_layout.html.twig".'" cannot be used as a trait.', 1, $this->source);
         }
@@ -54,10 +54,10 @@ class __TwigTemplate_e2d21c5cc0223ff5fd4a16b65b47547bfe1871442c4295247ba0e855199
     protected function doDisplay(array $context, array $blocks = [])
     {
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@EasyAdmin/form/bootstrap_3_horizontal_layout.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "EasyAdminBundle:form:bootstrap_3_horizontal_layout.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@EasyAdmin/form/bootstrap_3_horizontal_layout.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "EasyAdminBundle:form:bootstrap_3_horizontal_layout.html.twig"));
 
         // line 2
         echo "
@@ -473,7 +473,7 @@ class __TwigTemplate_e2d21c5cc0223ff5fd4a16b65b47547bfe1871442c4295247ba0e855199
 
     public function getTemplateName()
     {
-        return "@EasyAdmin/form/bootstrap_3_horizontal_layout.html.twig";
+        return "EasyAdminBundle:form:bootstrap_3_horizontal_layout.html.twig";
     }
 
     public function getDebugInfo()
@@ -581,6 +581,6 @@ class __TwigTemplate_e2d21c5cc0223ff5fd4a16b65b47547bfe1871442c4295247ba0e855199
 {% endblock reset_row %}
 
 {% block form_group_class 'col-sm-10' %}
-", "@EasyAdmin/form/bootstrap_3_horizontal_layout.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/form/bootstrap_3_horizontal_layout.html.twig");
+", "EasyAdminBundle:form:bootstrap_3_horizontal_layout.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/form/bootstrap_3_horizontal_layout.html.twig");
     }
 }

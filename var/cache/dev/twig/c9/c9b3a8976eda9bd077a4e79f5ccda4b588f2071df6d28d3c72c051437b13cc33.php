@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* @EasyAdmin/default/label_undefined.html.twig */
+/* EasyAdminBundle:default:label_undefined.html.twig */
 class __TwigTemplate_fc7dc01ee38826ce6b62a63b71bb7374dc3f66d08c6d4345e8ab11733ff820b7 extends \Twig\Template
 {
     private $source;
@@ -32,10 +32,10 @@ class __TwigTemplate_fc7dc01ee38826ce6b62a63b71bb7374dc3f66d08c6d4345e8ab11733ff
     protected function doDisplay(array $context, array $blocks = [])
     {
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@EasyAdmin/default/label_undefined.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "EasyAdminBundle:default:label_undefined.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@EasyAdmin/default/label_undefined.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "EasyAdminBundle:default:label_undefined.html.twig"));
 
         
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->leave($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof);
@@ -47,7 +47,7 @@ class __TwigTemplate_fc7dc01ee38826ce6b62a63b71bb7374dc3f66d08c6d4345e8ab11733ff
 
     public function getTemplateName()
     {
-        return "@EasyAdmin/default/label_undefined.html.twig";
+        return "EasyAdminBundle:default:label_undefined.html.twig";
     }
 
     public function getDebugInfo()
@@ -59,6 +59,6 @@ class __TwigTemplate_fc7dc01ee38826ce6b62a63b71bb7374dc3f66d08c6d4345e8ab11733ff
     {
         return new Source("{# this template is rendered when an error or exception occurs while
    trying to get the value of the field (by default nothing is displayed) #}
-", "@EasyAdmin/default/label_undefined.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/label_undefined.html.twig");
+", "EasyAdminBundle:default:label_undefined.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/label_undefined.html.twig");
     }
 }

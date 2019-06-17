@@ -178,6 +178,11 @@ $catalogue = new MessageCatalogue('fr', array (
     'label.form.empty_value' => 'Aucun(e)',
     '__name__label__' => '__name__label__',
   ),
+  'FOSOAuthServerBundle' => 
+  array (
+    'authorize.accept' => 'Accepter',
+    'authorize.reject' => 'Refuser',
+  ),
 ));
 
 $catalogueEn = new MessageCatalogue('en', array (
@@ -356,6 +361,11 @@ $catalogueEn = new MessageCatalogue('en', array (
     'action.list' => 'Back to listing',
     'label.form.empty_value' => 'None',
     '__name__label__' => '__name__label__',
+  ),
+  'FOSOAuthServerBundle' => 
+  array (
+    'authorize.accept' => 'Allow',
+    'authorize.reject' => 'Deny',
   ),
 ));
 $catalogue->addFallbackCatalogue($catalogueEn);

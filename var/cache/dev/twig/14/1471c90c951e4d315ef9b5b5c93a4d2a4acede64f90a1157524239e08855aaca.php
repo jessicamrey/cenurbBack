@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* @Swiftmailer/Collector/swiftmailer.html.twig */
+/* SwiftmailerBundle:Collector:swiftmailer.html.twig */
 class __TwigTemplate_21b62adf5abdbb61076b74d6f2854ed8fc1a2467a6c2f8a0720bd89fe122dfac extends \Twig\Template
 {
     private $source;
@@ -40,12 +40,12 @@ class __TwigTemplate_21b62adf5abdbb61076b74d6f2854ed8fc1a2467a6c2f8a0720bd89fe12
     protected function doDisplay(array $context, array $blocks = [])
     {
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Swiftmailer/Collector/swiftmailer.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "SwiftmailerBundle:Collector:swiftmailer.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@Swiftmailer/Collector/swiftmailer.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "SwiftmailerBundle:Collector:swiftmailer.html.twig"));
 
-        $this->parent = $this->loadTemplate("@WebProfiler/Profiler/layout.html.twig", "@Swiftmailer/Collector/swiftmailer.html.twig", 1);
+        $this->parent = $this->loadTemplate("@WebProfiler/Profiler/layout.html.twig", "SwiftmailerBundle:Collector:swiftmailer.html.twig", 1);
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->leave($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof);
@@ -552,12 +552,10 @@ class __TwigTemplate_21b62adf5abdbb61076b74d6f2854ed8fc1a2467a6c2f8a0720bd89fe12
                                 <pre class=\"prewrap\">";
                     // line 200
                     $context['_parent'] = $context;
-                    $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, $context["message"], "headers", [], "any", false, false, false, 200), "all", [], "any", false, false, false, 200));
+                    $context['_seq'] = twig_ensure_traversable(twig_array_filter(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, $context["message"], "headers", [], "any", false, false, false, 200), "all", [], "any", false, false, false, 200), function ($__header__) use ($context) { $context["header"] = $__header__; return !twig_in_filter((((twig_get_attribute($this->env, $this->source, $context["header"], "fieldName", [], "any", true, true, false, 200) &&  !(null === twig_get_attribute($this->env, $this->source, $context["header"], "fieldName", [], "any", false, false, false, 200)))) ? (twig_get_attribute($this->env, $this->source, $context["header"], "fieldName", [], "any", false, false, false, 200)) : ("")), [0 => "Subject", 1 => "From", 2 => "To"]); }));
                     foreach ($context['_seq'] as $context["_key"] => $context["header"]) {
-                        if (!twig_in_filter((((twig_get_attribute($this->env, $this->source, $context["header"], "fieldName", [], "any", true, true, false, 200) &&  !(null === twig_get_attribute($this->env, $this->source, $context["header"], "fieldName", [], "any", false, false, false, 200)))) ? (twig_get_attribute($this->env, $this->source, $context["header"], "fieldName", [], "any", false, false, false, 200)) : ("")), [0 => "Subject", 1 => "From", 2 => "To"])) {
-                            // line 201
-                            echo twig_escape_filter($this->env, $context["header"], "html", null, true);
-                        }
+                        // line 201
+                        echo twig_escape_filter($this->env, $context["header"], "html", null, true);
                     }
                     $_parent = $context['_parent'];
                     unset($context['_seq'], $context['_iterated'], $context['_key'], $context['header'], $context['_parent'], $context['loop']);
@@ -606,29 +604,27 @@ class __TwigTemplate_21b62adf5abdbb61076b74d6f2854ed8fc1a2467a6c2f8a0720bd89fe12
                     ";
                     // line 233
                     $context['_parent'] = $context;
-                    $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, $context["message"], "children", [], "any", false, false, false, 233));
+                    $context['_seq'] = twig_ensure_traversable(twig_array_filter(twig_get_attribute($this->env, $this->source, $context["message"], "children", [], "any", false, false, false, 233), function ($__messagePart__) use ($context) { $context["messagePart"] = $__messagePart__; return twig_in_filter(twig_get_attribute($this->env, $this->source, $context["messagePart"], "contentType", [], "any", false, false, false, 233), [0 => "text/plain", 1 => "text/html"]); }));
                     foreach ($context['_seq'] as $context["_key"] => $context["messagePart"]) {
-                        if (twig_in_filter(twig_get_attribute($this->env, $this->source, $context["messagePart"], "contentType", [], "any", false, false, false, 233), [0 => "text/plain", 1 => "text/html"])) {
-                            // line 234
-                            echo "                        <div class=\"card-block\">
+                        // line 234
+                        echo "                        <div class=\"card-block\">
                             <span class=\"label\">Alternative part (";
-                            // line 235
-                            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["messagePart"], "contentType", [], "any", false, false, false, 235), "html", null, true);
-                            echo ")</span>
+                        // line 235
+                        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["messagePart"], "contentType", [], "any", false, false, false, 235), "html", null, true);
+                        echo ")</span>
                             <pre class=\"prewrap\">";
-                            // line 237
-                            if ((twig_get_attribute($this->env, $this->source, $context["messagePart"], "charset", [], "any", true, true, false, 237) && twig_get_attribute($this->env, $this->source, $context["messagePart"], "charset", [], "any", false, false, false, 237))) {
-                                // line 238
-                                echo twig_escape_filter($this->env, twig_convert_encoding(twig_get_attribute($this->env, $this->source, $context["messagePart"], "body", [], "any", false, false, false, 238), "UTF-8", twig_get_attribute($this->env, $this->source, $context["messagePart"], "charset", [], "any", false, false, false, 238)), "html", null, true);
-                            } else {
-                                // line 240
-                                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["messagePart"], "body", [], "any", false, false, false, 240), "html", null, true);
-                            }
-                            // line 242
-                            echo "</pre>
+                        // line 237
+                        if ((twig_get_attribute($this->env, $this->source, $context["messagePart"], "charset", [], "any", true, true, false, 237) && twig_get_attribute($this->env, $this->source, $context["messagePart"], "charset", [], "any", false, false, false, 237))) {
+                            // line 238
+                            echo twig_escape_filter($this->env, twig_convert_encoding(twig_get_attribute($this->env, $this->source, $context["messagePart"], "body", [], "any", false, false, false, 238), "UTF-8", twig_get_attribute($this->env, $this->source, $context["messagePart"], "charset", [], "any", false, false, false, 238)), "html", null, true);
+                        } else {
+                            // line 240
+                            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["messagePart"], "body", [], "any", false, false, false, 240), "html", null, true);
+                        }
+                        // line 242
+                        echo "</pre>
                         </div>
                     ";
-                        }
                     }
                     $_parent = $context['_parent'];
                     unset($context['_seq'], $context['_iterated'], $context['_key'], $context['messagePart'], $context['_parent'], $context['loop']);
@@ -718,7 +714,7 @@ class __TwigTemplate_21b62adf5abdbb61076b74d6f2854ed8fc1a2467a6c2f8a0720bd89fe12
 
     public function getTemplateName()
     {
-        return "@Swiftmailer/Collector/swiftmailer.html.twig";
+        return "SwiftmailerBundle:Collector:swiftmailer.html.twig";
     }
 
     public function isTraitable()
@@ -728,7 +724,7 @@ class __TwigTemplate_21b62adf5abdbb61076b74d6f2854ed8fc1a2467a6c2f8a0720bd89fe12
 
     public function getDebugInfo()
     {
-        return array (  706 => 270,  703 => 269,  688 => 267,  683 => 264,  674 => 261,  670 => 259,  666 => 258,  661 => 255,  657 => 253,  651 => 251,  649 => 250,  645 => 248,  642 => 247,  640 => 246,  637 => 245,  628 => 242,  625 => 240,  622 => 238,  620 => 237,  616 => 235,  613 => 234,  608 => 233,  597 => 227,  587 => 219,  584 => 217,  581 => 215,  579 => 214,  566 => 202,  559 => 201,  554 => 200,  547 => 196,  541 => 193,  532 => 187,  526 => 183,  522 => 181,  516 => 179,  513 => 178,  495 => 177,  489 => 173,  487 => 172,  484 => 171,  478 => 168,  474 => 167,  471 => 166,  468 => 165,  464 => 164,  461 => 163,  457 => 161,  446 => 158,  442 => 157,  439 => 156,  435 => 155,  432 => 154,  427 => 151,  418 => 148,  414 => 147,  410 => 146,  406 => 145,  403 => 144,  399 => 143,  387 => 133,  385 => 132,  382 => 131,  376 => 127,  374 => 126,  369 => 123,  357 => 113,  355 => 112,  352 => 111,  349 => 110,  340 => 109,  329 => 106,  323 => 103,  320 => 102,  318 => 101,  314 => 99,  308 => 97,  304 => 95,  302 => 94,  298 => 93,  295 => 92,  292 => 91,  283 => 90,  237 => 54,  228 => 53,  215 => 49,  212 => 48,  209 => 47,  206 => 46,  197 => 43,  193 => 42,  189 => 41,  186 => 40,  181 => 39,  178 => 38,  164 => 37,  160 => 35,  158 => 34,  152 => 31,  145 => 27,  141 => 26,  138 => 25,  120 => 24,  118 => 23,  112 => 20,  108 => 18,  106 => 17,  103 => 16,  100 => 15,  95 => 13,  90 => 12,  85 => 10,  82 => 9,  79 => 8,  76 => 7,  74 => 6,  71 => 5,  68 => 4,  59 => 3,  37 => 1,);
+        return array (  702 => 270,  699 => 269,  684 => 267,  679 => 264,  670 => 261,  666 => 259,  662 => 258,  657 => 255,  653 => 253,  647 => 251,  645 => 250,  641 => 248,  638 => 247,  636 => 246,  633 => 245,  625 => 242,  622 => 240,  619 => 238,  617 => 237,  613 => 235,  610 => 234,  606 => 233,  595 => 227,  585 => 219,  582 => 217,  579 => 215,  577 => 214,  564 => 202,  558 => 201,  554 => 200,  547 => 196,  541 => 193,  532 => 187,  526 => 183,  522 => 181,  516 => 179,  513 => 178,  495 => 177,  489 => 173,  487 => 172,  484 => 171,  478 => 168,  474 => 167,  471 => 166,  468 => 165,  464 => 164,  461 => 163,  457 => 161,  446 => 158,  442 => 157,  439 => 156,  435 => 155,  432 => 154,  427 => 151,  418 => 148,  414 => 147,  410 => 146,  406 => 145,  403 => 144,  399 => 143,  387 => 133,  385 => 132,  382 => 131,  376 => 127,  374 => 126,  369 => 123,  357 => 113,  355 => 112,  352 => 111,  349 => 110,  340 => 109,  329 => 106,  323 => 103,  320 => 102,  318 => 101,  314 => 99,  308 => 97,  304 => 95,  302 => 94,  298 => 93,  295 => 92,  292 => 91,  283 => 90,  237 => 54,  228 => 53,  215 => 49,  212 => 48,  209 => 47,  206 => 46,  197 => 43,  193 => 42,  189 => 41,  186 => 40,  181 => 39,  178 => 38,  164 => 37,  160 => 35,  158 => 34,  152 => 31,  145 => 27,  141 => 26,  138 => 25,  120 => 24,  118 => 23,  112 => 20,  108 => 18,  106 => 17,  103 => 16,  100 => 15,  95 => 13,  90 => 12,  85 => 10,  82 => 9,  79 => 8,  76 => 7,  74 => 6,  71 => 5,  68 => 4,  59 => 3,  37 => 1,);
     }
 
     public function getSourceContext()
@@ -932,7 +928,7 @@ class __TwigTemplate_21b62adf5abdbb61076b74d6f2854ed8fc1a2467a6c2f8a0720bd89fe12
                             </div>
                             <div class=\"col\">
                                 <span class=\"label\">Headers</span>
-                                <pre class=\"prewrap\">{% for header in message.headers.all if (header.fieldName ?? '') not in ['Subject', 'From', 'To'] %}
+                                <pre class=\"prewrap\">{% for header in message.headers.all|filter(header => (header.fieldName ?? '') not in ['Subject', 'From', 'To']) %}
                                     {{- header -}}
                                 {% endfor %}</pre>
                             </div>
@@ -965,7 +961,7 @@ class __TwigTemplate_21b62adf5abdbb61076b74d6f2854ed8fc1a2467a6c2f8a0720bd89fe12
                         </div>
                     </div>
 
-                    {% for messagePart in message.children if messagePart.contentType in ['text/plain', 'text/html'] %}
+                    {% for messagePart in message.children|filter(messagePart => messagePart.contentType in ['text/plain', 'text/html']) %}
                         <div class=\"card-block\">
                             <span class=\"label\">Alternative part ({{ messagePart.contentType }})</span>
                             <pre class=\"prewrap\">
@@ -1004,6 +1000,6 @@ class __TwigTemplate_21b62adf5abdbb61076b74d6f2854ed8fc1a2467a6c2f8a0720bd89fe12
         {% endif %}
     {% endfor %}
 {% endblock %}
-", "@Swiftmailer/Collector/swiftmailer.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/swiftmailer-bundle/Resources/views/Collector/swiftmailer.html.twig");
+", "SwiftmailerBundle:Collector:swiftmailer.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/swiftmailer-bundle/Resources/views/Collector/swiftmailer.html.twig");
     }
 }

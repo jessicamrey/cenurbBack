@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* @WebProfiler/Collector/request.html.twig */
+/* WebProfilerBundle:Collector:request.html.twig */
 class __TwigTemplate_cab52dada559e76ecbf64957cdb9d9ec4e2330ec155050d8865dbe9a878ff245 extends \Twig\Template
 {
     private $source;
@@ -39,12 +39,12 @@ class __TwigTemplate_cab52dada559e76ecbf64957cdb9d9ec4e2330ec155050d8865dbe9a878
     protected function doDisplay(array $context, array $blocks = [])
     {
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@WebProfiler/Collector/request.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "WebProfilerBundle:Collector:request.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@WebProfiler/Collector/request.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "WebProfilerBundle:Collector:request.html.twig"));
 
-        $this->parent = $this->loadTemplate("@WebProfiler/Profiler/layout.html.twig", "@WebProfiler/Collector/request.html.twig", 1);
+        $this->parent = $this->loadTemplate("@WebProfiler/Profiler/layout.html.twig", "WebProfilerBundle:Collector:request.html.twig", 1);
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->leave($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof);
@@ -603,15 +603,13 @@ class __TwigTemplate_cab52dada559e76ecbf64957cdb9d9ec4e2330ec155050d8865dbe9a878
         // line 262
         echo "                ";
         $context['_parent'] = $context;
-        $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 262, $this->source); })()), "requestserver", [], "any", false, false, false, 262));
+        $context['_seq'] = twig_ensure_traversable(twig_array_filter(twig_get_attribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 262, $this->source); })()), "requestserver", [], "any", false, false, false, 262), function ($_____, $__key__) use ($context) { $context["_"] = $_____; $context["key"] = $__key__; return !twig_in_filter($context["key"], twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 262, $this->source); })()), "dotenvvars", [], "any", false, false, false, 262), "keys", [], "any", false, false, false, 262)); }));
         foreach ($context['_seq'] as $context["key"] => $context["value"]) {
-            if (!twig_in_filter($context["key"], twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["collector"]) || array_key_exists("collector", $context) ? $context["collector"] : (function () { throw new RuntimeError('Variable "collector" does not exist.', 262, $this->source); })()), "dotenvvars", [], "any", false, false, false, 262), "keys", [], "any", false, false, false, 262))) {
-                // line 263
-                echo "                    ";
-                $context["requestserver"] = twig_array_merge((isset($context["requestserver"]) || array_key_exists("requestserver", $context) ? $context["requestserver"] : (function () { throw new RuntimeError('Variable "requestserver" does not exist.', 263, $this->source); })()), [$context["key"] => $context["value"]]);
-                // line 264
-                echo "                ";
-            }
+            // line 263
+            echo "                    ";
+            $context["requestserver"] = twig_array_merge((isset($context["requestserver"]) || array_key_exists("requestserver", $context) ? $context["requestserver"] : (function () { throw new RuntimeError('Variable "requestserver" does not exist.', 263, $this->source); })()), [$context["key"] => $context["value"]]);
+            // line 264
+            echo "                ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['key'], $context['value'], $context['_parent'], $context['loop']);
@@ -788,7 +786,7 @@ class __TwigTemplate_cab52dada559e76ecbf64957cdb9d9ec4e2330ec155050d8865dbe9a878
 
     public function getTemplateName()
     {
-        return "@WebProfiler/Collector/request.html.twig";
+        return "WebProfilerBundle:Collector:request.html.twig";
     }
 
     public function isTraitable()
@@ -798,7 +796,7 @@ class __TwigTemplate_cab52dada559e76ecbf64957cdb9d9ec4e2330ec155050d8865dbe9a878
 
     public function getDebugInfo()
     {
-        return array (  772 => 318,  765 => 316,  762 => 313,  760 => 312,  756 => 310,  754 => 309,  742 => 307,  740 => 306,  734 => 305,  731 => 304,  711 => 303,  700 => 300,  695 => 297,  687 => 295,  679 => 292,  675 => 291,  672 => 290,  668 => 289,  662 => 286,  659 => 285,  657 => 284,  654 => 283,  647 => 279,  641 => 276,  637 => 275,  630 => 270,  628 => 269,  620 => 265,  613 => 264,  610 => 263,  604 => 262,  602 => 261,  596 => 258,  586 => 250,  580 => 248,  574 => 244,  572 => 243,  563 => 237,  558 => 234,  552 => 232,  546 => 228,  544 => 227,  539 => 224,  533 => 222,  527 => 218,  525 => 217,  516 => 211,  511 => 208,  505 => 206,  499 => 202,  497 => 201,  492 => 198,  486 => 196,  480 => 192,  478 => 191,  469 => 185,  462 => 181,  451 => 172,  445 => 168,  439 => 165,  436 => 164,  434 => 163,  429 => 160,  427 => 159,  420 => 155,  416 => 153,  410 => 151,  404 => 147,  402 => 146,  397 => 143,  391 => 141,  385 => 137,  383 => 136,  378 => 133,  372 => 131,  366 => 127,  364 => 126,  359 => 123,  353 => 121,  347 => 117,  345 => 116,  332 => 106,  328 => 104,  325 => 103,  316 => 102,  302 => 97,  299 => 96,  290 => 95,  278 => 92,  275 => 91,  272 => 90,  262 => 85,  258 => 84,  252 => 80,  250 => 79,  247 => 78,  237 => 73,  233 => 72,  226 => 68,  221 => 65,  219 => 64,  208 => 60,  200 => 55,  192 => 50,  187 => 47,  182 => 44,  178 => 42,  176 => 41,  168 => 38,  163 => 35,  161 => 34,  158 => 33,  155 => 32,  150 => 30,  145 => 29,  140 => 28,  135 => 27,  133 => 26,  126 => 25,  124 => 24,  121 => 23,  119 => 22,  116 => 21,  113 => 20,  107 => 18,  104 => 17,  101 => 16,  99 => 15,  96 => 14,  93 => 13,  87 => 11,  84 => 10,  82 => 9,  79 => 8,  73 => 6,  70 => 5,  67 => 4,  58 => 3,  36 => 1,);
+        return array (  770 => 318,  763 => 316,  760 => 313,  758 => 312,  754 => 310,  752 => 309,  740 => 307,  738 => 306,  732 => 305,  729 => 304,  709 => 303,  698 => 300,  693 => 297,  685 => 295,  677 => 292,  673 => 291,  670 => 290,  666 => 289,  660 => 286,  657 => 285,  655 => 284,  652 => 283,  645 => 279,  639 => 276,  635 => 275,  628 => 270,  626 => 269,  618 => 265,  612 => 264,  609 => 263,  604 => 262,  602 => 261,  596 => 258,  586 => 250,  580 => 248,  574 => 244,  572 => 243,  563 => 237,  558 => 234,  552 => 232,  546 => 228,  544 => 227,  539 => 224,  533 => 222,  527 => 218,  525 => 217,  516 => 211,  511 => 208,  505 => 206,  499 => 202,  497 => 201,  492 => 198,  486 => 196,  480 => 192,  478 => 191,  469 => 185,  462 => 181,  451 => 172,  445 => 168,  439 => 165,  436 => 164,  434 => 163,  429 => 160,  427 => 159,  420 => 155,  416 => 153,  410 => 151,  404 => 147,  402 => 146,  397 => 143,  391 => 141,  385 => 137,  383 => 136,  378 => 133,  372 => 131,  366 => 127,  364 => 126,  359 => 123,  353 => 121,  347 => 117,  345 => 116,  332 => 106,  328 => 104,  325 => 103,  316 => 102,  302 => 97,  299 => 96,  290 => 95,  278 => 92,  275 => 91,  272 => 90,  262 => 85,  258 => 84,  252 => 80,  250 => 79,  247 => 78,  237 => 73,  233 => 72,  226 => 68,  221 => 65,  219 => 64,  208 => 60,  200 => 55,  192 => 50,  187 => 47,  182 => 44,  178 => 42,  176 => 41,  168 => 38,  163 => 35,  161 => 34,  158 => 33,  155 => 32,  150 => 30,  145 => 29,  140 => 28,  135 => 27,  133 => 26,  126 => 25,  124 => 24,  121 => 23,  119 => 22,  116 => 21,  113 => 20,  107 => 18,  104 => 17,  101 => 16,  99 => 15,  96 => 14,  93 => 13,  87 => 11,  84 => 10,  82 => 9,  79 => 8,  73 => 6,  70 => 5,  67 => 4,  58 => 3,  36 => 1,);
     }
 
     public function getSourceContext()
@@ -1064,7 +1062,7 @@ class __TwigTemplate_cab52dada559e76ecbf64957cdb9d9ec4e2330ec155050d8865dbe9a878
 
                 <h4>Defined as regular env variables</h4>
                 {% set requestserver = [] %}
-                {% for key, value in collector.requestserver if key not in collector.dotenvvars.keys %}
+                {% for key, value in collector.requestserver|filter((_, key) => key not in collector.dotenvvars.keys) %}
                     {% set requestserver = requestserver|merge({(key): value}) %}
                 {% endfor %}
                 {{ include('@WebProfiler/Profiler/table.html.twig', { data: requestserver }, with_context = false) }}
@@ -1123,6 +1121,6 @@ class __TwigTemplate_cab52dada559e76ecbf64957cdb9d9ec4e2330ec155050d8865dbe9a878
         <span>{{ route|default(controller) }}</span>
     {%- endif %}
 {% endmacro %}
-", "@WebProfiler/Collector/request.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Collector/request.html.twig");
+", "WebProfilerBundle:Collector:request.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Collector/request.html.twig");
     }
 }

@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* @EasyAdmin/default/exception.html.twig */
+/* EasyAdminBundle:default:exception.html.twig */
 class __TwigTemplate_94ff274402623ff69a2f9ddd8edc4f51438fde5645544a7a78e79778bc62001e extends \Twig\Template
 {
     private $source;
@@ -33,16 +33,16 @@ class __TwigTemplate_94ff274402623ff69a2f9ddd8edc4f51438fde5645544a7a78e79778bc6
     protected function doGetParent(array $context)
     {
         // line 1
-        return $this->loadTemplate((isset($context["layout_template_path"]) || array_key_exists("layout_template_path", $context) ? $context["layout_template_path"] : (function () { throw new RuntimeError('Variable "layout_template_path" does not exist.', 1, $this->source); })()), "@EasyAdmin/default/exception.html.twig", 1);
+        return $this->loadTemplate((isset($context["layout_template_path"]) || array_key_exists("layout_template_path", $context) ? $context["layout_template_path"] : (function () { throw new RuntimeError('Variable "layout_template_path" does not exist.', 1, $this->source); })()), "EasyAdminBundle:default:exception.html.twig", 1);
     }
 
     protected function doDisplay(array $context, array $blocks = [])
     {
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@EasyAdmin/default/exception.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "EasyAdminBundle:default:exception.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@EasyAdmin/default/exception.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "EasyAdminBundle:default:exception.html.twig"));
 
         $this->getParent($context)->display($context, array_merge($this->blocks, $blocks));
         
@@ -125,7 +125,7 @@ class __TwigTemplate_94ff274402623ff69a2f9ddd8edc4f51438fde5645544a7a78e79778bc6
 
     public function getTemplateName()
     {
-        return "@EasyAdmin/default/exception.html.twig";
+        return "EasyAdminBundle:default:exception.html.twig";
     }
 
     public function isTraitable()
@@ -156,6 +156,6 @@ class __TwigTemplate_94ff274402623ff69a2f9ddd8edc4f51438fde5645544a7a78e79778bc6
         </div>
     </section>
 {% endblock %}
-", "@EasyAdmin/default/exception.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/exception.html.twig");
+", "EasyAdminBundle:default:exception.html.twig", "/home/jessica/Escritorio/Back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/exception.html.twig");
     }
 }

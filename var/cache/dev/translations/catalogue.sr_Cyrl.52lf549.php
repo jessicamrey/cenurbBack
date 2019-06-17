@@ -283,6 +283,11 @@ $catalogueEn = new MessageCatalogue('en', array (
     'label.form.empty_value' => 'None',
     '__name__label__' => '__name__label__',
   ),
+  'FOSOAuthServerBundle' => 
+  array (
+    'authorize.accept' => 'Allow',
+    'authorize.reject' => 'Deny',
+  ),
 ));
 $catalogueSr->addFallbackCatalogue($catalogueEn);
 
