@@ -98,6 +98,7 @@ class srcApp_KernelDevDebugContainerUrlGenerator extends Symfony\Component\Routi
         'app_logout' => [[], [], [], [['text', '/logout']], [], []],
         'login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/api/login']], [], []],
         'api_register' => [[], ['_controller' => 'App\\Controller\\SecurityController::register'], [], [['text', '/api/register']], [], []],
+        'api_is_register' => [[], ['_controller' => 'App\\Controller\\SecurityController::isRegistered'], [], [['text', '/api/isRegistered']], [], []],
         'api_login_anonymous' => [[], ['_controller' => 'App\\Controller\\TempUserController::login', '_api_resource_class' => 'App\\Entity\\TempUser'], [], [['text', '/api/loginAnonymous']], [], []],
         'api_list_col' => [[], ['_controller' => 'App\\Controller\\SeoApisController::listCol'], [], [['text', '/api/listCol']], [], []],
         'api_list_no_col' => [[], ['_controller' => 'App\\Controller\\SeoApisController::listNoCol'], [], [['text', '/api/listNoCol']], [], []],

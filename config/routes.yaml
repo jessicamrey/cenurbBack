@@ -27,6 +27,12 @@ api_register:
     defaults:
         _controller: App\Controller\SecurityController::register
         
+api_is_register:
+    path: '/api/isRegistered'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\SecurityController::isRegistered
+        
 api_login_anonymous:
     path: '/api/loginAnonymous'
     methods: ['POST']

@@ -82,4 +82,20 @@ class SecurityController extends AbstractController
 				]);
 	}
 	
+	public function isRegistered(Request $request){
+		$params=json_decode($request->getContent(), true);
+		$user=$this->getDoctrine()->getRepository(SegUsu::class)->findOneBy(['id_usu'=>$params["id_usu"]]);
+		
+		if ($user!=null){
+			return new JsonResponse(
+					$this->normalizer->normalize(
+							$user->getEmail(), 'json'
+					)
+			);
+		}else{
+			throw new NotFoundHttpException();
+		}
+		
+	}
+	
 }
