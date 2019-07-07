@@ -140,6 +140,11 @@ class Colonia
 
     private $temporada;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $validada;
+
 
 
     public function __construct()
@@ -385,6 +390,18 @@ class Colonia
     public function setTemporada(?Temporada $temporada): self
     {
         $this->temporada = $temporada;
+
+        return $this;
+    }
+
+    public function getValidada(): ?bool
+    {
+        return $this->validada;
+    }
+
+    public function setValidada(?bool $validada): self
+    {
+        $this->validada = $validada;
 
         return $this;
     }

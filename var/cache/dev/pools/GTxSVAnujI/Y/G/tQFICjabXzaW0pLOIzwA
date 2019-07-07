@@ -27,6 +27,7 @@
                         'temporada',
                         'tipo',
                         'visitasTerritorios',
+                        'validado',
                     ],
                 ],
             ],

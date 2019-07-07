@@ -26,6 +26,7 @@
                         'otrasEspecies',
                         'especie',
                         'temporada',
+                        'validada',
                     ],
                 ],
             ],

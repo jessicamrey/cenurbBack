@@ -63,6 +63,12 @@ api_list_one_col:
     methods: ['GET']
     defaults:
         _controller: App\Controller\SeoApisController::listOneCol
+        
+api_get_docs:
+    path: '/api/docs'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\SeoApisController::getDocs
 
 ##########APIS PARA RECUPERAR DATOS GEOFRAFICOS####################
 
@@ -253,6 +259,13 @@ api_visitaCol_rmvImage:
         _controller: App\Controller\ColoniaController::removeImageAction
         
 ##################TERRITORIOS#######################################
+
+
+api_get_closeTerritorios:
+    path: '/api/closeTerr'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\TerritorioController::getTerritoriosCercanos
 
 api_new_territorio:
     path: '/api/territorios'

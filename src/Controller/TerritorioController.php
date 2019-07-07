@@ -224,25 +224,7 @@ class TerritorioController extends Controller{
 	}
 	
 	
-	
-	
-	public function getTerritoriosCercanos(Request $request){
-		$lat = $request->query->get("lat");
-		$lon = $request->query->get("lon");
-		$rad = $request->query->get("rad");
-		$especie = $request->query->get("especie");
-		$colonias = new ArrayCollection();
-		if($rad != NULL)
-		{
-		
-			$territorios= $this->getDoctrine()->getRepository(Territorio::class)->findByRadius($rad, $lat, $lon, $especie);
-		}
-		
-		return new JsonResponse(
-			$this->normalizer->normalize(
-				$territorios, 'json', ['groups' => ['territorio']]
-		));
-	}
+
 	
 	public function getFavoritos(Request $request, $id){
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
@@ -573,7 +555,7 @@ class TerritorioController extends Controller{
 	
 
 	
-	public function estadisticasTerr(Request $request, $id){
+	/*public function estadisticasTerr(Request $request, $id){
 		$anno = $request->query->get("temporada");
 		$ccaa = $request->query->get("ccaa");
 		$prov = $request->query->get("provincia");
@@ -584,6 +566,26 @@ class TerritorioController extends Controller{
 				$this->normalizer->normalize(
 						$stats, 'json', []
 				));
+	}*/
+	
+	
+	public function getTerritoriosCercanos(Request $request){
+		$lat = $request->query->get("lat");
+		$lon = $request->query->get("lon");
+		$rad = $request->query->get("rad");
+		$especie = $request->query->get("especie");
+		$territorios = new ArrayCollection();
+		if($rad != NULL)
+		{
+		
+			$territorios= $this->getDoctrine()->getRepository(Territorio::class)->findByRadius($rad, $lat, $lon, $especie);
+		}
+		
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						count($territorios), 'json', []
+				));
+		
 	}
 	
 }

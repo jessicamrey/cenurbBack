@@ -146,6 +146,11 @@ class Territorio
      */
     private $visitasTerritorios;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $validado;
+
     public function __construct()
     {
         $this->visitasTerritorios = new ArrayCollection();
@@ -378,6 +383,18 @@ class Territorio
                 $visitasTerritorio->setTerritorio(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getValidado(): ?bool
+    {
+        return $this->validado;
+    }
+
+    public function setValidado(?bool $validado): self
+    {
+        $this->validado = $validado;
 
         return $this;
     }
