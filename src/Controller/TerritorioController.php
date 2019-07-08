@@ -75,6 +75,10 @@ class TerritorioController extends Controller{
 			$newTerritorio->setEspecie($params["especie"]);
 			$newTerritorio->setVacio(false);
 			
+			if (isset($params["codTerritorio"])){
+				$newTerritorio->setCodTerritorio($params["codTerritorio"]);
+			}
+			
 			if (isset($params["nombre"])){
 				$newTerritorio->setNombre($params["nombre"]);
 			}
