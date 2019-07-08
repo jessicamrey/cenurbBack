@@ -10,6 +10,7 @@
                 'properties' => [
                     [
                         'id',
+                        'codTerritorio',
                         'usuario',
                         'especie',
                         'nombre',
@@ -28,6 +29,7 @@
                         'tipo',
                         'visitasTerritorios',
                         'validado',
+                        'territoriosFavoritos',
                     ],
                 ],
             ],

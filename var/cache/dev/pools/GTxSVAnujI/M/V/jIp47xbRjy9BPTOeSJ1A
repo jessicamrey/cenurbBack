@@ -10,6 +10,7 @@
                 'properties' => [
                     [
                         'id',
+                        'codColonia',
                         'usuario',
                         'nombre',
                         'barrio',

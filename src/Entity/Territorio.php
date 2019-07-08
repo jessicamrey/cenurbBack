@@ -158,9 +158,15 @@ class Territorio
      */
     private $validado;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FavoritosTerr", mappedBy="territorio")
+     */
+    private $territoriosFavoritos;
+
     public function __construct()
     {
         $this->visitasTerritorios = new ArrayCollection();
+        $this->territoriosFavoritos = new ArrayCollection();
     }
 
     public function getId(): int
@@ -168,7 +174,7 @@ class Territorio
         return $this->id;
     }
     
-     public function getCodTerritorio(): integer
+     public function getCodTerritorio(): int
     {
         return $this->codTerritorio;
     }
@@ -414,6 +420,37 @@ class Territorio
     public function setValidado(?bool $validado): self
     {
         $this->validado = $validado;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FavoritosTerr[]
+     */
+    public function getTerritoriosFavoritos(): Collection
+    {
+        return $this->territoriosFavoritos;
+    }
+
+    public function addTerritoriosFavorito(FavoritosTerr $territoriosFavorito): self
+    {
+        if (!$this->territoriosFavoritos->contains($territoriosFavorito)) {
+            $this->territoriosFavoritos[] = $territoriosFavorito;
+            $territoriosFavorito->setTerritorio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTerritoriosFavorito(FavoritosTerr $territoriosFavorito): self
+    {
+        if ($this->territoriosFavoritos->contains($territoriosFavorito)) {
+            $this->territoriosFavoritos->removeElement($territoriosFavorito);
+            // set the owning side to null (unless already changed)
+            if ($territoriosFavorito->getTerritorio() === $this) {
+                $territoriosFavorito->setTerritorio(null);
+            }
+        }
 
         return $this;
     }

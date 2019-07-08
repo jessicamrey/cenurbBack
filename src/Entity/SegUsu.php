@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Table;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -44,6 +46,22 @@ class SegUsu implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id_coord;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FavoritosCol", mappedBy="usuario")
+     */
+    private $coloniasFavoritas;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FavoritosTerr", mappedBy="usuario")
+     */
+    private $territoriosFavoritos;
+
+    public function __construct()
+    {
+        $this->coloniasFavoritas = new ArrayCollection();
+        $this->territoriosFavoritos = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -143,6 +161,68 @@ class SegUsu implements UserInterface
     public function setIdCoord(int $id_coord): self
     {
         $this->id_coord = $id_coord;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FavoritosCol[]
+     */
+    public function getColoniasFavoritas(): Collection
+    {
+        return $this->coloniasFavoritas;
+    }
+
+    public function addColoniasFavorita(FavoritosCol $coloniasFavorita): self
+    {
+        if (!$this->coloniasFavoritas->contains($coloniasFavorita)) {
+            $this->coloniasFavoritas[] = $coloniasFavorita;
+            $coloniasFavorita->setUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removeColoniasFavorita(FavoritosCol $coloniasFavorita): self
+    {
+        if ($this->coloniasFavoritas->contains($coloniasFavorita)) {
+            $this->coloniasFavoritas->removeElement($coloniasFavorita);
+            // set the owning side to null (unless already changed)
+            if ($coloniasFavorita->getUsuario() === $this) {
+                $coloniasFavorita->setUsuario(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FavoritosTerr[]
+     */
+    public function getTerritoriosFavoritos(): Collection
+    {
+        return $this->territoriosFavoritos;
+    }
+
+    public function addTerritoriosFavorito(FavoritosTerr $territoriosFavorito): self
+    {
+        if (!$this->territoriosFavoritos->contains($territoriosFavorito)) {
+            $this->territoriosFavoritos[] = $territoriosFavorito;
+            $territoriosFavorito->setUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTerritoriosFavorito(FavoritosTerr $territoriosFavorito): self
+    {
+        if ($this->territoriosFavoritos->contains($territoriosFavorito)) {
+            $this->territoriosFavoritos->removeElement($territoriosFavorito);
+            // set the owning side to null (unless already changed)
+            if ($territoriosFavorito->getUsuario() === $this) {
+                $territoriosFavorito->setUsuario(null);
+            }
+        }
 
         return $this;
     }

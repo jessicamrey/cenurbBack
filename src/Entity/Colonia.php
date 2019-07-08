@@ -166,7 +166,7 @@ class Colonia
         return $this->id;
     }
     
-     public function getCodColonia(): integer
+     public function getCodColonia(): int
     {
         return $this->codColonia;
     }

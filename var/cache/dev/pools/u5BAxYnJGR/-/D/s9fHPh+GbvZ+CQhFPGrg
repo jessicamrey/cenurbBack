@@ -22,6 +22,7 @@
                     1 => [
                         'usuario' => 'exact',
                         'id' => 'exact',
+                        'codTerritorio' => 'exact',
                         'nombre' => 'partial',
                         'barrio' => 'partial',
                         'calleNumPiso' => 'partial',

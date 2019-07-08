@@ -718,6 +718,14 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Repository\FavoritosColRepository" class="App\Repository\FavoritosColRepository" public="false" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Repository\FavoritosTerrRepository" class="App\Repository\FavoritosTerrRepository" public="false" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\LocNidosColRepository" class="App\Repository\LocNidosColRepository" public="false" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -3628,7 +3636,7 @@
       <factory class="Doctrine\ORM\EntityManager" method="create"/>
     </service>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory" public="false">
-      <argument type="service" id=".service_locator.a6Lg3Ha"/>
+      <argument type="service" id=".service_locator.QN4vhdR"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -7088,6 +7096,7 @@
       <argument type="collection">
         <argument key="usuario">exact</argument>
         <argument key="id">exact</argument>
+        <argument key="codColonia">exact</argument>
         <argument key="nombre">partial</argument>
         <argument key="nombreCentro">partial</argument>
         <argument key="tipoPropiedad">exact</argument>
@@ -7155,6 +7164,7 @@
       <argument type="collection">
         <argument key="usuario">exact</argument>
         <argument key="id">exact</argument>
+        <argument key="codTerritorio">exact</argument>
         <argument key="nombre">partial</argument>
         <argument key="barrio">partial</argument>
         <argument key="calleNumPiso">partial</argument>
@@ -7262,6 +7272,10 @@
     <service id=".abstract.instanceof.App\Repository\ComunidadesRepository" class="App\Repository\ComunidadesRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\EmplazamientoRepository" class="App\Repository\EmplazamientoRepository" public="false" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\EmplazamientoRepository" class="App\Repository\EmplazamientoRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\FavoritosColRepository" class="App\Repository\FavoritosColRepository" public="false" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\FavoritosColRepository" class="App\Repository\FavoritosColRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\FavoritosTerrRepository" class="App\Repository\FavoritosTerrRepository" public="false" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\FavoritosTerrRepository" class="App\Repository\FavoritosTerrRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\LocNidosColRepository" class="App\Repository\LocNidosColRepository" public="false" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\LocNidosColRepository" class="App\Repository\LocNidosColRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\LocNidosNoColRepository" class="App\Repository\LocNidosNoColRepository" public="false" autowire="true" abstract="true"/>
@@ -7570,7 +7584,7 @@
         <argument key="doctrine.orm.seo_listeners.attach_entity_listeners" type="service" id="doctrine.orm.seo_listeners.attach_entity_listeners"/>
       </argument>
     </service>
-    <service id=".service_locator.a6Lg3Ha" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.QN4vhdR" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\AccessTokenRepository" type="service" id="App\Repository\AccessTokenRepository"/>
@@ -7581,6 +7595,8 @@
         <argument key="App\Repository\ColoniaRepository" type="service" id="App\Repository\ColoniaRepository"/>
         <argument key="App\Repository\ComunidadesRepository" type="service" id="App\Repository\ComunidadesRepository"/>
         <argument key="App\Repository\EmplazamientoRepository" type="service" id="App\Repository\EmplazamientoRepository"/>
+        <argument key="App\Repository\FavoritosColRepository" type="service" id="App\Repository\FavoritosColRepository"/>
+        <argument key="App\Repository\FavoritosTerrRepository" type="service" id="App\Repository\FavoritosTerrRepository"/>
         <argument key="App\Repository\LocNidosColRepository" type="service" id="App\Repository\LocNidosColRepository"/>
         <argument key="App\Repository\LocNidosNoColRepository" type="service" id="App\Repository\LocNidosNoColRepository"/>
         <argument key="App\Repository\ObservacionesTerritorioRepository" type="service" id="App\Repository\ObservacionesTerritorioRepository"/>
