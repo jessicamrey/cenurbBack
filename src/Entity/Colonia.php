@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource()
  * @ApiFilter(SearchFilter::class, properties={"usuario": "exact", 
  * 												"id": "exact",
- *                                              "codColonia: "exact",
+ *                                              "codColonia": "exact",
  * 												"nombre": "partial", 
  * 												"nombreCentro": "partial", 
  * 												"tipoPropiedad": "exact", 
