@@ -50,6 +50,8 @@ class TerritorioController extends Controller{
 		
 		//obtenemos los parámetros del cuerpo de la peticion
 		$params=json_decode($request->getContent(), true);
+		//obtenemos el usuario logeado
+		$user=$this->getUser();
 		
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
@@ -57,23 +59,19 @@ class TerritorioController extends Controller{
 		$newTerritorio= new Territorio();
 		
 		
-		if (isset($params["usuario"]) && isset($params["especie"])){
-		
-		//con el campo usuario, comprobamos primero que exista en la base de datos.
-		
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
+		if ( isset($params["especie"])){
 		
 		//con el campo especie, comprobamos que nos han pasado el id correctamente.
 		
 		//$existeEspecie=Util::existeEspecie($params["especie"]);
 		}else{
-			throw new InvalidArgumentException("No se ha especificado el usuaio o la especie");
+			throw new InvalidArgumentException("No se ha especificado la especie");
 		}
 		
 		if ($params && count($params) /*&& $existeUsuario  && $existeEspecie*/){
 			
 			
-			$newTerritorio->setUsuario("usuario");
+			$newTerritorio->setUsuario($user->getIdUsu());
 			$newTerritorio->setEspecie($params["especie"]);
 			$newTerritorio->setVacio(false);
 			
@@ -149,7 +147,7 @@ class TerritorioController extends Controller{
 			
 			
 				$locNidos= new LocNidosNoCol();
-				$locNidos->setUsuario($params["usuario"]);
+				$locNidos->setUsuario($user->getIdUsu());
 				$newTerritorio->setLocNidos($locNidos);
 			
 			
@@ -179,14 +177,15 @@ class TerritorioController extends Controller{
 		
 		//obtenemos los parámetros del cuerpo de la peticion
 		$params=json_decode($request->getContent(), true);
-		
+		//obtenemos el usuario logeado
+		$user=$this->getUser();
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
 
 		$territorio=$this->getDoctrine()->getRepository(Territorio::class)->find($id);
 		if ($territorio!=null){
 			$locNidos= $territorio->getLocNidos();
-				$locNidos->setUsuario($params["usuario"]);
+				$locNidos->setUsuario($user->getIdUsu());
 				$locNidos->setFachada($params["fachada"]);
 				$locNidos->setTrasera($params["trasera"]);
 				$locNidos->setLateralDerecho($params["latDer"]);
@@ -225,7 +224,7 @@ class TerritorioController extends Controller{
 	
 	
 
-	
+	//TODO: Persistir esta entidad
 	public function getFavoritos(Request $request, $id){
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
 		
@@ -277,6 +276,8 @@ class TerritorioController extends Controller{
 						$visits, 'json', ['groups' => ['visita']]
 				));
 	}*/
+	
+	//TODO: Persisitir esta entidad
 	public function removeFavorito(Request $request, $id){
 		$id=intval($id);
 		$usuario = $request->query->get("usuario");
@@ -317,11 +318,13 @@ class TerritorioController extends Controller{
 	
 		$territorio=$this->getDoctrine()->getRepository(Territorio::class)->find($id);
 		$params=json_decode($request->getContent(), true);
+		//obtenemos el usuario logeado
+		$user=$this->getUser();
 		$entityManager = $this->getDoctrine()->getManager('default');
 		
 		if ($territorio!=null){
 			$visita=new VisitasTerritorio();
-			$visita->setUsuario($params["usuario"]);
+			$visita->setUsuario($user->getIdUsu());
 			$visita->setFecha(new DateTime($params["fecha"]));
 			$visita->setHora(new DateTime($params["hora"]));
 			
@@ -358,8 +361,16 @@ class TerritorioController extends Controller{
 	public function editVisit(Request $request, $id){
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
 	
-		$visita=$this->getDoctrine()->getRepository(VisitasTerritorio::class)->find($id);
+		
 		$params=json_decode($request->getContent(), true);
+		//obtenemos el usuario logeado
+		$user=$this->getUser();
+		
+		//Buscamos solo la visita si pertenece al usuario
+		$visita=$this->getDoctrine()->getRepository(VisitasTerritorio::class)->findOneBy([
+                                                                                            'id'=>$id,
+                                                                                            'usuario'=>$user->getIdUsu()]);
+		
 		$entityManager = $this->getDoctrine()->getManager('default');
 	
 		if ($visita!=null){
@@ -398,8 +409,9 @@ class TerritorioController extends Controller{
 				));
 	}
 	
+	//TODO: Crear metodo borrar entidad que borre solo si pertenece al usuario
 	
-	//TODO: borrar y editar visita deberan comprobar el usuario
+	//TODO: Persistir esta entidad
 	public function newFavorito(Request $request){
 		$params=json_decode($request->getContent(), true);
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
