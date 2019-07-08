@@ -168,10 +168,10 @@ class Colonia
     
      public function getCodColonia(): integer
     {
-        return $this->codcolonia;
+        return $this->codColonia;
     }
     
-    public function setCodcolonia(integer $codColonia): self
+    public function setCodColonia(integer $codColonia): self
     {
         $this->codColonia = $codColonia;
         
