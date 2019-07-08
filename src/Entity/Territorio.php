@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource()
  * @ApiFilter(SearchFilter::class, properties={"usuario": "exact", 
  * 												"id": "exact",
+ *                                              "codTerritorio" : "exact",
  * 												"nombre": "partial", 
  * 												"barrio": "partial", 
  * 												"calleNumPiso": "partial",
@@ -40,6 +41,12 @@ class Territorio
      * @Groups({"territorio", "visitaTerr"})
      */
     private $id;
+    
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"territorio", "visitaTerr"})
+     */
+    private $codTerritorio;
 
      /**
      * @ORM\Column(type="string", length=255)
@@ -159,6 +166,18 @@ class Territorio
     public function getId(): int
     {
         return $this->id;
+    }
+    
+     public function getCodTerritorio(): integer
+    {
+        return $this->codTerritorio;
+    }
+    
+    public function setCodTerritorio(integer $codTerritorio): self
+    {
+        $this->codTerritorio = $codTerritorio;
+        
+        return $this;
     }
 
     public function getUsuario(): string
