@@ -12,7 +12,7 @@ use App\Entity\OtrasEspecies;
 use App\Entity\VisitasColonia;
 use App\Entity\VisitaColoniaImages;
 use App\Entity\Temporada;
-use App\Util\Util;
+use App\Controller\SeoApisController;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
@@ -59,12 +59,12 @@ class ColoniaController extends Controller{
 		
 		//con el campo especie, comprobamos que nos han pasado el id correctamente.
 		
-		//$existeEspecie=Util::existeEspecie($params["especie"]);
+		$existeEspecie=SeoApisController::existeEspecie($params["especie"]);
 		}else{
 			throw new InvalidArgumentException("No se ha especificado la especie");
 		}
 		
-		if ($params && count($params) /*&& $existeUsuario  && $existeEspecie*/){
+		if ($params && count($params) && $existeEspecie){
 			
 			
 			$newColonia->setUsuario($user->getIdUsu());
@@ -206,9 +206,12 @@ class ColoniaController extends Controller{
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
 		
+		//Comprobamos que exista la especie indicada
+		$existeEspecie=SeoApisController::existeEspecie($params["especie"]);
+		
 		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
 		
-		if ($colonia!=null){
+		if ($colonia!=null && $existeEspecie){
 			
 			
 				$otrasEspecies= new OtrasEspecies();
@@ -251,8 +254,8 @@ class ColoniaController extends Controller{
 	
 	//TODO: Persistir esta entidad
 	public function getFavoritos(Request $request, $id){
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
 		
+		$user=$this->getUser();
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
 		
@@ -266,7 +269,7 @@ class ColoniaController extends Controller{
 		";
 		
 		$stmt = $entityManager->getConnection()->prepare($sql);
-		$stmt->bindParam(':id', $id, PDO::PARAM_STR);
+		$stmt->bindParam(':id', $user->getIdUsu(), PDO::PARAM_STR);
 		
 		$stmt->execute();
 		$array= new ArrayCollection();
@@ -289,8 +292,6 @@ class ColoniaController extends Controller{
 		
 		//Creamos este método para comprobar el usuario, sino se podría utilizar el API default
 		
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
-		
 		//TODO: modificar ruta pues id ya no sera necesario
 		$colonia = $request->query->get("colonia");
 		$user=$this->getUser();
@@ -305,7 +306,6 @@ class ColoniaController extends Controller{
 	
 	
 	public function newVisit(Request $request, $id){
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
 		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
 		$params=json_decode($request->getContent(), true);
 		$user=$this->getUser();
@@ -343,43 +343,46 @@ class ColoniaController extends Controller{
 		
 		//TODO: Persistir esta entidad
 		$params=json_decode($request->getContent(), true);
+		$user=$this->getUser();
 		
-		//existe colonia= buscar colonia
-		//if existeColonia and existeUsuario->seguir
+		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($params["colonia"]);
 		
-		//abrimos nuestro manager
-		$entityManager = $this->getDoctrine()->getManager('default');
-	
-		$sql = "
-		INSERT INTO
-			cenurb.FavoritosCol
-			(colonia, usuario)
-		VALUES
-			(:colonia, :usuario)
-		";
-	
-		$stmt = $entityManager->getConnection()->prepare($sql);
-		$stmt->bindParam(':usuario', $params["usuario"], PDO::PARAM_STR);
-		$stmt->bindParam(':colonia', $params["colonia"], PDO::PARAM_INT);
-	
-		$stmt->execute();
 		
-	
-		return new Response(
-				    'Se ha guardado el favorito',
-				    Response::HTTP_OK,
-				    array('content-type' => 'text/html')
-				);
+		if ($colonia!=null){
+			//abrimos nuestro manager
+			$entityManager = $this->getDoctrine()->getManager('default');
+
+			$sql = "
+			INSERT INTO
+				cenurb.FavoritosCol
+				(colonia, usuario)
+			VALUES
+				(:colonia, :usuario)
+			";
+
+			$stmt = $entityManager->getConnection()->prepare($sql);
+			$stmt->bindParam(':usuario', $user->getIdUsu(), PDO::PARAM_STR);
+			$stmt->bindParam(':colonia', $params["colonia"], PDO::PARAM_INT);
+
+			$stmt->execute();
+
+
+			return new Response(
+					    'Se ha guardado el favorito',
+					    Response::HTTP_OK,
+					    array('content-type' => 'text/html')
+					);
+		}else{
+			throw new NotFoundHttpException();
+		}
+		
+		
 	}
 	
 	public function removeFavorito(Request $request, $id){
 		//TODO: persistir esta entidad
 		$id=intval($id);
-		$usuario = $request->query->get("usuario");
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
-		//existe colonia= buscar colonia
-		//if existeColonia and existeUsuario->seguir
-		
+		$user =$this->getUser();		
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
 		
@@ -393,7 +396,7 @@ class ColoniaController extends Controller{
 		";
 		
 		$stmt = $entityManager->getConnection()->prepare($sql);
-		$stmt->bindParam(':usuario', $usuario, PDO::PARAM_STR);
+		$stmt->bindParam(':usuario', $user->getIdUsu(), PDO::PARAM_STR);
 		$stmt->bindParam(':col', $id, PDO::PARAM_INT);
 		
 		$stmt->execute();
