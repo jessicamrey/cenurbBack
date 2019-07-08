@@ -16,7 +16,7 @@ use App\Entity\VisitasColonia;
 use App\Entity\Temporada;
 use App\Entity\Emplazamiento;
 use App\Entity\ObservacionesTerritorio;
-use App\Util\Util;
+use App\Controller\SeoApisController;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
@@ -63,12 +63,12 @@ class TerritorioController extends Controller{
 		
 		//con el campo especie, comprobamos que nos han pasado el id correctamente.
 		
-		//$existeEspecie=Util::existeEspecie($params["especie"]);
+		$existeEspecie=SeoApisController::existeEspecie($params["especie"]);
 		}else{
 			throw new InvalidArgumentException("No se ha especificado la especie");
 		}
 		
-		if ($params && count($params) /*&& $existeUsuario  && $existeEspecie*/){
+		if ($params && count($params) && $existeEspecie){
 			
 			
 			$newTerritorio->setUsuario($user->getIdUsu());
@@ -226,7 +226,7 @@ class TerritorioController extends Controller{
 
 	//TODO: Persistir esta entidad
 	public function getFavoritos(Request $request, $id){
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
+		$user=$this->getUser();
 		
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
@@ -280,6 +280,7 @@ class TerritorioController extends Controller{
 	//TODO: Persisitir esta entidad
 	public function removeFavorito(Request $request, $id){
 		$id=intval($id);
+		$user=$this->getUser();
 		$usuario = $request->query->get("usuario");
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
 		//existe colonia= buscar colonia
@@ -314,7 +315,6 @@ class TerritorioController extends Controller{
 	}
 	
 	public function newVisit(Request $request, $id){
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
 	
 		$territorio=$this->getDoctrine()->getRepository(Territorio::class)->find($id);
 		$params=json_decode($request->getContent(), true);
@@ -359,8 +359,6 @@ class TerritorioController extends Controller{
 	
 	
 	public function editVisit(Request $request, $id){
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
-	
 		
 		$params=json_decode($request->getContent(), true);
 		//obtenemos el usuario logeado
@@ -414,13 +412,13 @@ class TerritorioController extends Controller{
 	//TODO: Persistir esta entidad
 	public function newFavorito(Request $request){
 		$params=json_decode($request->getContent(), true);
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
-		//existe territorio= buscar territorio
-		//if existeTerritorio and existeUsuario->seguir
+		
+		$territorio=$this->getDoctrine()->getRepository(Territorio::class)->find($params["territorio"]);
 		
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
 	
+		if($territorio!=null){
 		$sql = "
 		INSERT INTO
 			cenurb.FavoritosTerr
@@ -441,6 +439,9 @@ class TerritorioController extends Controller{
 				    Response::HTTP_OK,
 				    array('content-type' => 'text/html')
 				);
+		}else{
+			throw new NotFoundHttpException();
+		}
 	}
 	
 	//-------------------ESTADISTICAS-------------------------------
