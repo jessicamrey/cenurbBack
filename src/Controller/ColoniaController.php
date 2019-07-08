@@ -46,30 +46,28 @@ class ColoniaController extends Controller{
 		
 		//obtenemos los parámetros del cuerpo de la peticion
 		$params=json_decode($request->getContent(), true);
-		
+		//obtenemos el usuario logeado
+		$user=$this->getUser();
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
 		
 		$newColonia= new Colonia();
 		
 		
-		if (isset($params["usuario"]) && isset($params["especie"])){
+		if (isset($params["especie"])){
 		
-		//con el campo usuario, comprobamos primero que exista en la base de datos.
-		
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
 		
 		//con el campo especie, comprobamos que nos han pasado el id correctamente.
 		
 		//$existeEspecie=Util::existeEspecie($params["especie"]);
 		}else{
-			throw new InvalidArgumentException("No se ha especificado el usuaio o la especie");
+			throw new InvalidArgumentException("No se ha especificado la especie");
 		}
 		
 		if ($params && count($params) /*&& $existeUsuario  && $existeEspecie*/){
 			
 			
-			$newColonia->setUsuario("usuario");
+			$newColonia->setUsuario($user->getIdUsu());
 			$newColonia->setEspecie($params["especie"]);
 			$newColonia->setVacio(false);
 			
@@ -133,7 +131,7 @@ class ColoniaController extends Controller{
 			
 			
 				$locNidos= new LocNidosCol();
-				$locNidos->setUsuario($params["usuario"]);
+				$locNidos->setUsuario($user->getIdUsu());
 				$newColonia->setLocNidos($locNidos);
 			
 			
@@ -163,14 +161,14 @@ class ColoniaController extends Controller{
 		
 		//obtenemos los parámetros del cuerpo de la peticion
 		$params=json_decode($request->getContent(), true);
-		
+		$user=$this->getUser();
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
 		
 		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
 		if ($colonia!=null){
 			$locNidos= $colonia->getLocNidos();
-				$locNidos->setUsuario($params["usuario"]);
+				$locNidos->setUsuario($user->getIdUsu());
 				$locNidos->setFachada($params["fachada"]);
 				$locNidos->setTrasera($params["trasera"]);
 				$locNidos->setLateralDerecho($params["latDer"]);
@@ -251,6 +249,7 @@ class ColoniaController extends Controller{
 		));
 	}
 	
+	//TODO: Persistir esta entidad
 	public function getFavoritos(Request $request, $id){
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
 		
@@ -292,10 +291,11 @@ class ColoniaController extends Controller{
 		
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
 		
+		//TODO: modificar ruta pues id ya no sera necesario
 		$colonia = $request->query->get("colonia");
-		
-		$colonia ? $visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$id, 'colonia'=>$colonia]) :
-					$visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$id]);
+		$user=$this->getUser();
+		$colonia ? $visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$user->getIdUsu(), 'colonia'=>$colonia]) :
+					$visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$user->getIdUsu()]);
 		
 		return new JsonResponse(
 				$this->normalizer->normalize(
@@ -308,11 +308,12 @@ class ColoniaController extends Controller{
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
 		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
 		$params=json_decode($request->getContent(), true);
+		$user=$this->getUser();
 		$entityManager = $this->getDoctrine()->getManager('default');
 		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findOneBy(['anno'=>$params["anno"]]);
 		if ($colonia!=null){
 			$visita=new VisitasColonia();
-			$visita->setUsuario($params["usuario"]);
+			$visita->setUsuario($user->getIdUsu());
 			$visita->setNombreUsuario($params["nombreUsuario"]);
 			$visita->setNumVisita($params["numVisita"]);
 			$visita->setNumNidos($params["numNidos"]);
@@ -339,8 +340,10 @@ class ColoniaController extends Controller{
 	
 	//TODO: borrar y editar visita deberan comprobar el usuario
 	public function newFavorito(Request $request){
+		
+		//TODO: Persistir esta entidad
 		$params=json_decode($request->getContent(), true);
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
+		
 		//existe colonia= buscar colonia
 		//if existeColonia and existeUsuario->seguir
 		
@@ -370,6 +373,7 @@ class ColoniaController extends Controller{
 	}
 	
 	public function removeFavorito(Request $request, $id){
+		//TODO: persistir esta entidad
 		$id=intval($id);
 		$usuario = $request->query->get("usuario");
 		//$existeUsuario=Util::existeUsuario($params["usuario"]);
