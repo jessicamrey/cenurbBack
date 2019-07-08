@@ -45,6 +45,30 @@ class SeoApisController extends Controller{
             );
     }
     
+    public function existeEspecie($idEspecie)
+	{
+		 //abrimos el manager de Seo
+            $entityManager = $this->getDoctrine()->getManager('seo');
+                   
+            $sql = "
+                SELECT 
+                    t.`ID_ESP`
+                FROM   
+                    tablas_seo.t_especies t
+                WHERE
+                    t.ID_ESP= :id
+            ";
+            
+        $stmt = $entityManager->getConnection()->prepare($sql);
+        $stmt->bindParam(':id', $idEspecie, PDO::PARAM_INT);
+        
+        $stmt->execute();
+        $array= new ArrayCollection();
+        $array=$stmt->fetchAll();
+        
+        return (count($array)>0);
+	}
+    
     public function listCol(Request $request)
     {
             //abrimos el manager de Seo
