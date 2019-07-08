@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource()
  * @ApiFilter(SearchFilter::class, properties={"usuario": "exact", 
  * 												"id": "exact",
+ *                                              "codColonia: "exact",
  * 												"nombre": "partial", 
  * 												"nombreCentro": "partial", 
  * 												"tipoPropiedad": "exact", 
@@ -39,6 +40,12 @@ class Colonia
      */
     private $id;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"colonia","visita"})
+     */
+    private $codColonia;
+    
      /**
      * @ORM\Column(type="string", length=255)
      */
@@ -157,6 +164,18 @@ class Colonia
     public function getId(): int
     {
         return $this->id;
+    }
+    
+     public function getCodColonia(): integer
+    {
+        return $this->codcolonia;
+    }
+    
+    public function setCodcolonia(integer $codColonia): self
+    {
+        $this->codColonia = $codColonia;
+        
+        return $this;
     }
     
     public function getUsuario(): string
