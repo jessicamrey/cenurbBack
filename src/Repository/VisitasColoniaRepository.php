@@ -165,4 +165,44 @@ class VisitasColoniaRepository extends ServiceEntityRepository
     	->getResult();
     
     }
+    
+    public function statTipoPropiedad($especie, $temporada, $ccaa, $prov, $mun, $tipo)
+    {
+    	$query= $this->createQueryBuilder('v')
+    	->select('sum(v.numNidos),sum(v.numNidosOcupados),sum(v.numNidosVacios),sum(v.numNidosExito), c.especie, t.descripcion')
+    	->join('v.colonia', 'c')
+    	->join('c.tipoPropiedad', 't')
+    	->join('v.temporada', 'te')
+    	->andWhere('c.especie = :esp')
+    	->groupBy('t.descripcion');
+    
+    	if($temporada!=null){
+    		$query->andWhere('te.anno= :temp');
+    		$query->setParameter('temp', $temporada);
+    	}
+    	if($ccaa!=null){
+    		$query->andWhere('c.ccaa = :ccaa');
+    		$query->setParameter('ccaa', $ccaa);
+    	}
+    	if($prov!=null){
+    		$query->andWhere('c.provincia = :prov');
+    		$query->setParameter('prov', $prov);
+    	}
+    	
+    	if($mun!=null){
+    		$query->andWhere('c.municipio = :mun');
+    		$query->setParameter('mun', $mun);
+    	}
+    	
+    	if($tipo!=null){
+    		$query->andWhere('t.Description= :tipo');
+    		$query->setParameter('tipo', $tipo);
+    	}
+    
+    
+    	return $query->setParameter('esp', $especie)
+    	->getQuery()
+    	->getResult();
+    
+    }
 }
