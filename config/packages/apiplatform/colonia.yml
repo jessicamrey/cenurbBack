@@ -81,6 +81,10 @@ resources:
             statsTipoEdificioCol:
                 method: 'GET'
                 route_name: 'api_stats_tipoEdificioCol'
+                
+            statsTipoPropiedadCol:
+                method: 'GET'
+                route_name: 'api_stats_tipoPropiedadCol'
             
 
                 
