@@ -334,6 +334,14 @@ api_put_visitaTerr:
         _api_resource_class: App\Entity\VisitasTerritorio
         _api_item_operation_name: 'put'
         
+api_del_visitaTerr:
+    path: '/api/visitas-territorios/{id}'
+    methods: ['DELETE']
+    defaults:
+        _controller: App\Controller\TerritorioController::deleteVisitaTerr
+        _api_resource_class: App\Entity\VisitasTerritorio
+        _api_item_operation_name: 'delete'
+        
         
 api_stats_annoTerr:
     path: '/api/especies/{id}/statsAnnoTerr'
