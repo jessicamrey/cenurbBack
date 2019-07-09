@@ -10,9 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
- * @ApiFilter(SearchFilter::class, properties={"colonia": "exact",
- * 												"municipio": "exact",
-                                                "temporada": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"municipio": "exact",
+ *                                             "temporada": "exact"})
  * @ORM\Entity(repositoryClass="App\Repository\CensoMunicipioRepository")
  */
 class CensoMunicipio
@@ -51,10 +50,9 @@ class CensoMunicipio
     private $temporada;
     
      /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Colonia")
+     * @ORM\OneToMany(targetEntity="App\Entity\FavoritosCol", mappedBy="municipioAsignado")
      */
-    private $colonia;
-    
+    private $coloniasFavoritas;
 
 
     public function getId(): int
@@ -121,14 +119,31 @@ class CensoMunicipio
 
         return $this;
     }
-    
-    public function getColonia(): ?Colonia
+
+      /**
+     * @return Collection|FavoritosCol[]
+     */
+    public function getColoniasFavoritas(): Collection
     {
-        return $this->colonia;
+        return $this->coloniasFavoritas;
     }
-    public function setColonia(?Colonia $colonia): self
+    public function addColoniasFavorita(FavoritosCol $coloniasFavorita): self
     {
-        $this->colonia = $colonia;
+        if (!$this->coloniasFavoritas->contains($coloniasFavorita)) {
+            $this->coloniasFavoritas[] = $coloniasFavorita;
+            $coloniasFavorita->setUsuario($this);
+        }
+        return $this;
+    }
+    public function removeColoniasFavorita(FavoritosCol $coloniasFavorita): self
+    {
+        if ($this->coloniasFavoritas->contains($coloniasFavorita)) {
+            $this->coloniasFavoritas->removeElement($coloniasFavorita);
+            // set the owning side to null (unless already changed)
+            if ($coloniasFavorita->getUsuario() === $this) {
+                $coloniasFavorita->setUsuario(null);
+            }
+        }
         return $this;
     }
     
