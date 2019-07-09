@@ -10,6 +10,7 @@ resources:
         collectionOperations:
             post:
                 method: 'POST'
+                route_name: 'api_new_censoMunicipio'
 
             get:
                 method: 'GET'
