@@ -17,6 +17,22 @@
                     [
                         'get' => [
                             'method' => 'GET',
+                            'route_name' => 'api_get_visitaTerr',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'getNormal' => [
+                            'method' => 'GET',
+                            'normalization_context' => [
+                                'groups' => [
+                                    'getVisitaTerr',
+                                ],
+                            ],
+                            'denormalization_context' => [
+                                'groups' => [
+                                    'getVisitaTerr',
+                                ],
+                            ],
                             'input' => null,
                             'output' => null,
                         ],
@@ -28,6 +44,7 @@
                         ],
                         'delete' => [
                             'method' => 'DELETE',
+                            'route_name' => 'api_del_visitaTerr',
                             'input' => null,
                             'output' => null,
                         ],
@@ -37,15 +54,12 @@
                     [
                         'post' => [
                             'method' => 'POST',
-                            'route_name' => 'api_login_anonymous',
-                            'swagger_context' => [
-                                'summary' => 'Entramos sin usuario registrado',
-                            ],
                             'input' => null,
                             'output' => null,
                         ],
                         'get' => [
                             'method' => 'GET',
+                            'route_name' => 'api_get_visitasTerr',
                             'normalization_context' => [
                                 'groups' => [
                                     'visitaTerr',

@@ -53,7 +53,7 @@ class ColoniaController extends Controller{
 						->findBy(['usuario'=>$user->getIdUsu(), 
 							  'temporada'=>$temporada,
 							  'municipio'=>$params["municipio"],
-							  'especie'=>$params["especie"]]) :
+							  'especie'=>$params["especie"]]) ;
 		if(count($existeMunicipio)<=0){
 			$censo=new CensoMunicipio();
 
@@ -308,15 +308,13 @@ class ColoniaController extends Controller{
 		));
 	}
 	
-	public function getVisits(Request $request, $id){
+	public function getVisits(Request $request){
 		
 		//Creamos este método para comprobar el usuario, sino se podría utilizar el API default
 		
-		//TODO: modificar ruta pues id ya no sera necesario
-		$colonia = $request->query->get("colonia");
 		$user=$this->getUser();
-		$colonia ? $visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$user->getIdUsu(), 'colonia'=>$colonia]) :
-					$visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$user->getIdUsu()]);
+		
+		$visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$user->getIdUsu()]);
 		
 		return new JsonResponse(
 				$this->normalizer->normalize(

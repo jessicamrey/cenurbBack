@@ -13,6 +13,7 @@ resources:
 
             get:
                 method: 'GET'
+                route_name: 'api_get_visitasCol'
                 normalization_context: 
                     groups: ['visita']
 

@@ -256,7 +256,7 @@ class TerritorioController extends Controller{
 	public function getVisitaTerr(Request $request, $id){
 		$user=$this->getUser();
 		
-		$visita=$this->getDoctrine()->getRepository(VisitasTerritorio::class)->findOneBy(['usuario'=>$user->getIdUsu(), 'id'=>$id]) :
+		$visita=$this->getDoctrine()->getRepository(VisitasTerritorio::class)->findOneBy(['usuario'=>$user->getIdUsu(), 'id'=>$id]) ;
 		
 		return new JsonResponse(
 				$this->normalizer->normalize(

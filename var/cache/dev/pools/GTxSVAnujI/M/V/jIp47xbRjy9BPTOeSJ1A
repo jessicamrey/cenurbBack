@@ -28,6 +28,8 @@
                         'especie',
                         'temporada',
                         'validada',
+                        'municipioAsignado',
+                        'completo',
                     ],
                 ],
             ],

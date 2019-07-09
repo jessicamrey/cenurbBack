@@ -19,6 +19,7 @@
                 'groups' => [
                     1 => [
                         'colonia',
+                        'censo',
                     ],
                 ],
             ],

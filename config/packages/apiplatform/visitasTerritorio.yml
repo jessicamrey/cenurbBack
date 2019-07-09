@@ -27,6 +27,14 @@ resources:
                 method: 'GET'
                 route_name: 'api_get_visitaTerr'
                 
+            getNormal:
+                method: 'GET'
+                normalization_context: 
+                    groups: ['getVisitaTerr']
+
+                denormalization_context: 
+                    groups: ['getVisitaTerr']
+                
             put:
                 method: 'PUT'
                 route_name: 'api_put_visitaTerr'

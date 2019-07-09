@@ -19,6 +19,7 @@
                     3 => [
                         'colonia',
                         'visita',
+                        'censo',
                     ],
                 ],
             ],

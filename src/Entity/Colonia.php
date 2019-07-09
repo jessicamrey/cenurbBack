@@ -153,7 +153,7 @@ class Colonia
     private $validada;
 
       /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CensoMunicpio", inversedBy="coloniasAsignadas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CensoMunicipio", inversedBy="coloniasAsignadas")
      */
     private $municipioAsignado;
     
@@ -180,7 +180,7 @@ class Colonia
         return $this->codColonia;
     }
     
-    public function setCodColonia(integer $codColonia): self
+    public function setCodColonia(int $codColonia): self
     {
         $this->codColonia = $codColonia;
         
@@ -444,7 +444,7 @@ class Colonia
         return $this;
     }
     
-    public function getCompleto(): bool
+    public function getCompleto()
     {
         return $this->completo;
     }

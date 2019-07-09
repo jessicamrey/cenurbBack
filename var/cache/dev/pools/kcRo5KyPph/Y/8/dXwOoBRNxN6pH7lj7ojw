@@ -22,11 +22,13 @@
                         ],
                         'put' => [
                             'method' => 'PUT',
+                            'route_name' => 'api_put_visitaCol',
                             'input' => null,
                             'output' => null,
                         ],
                         'delete' => [
                             'method' => 'DELETE',
+                            'route_name' => 'api_del_visitaCol',
                             'input' => null,
                             'output' => null,
                         ],
@@ -41,6 +43,7 @@
                         ],
                         'get' => [
                             'method' => 'GET',
+                            'route_name' => 'api_get_visitasCol',
                             'normalization_context' => [
                                 'groups' => [
                                     'visita',

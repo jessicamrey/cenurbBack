@@ -15,6 +15,7 @@
                         'especie',
                         'completo',
                         'temporada',
+                        'coloniasAsignadas',
                     ],
                 ],
             ],

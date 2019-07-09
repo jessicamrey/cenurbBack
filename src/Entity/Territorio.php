@@ -179,7 +179,7 @@ class Territorio
         return $this->codTerritorio;
     }
     
-    public function setCodTerritorio(integer $codTerritorio): self
+    public function setCodTerritorio(int $codTerritorio): self
     {
         $this->codTerritorio = $codTerritorio;
         

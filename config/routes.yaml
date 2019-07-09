@@ -146,14 +146,6 @@ api_get_favoritosCol:
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'getFav'
         
-api_get_visits:
-    path: '/api/usuario/{id}/visitas'
-    methods: ['GET']
-    defaults:
-        _controller: App\Controller\ColoniaController::getVisits
-        _api_resource_class: App\Entity\Colonia
-        _api_collection_operation_name: 'getVisits'
-        
 api_new_visitaCol:
     path: '/api/colonias/{id}/visitas'
     methods: ['POST']
@@ -161,6 +153,14 @@ api_new_visitaCol:
         _controller: App\Controller\ColoniaController::newVisit
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'newVisit'
+        
+api_get_visitasCol:
+    path: '/api/visitas-colonias'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::getVisits
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'get'
         
 api_stats_anno:
     path: '/api/especies/{id}/statsAnno'

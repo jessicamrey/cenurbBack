@@ -26,7 +26,7 @@ class VisitasTerritorio
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("visitaTerr")
+     * @Groups({"visitaTerr", "getVisitaTerr"})
      */
     private $id;
 
