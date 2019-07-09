@@ -5,19 +5,14 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
- * @ApiFilter(BooleanFilter::class, properties={"completo"})
- * @ApiFilter(NumericFilter::class, properties={"temporada", "especie"})
- * @ApiFilter(RangeFilter::class, properties={"temporada"})
- * @ApiFilter(SearchFilter::class, properties={"usuario": "exact",
- * 												"municipio": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"colonia": "exact",
+ * 												"municipio": "exact",
+                                                "temporada": "exact"})
  * @ORM\Entity(repositoryClass="App\Repository\CensoMunicipioRepository")
  */
 class CensoMunicipio
@@ -54,6 +49,11 @@ class CensoMunicipio
      * @ORM\JoinColumn(nullable=false)
      */
     private $temporada;
+    
+     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Colonia")
+     */
+    private $colonia;
     
 
 
@@ -119,6 +119,16 @@ class CensoMunicipio
     {
         $this->temporada = $temporada;
 
+        return $this;
+    }
+    
+    public function getColonia(): ?Colonia
+    {
+        return $this->colonia;
+    }
+    public function setColonia(?Colonia $colonia): self
+    {
+        $this->colonia = $colonia;
         return $this;
     }
     
