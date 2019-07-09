@@ -320,7 +320,80 @@ class ColoniaController extends Controller{
 				));
 	}
 	
-	//TODO: borrar y editar visita deberan comprobar el usuario
+	
+	public function editVisitaCol(Request $request, $id){
+		
+		$params=json_decode($request->getContent(), true);
+		//obtenemos el usuario logeado
+		$user=$this->getUser();
+		
+		//Buscamos solo la visita si pertenece al usuario
+		$visita=$this->getDoctrine()->getRepository(VisitasColonia::class)->findOneBy([
+                                                                                            'id'=>$id,
+                                                                                            'usuario'=>$user->getIdUsu()]);
+		
+		$entityManager = $this->getDoctrine()->getManager('default');
+	
+		if ($visita!=null){
+	
+				
+			if (isset($params["numNidos"])){
+				$visita->setNumNidos($params["numNidos"]);
+			}
+			if (isset($params["numNidosOcupados"])){
+				$visita->setNumNidosOcupados($params["numNidosOcupados"]);
+			}
+			if (isset($params["numNidosExito"])){
+				$visita->setNumNidosExito($params["numNidosExito"]);
+			}
+			if (isset($params["numNidosVacios"])){
+				$visita->setNumNidosVacios($params["numNidosVacios"]);
+			}
+			if (isset($params["completo"])){
+				$visita->setCompleto($params["completo"]);
+			}
+			
+								
+			$entityManager->persist($visita);
+			$entityManager->flush();
+			$entityManager->close();
+				
+		}
+	
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$visita, 'json', ['groups' => ['visitaCol']]
+				));
+	}
+	
+	public function deleteVisitaCol(Request $request, $id){
+		
+		$params=json_decode($request->getContent(), true);
+		//obtenemos el usuario logeado
+		$user=$this->getUser();
+		
+		//Buscamos solo la visita si pertenece al usuario
+		$visita=$this->getDoctrine()->getRepository(VisitasColonia::class)->findOneBy([
+                                                                                            'id'=>$id,
+                                                                                            'usuario'=>$user->getIdUsu()]);
+		
+		$entityManager = $this->getDoctrine()->getManager('default');
+	
+		if ($visita!=null){
+								
+			$entityManager->remove($visita);
+			$entityManager->flush();
+			$entityManager->close();
+				
+		}
+	
+		return new Response(
+					    '',
+					    Response::HTTP_NO_CONTENT,
+					    array('content-type' => 'text/html')
+					);
+	}
+	
 	public function newFavorito(Request $request){
 		
 		$params=json_decode($request->getContent(), true);
