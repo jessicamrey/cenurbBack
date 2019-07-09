@@ -24,8 +24,11 @@ resources:
             get:
                 method: 'GET'
                 
+                
             put:
                 method: 'PUT'
+                route_name: 'api_put_visitaCol'
                 
             delete:
                 method: 'DELETE'
+                route_name: 'api_del_visitaCol'
