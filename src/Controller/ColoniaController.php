@@ -7,6 +7,7 @@ use App\Entity\TipoPropiedad;
 use App\Entity\TipoEdificio;
 
 use App\Entity\Colonia;
+use App\Entity\CensoMunicipio;
 use App\Entity\LocNidosCol;
 use App\Entity\FavoritosCol;
 use App\Entity\OtrasEspecies;
@@ -40,6 +41,42 @@ class ColoniaController extends Controller{
 			NormalizerInterface $normalizer
 	) {
 		$this->normalizer = $normalizer;
+	}
+	
+	public function newCensoMunicipio(Request $request){
+		$params=json_decode($request->getContent(), true);
+		$user=$this->getUser();
+		$entityManager = $this->getDoctrine()->getManager('default');
+		$temporada=$this->getDoctrine()->getRepository(Temporada::class)->findOneBy(['anno'=>$params["anno"]]);
+		
+		$existeCenso=$this->getDoctrine()->getRepository(CensoMunicipio::class)
+						->findBy(['usuario'=>$user->getIdUsu(), 
+							  'temporada'=>$temporada,
+							  'municipio'=>$params["municipio"],
+							  'especie'=>$params["especie"]]) :
+		if(count($existeMunicipio)<=0){
+			$censo=new CensoMunicipio();
+
+			$censo->setUsuario($user->getIdUsu());
+			$censo->setMunicipio($params["municipio"]);
+			$censo->setEspecie($params["especie"]);
+			$censo->setCompleto(false);
+			$censo->setColoniasAsignadas([]);
+			$censo->setTemporada($temporada);
+
+			$entityManager->persist($censo);
+			$entityManager->flush();
+			$entityManager->close();
+
+
+			return new JsonResponse(
+					$this->normalizer->normalize(
+							$censo, 'json', ['groups' => ['censo']]
+					));
+		}
+		else{
+			throw new InvalidArgumentException("Ya existe un censo creado para ese municipio");
+		}
 	}
 	
 	public function newColonia(Request $request)
