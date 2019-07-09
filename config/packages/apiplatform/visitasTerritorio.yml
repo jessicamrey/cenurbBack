@@ -33,3 +33,4 @@ resources:
                 
             delete:
                 method: 'DELETE'
+                route_name: 'api_del_visitaTerr'
