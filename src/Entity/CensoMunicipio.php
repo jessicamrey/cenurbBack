@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
@@ -20,6 +21,7 @@ class CensoMunicipio
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("censo")
      */
     private $id;
 
@@ -30,27 +32,32 @@ class CensoMunicipio
     
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("censo")
      */
     private $municipio;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("censo")
      */
     private $especie;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("censo")
      */
     private $completo;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Temporada")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("censo")
      */
     private $temporada;
     
      /**
      * @ORM\OneToMany(targetEntity="App\Entity\Colonia", mappedBy="municipioAsignado")
+     * @Groups("censo")
      */
     private $coloniasAsignadas;
 
