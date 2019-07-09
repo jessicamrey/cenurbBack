@@ -1,0 +1,43 @@
+resources:
+    App\Entity\CensoMunicipio:
+        attributes:
+            pagination_enabled: false
+            normalization_context: 
+                groups: ['censo']
+            denormalization_context: 
+                groups: ['censo']
+            
+        collectionOperations:
+            post:
+                method: 'POST'
+
+            get:
+                method: 'GET'
+                normalization_context: 
+                    groups: ['censo']
+
+                denormalization_context: 
+                    groups: ['censo']
+
+                
+        itemOperations:
+            get:
+                method: 'GET'
+                normalization_context: 
+                    groups: ['censo']
+
+                denormalization_context: 
+                    groups: ['censo']
+                
+                
+            put:
+                method: 'PUT'
+                normalization_context: 
+                    groups: ['censo']
+
+                denormalization_context: 
+                    groups: ['censo']
+
+                
+            delete:
+                method: 'DELETE'
