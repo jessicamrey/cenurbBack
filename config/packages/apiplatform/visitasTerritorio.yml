@@ -14,6 +14,7 @@ resources:
 
             get:
                 method: 'GET'
+                route_name: 'api_get_visitasTerr'
                 normalization_context: 
                     groups: ['visitaTerr']
 
@@ -24,6 +25,7 @@ resources:
         itemOperations:
             get:
                 method: 'GET'
+                route_name: 'api_get_visitaTerr'
                 
             put:
                 method: 'PUT'
