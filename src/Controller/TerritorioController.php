@@ -369,9 +369,34 @@ class TerritorioController extends Controller{
 				));
 	}
 	
-	//TODO: Crear metodo borrar entidad que borre solo si pertenece al usuario
+	public function deleteVisitaTerr(Request $request, $id){
+		
+		$params=json_decode($request->getContent(), true);
+		//obtenemos el usuario logeado
+		$user=$this->getUser();
+		
+		//Buscamos solo la visita si pertenece al usuario
+		$visita=$this->getDoctrine()->getRepository(VisitasTerritorio::class)->findOneBy([
+                                                                                            'id'=>$id,
+                                                                                            'usuario'=>$user->getIdUsu()]);
+		
+		$entityManager = $this->getDoctrine()->getManager('default');
 	
-	//TODO: Persistir esta entidad
+		if ($visita!=null){
+								
+			$entityManager->remove($visita);
+			$entityManager->flush();
+			$entityManager->close();
+				
+		}
+	
+		return new Response(
+					    '',
+					    Response::HTTP_NO_CONTENT,
+					    array('content-type' => 'text/html')
+					);
+	}
+	
 	public function newFavorito(Request $request){
 		$params=json_decode($request->getContent(), true);
 		
