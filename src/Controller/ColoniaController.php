@@ -8,6 +8,7 @@ use App\Entity\TipoEdificio;
 
 use App\Entity\Colonia;
 use App\Entity\LocNidosCol;
+use App\Entity\FavoritosCol;
 use App\Entity\OtrasEspecies;
 use App\Entity\VisitasColonia;
 use App\Entity\VisitaColoniaImages;
@@ -257,35 +258,12 @@ class ColoniaController extends Controller{
 		));
 	}
 	
-	//TODO: Persistir esta entidad
+	
 	public function getFavoritos(Request $request, $id){
 		
 		$user=$this->getUser();
-		//abrimos nuestro manager
-		$entityManager = $this->getDoctrine()->getManager('default');
 		
-		$sql = "
-		SELECT
-			t.`colonia`
-		FROM
-			cenurb.FavoritosCol t
-		WHERE
-			t.usuario = :id
-		";
-		
-		$stmt = $entityManager->getConnection()->prepare($sql);
-		$stmt->bindParam(':id', $user->getIdUsu(), PDO::PARAM_STR);
-		
-		$stmt->execute();
-		$array= new ArrayCollection();
-		$array=$stmt->fetchAll();
-		
-		$colonias=array();
-		//ahora recuperamos los datos de todas las colonias marcadas como favoritas
-		foreach ($array as &$group) {
-			$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($group['colonia']);
-			array_push($colonias, $colonia);
-		}
+		$colonias=$user->getColoniasFavoritas();
 		
 		return new JsonResponse(
 			$this->normalizer->normalize(
@@ -327,7 +305,6 @@ class ColoniaController extends Controller{
 			$visita->setNumNidosVacios($params["numNidosVacios"]);
 			$visita->setFecha(new DateTime($params["fecha"]));
 			$visita->setTemporada($temporada);
-			//TODO: Falta ver que hacemos con este campo
 			$visita->setCompleto(false);
 			$visita->setColonia($colonia);
 			
@@ -346,7 +323,6 @@ class ColoniaController extends Controller{
 	//TODO: borrar y editar visita deberan comprobar el usuario
 	public function newFavorito(Request $request){
 		
-		//TODO: Persistir esta entidad
 		$params=json_decode($request->getContent(), true);
 		$user=$this->getUser();
 		
@@ -356,22 +332,15 @@ class ColoniaController extends Controller{
 		if ($colonia!=null){
 			//abrimos nuestro manager
 			$entityManager = $this->getDoctrine()->getManager('default');
-
-			$sql = "
-			INSERT INTO
-				cenurb.FavoritosCol
-				(colonia, usuario)
-			VALUES
-				(:colonia, :usuario)
-			";
-
-			$stmt = $entityManager->getConnection()->prepare($sql);
-			$stmt->bindParam(':usuario', $user->getIdUsu(), PDO::PARAM_STR);
-			$stmt->bindParam(':colonia', $params["colonia"], PDO::PARAM_INT);
-
-			$stmt->execute();
-
-
+			
+			$favEntity=new FavoritosCol();
+			$favEntity->setColonia($colonia);
+			$favEntity->setUsuario($user);
+			
+			$entityManager->persist($favEntity);
+			$entityManager->flush();
+			$entityManager->close();
+			
 			return new Response(
 					    'Se ha guardado el favorito',
 					    Response::HTTP_OK,
@@ -385,28 +354,17 @@ class ColoniaController extends Controller{
 	}
 	
 	public function removeFavorito(Request $request, $id){
-		//TODO: persistir esta entidad
+		
 		$id=intval($id);
 		$user =$this->getUser();		
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
 		
-		$sql = "
-		DELETE FROM
-			cenurb.FavoritosCol
-		WHERE
-			usuario = :usuario
-			AND
-			colonia = :col
-		";
-		
-		$stmt = $entityManager->getConnection()->prepare($sql);
-		$stmt->bindParam(':usuario', $user->getIdUsu(), PDO::PARAM_STR);
-		$stmt->bindParam(':col', $id, PDO::PARAM_INT);
-		
-		$stmt->execute();
-		
-		
+		$fav=$this->getDoctrine()->getRepository(FavoritosCol::class)->find($id);
+		$entityManager->remove($fav);
+		$entityManager->flush();
+		$entityManager->close();
+
 		return new Response(
 				'Se ha borrado el favorito',
 				Response::HTTP_OK,
