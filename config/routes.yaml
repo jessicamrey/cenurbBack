@@ -226,6 +226,14 @@ api_stats_tipoEdificioCol:
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'statsTipoEdificioCol'
         
+api_stats_tipoPropiedadCol:
+    path: '/api/especies/{id}/statsTipoPropiedadCol'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\ColoniaController::estadisticasTipoPropiedadCol
+        _api_resource_class: App\Entity\Colonia
+        _api_collection_operation_name: 'statsTipoPropiedadCol'
+        
 api_stats_municipioCol:
     path: '/api/especies/{id}/statsMunicipioCol'
     methods: ['GET']
