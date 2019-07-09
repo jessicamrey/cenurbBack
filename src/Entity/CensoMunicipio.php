@@ -50,9 +50,9 @@ class CensoMunicipio
     private $temporada;
     
      /**
-     * @ORM\OneToMany(targetEntity="App\Entity\FavoritosCol", mappedBy="municipioAsignado")
+     * @ORM\OneToMany(targetEntity="App\Entity\Colonia", mappedBy="municipioAsignado")
      */
-    private $coloniasFavoritas;
+    private $coloniasAsignadas;
 
 
     public function getId(): int
@@ -121,27 +121,27 @@ class CensoMunicipio
     }
 
       /**
-     * @return Collection|FavoritosCol[]
+     * @return Collection|Colonia[]
      */
-    public function getColoniasFavoritas(): Collection
+    public function getColoniasAsignadas(): Collection
     {
-        return $this->coloniasFavoritas;
+        return $this->coloniasAsignadas;
     }
-    public function addColoniasFavorita(FavoritosCol $coloniasFavorita): self
+    public function addColoniasAsignada(Colonia $coloniasAsignada): self
     {
-        if (!$this->coloniasFavoritas->contains($coloniasFavorita)) {
-            $this->coloniasFavoritas[] = $coloniasFavorita;
-            $coloniasFavorita->setUsuario($this);
+        if (!$this->coloniasAsignadas->contains($coloniasAsignada)) {
+            $this->coloniasAsignadas[] = $coloniasAsignada;
+            $coloniasAsignada->setMunicipioAsignado($this);
         }
         return $this;
     }
-    public function removeColoniasFavorita(FavoritosCol $coloniasFavorita): self
+    public function removeColoniasAsignada(Colonia $coloniasAsignada): self
     {
-        if ($this->coloniasFavoritas->contains($coloniasFavorita)) {
-            $this->coloniasFavoritas->removeElement($coloniasFavorita);
+        if ($this->coloniasAsignadas->contains($coloniasAsignada)) {
+            $this->coloniasAsignadas->removeElement($coloniasAsignada);
             // set the owning side to null (unless already changed)
-            if ($coloniasFavorita->getUsuario() === $this) {
-                $coloniasFavorita->setUsuario(null);
+            if ($coloniasAsignada->getMunicipioAsignado() === $this) {
+                $coloniasAsignada->setMunicipioAsignado(null);
             }
         }
         return $this;
