@@ -152,7 +152,10 @@ class Colonia
      */
     private $validada;
 
-
+      /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CensoMunicpio", inversedBy="coloniasAsignadas")
+     */
+    private $municipioAsignado;
 
     public function __construct()
     {
@@ -422,6 +425,16 @@ class Colonia
     {
         $this->validada = $validada;
 
+        return $this;
+    }
+    
+    public function getMunicipioAsignado(): ?CensoMunicipio
+    {
+        return $this->municipioAsignado;
+    }
+    public function setMunicipioAsignado(?CensoMunicipio $censo): self
+    {
+        $this->municipioAsignado = $censo;
         return $this;
     }
 
