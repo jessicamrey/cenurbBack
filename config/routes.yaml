@@ -383,6 +383,22 @@ api_stats_observaciones:
         _api_resource_class: App\Entity\Territorio
         _api_collection_operation_name: 'statsObservaciones'
         
+api_get_visitasTerr:
+    path: '/api/visitas-territorios'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\TerritorioController::getVisitasTerr
+        _api_resource_class: App\Entity\Territorio
+        _api_collection_operation_name: 'get'
+        
+api_get_visitaTerr:
+    path: '/api/visitas-territorios/{id}'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\TerritorioController::getVisitaTerr
+        _api_resource_class: App\Entity\Territorio
+        _api_item_operation_name: 'get'
+        
 api_visitaTerr_image:
     path: '/api/visitas-territorios/{id}/image'
     methods: ['POST']
