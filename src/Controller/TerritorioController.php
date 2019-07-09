@@ -238,22 +238,31 @@ class TerritorioController extends Controller{
 		));
 	}
 	
-	/*public function getVisits(Request $request, $id){
+	public function getVisitasTerr(Request $request){
 		
-		//Creamos este método para comprobar el usuario, sino se podría utilizar el API default
+		//Podemos obtener todas las visitas, o todas las visitas de un territorio
+		$territorio = $request->query->get("territorio");
+		$user=$this->getUser();
 		
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
-		
-		$colonia = $request->query->get("colonia");
-		
-		$colonia ? $visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$id, 'colonia'=>$colonia]) :
-					$visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$id]);
+		$territorio ? $visitas=$this->getDoctrine()->getRepository(VisitasTerritorio::class)->findBy(['usuario'=>$user->getIdUsu(), 'territorio'=>$territorio]) :
+				$visitas=$this->getDoctrine()->getRepository(VisitasTerritorio::class)->findBy(['usuario'=>$user->getIdUsu()]);
 		
 		return new JsonResponse(
 				$this->normalizer->normalize(
-						$visits, 'json', ['groups' => ['visita']]
+						$visitas, 'json', ['groups' => ['visitaTerr']]
 				));
-	}*/
+	}
+	
+	public function getVisitaTerr(Request $request, $id){
+		$user=$this->getUser();
+		
+		$visita=$this->getDoctrine()->getRepository(VisitasTerritorio::class)->findOneBy(['usuario'=>$user->getIdUsu(), 'id'=>$id]) :
+		
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$visita, 'json', ['groups' => ['visitaTerr']]
+				));
+	}
 	
 	
 	public function removeFavorito(Request $request, $id){
