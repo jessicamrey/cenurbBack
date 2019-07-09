@@ -78,6 +78,7 @@ class VisitasTerritorio
 
     /**
      * @ORM\Column(type="time", nullable=true)
+     * @Groups("visitaTerr")
      */
     private $hora;
     
