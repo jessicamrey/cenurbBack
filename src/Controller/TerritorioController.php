@@ -9,6 +9,7 @@ use App\Entity\TipoTerritorio;
 
 use App\Entity\Territorio;
 use App\Entity\LocNidosNoCol;
+use App\Entity\FavoritosTerr;
 use App\Entity\OtrasEspecies;
 use App\Entity\VisitasTerritorio;
 use App\Entity\VisitaTerritorioImages;
@@ -226,37 +227,10 @@ class TerritorioController extends Controller{
 		}
 	}
 	
-	
 
-	//TODO: Persistir esta entidad
 	public function getFavoritos(Request $request, $id){
 		$user=$this->getUser();
-		
-		//abrimos nuestro manager
-		$entityManager = $this->getDoctrine()->getManager('default');
-		
-		$sql = "
-		SELECT
-			t.`territorio`
-		FROM
-			cenurb.FavoritosTerr t
-		WHERE
-			t.usuario = :id
-		";
-		
-		$stmt = $entityManager->getConnection()->prepare($sql);
-		$stmt->bindParam(':id', $id, PDO::PARAM_STR);
-		
-		$stmt->execute();
-		$array= new ArrayCollection();
-		$array=$stmt->fetchAll();
-		
-		$territorios=array();
-		//ahora recuperamos los datos de todos los territorios marcados como favoritos
-		foreach ($array as &$group) {
-			$territorio=$this->getDoctrine()->getRepository(Territorio::class)->find($group['territorio']);
-			array_push($territorios, $territorio);
-		}
+		$territorios=$user->getTerritoriosFavoritos();
 		
 		return new JsonResponse(
 			$this->normalizer->normalize(
@@ -281,33 +255,17 @@ class TerritorioController extends Controller{
 				));
 	}*/
 	
-	//TODO: Persisitir esta entidad
+	
 	public function removeFavorito(Request $request, $id){
 		$id=intval($id);
-		$user=$this->getUser();
-		$usuario = $request->query->get("usuario");
-		//$existeUsuario=Util::existeUsuario($params["usuario"]);
-		//existe colonia= buscar colonia
-		//if existeColonia and existeUsuario->seguir
-	
+		$user =$this->getUser();		
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
-	
-		$sql = "
-		DELETE FROM
-			cenurb.FavoritosTerr
-		WHERE
-			usuario = :usuario
-			AND
-			territorio = :terr
-		";
-	
-		$stmt = $entityManager->getConnection()->prepare($sql);
-		$stmt->bindParam(':usuario', $usuario, PDO::PARAM_STR);
-		$stmt->bindParam(':terr', $id, PDO::PARAM_INT);
-	
-		$stmt->execute();
-	
+		
+		$fav=$this->getDoctrine()->getRepository(FavoritosTerr::class)->find($id);
+		$entityManager->remove($fav);
+		$entityManager->flush();
+		$entityManager->close();
 	
 		return new Response(
 				'Se ha borrado el favorito',
@@ -422,27 +380,23 @@ class TerritorioController extends Controller{
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
 	
-		if($territorio!=null){
-		$sql = "
-		INSERT INTO
-			cenurb.FavoritosTerr
-			(territorio, usuario)
-		VALUES
-			(:territorio, :usuario)
-		";
-	
-		$stmt = $entityManager->getConnection()->prepare($sql);
-		$stmt->bindParam(':usuario', $params["usuario"], PDO::PARAM_STR);
-		$stmt->bindParam(':territorio', $params["territorio"], PDO::PARAM_INT);
-	
-		$stmt->execute();
-		
-	
-		return new Response(
-				    'Se ha guardado el favorito',
-				    Response::HTTP_OK,
-				    array('content-type' => 'text/html')
-				);
+		if ($territorio!=null){
+			//abrimos nuestro manager
+			$entityManager = $this->getDoctrine()->getManager('default');
+			
+			$favEntity=new FavoritosTerr();
+			$favEntity->setTerritorio($territorio);
+			$favEntity->setUsuario($user);
+			
+			$entityManager->persist($favEntity);
+			$entityManager->flush();
+			$entityManager->close();
+			
+			return new Response(
+					    'Se ha guardado el favorito',
+					    Response::HTTP_OK,
+					    array('content-type' => 'text/html')
+					);
 		}else{
 			throw new NotFoundHttpException();
 		}
