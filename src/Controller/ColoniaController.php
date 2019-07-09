@@ -593,6 +593,20 @@ class ColoniaController extends Controller{
 				));
 	}
 	
+	public function estadisticasTipoPropiedadCol(Request $request, $id){
+		$anno = $request->query->get("temporada");
+		$ccaa = $request->query->get("ccaa");
+		$prov = $request->query->get("provincia");
+		$mun = $request->query->get("municipio");
+		$tipo= $request->query->get("tipoPropiedad");
+		
+		$stats=$this->getDoctrine()->getRepository(VisitasColonia::class)->statTipoPropiedad($id, $anno, $ccaa, $prov, $mun, $tipo);
+		return new JsonResponse(
+				$this->normalizer->normalize(
+						$stats, 'json', []
+				));
+	}
+	
 	public function getTemporadas(Request $request){
 		$temporadas=$this->getDoctrine()->getRepository(Temporada::class)->findAll();
 		return new JsonResponse(
