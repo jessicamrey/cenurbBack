@@ -70,7 +70,7 @@ class ColoniaController extends Controller{
 			
 			$newColonia->setUsuario($user->getIdUsu());
 			$newColonia->setEspecie($params["especie"]);
-			
+			$newColonia->setCompleto(false);
 			$newColonia->setVacio(false);
 			
 			if (isset($params["codColonia"])){
