@@ -106,6 +106,14 @@ api_new_colonia:
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'post'
         
+api_new_censoMunicipio:
+    path: '/api/censo-municipios'
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\ColoniaController::newCensoMunicipio
+        _api_resource_class: App\Entity\CensoMunicipio
+        _api_collection_operation_name: 'post'
+        
 api_add_locNidosCol:
     path: '/api/colonias/{id}/loc-nidos'
     methods: ['POST']
