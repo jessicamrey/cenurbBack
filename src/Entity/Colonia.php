@@ -36,13 +36,13 @@ class Colonia
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"colonia","visita"})
+     * @Groups({"colonia","visita", "censo"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"colonia","visita"})
+     * @Groups({"colonia","visita", "censo"})
      */
     private $codColonia;
     
@@ -53,7 +53,7 @@ class Colonia
     
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"colonia", "visita"})
+     * @Groups({"colonia", "visita", "censo"})
      */
     private $nombre;
 
@@ -99,7 +99,7 @@ class Colonia
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups("colonia")
+     * @Groups({"colonia", "censo"})
      */
     private $vacio;
 
@@ -119,7 +119,7 @@ class Colonia
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"colonia","visita"})
+     * @Groups({"colonia","visita", "censo"})
      */
     private $municipio;
 
@@ -156,6 +156,12 @@ class Colonia
      * @ORM\ManyToOne(targetEntity="App\Entity\CensoMunicpio", inversedBy="coloniasAsignadas")
      */
     private $municipioAsignado;
+    
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"colonia","visita", "censo"})
+     */
+    private $completo;
 
     public function __construct()
     {
@@ -435,6 +441,18 @@ class Colonia
     public function setMunicipioAsignado(?CensoMunicipio $censo): self
     {
         $this->municipioAsignado = $censo;
+        return $this;
+    }
+    
+    public function getCompleto(): bool
+    {
+        return $this->completo;
+    }
+
+    public function setCompleto(bool $completo): self
+    {
+        $this->completo = $completo;
+
         return $this;
     }
 
