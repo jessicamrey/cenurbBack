@@ -10,9 +10,7 @@ resources:
         collectionOperations:
             post:
                 method: 'POST'
-                route_name: 'api_login_anonymous'
-                swagger_context:
-                    summary: 'Entramos sin usuario registrado'
+
 
             get:
                 method: 'GET'
