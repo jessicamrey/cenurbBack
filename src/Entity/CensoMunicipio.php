@@ -6,11 +6,12 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ * @ApiFilter(NumericFilter::class, properties={"especie"})
  * @ApiFilter(SearchFilter::class, properties={"municipio": "exact",
  *                                             "temporada": "exact"})
  * @ORM\Entity(repositoryClass="App\Repository\CensoMunicipioRepository")
@@ -130,7 +131,7 @@ class CensoMunicipio
       /**
      * @return Collection|Colonia[]
      */
-    public function getColoniasAsignadas(): Collection
+    public function getColoniasAsignadas()
     {
         return $this->coloniasAsignadas;
     }

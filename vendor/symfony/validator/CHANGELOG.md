@@ -1,6 +1,22 @@
 CHANGELOG
 =========
 
+4.3.0
+-----
+
+ * added `Timezone` constraint
+ * added `NotCompromisedPassword` constraint
+ * added options `iban` and `ibanPropertyPath` to Bic constraint
+ * added UATP cards support to `CardSchemeValidator`
+ * added option `allowNull` to NotBlank constraint
+ * added `Json` constraint
+ * added `Unique` constraint
+ * added a new `normalizer` option to the string constraints and to the `NotBlank` constraint
+ * added `Positive` constraint
+ * added `PositiveOrZero` constraint
+ * added `Negative` constraint
+ * added `NegativeOrZero` constraint
+
 4.2.0
 -----
 
@@ -9,7 +25,7 @@ CHANGELOG
  * added `DivisibleBy` constraint
  * decoupled from `symfony/translation` by using `Symfony\Contracts\Translation\TranslatorInterface`
  * deprecated `ValidatorBuilderInterface`
- * made `ValidatorBuilder` final
+ * made `ValidatorBuilder::setTranslator()` final
  * marked `format` the default option in `DateTime` constraint
  * deprecated validating instances of `\DateTimeInterface` in `DateTimeValidator`, `DateValidator` and `TimeValidator`.
  * deprecated using the `Bic`, `Country`, `Currency`, `Language` and `Locale` constraints without `symfony/intl`

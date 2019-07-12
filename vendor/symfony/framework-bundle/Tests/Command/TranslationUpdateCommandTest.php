@@ -39,7 +39,7 @@ class TranslationUpdateCommandTest extends TestCase
         $this->fs->mkdir($this->translationDir.'/translations');
         $this->fs->mkdir($this->translationDir.'/templates');
 
-        $tester = $this->createCommandTester(['messages' => ['foo' => 'foo']]);
+        $tester = $this->createCommandTester(['messages' => ['foo' => 'foo']], [], null, [$this->translationDir.'/trans'], [$this->translationDir.'/views']);
         $tester->execute(['command' => 'translation:update', 'locale' => 'en', '--dump-messages' => true, '--clean' => true]);
         $this->assertRegExp('/foo/', $tester->getDisplay());
         $this->assertRegExp('/1 message was successfully extracted/', $tester->getDisplay());
@@ -121,7 +121,7 @@ class TranslationUpdateCommandTest extends TestCase
     /**
      * @return CommandTester
      */
-    private function createCommandTester($extractedMessages = [], $loadedMessages = [], HttpKernel\KernelInterface $kernel = null)
+    private function createCommandTester($extractedMessages = [], $loadedMessages = [], HttpKernel\KernelInterface $kernel = null, array $transPaths = [], array $viewsPaths = [])
     {
         $translator = $this->getMockBuilder('Symfony\Component\Translation\Translator')
             ->disableOriginalConstructor()
@@ -130,36 +130,36 @@ class TranslationUpdateCommandTest extends TestCase
         $translator
             ->expects($this->any())
             ->method('getFallbackLocales')
-            ->will($this->returnValue(['en']));
+            ->willReturn(['en']);
 
         $extractor = $this->getMockBuilder('Symfony\Component\Translation\Extractor\ExtractorInterface')->getMock();
         $extractor
             ->expects($this->any())
             ->method('extract')
-            ->will(
-                $this->returnCallback(function ($path, $catalogue) use ($extractedMessages) {
+            ->willReturnCallback(
+                function ($path, $catalogue) use ($extractedMessages) {
                     foreach ($extractedMessages as $domain => $messages) {
                         $catalogue->add($messages, $domain);
                     }
-                })
+                }
             );
 
         $loader = $this->getMockBuilder('Symfony\Component\Translation\Reader\TranslationReader')->getMock();
         $loader
             ->expects($this->any())
             ->method('read')
-            ->will(
-                $this->returnCallback(function ($path, $catalogue) use ($loadedMessages) {
+            ->willReturnCallback(
+                function ($path, $catalogue) use ($loadedMessages) {
                     $catalogue->add($loadedMessages);
-                })
+                }
             );
 
         $writer = $this->getMockBuilder('Symfony\Component\Translation\Writer\TranslationWriter')->getMock();
         $writer
             ->expects($this->any())
             ->method('getFormats')
-            ->will(
-                $this->returnValue(['xlf', 'yml', 'yaml'])
+            ->willReturn(
+                ['xlf', 'yml', 'yaml']
             );
 
         if (null === $kernel) {
@@ -177,27 +177,27 @@ class TranslationUpdateCommandTest extends TestCase
             $kernel
                 ->expects($this->any())
                 ->method('getBundle')
-                ->will($this->returnValueMap($returnValues));
+                ->willReturnMap($returnValues);
         }
 
         $kernel
             ->expects($this->any())
             ->method('getRootDir')
-            ->will($this->returnValue($this->translationDir));
+            ->willReturn($this->translationDir);
 
         $kernel
             ->expects($this->any())
             ->method('getBundles')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $container = new Container();
         $container->setParameter('kernel.root_dir', $this->translationDir);
         $kernel
             ->expects($this->any())
             ->method('getContainer')
-            ->will($this->returnValue($container));
+            ->willReturn($container);
 
-        $command = new TranslationUpdateCommand($writer, $loader, $extractor, 'en', $this->translationDir.'/translations', $this->translationDir.'/templates');
+        $command = new TranslationUpdateCommand($writer, $loader, $extractor, 'en', $this->translationDir.'/translations', $this->translationDir.'/templates', $transPaths, $viewsPaths);
 
         $application = new Application($kernel);
         $application->add($command);
@@ -211,7 +211,7 @@ class TranslationUpdateCommandTest extends TestCase
         $bundle
             ->expects($this->any())
             ->method('getPath')
-            ->will($this->returnValue($path))
+            ->willReturn($path)
         ;
 
         return $bundle;

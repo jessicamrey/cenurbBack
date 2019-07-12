@@ -10,6 +10,5 @@ return array(
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'ProxyManager\\' => array($vendorDir . '/ocramius/proxy-manager/src'),
     'Metadata\\' => array($vendorDir . '/jms/metadata/src'),
-    'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
     'Behat\\Transliterator' => array($vendorDir . '/behat/transliterator/src'),
 );

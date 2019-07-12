@@ -87,6 +87,9 @@ $catalogue = new MessageCatalogue('tr', array (
     'This is not a valid UUID.' => 'Bu geçerli bir UUID değildir.',
     'This value should be a multiple of {{ compared_value }}.' => 'Bu değer {{ compare_value }} değerinin katlarından biri olmalıdır.',
     'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.' => 'Bu İşletme Tanımlayıcı Kodu (BIC), IBAN {{ iban }} ile ilişkili değildir.',
+    'This form should not contain extra fields.' => 'Form ekstra alanlar içeremez.',
+    'The uploaded file was too large. Please try to upload a smaller file.' => 'Yüklenen dosya boyutu çok yüksek. Lütfen daha küçük bir dosya yüklemeyi deneyin.',
+    'The CSRF token is invalid. Please try to resubmit the form.' => 'CSRF fişi geçersiz. Formu tekrar göndermeyi deneyin.',
   ),
   'security' => 
   array (

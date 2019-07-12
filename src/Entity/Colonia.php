@@ -22,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  * 												"nombreCentro": "partial", 
  * 												"tipoPropiedad": "exact", 
  * 												"tipoEdificio": "exact",
+ *                                              "municipioAsignado": "exact",
  * 												"ccaa": "exact", 
  * 												"provincia": "exact", 
  * 												"municipio": "exact"})
@@ -154,6 +155,7 @@ class Colonia
 
       /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CensoMunicipio", inversedBy="coloniasAsignadas")
+     * @Groups({"colonia"})
      */
     private $municipioAsignado;
     

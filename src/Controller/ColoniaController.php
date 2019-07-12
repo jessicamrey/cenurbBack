@@ -54,14 +54,13 @@ class ColoniaController extends Controller{
 							  'temporada'=>$temporada,
 							  'municipio'=>$params["municipio"],
 							  'especie'=>$params["especie"]]) ;
-		if(count($existeMunicipio)<=0){
+		if(count($existeCenso)<=0){
 			$censo=new CensoMunicipio();
 
 			$censo->setUsuario($user->getIdUsu());
 			$censo->setMunicipio($params["municipio"]);
 			$censo->setEspecie($params["especie"]);
 			$censo->setCompleto(false);
-			$censo->setColoniasAsignadas([]);
 			$censo->setTemporada($temporada);
 
 			$entityManager->persist($censo);
