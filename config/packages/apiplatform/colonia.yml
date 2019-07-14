@@ -40,9 +40,9 @@ resources:
                 method: 'GET'
                 route_name: 'api_get_favoritosCol'
                 
-            getVisits:
-                method: 'GET'
-                route_name: 'api_get_visits'
+            #getVisits:
+                #method: 'GET'
+                #route_name: 'api_get_visits'
             newVisit:
                 method: 'POST'
                 route_name: 'api_new_visitaCol'
@@ -96,7 +96,16 @@ resources:
 
                 denormalization_context: 
                     groups: ['colonia']
-            put:
-                method: 'PUT'
+            
+
             delete:
                 method: 'DELETE'
+                
+           # put:
+            #    method: 'PUT'
+             #   route_name: 'api_put_colonia'
+              #  normalization_context: 
+               #     groups: ['colonia']
+
+                #denormalization_context: 
+                 #   groups: ['colonia']

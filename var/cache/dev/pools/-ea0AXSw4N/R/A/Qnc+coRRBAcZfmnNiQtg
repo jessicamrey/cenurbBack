@@ -30,11 +30,6 @@
                             'input' => null,
                             'output' => null,
                         ],
-                        'put' => [
-                            'method' => 'PUT',
-                            'input' => null,
-                            'output' => null,
-                        ],
                         'delete' => [
                             'method' => 'DELETE',
                             'input' => null,
@@ -105,12 +100,6 @@
                         'getFav' => [
                             'method' => 'GET',
                             'route_name' => 'api_get_favoritosCol',
-                            'input' => null,
-                            'output' => null,
-                        ],
-                        'getVisits' => [
-                            'method' => 'GET',
-                            'route_name' => 'api_get_visits',
                             'input' => null,
                             'output' => null,
                         ],

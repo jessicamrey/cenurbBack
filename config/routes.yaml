@@ -97,7 +97,8 @@ api_municipios:
         _controller: App\Controller\SeoApisController::municipios
 
 ##################COLONIA#######################################
-
+        
+        
 api_new_colonia:
     path: '/api/colonias'
     methods: ['POST']
@@ -161,6 +162,14 @@ api_get_visitasCol:
         _controller: App\Controller\ColoniaController::getVisits
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'get'
+        
+api_put_colonia:
+    path: '/api/putColonia/{id}'
+    methods: ['PUT']
+    defaults:
+        _controller: App\Controller\ColoniaController::putColonia
+        #_api_resource_class: App\Entity\Colonia
+        #_api_collection_operation_name: 'put'
         
 api_stats_anno:
     path: '/api/especies/{id}/statsAnno'

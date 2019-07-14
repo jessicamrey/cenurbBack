@@ -78,6 +78,78 @@ class ColoniaController extends Controller{
 		}
 	}
 	
+	
+	public function putColonia(Request $request, $id){
+	    
+	    //obtenemos los parámetros del cuerpo de la peticion
+	    $params=json_decode($request->getContent(), true);
+	    //obtenemos el usuario logeado
+	    $user=$this->getUser();
+	   
+	   
+	    //Solo podremos modificar cuando es el mismo usuario
+	    $colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
+	    if ($colonia){
+	        //abrimos nuestro manager
+	        $entityManager = $this->getDoctrine()->getManager('default');
+	        if($colonia->getUsuario()==$user->getIdUsu()){
+    	       
+	            
+    	        if (isset($params["completo"])){
+    	            $colonia->setCompleto($params["completo"]);
+    	        }
+    	        if (isset($params["vacio"])){
+    	            $colonia->setVacio($params["vacio"]);
+    	        }
+    	        if (isset($params["nombre"])){
+    	            $colonia->setNombre($params["nombre"]);
+    	        }
+    	        
+    	        if (isset($params["nombreCentro"])){
+    	            $colonia->setNombreCentro($params["nombreCentro"]);
+    	        }
+    	        if (isset($params["locNidos"])){
+    	            $locNidos=$colonia->getLocNidos();
+    	            $locNidos->setFachada($params["locNidos"]["fachada"]);
+    	            $locNidos->setTrasera($params["locNidos"]["trasera"]);
+    	            $locNidos->setLateralDerecho($params["locNidos"]["lateralDerecho"]);
+    	            $locNidos->setLateralIzquierdo($params["locNidos"]["lateralIzquierdo"]);
+    	            $locNidos->setPatioInferior($params["locNidos"]["patioInferior"]);
+    	            $locNidos->setHuso($params["locNidos"]["huso"]);
+    	            
+    	            $entityManager->persist($locNidos);
+    	        } 
+	        }
+	        if (isset($params["municipioAsignado_id"])){
+	            
+	            
+	               
+    	            $censo=$this->getDoctrine()->getRepository(CensoMunicipio::class)->find($params["municipioAsignado_id"]);
+    	            if ($censo!=null){
+    	                $colonia->setMunicipioAsignado($censo);
+    	            }else{
+    	                $colonia->setMunicipioAsignado(null);
+    	            }
+	            
+	        }
+	        
+	        $entityManager->persist($colonia);
+	        $entityManager->flush();
+	        $entityManager->close();
+	        return new JsonResponse(
+	            $this->normalizer->normalize(
+	                $colonia, 'json', ['groups' => ['colonia']]
+	                )
+	            );
+	        
+	    }else{
+	        throw new InvalidArgumentException("No creaste esta colonia para poder modificarlar");
+	    }
+	    
+	}
+	
+	
+	
 	public function newColonia(Request $request)
 	{
 		
