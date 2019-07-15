@@ -64,11 +64,17 @@ api_list_one_col:
     defaults:
         _controller: App\Controller\SeoApisController::listOneCol
         
-api_get_docs:
-    path: '/api/docs'
+api_get_col_docs:
+    path: '/api/colonias/docs'
     methods: ['GET']
     defaults:
-        _controller: App\Controller\SeoApisController::getDocs
+        _controller: App\Controller\ColoniaController::getDocs
+        
+api_get_terr_docs:
+    path: '/api/territorios/docs'
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\TerritorioController::getDocs
 
 ##########APIS PARA RECUPERAR DATOS GEOFRAFICOS####################
 
