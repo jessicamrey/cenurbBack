@@ -58,7 +58,7 @@ class TerritorioController extends Controller{
 		    "%s://%s%s",
 		    isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
 		    $_SERVER['SERVER_NAME'],
-		    '/public/files/col'
+		    '/public/files/nocol'
 		    );
 	    }
 	
@@ -66,7 +66,7 @@ class TerritorioController extends Controller{
 	*	https://www.php.net/manual/es/function.scandir.php
 	*/
 	public function getDocs(Request $request){
-		$ficheros=scandir(ColoniaController::url());
+		$ficheros=scandir(TerritorioController::url());
 		
 		return new Response(
 				$ficheros,
