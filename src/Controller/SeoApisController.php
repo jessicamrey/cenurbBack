@@ -317,10 +317,7 @@ class SeoApisController extends Controller{
             );
     }
     
-    
-    public function getDocs(){
-    	
-    }
+
     
     
 }
