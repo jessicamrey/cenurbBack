@@ -46,6 +46,37 @@ class TerritorioController extends Controller{
 		$this->normalizer = $normalizer;
 	}
 	
+	
+/**
+     * https://stackoverflow.com/questions/2820723/how-to-get-base-url-with-php
+     * 
+     * @return string
+     */
+    
+	    function url(){
+		return sprintf(
+		    "%s://%s%s",
+		    isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+		    $_SERVER['SERVER_NAME'],
+		    '/public/files/col'
+		    );
+	    }
+	
+	/*
+	*	https://www.php.net/manual/es/function.scandir.php
+	*/
+	public function getDocs(Request $request){
+		$ficheros=scandir(ColoniaController::url());
+		
+		return new Response(
+				$ficheros,
+				Response::HTTP_OK,
+				array('content-type' => 'text/html')
+		);
+		
+	}	
+	
+	
 	public function newTerritorio(Request $request)
 	{
 		
