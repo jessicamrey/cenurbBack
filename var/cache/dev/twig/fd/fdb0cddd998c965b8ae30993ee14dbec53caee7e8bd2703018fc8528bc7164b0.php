@@ -482,6 +482,6 @@ class __TwigTemplate_27576845f7c2bee0d4a000e45145da146c597eca2690bae644d6cbf1a41
         {% endfor %}
     </table>
 {% endmacro %}
-", "WebProfilerBundle:Collector:events.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Collector/events.html.twig");
+", "WebProfilerBundle:Collector:events.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Collector/events.html.twig");
     }
 }

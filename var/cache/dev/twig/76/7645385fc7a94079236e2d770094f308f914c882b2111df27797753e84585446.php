@@ -174,6 +174,6 @@ class __TwigTemplate_c938247dcee569d0db02c6eb706a0c2f3793c584ae799e2093f9a8c971b
         {% endif %}
     </div>
 {% endblock %}
-", "WebProfilerBundle:Profiler:open.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/open.html.twig");
+", "WebProfilerBundle:Profiler:open.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/open.html.twig");
     }
 }

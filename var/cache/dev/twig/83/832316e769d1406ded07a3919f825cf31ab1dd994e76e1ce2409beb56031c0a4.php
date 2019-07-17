@@ -475,6 +475,6 @@ header .container { display: flex; justify-content: space-between; }
     .hidden-xs-down { display: initial; }
     .help-link { margin-left: 30px; }
 }
-", "TwigBundle::exception.css.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/twig-bundle/Resources/views/exception.css.twig");
+", "TwigBundle::exception.css.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/twig-bundle/Resources/views/exception.css.twig");
     }
 }

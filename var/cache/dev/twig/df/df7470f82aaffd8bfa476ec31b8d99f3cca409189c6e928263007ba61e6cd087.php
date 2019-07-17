@@ -1289,6 +1289,6 @@ $context["voter_detail"], "vote", [], "array", false, false, false, 353) == twig
         </table>
     {% endif %}
 {% endblock %}
-", "SecurityBundle:Collector:security.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/security-bundle/Resources/views/Collector/security.html.twig");
+", "SecurityBundle:Collector:security.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/security-bundle/Resources/views/Collector/security.html.twig");
     }
 }

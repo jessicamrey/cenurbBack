@@ -63,6 +63,6 @@ class __TwigTemplate_1f44e3ead3d9314c5630b8a4f68fb9b428a10b095aa5eaea42807caeb5d
     public function getSourceContext()
     {
         return new Source("<?php echo \$view['form']->block(\$form, 'choice_widget_options') ?>
-", "FrameworkBundle:Form:choice_options.html.php", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/choice_options.html.php");
+", "FrameworkBundle:Form:choice_options.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/choice_options.html.php");
     }
 }

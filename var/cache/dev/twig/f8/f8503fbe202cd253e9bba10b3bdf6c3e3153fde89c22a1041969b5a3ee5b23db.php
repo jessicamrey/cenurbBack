@@ -63,6 +63,6 @@ class __TwigTemplate_bcaab79cbc5905f5ba7661072c5b49a5dcb9bd83b344434fa7d55603f33
     public function getSourceContext()
     {
         return new Source("<input type=\"<?php echo isset(\$type) ? \$view->escape(\$type) : 'text' ?>\" <?php echo \$view['form']->block(\$form, 'widget_attributes') ?><?php if (!empty(\$value) || is_numeric(\$value)): ?> value=\"<?php echo \$view->escape(\$value) ?>\"<?php endif ?> />
-", "FrameworkBundle:Form:form_widget_simple.html.php", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_widget_simple.html.php");
+", "FrameworkBundle:Form:form_widget_simple.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_widget_simple.html.php");
     }
 }

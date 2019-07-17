@@ -85,6 +85,6 @@ class __TwigTemplate_60948e7f7a8dea0d2100621e9005d7408a70d80a232a60e84afa86843b8
 {% else %}
     <span title=\"{{ value }}\">{{ value|easyadmin_truncate(7) }}</span>
 {% endif %}
-", "EasyAdminBundle:default:field_guid.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_guid.html.twig");
+", "EasyAdminBundle:default:field_guid.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_guid.html.twig");
     }
 }

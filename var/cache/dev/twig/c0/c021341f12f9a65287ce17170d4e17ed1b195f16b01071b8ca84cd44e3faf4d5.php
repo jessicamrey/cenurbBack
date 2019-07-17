@@ -75,6 +75,6 @@ class __TwigTemplate_3fd584ad746124dfaa471010983d645c825f28d14971a4c0e98b36bd1eb
         <?php endforeach; ?>
     </ul>
 <?php endif ?>
-", "FrameworkBundle:Form:form_errors.html.php", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_errors.html.php");
+", "FrameworkBundle:Form:form_errors.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_errors.html.php");
     }
 }

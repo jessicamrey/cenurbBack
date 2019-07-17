@@ -51,7 +51,7 @@ class TerritorioController extends Controller{
      * https://stackoverflow.com/questions/2820723/how-to-get-base-url-with-php
      * 
      * @return string
-     *
+     */
     
 	    function url(){
 		return sprintf(
@@ -60,15 +60,20 @@ class TerritorioController extends Controller{
 		    $_SERVER['SERVER_NAME'],
 		    '/public/files/nocol'
 		    );
-	    }*/
+	    }
 	
 	/*
 	*	https://www.php.net/manual/es/function.scandir.php
 	*/
 	public function getDocs(Request $request){
-		$ficheros=scandir('/public/files/nocol');
+		$ficheros=scandir('../public/files/nocol');
 		
-		return new Response(
+		foreach ($ficheros as &$fichero) {
+		    $fichero = TerritorioController::url() . $fichero ;
+		}
+		
+		
+		return new JSONResponse(
 				$ficheros,
 				Response::HTTP_OK,
 				array('content-type' => 'text/html')

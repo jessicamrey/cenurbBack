@@ -153,6 +153,6 @@ class __TwigTemplate_b46c5c2379d9cc163e8361a82bba98268b4a1175d09e33dcbce750bdea2
         </div>
     </div>
 </div>
-", "EasyAdminBundle:default/includes:_delete_form.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/includes/_delete_form.html.twig");
+", "EasyAdminBundle:default/includes:_delete_form.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/includes/_delete_form.html.twig");
     }
 }

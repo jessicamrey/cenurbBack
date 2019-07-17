@@ -108,6 +108,6 @@ class __TwigTemplate_3e173601e0d6b66dacb711d76a418a7d8af34051142548d155aca99e049
         </div>
     </body>
 </html>
-", "FOSOAuthServerBundle::layout.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/friendsofsymfony/oauth-server-bundle/Resources/views/layout.html.twig");
+", "FOSOAuthServerBundle::layout.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/friendsofsymfony/oauth-server-bundle/Resources/views/layout.html.twig");
     }
 }

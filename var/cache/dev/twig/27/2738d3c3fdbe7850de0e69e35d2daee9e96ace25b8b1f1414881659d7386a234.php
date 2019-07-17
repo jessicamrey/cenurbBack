@@ -77,6 +77,6 @@ class __TwigTemplate_9cee57b58a80713fb18d79e417e4ee797a41030acdab1ce0883ae8e0039
 <?php printf('%s=\"%s\" ', \$view->escape(\$k), \$view->escape(\$v)) ?>
 <?php endif ?>
 <?php endforeach ?>
-", "FrameworkBundle:Form:choice_attributes.html.php", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/choice_attributes.html.php");
+", "FrameworkBundle:Form:choice_attributes.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/choice_attributes.html.php");
     }
 }

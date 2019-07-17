@@ -57,7 +57,7 @@ class __TwigTemplate_578ec9981fd001e8883a461ef4a06aa595c25e34a0a0986c7b0bb245871
         $this->displayBlock('stylesheets', $context, $blocks);
         // line 7
         echo "    </head>
-    <body>
+    <body style=\"background-color:#1d5d83\">
         ";
         // line 9
         $this->displayBlock('body', $context, $blocks);
@@ -168,11 +168,11 @@ class __TwigTemplate_578ec9981fd001e8883a461ef4a06aa595c25e34a0a0986c7b0bb245871
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
     </head>
-    <body>
+    <body style=\"background-color:#1d5d83\">
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
-", "base.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/templates/base.html.twig");
+", "base.html.twig", "/home/jessica/Escritorio/back/cenurbBack/templates/base.html.twig");
     }
 }

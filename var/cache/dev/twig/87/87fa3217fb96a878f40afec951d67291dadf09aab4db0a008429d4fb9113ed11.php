@@ -63,6 +63,6 @@ class __TwigTemplate_58237cf53a3fd9bba005f188bc05846bd07f14e5bd15fef1574454092fc
     public function getSourceContext()
     {
         return new Source("<?php echo \$view['form']->block(\$form, 'form_widget_simple', ['type' => isset(\$type) ? \$type : 'color']);
-", "FrameworkBundle:Form:color_widget.html.php", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/color_widget.html.php");
+", "FrameworkBundle:Form:color_widget.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/color_widget.html.php");
     }
 }

@@ -81,6 +81,6 @@ class __TwigTemplate_e45a5cbd2c51c9fc771ccccbdc490b95a0f1730c0ede67af1a8ca3d2f7f
     public function getSourceContext()
     {
         return new Source("{% block panel '' %}
-", "WebProfilerBundle:Profiler:ajax_layout.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/ajax_layout.html.twig");
+", "WebProfilerBundle:Profiler:ajax_layout.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/ajax_layout.html.twig");
     }
 }

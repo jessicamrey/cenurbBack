@@ -509,6 +509,6 @@ class __TwigTemplate_ff7ac483bce5976a13b1fe2d66fff667c8077e2ccf76b8a717120351a22
     </ul>
 
 {% endblock %}
-", "EasyAdminBundle:data_collector:easyadmin.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/data_collector/easyadmin.html.twig");
+", "EasyAdminBundle:data_collector:easyadmin.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/data_collector/easyadmin.html.twig");
     }
 }

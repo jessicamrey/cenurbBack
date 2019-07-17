@@ -70,6 +70,6 @@ class __TwigTemplate_bf39a69f9c7d5c299845323b6600e6fc60cd8f57f266f2d9fa4fbb8a702
     public function getSourceContext()
     {
         return new Source("<time>{{ value|date(field_options.format) }}</time>
-", "EasyAdminBundle:default:field_time.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_time.html.twig");
+", "EasyAdminBundle:default:field_time.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_time.html.twig");
     }
 }

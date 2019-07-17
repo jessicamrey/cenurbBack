@@ -70,6 +70,6 @@ class __TwigTemplate_5f9f9dc89015dd1e5dff64d0c846a645e0c49381b00b35826ae5c26760e
     {
         return new Source("{# this field template is used to avoid formatting the special ID attribute as a number #}
 {{ value }}
-", "EasyAdminBundle:default:field_id.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_id.html.twig");
+", "EasyAdminBundle:default:field_id.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_id.html.twig");
     }
 }

@@ -63,6 +63,6 @@ class __TwigTemplate_dcd1ccb42e905dc7fa327b508c596278323aaef623200c091374f05a98b
     public function getSourceContext()
     {
         return new Source("<?php echo \$view['form']->block(\$form, 'widget_container_attributes') ?>
-", "FrameworkBundle:Form:container_attributes.html.php", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/container_attributes.html.php");
+", "FrameworkBundle:Form:container_attributes.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/container_attributes.html.php");
     }
 }

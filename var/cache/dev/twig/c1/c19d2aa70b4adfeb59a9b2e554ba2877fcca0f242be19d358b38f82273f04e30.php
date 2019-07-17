@@ -70,6 +70,6 @@ class __TwigTemplate_58325f79a9efed9266da71c2de97ed3b909f96bd1bb5e59b06976a35ef3
     public function getSourceContext()
     {
         return new Source("<span class=\"label\">{{ 'label.object'|trans(domain = 'EasyAdminBundle') }}</span>
-", "EasyAdminBundle:default:field_object.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_object.html.twig");
+", "EasyAdminBundle:default:field_object.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_object.html.twig");
     }
 }

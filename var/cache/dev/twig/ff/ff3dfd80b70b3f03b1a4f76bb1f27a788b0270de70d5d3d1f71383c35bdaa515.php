@@ -98,6 +98,6 @@ class __TwigTemplate_a56e597468c9b752b9736ed4301baa78005ab8ca8c641d605c14b94997d
     <label for=\"{{ id }}\">{{ id|trans([], 'FOSOAuthServerBundle') }}</label>
 {% endspaceless %}
 {% endblock field_label %}
-", "FOSOAuthServerBundle::form.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/friendsofsymfony/oauth-server-bundle/Resources/views/form.html.twig");
+", "FOSOAuthServerBundle::form.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/friendsofsymfony/oauth-server-bundle/Resources/views/form.html.twig");
     }
 }

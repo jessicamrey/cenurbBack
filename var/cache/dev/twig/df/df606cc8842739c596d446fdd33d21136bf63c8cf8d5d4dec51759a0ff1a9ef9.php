@@ -459,6 +459,6 @@ class __TwigTemplate_e72183f1c6f75f1ba9a52196788ace12ca4abd97902257995a6a3a41848
 </ul>
 
 {% block main_menu_after %}{% endblock %}
-", "EasyAdminBundle:default:menu.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/menu.html.twig");
+", "EasyAdminBundle:default:menu.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/menu.html.twig");
     }
 }

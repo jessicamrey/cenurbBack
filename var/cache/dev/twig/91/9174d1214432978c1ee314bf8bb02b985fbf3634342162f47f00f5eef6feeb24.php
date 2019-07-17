@@ -75,6 +75,6 @@ class __TwigTemplate_1c6ccb48ac95aac44406d68fdb452fb45c29011558af106ff87aeba6652
         return new Source("{% set type = field_options.type_options.type|default('fractional') %}
 {% set scale = field_options.type_options.scale|default(0) %}
 {{ (type == 'fractional' ? value * 100 : value)|number_format(scale) }}%
-", "EasyAdminBundle:default:field_percent.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_percent.html.twig");
+", "EasyAdminBundle:default:field_percent.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_percent.html.twig");
     }
 }

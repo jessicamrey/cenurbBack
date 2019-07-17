@@ -417,6 +417,6 @@ class __TwigTemplate_a939a4efa1c24db4329a8a7ddbf422dd63b9c42bf7c4cb18a9c9c0b5f8e
     });
 })();
 </script>
-", "WebProfilerBundle:Profiler:settings.html.twig", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/settings.html.twig");
+", "WebProfilerBundle:Profiler:settings.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/settings.html.twig");
     }
 }

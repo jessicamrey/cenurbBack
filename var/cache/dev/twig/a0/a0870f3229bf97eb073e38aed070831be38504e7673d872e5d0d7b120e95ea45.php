@@ -63,6 +63,6 @@ class __TwigTemplate_8ed3854420c20a846b1aa57847735d9d1c28381438af3252fe07a942e44
     public function getSourceContext()
     {
         return new Source("<?php echo \$view['form']->formEncodeCurrency(\$money_pattern, \$view['form']->block(\$form, 'form_widget_simple')) ?>
-", "FrameworkBundle:Form:money_widget.html.php", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/money_widget.html.php");
+", "FrameworkBundle:Form:money_widget.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/money_widget.html.php");
     }
 }

@@ -59,6 +59,6 @@ class __TwigTemplate_88aea8507125d45d5132aef907df335daa2c1a744e8a697c444ce5cb1d1
 
     public function getSourceContext()
     {
-        return new Source("", "FrameworkBundle:Form:button_label.html.php", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/button_label.html.php");
+        return new Source("", "FrameworkBundle:Form:button_label.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/button_label.html.php");
     }
 }

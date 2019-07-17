@@ -67,6 +67,6 @@ class __TwigTemplate_2adf944d22d980794df80ee0621bf4bde068c818d2dd789272aa67344ea
         return new Source("<?php echo \$view['form']->start(\$form) ?>
     <?php echo \$view['form']->widget(\$form) ?>
 <?php echo \$view['form']->end(\$form) ?>
-", "FrameworkBundle:Form:form.html.php", "/home/jessica/Escritorio/baack/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form.html.php");
+", "FrameworkBundle:Form:form.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form.html.php");
     }
 }

@@ -48,7 +48,7 @@ class ColoniaController extends Controller{
      * https://stackoverflow.com/questions/2820723/how-to-get-base-url-with-php
      * 
      * @return string
-     *
+     */
     
 	    function url(){
 		return sprintf(
@@ -57,15 +57,19 @@ class ColoniaController extends Controller{
 		    $_SERVER['SERVER_NAME'],
 		    '/public/files/col'
 		    );
-	    }*/
+	    }
 	
 	/*
 	*	https://www.php.net/manual/es/function.scandir.php
 	*/
 	public function getDocs(Request $request){
-		$ficheros=scandir('/public/files/col');
+		$ficheros=scandir('../public/files/col');
 		
-		return new Response(
+		foreach ($ficheros as &$fichero) {
+		    $fichero = ColoniaController::url() . $fichero ;
+		}
+		
+		return new JSONResponse(
 				$ficheros,
 				Response::HTTP_OK,
 				array('content-type' => 'text/html')

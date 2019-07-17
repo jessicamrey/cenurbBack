@@ -49,7 +49,9 @@ class SecurityController extends AbstractController
 		$user->setPassword($encoded);
 		
 		$user->setEmail($params["email"]);
-		//En principio siempre tienen el rol ROLE_USER
+		
+		$roles=["ROLE_USER"];
+		$user->setRoles($roles);
 		$user->setIdCoord(0);
 		$user->setIdUsu($params["id_usu"]);
 		
@@ -68,6 +70,9 @@ class SecurityController extends AbstractController
 		
 	}
 	
+		/**
+	 * @Route("/login", name="app_login")
+	 */
 	public function login(AuthenticationUtils $authenticationUtils)
 	{
 		// get the login error if there is one
@@ -81,6 +86,7 @@ class SecurityController extends AbstractController
 				'error'         => $error,
 				]);
 	}
+	
 	
 	public function isRegistered(Request $request){
 		$params=json_decode($request->getContent(), true);

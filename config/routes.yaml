@@ -65,13 +65,13 @@ api_list_one_col:
         _controller: App\Controller\SeoApisController::listOneCol
         
 api_get_col_docs:
-    path: '/api/colonias/docs'
+    path: '/api/docs/colonias'
     methods: ['GET']
     defaults:
         _controller: App\Controller\ColoniaController::getDocs
         
 api_get_terr_docs:
-    path: '/api/territorios/docs'
+    path: '/api/docs/territorios'
     methods: ['GET']
     defaults:
         _controller: App\Controller\TerritorioController::getDocs
