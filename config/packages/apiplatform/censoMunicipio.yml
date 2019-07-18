@@ -42,3 +42,4 @@ resources:
                 
             delete:
                 method: 'DELETE'
+                access_control: is_granted('ROLE_ADMIN')
