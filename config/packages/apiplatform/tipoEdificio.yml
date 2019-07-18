@@ -1,0 +1,12 @@
+resources:
+    App\Entity\TipoEdificio:
+        attributes:
+            pagination_enabled: false
+            
+        collectionOperations:
+            get:
+                method: 'GET'
+          
+        itemOperations:
+            get:
+                method: 'GET'
