@@ -3,7 +3,31 @@ easy_admin:
         # List the entity class name you want to manage
         Colonia:
             class: App\Entity\Colonia
+        LocNidosCol:
+            class: App\Entity\LocNidosCol
+        OtrasEspecies:
+            class: App\Entity\OtrasEspecies
+        VisitasColonia:
+            class: App\Entity\VisitasColonia
         Territorio:
             class: App\Entity\Territorio
+        LocNidosNoCol:
+            class: App\Entity\LocNidosNoCol
+        VisitasTerritorio:
+            class: App\Entity\VisitasTerritorio
         SegUsu:
             class: App\Entity\SegUsu
+        CensoMunicipio:
+            class: App\Entity\CensoMunicipio
+        Emplazamiento:
+            class: App\Entity\Emplazamiento
+        ObservacionesTerritorio:
+            class: App\Entity\ObservacionesTerritorio
+        Temporada:
+            class: App\Entity\Temporada
+        TipoEdificio:
+            class: App\Entity\TipoEdificio
+        TipoPropiedad:
+            class: App\Entity\TipoPropiedad
+        TipoTerritorio:
+            class: App\Entity\TipoTerritorio
