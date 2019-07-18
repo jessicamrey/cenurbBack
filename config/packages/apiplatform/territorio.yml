@@ -63,3 +63,4 @@ resources:
                 method: 'PUT'
             delete:
                 method: 'DELETE'
+                access_control: is_granted('ROLE_ADMIN')
