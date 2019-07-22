@@ -33,13 +33,13 @@ services:
     App\Serializer\VisitaColoniaImagesNormalizer:
         arguments:
             - '@api_platform.serializer.normalizer.item'
-            - '%env(APP_IMAGE_VISITA_COLONIA)%'
+            - '%env(APP_IMAGE_VISITACOL)%'
             - '%env(BASE_URL)%'
         tags: [ 'serializer.normalizer' ]
         
     App\Serializer\VisitaTerritorioImagesNormalizer:
         arguments:
             - '@api_platform.serializer.normalizer.item'
-            - '%env(APP_IMAGE_VISITA_TERRITORIO)%'
+            - '%env(APP_IMAGE_VISITATERR)%'
             - '%env(BASE_URL)%'
         tags: [ 'serializer.normalizer' ]
