@@ -4,13 +4,11 @@
 namespace App\Util;
 use App\Entity\VisitasColonia;
 use App\Entity\VisitaColoniaImages;
-use App\Entity\VisitasTerritorio;
-use App\Entity\VisitaTerritorioImages;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
-class VisitImagesNormalizer implements NormalizerInterface
+class VisitaColoniaImagesNormalizer implements NormalizerInterface
 {
     use SerializerAwareTrait;
     /**
@@ -58,24 +56,7 @@ class VisitImagesNormalizer implements NormalizerInterface
         {
             return $result;
         }
-        if (isset($result['visitaTerritorioImages']))
-        {
-           
-            foreach ($result['visitaTerritorioImages'] as $clave=>$valor) {
-                if (!preg_match('/http:|https:/', $valor["image"])){
-                    $valor["image"] = join(
-                    [
-                    $this->baseUrl .
-                    $this->imagePath,
-                    $valor["image"],
-                    ], '/'
-                    );
-                    $result["visitaTerritorioImages"][$clave]=$valor;
-                }
-            }
-           
 
-        }
         if (isset($result['visitaColoniaImages']))
         {
            
@@ -110,10 +91,7 @@ class VisitImagesNormalizer implements NormalizerInterface
         {
             return true;
         }
-        if (($format == "json") && $data instanceof VisitasTerritorio)
-        {
-            return true;
-        }
+
         
         return false;
     }
