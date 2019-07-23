@@ -50,7 +50,7 @@ class VisitaTerritorioImagesNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     { 
-        $result = $this->normalizer->normalize($object, $format, ['groups' => ['center']]);
+        $result = $this->normalizer->normalize($object, $format, ['groups' => ['visitaTerr']]);
         //die(var_dump($result));
         if ('json' !== $format || !is_array($result))
         {
