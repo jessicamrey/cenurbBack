@@ -37,6 +37,7 @@
                         ],
                         'delete' => [
                             'method' => 'DELETE',
+                            'access_control' => 'is_granted(\'ROLE_ADMIN\')',
                             'input' => null,
                             'output' => null,
                         ],

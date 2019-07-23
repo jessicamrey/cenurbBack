@@ -17,6 +17,7 @@ class VisitaTerritorioImages
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("visitaTerr")
      */
     private $id;
 
@@ -27,6 +28,7 @@ class VisitaTerritorioImages
     
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("visitaTerr")
      */
     private $image;
     
@@ -45,6 +47,7 @@ class VisitaTerritorioImages
     
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("visitaTerr")
      */
     private $fileName;
     

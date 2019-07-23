@@ -480,13 +480,61 @@
           <parameter key="class">App\Entity\Colonia</parameter>
           <parameter key="name">Colonia</parameter>
         </parameter>
+        <parameter key="LocNidosCol" type="collection">
+          <parameter key="class">App\Entity\LocNidosCol</parameter>
+          <parameter key="name">LocNidosCol</parameter>
+        </parameter>
+        <parameter key="OtrasEspecies" type="collection">
+          <parameter key="class">App\Entity\OtrasEspecies</parameter>
+          <parameter key="name">OtrasEspecies</parameter>
+        </parameter>
+        <parameter key="VisitasColonia" type="collection">
+          <parameter key="class">App\Entity\VisitasColonia</parameter>
+          <parameter key="name">VisitasColonia</parameter>
+        </parameter>
         <parameter key="Territorio" type="collection">
           <parameter key="class">App\Entity\Territorio</parameter>
           <parameter key="name">Territorio</parameter>
         </parameter>
+        <parameter key="LocNidosNoCol" type="collection">
+          <parameter key="class">App\Entity\LocNidosNoCol</parameter>
+          <parameter key="name">LocNidosNoCol</parameter>
+        </parameter>
+        <parameter key="VisitasTerritorio" type="collection">
+          <parameter key="class">App\Entity\VisitasTerritorio</parameter>
+          <parameter key="name">VisitasTerritorio</parameter>
+        </parameter>
         <parameter key="SegUsu" type="collection">
           <parameter key="class">App\Entity\SegUsu</parameter>
           <parameter key="name">SegUsu</parameter>
+        </parameter>
+        <parameter key="CensoMunicipio" type="collection">
+          <parameter key="class">App\Entity\CensoMunicipio</parameter>
+          <parameter key="name">CensoMunicipio</parameter>
+        </parameter>
+        <parameter key="Emplazamiento" type="collection">
+          <parameter key="class">App\Entity\Emplazamiento</parameter>
+          <parameter key="name">Emplazamiento</parameter>
+        </parameter>
+        <parameter key="ObservacionesTerritorio" type="collection">
+          <parameter key="class">App\Entity\ObservacionesTerritorio</parameter>
+          <parameter key="name">ObservacionesTerritorio</parameter>
+        </parameter>
+        <parameter key="Temporada" type="collection">
+          <parameter key="class">App\Entity\Temporada</parameter>
+          <parameter key="name">Temporada</parameter>
+        </parameter>
+        <parameter key="TipoEdificio" type="collection">
+          <parameter key="class">App\Entity\TipoEdificio</parameter>
+          <parameter key="name">TipoEdificio</parameter>
+        </parameter>
+        <parameter key="TipoPropiedad" type="collection">
+          <parameter key="class">App\Entity\TipoPropiedad</parameter>
+          <parameter key="name">TipoPropiedad</parameter>
+        </parameter>
+        <parameter key="TipoTerritorio" type="collection">
+          <parameter key="class">App\Entity\TipoTerritorio</parameter>
+          <parameter key="name">TipoTerritorio</parameter>
         </parameter>
       </parameter>
       <parameter key="design" type="collection">
@@ -805,6 +853,18 @@
       <argument type="service" id="security.user_password_encoder.generic"/>
     </service>
     <service id="App\Util\Util" class="App\Util\Util" public="false" autowire="true" autoconfigure="true"/>
+    <service id="App\Util\VisitaColoniaImagesNormalizer" class="App\Util\VisitaColoniaImagesNormalizer" public="false" autowire="true" autoconfigure="true">
+      <tag name="serializer.normalizer"/>
+      <argument type="service" id="api_platform.serializer.normalizer.item"/>
+      <argument>%env(APP_IMAGE_VISITACOL)%</argument>
+      <argument>%env(BASE_URL)%</argument>
+    </service>
+    <service id="App\Util\VisitaTerritorioImagesNormalizer" class="App\Util\VisitaTerritorioImagesNormalizer" public="false" autowire="true" autoconfigure="true">
+      <tag name="serializer.normalizer"/>
+      <argument type="service" id="api_platform.serializer.normalizer.item"/>
+      <argument>%env(APP_IMAGE_VISITATERR)%</argument>
+      <argument>%env(BASE_URL)%</argument>
+    </service>
     <service id="controller_name_converter" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
       <tag name="monolog.logger" channel="request"/>
       <argument type="service" id="kernel"/>
@@ -3384,6 +3444,8 @@
     </service>
     <service id="serializer" class="Symfony\Component\Serializer\Serializer" public="true">
       <argument type="collection">
+        <argument type="service" id="App\Util\VisitaColoniaImagesNormalizer"/>
+        <argument type="service" id="App\Util\VisitaTerritorioImagesNormalizer"/>
         <argument type="service" id="api_platform.swagger.normalizer.api_gateway"/>
         <argument type="service" id="api_platform.hydra.normalizer.constraint_violation_list"/>
         <argument type="service" id="api_platform.problem.normalizer.constraint_violation_list"/>
@@ -4373,9 +4435,37 @@
     </service>
     <service id="security.access_map" class="Symfony\Component\Security\Http\AccessMap" public="false">
       <call method="add">
+        <argument type="service" id=".security.request_matcher.Ud1TEPV"/>
+        <argument type="collection">
+          <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
+        </argument>
+        <argument>null</argument>
+      </call>
+      <call method="add">
+        <argument type="service" id=".security.request_matcher.W2wMwV4"/>
+        <argument type="collection">
+          <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
+        </argument>
+        <argument>null</argument>
+      </call>
+      <call method="add">
+        <argument type="service" id=".security.request_matcher.RHM.hIp"/>
+        <argument type="collection">
+          <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
+        </argument>
+        <argument>null</argument>
+      </call>
+      <call method="add">
         <argument type="service" id=".security.request_matcher.5dJADCx"/>
         <argument type="collection">
           <argument>ROLE_ADMIN</argument>
+        </argument>
+        <argument>null</argument>
+      </call>
+      <call method="add">
+        <argument type="service" id=".security.request_matcher.zYxLyTP"/>
+        <argument type="collection">
+          <argument>ROLE_USER</argument>
         </argument>
         <argument>null</argument>
       </call>
@@ -5028,8 +5118,20 @@
         <argument key="security.firewall.map.context.oauth_token" type="service" id="security.firewall.map.context.oauth_token"/>
       </argument>
     </service>
+    <service id=".security.request_matcher.Ud1TEPV" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+      <argument>^/api/login</argument>
+    </service>
+    <service id=".security.request_matcher.W2wMwV4" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+      <argument>^/api/isRegistered</argument>
+    </service>
+    <service id=".security.request_matcher.RHM.hIp" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+      <argument>^/api/register</argument>
+    </service>
     <service id=".security.request_matcher.5dJADCx" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
       <argument>^/admin</argument>
+    </service>
+    <service id=".security.request_matcher.zYxLyTP" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+      <argument>^/api/^</argument>
     </service>
     <service id="security.command.user_password_encoder" class="Symfony\Bundle\SecurityBundle\Command\UserPasswordEncoderCommand" public="false">
       <tag name="console.command" command="security:encode-password"/>
@@ -6330,6 +6432,12 @@
         <argument>/home/jessica/Escritorio/back/cenurbBack/config/packages/apiplatform/visitasTerritorio.yml</argument>
         <argument>/home/jessica/Escritorio/back/cenurbBack/config/packages/apiplatform/visitasColonia.yml</argument>
         <argument>/home/jessica/Escritorio/back/cenurbBack/config/packages/apiplatform/censoMunicipio.yml</argument>
+        <argument>/home/jessica/Escritorio/back/cenurbBack/config/packages/apiplatform/emplazamiento.yml</argument>
+        <argument>/home/jessica/Escritorio/back/cenurbBack/config/packages/apiplatform/observacionesTerritorio.yml</argument>
+        <argument>/home/jessica/Escritorio/back/cenurbBack/config/packages/apiplatform/temporada.yml</argument>
+        <argument>/home/jessica/Escritorio/back/cenurbBack/config/packages/apiplatform/tipoEdificio.yml</argument>
+        <argument>/home/jessica/Escritorio/back/cenurbBack/config/packages/apiplatform/tipoPropiedad.yml</argument>
+        <argument>/home/jessica/Escritorio/back/cenurbBack/config/packages/apiplatform/tipoTerritorio.yml</argument>
       </argument>
       <argument type="service" id="service_container"/>
     </service>
@@ -7475,6 +7583,10 @@
     <service id=".abstract.instanceof.App\Repository\VisitasColoniaRepository" class="App\Repository\VisitasColoniaRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\VisitasTerritorioRepository" class="App\Repository\VisitasTerritorioRepository" public="false" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\VisitasTerritorioRepository" class="App\Repository\VisitasTerritorioRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Serializer\Normalizer\NormalizerInterface.0.App\Util\VisitaColoniaImagesNormalizer" class="App\Util\VisitaColoniaImagesNormalizer" public="false" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Util\VisitaColoniaImagesNormalizer" class="App\Util\VisitaColoniaImagesNormalizer" public="false" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Serializer\Normalizer\NormalizerInterface.0.App\Util\VisitaTerritorioImagesNormalizer" class="App\Util\VisitaTerritorioImagesNormalizer" public="false" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Util\VisitaTerritorioImagesNormalizer" class="App\Util\VisitaTerritorioImagesNormalizer" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="maker.auto_command.make_auth" class="Symfony\Bundle\MakerBundle\Command\MakerCommand" public="false">
       <tag name="console.command" command="make:auth"/>
       <argument type="service" id="maker.maker.make_authenticator"/>

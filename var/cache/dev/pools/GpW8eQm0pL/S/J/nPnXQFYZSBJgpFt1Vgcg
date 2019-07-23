@@ -24,6 +24,7 @@
                         'App\\Entity\\Colonia',
                         'App\\Entity\\ObservacionesTerritorio',
                         'App\\Entity\\LocNidosCol',
+                        'App\\Entity\\Temporada',
                     ],
                 ],
             ],

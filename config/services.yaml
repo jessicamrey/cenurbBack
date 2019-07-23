@@ -30,14 +30,14 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     
-    App\Serializer\VisitaColoniaImagesNormalizer:
+    App\Util\VisitaColoniaImagesNormalizer:
         arguments:
             - '@api_platform.serializer.normalizer.item'
             - '%env(APP_IMAGE_VISITACOL)%'
             - '%env(BASE_URL)%'
         tags: [ 'serializer.normalizer' ]
         
-    App\Serializer\VisitaTerritorioImagesNormalizer:
+    App\Util\VisitaTerritorioImagesNormalizer:
         arguments:
             - '@api_platform.serializer.normalizer.item'
             - '%env(APP_IMAGE_VISITATERR)%'

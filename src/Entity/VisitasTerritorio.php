@@ -84,6 +84,7 @@ class VisitasTerritorio
     
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\VisitaTerritorioImages", mappedBy="visita", cascade={"persist"})
+     * @Groups("visitaTerr")
      */
     private $visitaTerritorioImages;
 

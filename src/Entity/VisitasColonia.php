@@ -102,6 +102,7 @@ class VisitasColonia
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\VisitaColoniaImages", mappedBy="visita", cascade={"persist"})
+     * @Groups("visita")
      */
     private $visitaColoniaImages;
 

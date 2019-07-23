@@ -17,12 +17,8 @@
                     [
                         'get' => [
                             'method' => 'GET',
-                        ],
-                        'delete' => [
-                            'method' => 'DELETE',
-                        ],
-                        'put' => [
-                            'method' => 'PUT',
+                            'input' => null,
+                            'output' => null,
                         ],
                     ],
                 ],
@@ -30,9 +26,8 @@
                     [
                         'get' => [
                             'method' => 'GET',
-                        ],
-                        'post' => [
-                            'method' => 'POST',
+                            'input' => null,
+                            'output' => null,
                         ],
                     ],
                 ],
@@ -46,6 +41,7 @@
                 ],
                 'attributes' => [
                     [
+                        'pagination_enabled' => false,
                         'input' => null,
                         'output' => null,
                     ],

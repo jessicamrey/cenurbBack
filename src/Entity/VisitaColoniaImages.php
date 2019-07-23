@@ -17,6 +17,7 @@ class VisitaColoniaImages
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("visita")
      */
     private $id;
 
@@ -27,6 +28,7 @@ class VisitaColoniaImages
     
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("visita")
      */
     private $image;
     
@@ -45,6 +47,7 @@ class VisitaColoniaImages
     
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("visita")
      */
     private $fileName;
     
