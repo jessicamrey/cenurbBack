@@ -100,12 +100,12 @@ class TerritorioController extends Controller{
 		
 		//con el campo especie, comprobamos que nos han pasado el id correctamente.
 		
-		$existeEspecie=SeoApisController::existeEspecie($params["especie"]);
+		/*$existeEspecie=SeoApisController::existeEspecie($params["especie"]);
 		}else{
 			throw new InvalidArgumentException("No se ha especificado la especie");
-		}
+		}*/
 		
-		if ($params && count($params) && $existeEspecie){
+		if ($params && count($params) ){
 			
 			
 			$newTerritorio->setUsuario($user->getIdUsu());
@@ -211,6 +211,7 @@ class TerritorioController extends Controller{
 		);
 
 	
+	}
 	}
 	
 	public function completaNidos(Request $request, $id)

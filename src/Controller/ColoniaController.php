@@ -7,6 +7,8 @@ use App\Entity\TipoPropiedad;
 use App\Entity\TipoEdificio;
 
 use App\Entity\Colonia;
+use App\Entity\Territorio;
+use App\Entity\SegUsu;
 use App\Entity\CensoMunicipio;
 use App\Entity\LocNidosCol;
 use App\Entity\FavoritosCol;
@@ -148,13 +150,31 @@ class ColoniaController extends Controller{
     	            $locNidos=$colonia->getLocNidos();
     	            $locNidos->setFachada($params["locNidos"]["fachada"]);
     	            $locNidos->setTrasera($params["locNidos"]["trasera"]);
-    	            $locNidos->setLateralDerecho($params["locNidos"]["lateralDerecho"]);
-    	            $locNidos->setLateralIzquierdo($params["locNidos"]["lateralIzquierdo"]);
-    	            $locNidos->setPatioInferior($params["locNidos"]["patioInferior"]);
-    	            $locNidos->setHuso($params["locNidos"]["huso"]);
+    	            $locNidos->setLateralDerecho($params["locNidos"]["latDer"]);
+    	            $locNidos->setLateralIzquierdo($params["locNidos"]["latIzq"]);
+    	            $locNidos->setPatioInferior($params["locNidos"]["patio"]);
+    	            //$locNidos->setHuso($params["locNidos"]["huso"]);
     	            
     	            $entityManager->persist($locNidos);
     	        } 
+    	        
+    	        if(isset($params["otrasEspecies"])){
+    	            
+    	            if(count($params["otrasEspecies"])>0){
+    	                foreach ($params["otrasEspecies"] as &$especie){
+    	                    
+    	                    $otrasEspecies= new OtrasEspecies();
+    	                    $otrasEspecies->setColonia($colonia);
+    	                    $otrasEspecies->setEspecie($especie);
+    	                    $entityManager->persist($otrasEspecies);
+    	                }
+    	            }else{
+    	                //TODO: borramos las que ya existian
+    	            }
+    	            
+    	            
+    	            
+    	        }
 	        }
 	        if (isset($params["municipioAsignado_id"])){
 	            
@@ -179,7 +199,7 @@ class ColoniaController extends Controller{
 	            );
 	        
 	    }else{
-	        throw new InvalidArgumentException("No creaste esta colonia para poder modificarlar");
+	        throw new InvalidArgumentException("No creaste esta colonia para poder modificarlara");
 	    }
 	    
 	}
@@ -204,12 +224,12 @@ class ColoniaController extends Controller{
 		
 		//con el campo especie, comprobamos que nos han pasado el id correctamente.
 		
-		$existeEspecie=SeoApisController::existeEspecie($params["especie"]);
+	/*$existeEspecie=SeoApisController::existeEspecie($params["especie"]);
 		}else{
 			throw new InvalidArgumentException("No se ha especificado la especie");
-		}
+		}*/
 		
-		if ($params && count($params) && $existeEspecie){
+		if ($params && count($params)){
 			
 			
 			$newColonia->setUsuario($user->getIdUsu());
@@ -305,6 +325,7 @@ class ColoniaController extends Controller{
 
 	
 	}
+	}
 	
 	public function completaNidos(Request $request, $id)
 	{
@@ -357,11 +378,11 @@ class ColoniaController extends Controller{
 		$entityManager = $this->getDoctrine()->getManager('default');
 		
 		//Comprobamos que exista la especie indicada
-		$existeEspecie=SeoApisController::existeEspecie($params["especie"]);
+		//$existeEspecie=SeoApisController::existeEspecie($params["especie"]);
 		
 		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
 		
-		if ($colonia!=null && $existeEspecie){
+		if ($colonia!=null ){
 			
 			
 				$otrasEspecies= new OtrasEspecies();
@@ -778,6 +799,25 @@ class ColoniaController extends Controller{
 			);
 		}
 		throw new NotFoundHttpException();
+	}
+	
+	
+	public function dashboardData(Request $request){
+	    
+	    $anno = $request->query->get("anno");
+	    
+	    $colonias=$this->getDoctrine()->getRepository(Colonia::class)->countAnno($anno);
+	    $territorios=$this->getDoctrine()->getRepository(Territorio::class)->countAnno($anno);
+	    $usuarios=$this->getDoctrine()->getRepository(SegUsu::class)->countData();
+	    
+	    $result=[$colonias, $territorios, $usuarios];
+	    
+	    return new JsonResponse(
+	        $result,
+	        Response::HTTP_OK,
+	        array('content-type' => 'text/html')
+	        );
+	    
 	}
 	
 	

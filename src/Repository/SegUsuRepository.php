@@ -47,4 +47,15 @@ class SegUsuRepository extends ServiceEntityRepository
         ;
     }
     */
+    
+    public function countData()
+    {
+        $query= $this->createQueryBuilder('c')
+        ->select('count(c)');
+
+        return $query
+        ->getQuery()
+        ->getResult();
+        
+    }
 }

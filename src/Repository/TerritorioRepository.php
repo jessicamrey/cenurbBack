@@ -147,4 +147,22 @@ class TerritorioRepository extends ServiceEntityRepository
     	->getResult();
     
     }
+    
+    public function countAnno($anno)
+    {
+        $query= $this->createQueryBuilder('c')
+        ->select('count(c), t.anno')
+        ->join('c.temporada', 't')
+        ->groupBy('t.anno');
+        
+        if($anno!=null){
+            $query->andWhere('t.anno = :temp');
+            $query->setParameter('temp', $anno);
+        }
+        
+        return $query
+        ->getQuery()
+        ->getResult();
+        
+    }
 }

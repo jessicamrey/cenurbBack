@@ -42,7 +42,7 @@ class Colonia
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"colonia","visita", "censo"})
      */
     private $codColonia;
@@ -126,6 +126,7 @@ class Colonia
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\OtrasEspecies", mappedBy="colonia")
+     * @Groups("colonia")
      */
     private $otrasEspecies;
     
@@ -177,7 +178,7 @@ class Colonia
         return $this->id;
     }
     
-     public function getCodColonia(): int
+     public function getCodColonia()
     {
         return $this->codColonia;
     }

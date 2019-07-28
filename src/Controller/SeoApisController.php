@@ -45,7 +45,7 @@ class SeoApisController extends Controller{
             );
     }
     
-    public function existeEspecie($idEspecie)
+    /*public function existeEspecie($idEspecie)
 	{
 		 //abrimos el manager de Seo
             $entityManager = $this->getDoctrine()->getManager('seo');
@@ -67,7 +67,7 @@ class SeoApisController extends Controller{
         $array=$stmt->fetchAll();
         
         return (count($array)>0);
-	}
+	}*/
     
     public function listCol(Request $request)
     {

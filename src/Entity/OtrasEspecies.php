@@ -31,7 +31,7 @@ class OtrasEspecies
     
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"colonia"})
+     * @Groups("colonia")
      */
     private $especie;
 
