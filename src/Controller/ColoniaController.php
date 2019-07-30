@@ -311,6 +311,11 @@ class ColoniaController extends Controller{
 			$entityManager->persist($newColonia);
 			$entityManager->flush();
 			
+			if (!isset($params["codColonia"])){
+			 $newColonia->setCodColonia($newColonia->getId());
+			 $entityManager->persist($newColonia);
+			}
+			$entityManager->flush();
 		
 			
 		}
