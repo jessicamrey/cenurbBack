@@ -1,0 +1,111 @@
+  <p style="margin-top:60px;"></p>
+<ngx-loading [show]="loading" [config]="{backdropBorderRadius: '14px'}"></ngx-loading>
+<div class="card" >
+
+    <div class="card-header" style="background-color: #A9A9A9">
+        {{ 'GeneralTerr.filter' | translate }}
+    </div>
+    <div class="card-body" style="background-color: #A9A9A9">
+        
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label>{{ 'RegisterCol.ccaa' | translate }}</label>
+                    <select class="form-control" (change)="recuperaProvincia()" id="selectCCAA" >
+                    	<option selected value="all" id="all">{{ 'GeneralTerr.all' | translate }}</option>
+                        <option *ngFor="let ccaa of listaCCAA" value="{{ccaa.DEN_COM}}" id="{{ccaa.ID_COM}}">{{ccaa.DEN_COM}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label>{{ 'RegisterCol.prov' | translate }}</label>
+                    <select class="form-control"   id="selectProvincia" >
+                    	<option selected value="all" id="all">{{ 'GeneralTerr.all' | translate }}</option>
+                      	<option *ngFor="let prov of listaProv" value="{{prov.DEN_PROV}}" id="{{prov.ID_PROV}}">{{prov.DEN_PROV}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+	            <div class="form-group">
+	                    <label>{{ 'RegisterCol.temp' | translate }}</label>
+	                    <select class="form-control" id="temporada">
+	                        <option selected value="all" id="all">{{ 'GeneralTerr.all' | translate }}</option>
+	                        <option *ngFor="let temp of listaTemporadas" value="{{temp}}" id="{{temp}}">{{temp}}</option>
+	                    </select>
+
+	                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                        <label>{{ 'RegisterTerr.type' | translate }}</label>
+                        <select class="form-control" id="tipo">
+                            <option selected value="all" id="all">{{ 'GeneralTerr.all' | translate }}</option>
+                            <option *ngFor="let t of listaTipos" value="{{t.descripcion}}" id="{{t.id}}">{{t.descripcion}}</option>
+                        </select>
+
+                    </div>
+            </div>
+        </div>
+        <div class="row">
+        	<div class="col-sm-2">
+        		<button class="btn btn-secondary" (click)="filtrar()">{{ 'GeneralTerr.apply' | translate }}</button>
+        	</div>
+            <div class="col-sm-2" *ngIf="mostrarDescargar==true">
+                <button class="btn btn-secondary" (click)="exportAsXLSX()">{{ 'Menu.excel' | translate }}<i class="fas fa-cloud-download-alt"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+
+                        <div class="col-sm-12">
+                                <div class="card">
+                                    
+                                    <div class="card-body table-responsive">
+                                        <div >
+                                            <table class="table table-hover table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>{{ 'Statistics.tableTerr' | translate }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let item of listaNoCol">
+                                                             <td *ngIf="translate.currentLang=='es'">{{item.DEN_ESP_CAS}}</td>
+                                                            <td *ngIf="translate.currentLang=='eus'">{{item.DEN_ESP_VAS}}</td>
+                                                            <td *ngIf="translate.currentLang=='cat'">{{item.DEN_ESP_CAT}}</td>
+                                                            <td *ngIf="translate.currentLang=='gal'">{{item.DEN_ESP_GSL}}</td>
+                                                            <td *ngIf="translate.currentLang=='en'">{{item.DEN_ESP_ING}}</td>
+                                                            <td > 
+                                                                <div >
+                                                                    {{chartData['0'].data[listaNoCol.indexOf(item)]}}
+                                                                </div>
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                    </table>
+                                        </div>
+                                            
+                                    </div>
+                                </div>
+
+                               
+                            </div>
+
+<div class="col-sm-12">
+
+    <canvas *ngIf="show==true" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event) ">
+    </canvas>
+</div>
+</div>
+
+
+
+
+
+
+				
+
+                
