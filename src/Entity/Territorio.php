@@ -43,7 +43,7 @@ class Territorio
     private $id;
     
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"territorio", "visitaTerr"})
      */
     private $codTerritorio;
@@ -174,7 +174,7 @@ class Territorio
         return $this->id;
     }
     
-     public function getCodTerritorio(): int
+     public function getCodTerritorio()
     {
         return $this->codTerritorio;
     }

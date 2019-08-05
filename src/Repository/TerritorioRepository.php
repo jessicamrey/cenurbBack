@@ -91,7 +91,7 @@ class TerritorioRepository extends ServiceEntityRepository
     public function statProvincia($especie, $anno, $ccaa, $prov)
     {
     	$query= $this->createQueryBuilder('c')
-    	->select('count(c), c.provincia, c.ccaa')
+    	->select('count(c), c.provincia')
     	->join('c.temporada', 't')
     	->andWhere('c.especie = :esp')
     	->groupBy('c.provincia');

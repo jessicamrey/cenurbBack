@@ -37,6 +37,16 @@ class SecurityController extends AbstractController
 	}
 	
 	
+	public function isAdmin(Request $request){
+	    $hasAccess = $this->isGranted('ROLE_ADMIN');
+	    return new JsonResponse(
+	        $this->normalizer->normalize(
+	            $hasAccess, 'json'
+	            )
+	        );
+	    
+	}
+	
 	public function register(Request $request)
 	{
 		$user = new SegUsu();

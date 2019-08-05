@@ -80,6 +80,86 @@ class TerritorioController extends Controller{
 		);
 		
 	}	
+	public function putTerritorio(Request $request, $id){
+	    
+	    //obtenemos los parámetros del cuerpo de la peticion
+	    $params=json_decode($request->getContent(), true);
+	    //obtenemos el usuario logeado
+	    $user=$this->getUser();
+	    
+	    
+	    //Solo podremos modificar cuando es el mismo usuario
+	    $territorio=$this->getDoctrine()->getRepository(Territorio::class)->find($id);
+	    if ($territorio){
+	        //abrimos nuestro manager
+	        $entityManager = $this->getDoctrine()->getManager('default');
+	        if($territorio->getUsuario()==$user->getIdUsu()){
+	            
+	            
+	            if (isset($params["tipoTerritorioId"])){
+	                $tipo=$this->getDoctrine()->getRepository(TipoTerritorio::class)->find($params["tipoTerritorioId"]);
+	                if ($tipo!=null){
+	                    $territorio->setTipo($tipo);
+	                }else{
+	                    throw new NotFoundHttpException();
+	                }
+	                
+	            }
+	            if (isset($params["amenazada"])){
+	                $territorio->setAmenazada($params["amenazada"]);
+	            }
+	            
+	            if (isset($params["vacio"])){
+	                $territorio->setVacio($params["vacio"]);
+	            }
+	            if (isset($params["nombre"])){
+	                $territorio->setNombre($params["nombre"]);
+	            }
+	            
+	            if (isset($params["nombreCentro"])){
+	                $territorio->setNombreCentro($params["nombreCentro"]);
+	            }
+	            if (isset($params["locNidos"])){
+	                $locNidos=$territorio->getLocNidos();
+	                $locNidos->setFachada($params["locNidos"]["fachada"]);
+	                $locNidos->setTrasera($params["locNidos"]["trasera"]);
+	                $locNidos->setLateralDerecho($params["locNidos"]["latDer"]);
+	                $locNidos->setLateralIzquierdo($params["locNidos"]["latIzq"]);
+	                $locNidos->setPatioInterior($params["locNidos"]["patio"]);
+	                $locNidos->setNumPiso($params["locNidos"]["numPiso"]);
+	                if (isset($params["locNidos"]["emplazamientoId"])){
+	                    $emplazamiento=$this->getDoctrine()->getRepository(Emplazamiento::class)->find($params["locNidos"]["emplazamientoId"]);
+	                    if ($emplazamiento!=null){
+	                        $locNidos->setEmplazamiento($emplazamiento);
+	                    }else{
+	                        throw new NotFoundHttpException();
+	                    }
+	                    
+	                }
+	                //$locNidos->setHuso($params["locNidos"]["huso"]);
+	                
+	                $entityManager->persist($locNidos);
+	            }
+	            
+	           
+	        }
+	       
+	        
+	        $entityManager->persist($territorio);
+	        $entityManager->flush();
+	        $entityManager->close();
+	        return new JsonResponse(
+	            $this->normalizer->normalize(
+	                $territorio, 'json', ['groups' => ['territorio']]
+	                )
+	            );
+	        
+	    }else{
+	        throw new InvalidArgumentException("No creaste este territorio para poder modificarlaro");
+	    }
+	    
+	}
+	
 	
 	
 	public function newTerritorio(Request $request)
@@ -196,6 +276,13 @@ class TerritorioController extends Controller{
 			//En este punto ya podemos persistir el territorio
 			
 			$entityManager->persist($newTerritorio);
+			$entityManager->flush();
+			
+			if (!isset($params["codTerritorio"])){
+			    $newTerritorio->setCodTerritorio($newTerritorio->getId());
+			    $entityManager->persist($newTerritorio);
+			}
+			
 			$entityManager->flush();
 			
 		

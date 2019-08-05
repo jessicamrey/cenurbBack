@@ -725,10 +725,6 @@
       <tag name="controller.service_arguments"/>
       <argument type="service" id="serializer"/>
     </service>
-    <service id="App\Controller\TempUserController" class="App\Controller\TempUserController" public="true" autowire="true" autoconfigure="true">
-      <tag name="controller.service_arguments"/>
-      <argument type="service" id="serializer"/>
-    </service>
     <service id="App\Controller\TerritorioController" class="App\Controller\TerritorioController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <argument type="service" id="serializer"/>
@@ -852,7 +848,6 @@
       <argument type="service" id="security.csrf.token_manager"/>
       <argument type="service" id="security.user_password_encoder.generic"/>
     </service>
-    <service id="App\Util\Util" class="App\Util\Util" public="false" autowire="true" autoconfigure="true"/>
     <service id="App\Util\VisitaColoniaImagesNormalizer" class="App\Util\VisitaColoniaImagesNormalizer" public="false" autowire="true" autoconfigure="true">
       <tag name="serializer.normalizer"/>
       <argument type="service" id="api_platform.serializer.normalizer.item"/>
@@ -7523,8 +7518,6 @@
     <service id=".abstract.instanceof.App\Controller\SecurityController" class="App\Controller\SecurityController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\SeoApisController" class="App\Controller\SeoApisController" public="false" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\SeoApisController" class="App\Controller\SeoApisController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\TempUserController" class="App\Controller\TempUserController" public="false" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Controller\TempUserController" class="App\Controller\TempUserController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\TerritorioController" class="App\Controller\TerritorioController" public="false" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\TerritorioController" class="App\Controller\TerritorioController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AccessTokenRepository" class="App\Repository\AccessTokenRepository" public="false" autowire="true" abstract="true"/>

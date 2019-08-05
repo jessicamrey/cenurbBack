@@ -21,6 +21,11 @@ login:
     controller: App\Controller\SecurityController::login
     methods: GET|POST
     
+isAdmin:
+    path: '/api/isAdmin'
+    controller: App\Controller\SecurityController::isAdmin
+    methods: GET
+    
 api_register:
     path: '/api/register'
     methods: ['POST']
@@ -33,12 +38,7 @@ api_is_register:
     defaults:
         _controller: App\Controller\SecurityController::isRegistered
         
-api_login_anonymous:
-    path: '/api/loginAnonymous'
-    methods: ['POST']
-    defaults:
-        _controller: App\Controller\TempUserController::login
-        _api_resource_class: App\Entity\TempUser
+
         
 api_dashboard_data:
     path: '/api/dashboardData'
@@ -180,6 +180,14 @@ api_put_colonia:
     methods: ['PUT']
     defaults:
         _controller: App\Controller\ColoniaController::putColonia
+        #_api_resource_class: App\Entity\Colonia
+        #_api_collection_operation_name: 'put'
+        
+api_put_territorio:
+    path: '/api/putTerritorio/{id}'
+    methods: ['PUT']
+    defaults:
+        _controller: App\Controller\TerritorioController::putTerritorio
         #_api_resource_class: App\Entity\Colonia
         #_api_collection_operation_name: 'put'
         

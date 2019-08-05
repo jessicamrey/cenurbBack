@@ -11,6 +11,9 @@
                 'type' => [
                     'integer',
                 ],
+                'nullable' => [
+                    true,
+                ],
             ],
             'Symfony\\Component\\Serializer\\Annotation\\Groups' => [
                 'groups' => [

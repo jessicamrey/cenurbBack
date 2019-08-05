@@ -1,6 +1,6 @@
 <?php
 
-namespace ContainerQO14ut4;
+namespace ContainerBKBFy4D;
 
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -78,7 +78,6 @@ class srcApp_KernelDevDebugContainer extends Container
             'App\\Controller\\ColoniaController' => 'getColoniaControllerService.php',
             'App\\Controller\\SecurityController' => 'getSecurityControllerService.php',
             'App\\Controller\\SeoApisController' => 'getSeoApisControllerService.php',
-            'App\\Controller\\TempUserController' => 'getTempUserControllerService.php',
             'App\\Controller\\TerritorioController' => 'getTerritorioControllerService.php',
             'Symfony\\Bundle\\FrameworkBundle\\Controller\\RedirectController' => 'getRedirectControllerService.php',
             'Symfony\\Bundle\\FrameworkBundle\\Controller\\TemplateController' => 'getTemplateControllerService.php',
