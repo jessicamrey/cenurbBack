@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
 use Doctrine\ORM\Mapping as ORM;
@@ -62,6 +63,10 @@ class CensoMunicipio
      */
     private $coloniasAsignadas;
 
+  public function __construct()
+    {
+        $this->coloniasAsignadas = new ArrayCollection();
+    }
 
     public function getId(): int
     {

@@ -284,7 +284,7 @@ class Territorio
         return $this;
     }
 
-    public function getLocNidos(): LocNidosNoCol
+    public function getLocNidos()
     {
         return $this->locNidos;
     }

@@ -13,6 +13,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * @ApiResource()
  * @ApiFilter(DateFilter::class, properties={"fecha"})
@@ -87,6 +88,12 @@ class VisitasTerritorio
      * @Groups("visitaTerr")
      */
     private $visitaTerritorioImages;
+
+
+	public function __construct()
+    {
+        $this->visitaTerritorioImages = new ArrayCollection();
+}
 
     public function getId(): int
     {
