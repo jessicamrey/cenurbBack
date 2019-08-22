@@ -73,7 +73,7 @@ class CensoMunicipio
         return $this->id;
     }
 
-    public function getUsuario(): string
+    public function getUsuario()
     {
         return $this->usuario;
     }
@@ -85,7 +85,7 @@ class CensoMunicipio
         return $this;
     }
     
-    public function getMunicipio(): string
+    public function getMunicipio()
     {
         return $this->municipio;
     }
@@ -97,7 +97,7 @@ class CensoMunicipio
         return $this;
     }
 
-    public function getEspecie(): int
+    public function getEspecie()
     {
         return $this->especie;
     }
@@ -109,7 +109,7 @@ class CensoMunicipio
         return $this;
     }
 
-    public function getCompleto(): bool
+    public function getCompleto()
     {
         return $this->completo;
     }
@@ -121,7 +121,7 @@ class CensoMunicipio
         return $this;
     }
 
-    public function getTemporada(): ?Temporada
+    public function getTemporada()
     {
         return $this->temporada;
     }
@@ -133,9 +133,6 @@ class CensoMunicipio
         return $this;
     }
 
-      /**
-     * @return Collection|Colonia[]
-     */
     public function getColoniasAsignadas()
     {
         return $this->coloniasAsignadas;
