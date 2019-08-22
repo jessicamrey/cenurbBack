@@ -186,7 +186,7 @@ class Territorio
         return $this;
     }
 
-    public function getUsuario(): string
+    public function getUsuario()
     {
         return $this->usuario;
     }
@@ -198,7 +198,7 @@ class Territorio
         return $this;
     }
     
-    public function getEspecie(): int
+    public function getEspecie()
     {
         return $this->especie;
     }
@@ -210,7 +210,7 @@ class Territorio
         return $this;
     }
 
-    public function getNombre(): string
+    public function getNombre()
     {
         return $this->nombre;
     }
@@ -224,7 +224,7 @@ class Territorio
 
 
 
-    public function getBarrio(): string
+    public function getBarrio()
     {
         return $this->barrio;
     }
@@ -236,7 +236,7 @@ class Territorio
         return $this;
     }
 
-    public function getCalleNumPiso(): string
+    public function getCalleNumPiso()
     {
         return $this->calleNumPiso;
     }
@@ -248,7 +248,7 @@ class Territorio
         return $this;
     }
 
-    public function getNombreCentro(): string
+    public function getNombreCentro()
     {
         return $this->nombreCentro;
     }
@@ -260,7 +260,7 @@ class Territorio
         return $this;
     }
 
-    public function getTipoPropiedad(): TipoPropiedad
+    public function getTipoPropiedad()
     {
         return $this->tipoPropiedad;
     }
@@ -272,7 +272,7 @@ class Territorio
         return $this;
     }
 
-    public function getTipoEdificio(): TipoEdificio
+    public function getTipoEdificio()
     {
         return $this->tipoEdificio;
     }
@@ -309,7 +309,7 @@ class Territorio
     }
 
 
-    public function getVacio(): bool
+    public function getVacio()
     {
         return $this->vacio;
     }
@@ -321,7 +321,7 @@ class Territorio
         return $this;
     }
 
-    public function getCcaa(): string
+    public function getCcaa()
     {
         return $this->ccaa;
     }
@@ -333,7 +333,7 @@ class Territorio
         return $this;
     }
 
-    public function getProvincia(): string
+    public function getProvincia()
     {
         return $this->provincia;
     }
@@ -345,7 +345,7 @@ class Territorio
         return $this;
     }
 
-    public function getMunicipio(): string
+    public function getMunicipio()
     {
         return $this->municipio;
     }
@@ -357,7 +357,7 @@ class Territorio
         return $this;
     }
 
-    public function getTemporada(): ?Temporada
+    public function getTemporada()
     {
         return $this->temporada;
     }
@@ -381,10 +381,8 @@ class Territorio
         return $this;
     }
 
-    /**
-     * @return Collection|VisitasTerritorio[]
-     */
-    public function getVisitasTerritorios(): Collection
+
+    public function getVisitasTerritorios()
     {
         return $this->visitasTerritorios;
     }
@@ -412,7 +410,7 @@ class Territorio
         return $this;
     }
 
-    public function getValidado(): ?bool
+    public function getValidado()
     {
         return $this->validado;
     }
@@ -424,10 +422,7 @@ class Territorio
         return $this;
     }
 
-    /**
-     * @return Collection|FavoritosTerr[]
-     */
-    public function getTerritoriosFavoritos(): Collection
+    public function getTerritoriosFavoritos()
     {
         return $this->territoriosFavoritos;
     }
