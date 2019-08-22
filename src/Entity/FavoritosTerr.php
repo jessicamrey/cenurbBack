@@ -33,7 +33,7 @@ class FavoritosTerr
         return $this->id;
     }
 
-    public function getTerritorio(): ?Territorio
+    public function getTerritorio()
     {
         return $this->territorio;
     }
@@ -45,7 +45,7 @@ class FavoritosTerr
         return $this;
     }
 
-    public function getUsuario(): ?SegUsu
+    public function getUsuario()
     {
         return $this->usuario;
     }
