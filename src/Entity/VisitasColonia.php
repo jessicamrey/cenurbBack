@@ -116,7 +116,7 @@ class VisitasColonia
         return $this->id;
     }
 
-    public function getUsuario(): string
+    public function getUsuario()
     {
         return $this->usuario;
     }
@@ -128,7 +128,7 @@ class VisitasColonia
         return $this;
     }
 
-    public function getNumVisita(): int
+    public function getNumVisita()
     {
         return $this->numVisita;
     }
@@ -152,7 +152,7 @@ class VisitasColonia
         return $this;
     }
 
-    public function getNumNidos(): int
+    public function getNumNidos()
     {
         return $this->numNidos;
     }
@@ -164,7 +164,7 @@ class VisitasColonia
         return $this;
     }
 
-    public function getNumNidosOcupados(): int
+    public function getNumNidosOcupados()
     {
         return $this->numNidosOcupados;
     }
@@ -176,7 +176,7 @@ class VisitasColonia
         return $this;
     }
 
-    public function getNumNidosVacios(): int
+    public function getNumNidosVacios()
     {
         return $this->numNidosVacios;
     }
@@ -188,7 +188,7 @@ class VisitasColonia
         return $this;
     }
 
-    public function getNumNidosExito(): int
+    public function getNumNidosExito()
     {
         return $this->numNidosExito;
     }
@@ -200,7 +200,7 @@ class VisitasColonia
         return $this;
     }
 
-    public function getCompleto(): bool
+    public function getCompleto()
     {
         return $this->completo;
     }
@@ -214,7 +214,7 @@ class VisitasColonia
 
 
 
-    public function getColonia(): ?Colonia
+    public function getColonia()
     {
         return $this->colonia;
     }
@@ -226,7 +226,7 @@ class VisitasColonia
         return $this;
     }
     
-    public function getNombreUsuario(): string
+    public function getNombreUsuario()
     {
     	return $this->nombreUsuario;
     }
@@ -238,7 +238,7 @@ class VisitasColonia
     	return $this;
     }
 
-    public function getTemporada(): ?Temporada
+    public function getTemporada()
     {
         return $this->temporada;
     }
@@ -250,10 +250,8 @@ class VisitasColonia
         return $this;
     }
 
-    /**
-     * @return Collection|VisitaColoniaImages[]
-     */
-    public function getVisitaColoniaImages(): Collection
+
+    public function getVisitaColoniaImages()
     {
         return $this->visitaColoniaImages;
     }
