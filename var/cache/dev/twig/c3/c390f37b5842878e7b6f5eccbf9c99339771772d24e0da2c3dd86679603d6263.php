@@ -77,6 +77,6 @@ class __TwigTemplate_dead577df4a0d9f93da473412749481e6cceddf4ff30da5639d966e9299
     : \$view['form']->humanize(\$name); } ?>
 <label<?php if (\$label_attr) { echo ' '.\$view['form']->block(\$form, 'attributes', ['attr' => \$label_attr]); } ?>><?php echo \$view->escape(false !== \$translation_domain ? \$view['translator']->trans(\$label, \$label_translation_parameters, \$translation_domain) : \$label) ?></label>
 <?php endif ?>
-", "FrameworkBundle:Form:form_label.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_label.html.php");
+", "FrameworkBundle:Form:form_label.html.php", "/home/jessica/Escritorio/back2/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_label.html.php");
     }
 }

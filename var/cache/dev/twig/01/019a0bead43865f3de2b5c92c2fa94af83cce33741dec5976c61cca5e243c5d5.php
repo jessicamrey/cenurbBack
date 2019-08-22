@@ -63,6 +63,6 @@ class __TwigTemplate_1416c2ed7e6cfe48cab270ce28a61a7c35910370e95f22887c1fe4f6f3d
     public function getSourceContext()
     {
         return new Source("<textarea <?php echo \$view['form']->block(\$form, 'widget_attributes') ?>><?php echo \$view->escape(\$value) ?></textarea>
-", "FrameworkBundle:Form:textarea_widget.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/textarea_widget.html.php");
+", "FrameworkBundle:Form:textarea_widget.html.php", "/home/jessica/Escritorio/back2/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/textarea_widget.html.php");
     }
 }

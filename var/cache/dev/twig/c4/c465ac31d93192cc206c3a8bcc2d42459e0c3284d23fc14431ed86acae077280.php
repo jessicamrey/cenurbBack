@@ -96,6 +96,6 @@ class __TwigTemplate_7ec94a3a970b0c89bb9a0996eedbdd6980c6438b06bbf265d2f91769cd9
 {% block fos_oauth_server_content %}
 {% include \"@FOSOAuthServer/Authorize/authorize_content.html.twig\" %}
 {% endblock fos_oauth_server_content %}
-", "FOSOAuthServerBundle:Authorize:authorize.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/friendsofsymfony/oauth-server-bundle/Resources/views/Authorize/authorize.html.twig");
+", "FOSOAuthServerBundle:Authorize:authorize.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/friendsofsymfony/oauth-server-bundle/Resources/views/Authorize/authorize.html.twig");
     }
 }

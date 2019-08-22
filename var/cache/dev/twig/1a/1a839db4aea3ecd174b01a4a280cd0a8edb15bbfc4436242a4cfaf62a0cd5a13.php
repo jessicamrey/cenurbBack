@@ -3346,6 +3346,6 @@ body.error .error-message {
     }
 }
 {% endautoescape %}
-", "EasyAdminBundle:css:easyadmin.css.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/css/easyadmin.css.twig");
+", "EasyAdminBundle:css:easyadmin.css.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/css/easyadmin.css.twig");
     }
 }

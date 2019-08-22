@@ -204,6 +204,6 @@ class __TwigTemplate_4a98319518630504a0971f9e52271456f8195fcdb7721678f8c31b2584a
         })|raw }}
     </div>
 {% endif %}
-", "TwigBundle:Exception:trace.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/twig-bundle/Resources/views/Exception/trace.html.twig");
+", "TwigBundle:Exception:trace.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/symfony/twig-bundle/Resources/views/Exception/trace.html.twig");
     }
 }

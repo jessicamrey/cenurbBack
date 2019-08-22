@@ -26,7 +26,7 @@ class TipoPropiedad
      */
     private $Description;
 
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -41,5 +41,11 @@ class TipoPropiedad
         $this->Description = $Description;
 
         return $this;
+    }
+    
+    public function __toString(){
+        
+        return (string) $this->Description;
+        
     }
 }

@@ -26,7 +26,7 @@ class TipoTerritorio
      */
     private $descripcion;
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
@@ -41,5 +41,11 @@ class TipoTerritorio
         $this->descripcion = $descripcion;
 
         return $this;
+    }
+    
+    public function __toString(){
+        
+        return (string) $this->descripcion;
+        
     }
 }

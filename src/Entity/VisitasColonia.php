@@ -111,7 +111,7 @@ class VisitasColonia
         $this->visitaColoniaImages = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -140,7 +140,7 @@ class VisitasColonia
         return $this;
     }
 
-    public function getFecha(): \DateTimeInterface
+    public function getFecha(): ?\DateTimeInterface
     {
         return $this->fecha;
     }
@@ -277,5 +277,11 @@ class VisitasColonia
         }
 
         return $this;
+    }
+    
+    public function __toString(){
+        
+        return (string) $this->id;
+        
     }
 }

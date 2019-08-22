@@ -69,6 +69,6 @@ class __TwigTemplate_da94b1bbbdbcb9db7641978b10e0ce4739dc2e9524454dae8bd196537be
     public function getSourceContext()
     {
         return new Source("{{ value|raw }}
-", "EasyAdminBundle:default:field_raw.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_raw.html.twig");
+", "EasyAdminBundle:default:field_raw.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_raw.html.twig");
     }
 }

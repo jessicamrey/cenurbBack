@@ -2879,6 +2879,6 @@ $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBl
         {% endif %}
     </div>
 {% endblock easyadmin_section_row %}
-", "EasyAdminBundle:form:bootstrap_3_layout.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/form/bootstrap_3_layout.html.twig");
+", "EasyAdminBundle:form:bootstrap_3_layout.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/form/bootstrap_3_layout.html.twig");
     }
 }

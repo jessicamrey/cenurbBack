@@ -173,7 +173,7 @@ class Colonia
         $this->censoColonias = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -452,6 +452,11 @@ class Colonia
         $this->completo = $completo;
 
         return $this;
+    }
+    public function __toString(){
+        
+        return (string) $this->id;
+        
     }
 
 

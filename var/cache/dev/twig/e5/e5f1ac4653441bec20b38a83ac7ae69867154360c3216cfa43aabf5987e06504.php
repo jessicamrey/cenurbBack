@@ -61,6 +61,6 @@ class __TwigTemplate_265cb3faae4a8d3524fab43d4033ca071e6056315eceb57d7aeb228df29
     {
         return new Source("{# this template is rendered when an error or exception occurs while
    trying to get the value of the field (by default nothing is displayed) #}
-", "EasyAdminBundle:default:label_undefined.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/label_undefined.html.twig");
+", "EasyAdminBundle:default:label_undefined.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/label_undefined.html.twig");
     }
 }

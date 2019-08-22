@@ -74,7 +74,7 @@ class LocNidosCol
      */
     private $lon;
 
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -185,5 +185,10 @@ class LocNidosCol
         $this->lon = $lon;
 
         return $this;
+    }
+    public function __toString(){
+        
+        return (string) $this->id;
+        
     }
 }

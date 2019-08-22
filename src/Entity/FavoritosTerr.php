@@ -28,7 +28,7 @@ class FavoritosTerr
      */
     private $usuario;
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
@@ -55,5 +55,9 @@ class FavoritosTerr
         $this->usuario = $usuario;
 
         return $this;
+    }
+    public function __toString(){
+        return (string) $this->id;
+        
     }
 }

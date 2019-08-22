@@ -52,7 +52,7 @@ class VisitaColoniaImages
     private $fileName;
     
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
@@ -107,5 +107,11 @@ class VisitaColoniaImages
     	$this->fileName = $fileName;
     
     	return $this;
+    }
+    
+    public function __toString(){
+        
+        return (string) $this->id;
+        
     }
 }

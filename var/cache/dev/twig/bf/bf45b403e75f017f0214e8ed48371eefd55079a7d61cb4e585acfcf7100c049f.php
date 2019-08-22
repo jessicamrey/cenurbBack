@@ -83,6 +83,6 @@ class __TwigTemplate_a1eb46c44b7083e039123a74d7031e69689c94166c63dd18a1945e03e99
 {% else %}
     {{ value|number_format(2) }}
 {% endif %}
-", "EasyAdminBundle:default:field_decimal.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_decimal.html.twig");
+", "EasyAdminBundle:default:field_decimal.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_decimal.html.twig");
     }
 }

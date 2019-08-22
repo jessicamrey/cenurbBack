@@ -68,7 +68,7 @@ class CensoMunicipio
         $this->coloniasAsignadas = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -155,6 +155,12 @@ class CensoMunicipio
             }
         }
         return $this;
+    }
+    
+    public function __toString(){
+        
+        return (string) $this->id;
+        
     }
     
 

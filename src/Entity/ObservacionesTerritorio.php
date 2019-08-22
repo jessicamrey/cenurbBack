@@ -25,7 +25,7 @@ class ObservacionesTerritorio
      */
     private $tipo;
 
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -40,5 +40,11 @@ class ObservacionesTerritorio
         $this->tipo = $tipo;
 
         return $this;
+    }
+    
+    public function __toString(){
+        
+        return (string) $this->tipo;
+        
     }
 }

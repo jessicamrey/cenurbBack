@@ -52,7 +52,7 @@ class VisitaTerritorioImages
     private $fileName;
     
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
@@ -107,5 +107,11 @@ class VisitaTerritorioImages
     	$this->fileName = $fileName;
     
     	return $this;
+    }
+    
+    public function __toString(){
+        
+        return (string) $this->id;
+        
     }
 }

@@ -169,7 +169,7 @@ class Territorio
         $this->territoriosFavoritos = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -448,5 +448,10 @@ class Territorio
         }
 
         return $this;
+    }
+    public function __toString(){
+        
+        return (string) $this->id;
+        
     }
 }

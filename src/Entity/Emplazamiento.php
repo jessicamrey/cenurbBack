@@ -27,7 +27,7 @@ class Emplazamiento
 
 
 
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -42,6 +42,12 @@ class Emplazamiento
         $this->tipo = $tipo;
 
         return $this;
+    }
+    
+    public function __toString(){
+        
+        return (string) $this->tipo;
+        
     }
 
 

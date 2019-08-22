@@ -81,6 +81,6 @@ class __TwigTemplate_bc95ce6f198ff78eb4c4d94f038d58fbed8a024599cc730a6da2de0ff54
 <span class=\"label label-danger\" title=\"{{ 'label.inaccessible.explanation'|trans }}\">
     {{ 'label.inaccessible'|trans }}
 </span>
-", "EasyAdminBundle:default:label_inaccessible.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/label_inaccessible.html.twig");
+", "EasyAdminBundle:default:label_inaccessible.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/label_inaccessible.html.twig");
     }
 }

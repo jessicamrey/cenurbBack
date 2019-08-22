@@ -95,7 +95,7 @@ class VisitasTerritorio
         $this->visitaTerritorioImages = new ArrayCollection();
 }
 
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -224,5 +224,11 @@ class VisitasTerritorio
     	}
     
     	return $this;
+    }
+    
+    public function __toString(){
+        
+        return (string) $this->id;
+        
     }
 }

@@ -28,7 +28,7 @@ class Temporada
      */
     private $abierta;
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
@@ -55,5 +55,11 @@ class Temporada
         $this->abierta = $abierta;
 
         return $this;
+    }
+    
+    public function __toString(){
+        
+        return (string) $this->anno;
+        
     }
 }

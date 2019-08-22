@@ -187,6 +187,6 @@ class __TwigTemplate_51896b5683727d2b8ca95854516fb8120d3dc6710b5528e8e7ae7e7667d
     </button>
      </div>
 </form>
-{% endblock %}", "security/login.html.twig", "/home/jessica/Escritorio/back/cenurbBack/templates/security/login.html.twig");
+{% endblock %}", "security/login.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/templates/security/login.html.twig");
     }
 }

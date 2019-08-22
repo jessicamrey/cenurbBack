@@ -88,6 +88,6 @@ class __TwigTemplate_02380e34cc3295655b552e39cbb93826e7febb8cad859ac126eabb4bbac
 {% else %}
     <span class=\"label label-danger\">{{ 'label.false'|trans }}</span>
 {% endif %}
-", "EasyAdminBundle:default:field_boolean.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_boolean.html.twig");
+", "EasyAdminBundle:default:field_boolean.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_boolean.html.twig");
     }
 }

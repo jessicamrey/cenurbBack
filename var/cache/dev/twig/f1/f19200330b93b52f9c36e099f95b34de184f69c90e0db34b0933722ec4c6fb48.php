@@ -83,6 +83,6 @@ class __TwigTemplate_00798fc04d007f4b9721b531f62d7e73a09bcb973b6eda87901c0175900
         <?php echo \$view['form']->help(\$form); ?>
     </td>
 </tr>
-", "FrameworkBundle:FormTable:form_row.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/FormTable/form_row.html.php");
+", "FrameworkBundle:FormTable:form_row.html.php", "/home/jessica/Escritorio/back2/cenurbBack/vendor/symfony/framework-bundle/Resources/views/FormTable/form_row.html.php");
     }
 }

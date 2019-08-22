@@ -289,6 +289,6 @@ class __TwigTemplate_f3015543e3f172e0bf81772f0a1bfc931c70a9623a6ab9ff40e7192a933
         </div>
     </div>
 {% endif %}
-", "EasyAdminBundle:default:paginator.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/paginator.html.twig");
+", "EasyAdminBundle:default:paginator.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/paginator.html.twig");
     }
 }

@@ -1828,6 +1828,6 @@ class __TwigTemplate_26e7b5becebf41436108cdeff9c95c7e5f39f81fe8e959c9b93dc1b9bd8
         </tbody>
     </table>
 {% endmacro %}
-", "DoctrineBundle:Collector:db.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/doctrine/doctrine-bundle/Resources/views/Collector/db.html.twig");
+", "DoctrineBundle:Collector:db.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/doctrine/doctrine-bundle/Resources/views/Collector/db.html.twig");
     }
 }

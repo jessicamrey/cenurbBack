@@ -125,6 +125,6 @@ class __TwigTemplate_da9182f8fb61f24e9f42619c928186b6c87663a26d1d440e2c49eff99b9
         </div>
     </body>
 </html>
-", "TwigBundle:Exception:error.html.twig", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/twig-bundle/Resources/views/Exception/error.html.twig");
+", "TwigBundle:Exception:error.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/symfony/twig-bundle/Resources/views/Exception/error.html.twig");
     }
 }

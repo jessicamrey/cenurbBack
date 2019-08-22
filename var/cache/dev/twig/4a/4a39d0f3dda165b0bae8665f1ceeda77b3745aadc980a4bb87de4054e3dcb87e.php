@@ -75,6 +75,6 @@ class __TwigTemplate_763ca6c05a30e3dd4a570bd5a9a5a85160531a922c491ecd0f15b7b1835
     <?php echo \$view['form']->widget(\$form, \$widgetAttr); ?>
     <?php echo \$view['form']->help(\$form); ?>
 </div>
-", "FrameworkBundle:Form:form_row.html.php", "/home/jessica/Escritorio/back/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_row.html.php");
+", "FrameworkBundle:Form:form_row.html.php", "/home/jessica/Escritorio/back2/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_row.html.php");
     }
 }
