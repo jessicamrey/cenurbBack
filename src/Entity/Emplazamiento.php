@@ -32,7 +32,7 @@ class Emplazamiento
         return $this->id;
     }
 
-    public function getTipo(): string
+    public function getTipo()
     {
         return $this->tipo;
     }
