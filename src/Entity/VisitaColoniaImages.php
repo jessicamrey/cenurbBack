@@ -57,7 +57,7 @@ class VisitaColoniaImages
         return $this->id;
     }
 
-    public function getVisita(): ?VisitasColonia
+    public function getVisita()
     {
         return $this->visita;
     }
@@ -69,7 +69,7 @@ class VisitaColoniaImages
         return $this;
     }
     
-    public function getImage(): ?string
+    public function getImage()
     {
     	return $this->image;
     }
@@ -97,7 +97,7 @@ class VisitaColoniaImages
     	return $this->imageFile;
     }
     
-    public function getFileName(): ?string
+    public function getFileName()
     {
     	return $this->fileName;
     }
