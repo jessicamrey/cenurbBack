@@ -40,7 +40,7 @@ class OtrasEspecies
         return $this->id;
     }
 
-    public function getColonia(): ?Colonia
+    public function getColonia()
     {
         return $this->colonia;
     }
@@ -52,7 +52,7 @@ class OtrasEspecies
         return $this;
     }
     
-    public function getEspecie(): int
+    public function getEspecie()
     {
         return $this->especie;
     }
