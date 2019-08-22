@@ -31,7 +31,7 @@ class TipoPropiedad
         return $this->id;
     }
 
-    public function getDescription(): string
+    public function getDescription()
     {
         return $this->Description;
     }
