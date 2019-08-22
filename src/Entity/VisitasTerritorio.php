@@ -100,7 +100,7 @@ class VisitasTerritorio
         return $this->id;
     }
 
-    public function getUsuario(): string
+    public function getUsuario()
     {
         return $this->usuario;
     }
@@ -150,7 +150,7 @@ class VisitasTerritorio
     	return $this;
     }
 
-    public function getObservaciones(): ObservacionesTerritorio
+    public function getObservaciones()
     {
         return $this->observaciones;
     }
@@ -162,7 +162,7 @@ class VisitasTerritorio
         return $this;
     }
 
-    public function getTerritorio(): ?Territorio
+    public function getTerritorio()
     {
         return $this->territorio;
     }
@@ -197,10 +197,8 @@ class VisitasTerritorio
 
         return $this;
     }
-    /**
-     * @return Collection|VisitaTerritorioImages[]
-     */
-    public function getVisitaTerritorioImages(): Collection
+
+    public function getVisitaTerritorioImages()
     {
     	return $this->visitaTerritorioImages;
     }
