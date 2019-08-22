@@ -33,7 +33,7 @@ class FavoritosCol
         return $this->id;
     }
 
-    public function getColonia(): ?Colonia
+    public function getColonia()
     {
         return $this->colonia;
     }
@@ -45,7 +45,7 @@ class FavoritosCol
         return $this;
     }
 
-    public function getUsuario(): ?SegUsu
+    public function getUsuario()
     {
         return $this->usuario;
     }
