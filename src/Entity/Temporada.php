@@ -33,7 +33,7 @@ class Temporada
         return $this->id;
     }
 
-    public function getAnno(): ?int
+    public function getAnno()
     {
         return $this->anno;
     }
@@ -45,7 +45,7 @@ class Temporada
         return $this;
     }
 
-    public function getAbierta(): ?bool
+    public function getAbierta()
     {
         return $this->abierta;
     }
