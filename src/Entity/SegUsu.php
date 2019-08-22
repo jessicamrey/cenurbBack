@@ -68,7 +68,7 @@ class SegUsu implements UserInterface
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail()
     {
         return $this->email;
     }
@@ -80,20 +80,13 @@ class SegUsu implements UserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUsername(): string
+
+    public function getUsername()
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
+    public function getRoles()
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
@@ -109,10 +102,7 @@ class SegUsu implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getPassword(): string
+    public function getPassword()
     {
         return (string) $this->password;
     }
@@ -124,24 +114,20 @@ class SegUsu implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
+
     public function getSalt()
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
-    /**
-     * @see UserInterface
-     */
+
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
 
-    public function getIdUsu(): ?string
+    public function getIdUsu()
     {
         return $this->id_usu;
     }
@@ -153,7 +139,7 @@ class SegUsu implements UserInterface
         return $this;
     }
 
-    public function getIdCoord(): ?int
+    public function getIdCoord()
     {
         return $this->id_coord;
     }
@@ -165,10 +151,7 @@ class SegUsu implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|FavoritosCol[]
-     */
-    public function getColoniasFavoritas(): Collection
+    public function getColoniasFavoritas()
     {
         return $this->coloniasFavoritas;
     }
@@ -196,10 +179,8 @@ class SegUsu implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|FavoritosTerr[]
-     */
-    public function getTerritoriosFavoritos(): Collection
+
+    public function getTerritoriosFavoritos()
     {
         return $this->territoriosFavoritos;
     }
