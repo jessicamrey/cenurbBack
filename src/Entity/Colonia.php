@@ -190,7 +190,7 @@ class Colonia
         return $this;
     }
     
-    public function getUsuario(): string
+    public function getUsuario()
     {
         return $this->usuario;
     }
@@ -203,7 +203,7 @@ class Colonia
     }
     
 
-    public function getNombre(): string
+    public function getNombre()
     {
         return $this->nombre;
     }
@@ -215,7 +215,7 @@ class Colonia
         return $this;
     }
 
-    public function getBarrio(): string
+    public function getBarrio()
     {
         return $this->barrio;
     }
@@ -227,7 +227,7 @@ class Colonia
         return $this;
     }
 
-    public function getCalleNumPiso(): string
+    public function getCalleNumPiso()
     {
         return $this->calleNumPiso;
     }
@@ -239,7 +239,7 @@ class Colonia
         return $this;
     }
 
-    public function getNombreCentro(): string
+    public function getNombreCentro()
     {
         return $this->nombreCentro;
     }
@@ -251,7 +251,7 @@ class Colonia
         return $this;
     }
 
-    public function getTipoPropiedad(): TipoPropiedad
+    public function getTipoPropiedad()
     {
         return $this->tipoPropiedad;
     }
@@ -263,7 +263,7 @@ class Colonia
         return $this;
     }
 
-    public function getTipoEdificio(): TipoEdificio
+    public function getTipoEdificio()
     {
         return $this->tipoEdificio;
     }
@@ -277,7 +277,7 @@ class Colonia
 
 
 
-    public function getLocNidos(): LocNidosCol
+    public function getLocNidos()
     {
         return $this->locNidos;
     }
@@ -289,7 +289,7 @@ class Colonia
         return $this;
     }
 
-    public function getVacio(): bool
+    public function getVacio()
     {
         return $this->vacio;
     }
@@ -316,7 +316,7 @@ class Colonia
         return $this;
     }
 
-    public function getCcaa(): string
+    public function getCcaa()
     {
         return $this->ccaa;
     }
@@ -328,7 +328,7 @@ class Colonia
         return $this;
     }
 
-    public function getProvincia(): string
+    public function getProvincia()
     {
         return $this->provincia;
     }
@@ -340,7 +340,7 @@ class Colonia
         return $this;
     }
 
-    public function getMunicipio(): string
+    public function getMunicipio()
     {
         return $this->municipio;
     }
@@ -352,10 +352,8 @@ class Colonia
         return $this;
     }
 
-    /**
-     * @return Collection|OtrasEspecies[]
-     */
-    public function getOtrasEspecies(): Collection
+
+    public function getOtrasEspecies()
     {
         return $this->otrasEspecies;
     }
@@ -383,7 +381,7 @@ class Colonia
         return $this;
     }
     
-    public function getEspecie(): int
+    public function getEspecie()
     {
         return $this->especie;
     }
@@ -395,10 +393,7 @@ class Colonia
         return $this;
     }
 
-    /**
-     * @return Collection|VisitasColonia[]
-     */
-    public function getVisitasColonias(): Collection
+    public function getVisitasColonias()
     {
         return $this->visitasColonias;
     }
@@ -413,7 +408,7 @@ class Colonia
         return $this;
     }
 
-    public function getTemporada(): ?Temporada
+    public function getTemporada()
     {
         return $this->temporada;
     }
@@ -425,7 +420,7 @@ class Colonia
         return $this;
     }
 
-    public function getValidada(): ?bool
+    public function getValidada()
     {
         return $this->validada;
     }
@@ -437,7 +432,7 @@ class Colonia
         return $this;
     }
     
-    public function getMunicipioAsignado(): ?CensoMunicipio
+    public function getMunicipioAsignado()
     {
         return $this->municipioAsignado;
     }
