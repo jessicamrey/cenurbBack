@@ -31,7 +31,7 @@ class TipoEdificio
         return $this->id;
     }
 
-    public function getDescripcion(): string
+    public function getDescripcion()
     {
         return $this->descripcion;
     }
