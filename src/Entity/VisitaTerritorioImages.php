@@ -57,7 +57,7 @@ class VisitaTerritorioImages
         return $this->id;
     }
 
-    public function getVisita(): ?VisitasTerritorio
+    public function getVisita()
     {
         return $this->visita;
     }
@@ -69,7 +69,7 @@ class VisitaTerritorioImages
         return $this;
     }
     
-    public function getImage(): ?string
+    public function getImage()
     {
     	return $this->image;
     }
