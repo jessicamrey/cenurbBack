@@ -168,12 +168,12 @@ api_new_visitaCol:
         _api_collection_operation_name: 'newVisit'
         
 api_get_visitasCol:
-    path: '/api/visitas-colonias'
+    path: '/api/misVisitas'
     methods: ['GET']
     defaults:
         _controller: App\Controller\ColoniaController::getVisits
         _api_resource_class: App\Entity\Colonia
-        _api_collection_operation_name: 'get'
+        _api_collection_operation_name: 'getByUser'
         
 api_put_colonia:
     path: '/api/putColonia/{id}'

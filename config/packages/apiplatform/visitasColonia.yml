@@ -10,8 +10,11 @@ resources:
         collectionOperations:
             post:
                 method: 'POST'
-
+                
             get:
+                method: 'GET'
+
+            getByUser:
                 method: 'GET'
                 route_name: 'api_get_visitasCol'
                 normalization_context: 

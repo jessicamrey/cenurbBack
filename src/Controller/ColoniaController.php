@@ -221,13 +221,7 @@ class ColoniaController extends Controller{
 		
 		if (isset($params["especie"])){
 		
-		
-		//con el campo especie, comprobamos que nos han pasado el id correctamente.
-		
-	/*$existeEspecie=SeoApisController::existeEspecie($params["especie"]);
-		}else{
-			throw new InvalidArgumentException("No se ha especificado la especie");
-		}*/
+
 		
 		if ($params && count($params)){
 			
@@ -236,6 +230,14 @@ class ColoniaController extends Controller{
 			$newColonia->setEspecie($params["especie"]);
 			$newColonia->setCompleto(false);
 			$newColonia->setVacio(false);
+			
+			if (isset($params["completo"])){
+			    $newColonia->setCompleto($params["completo"]);
+			}
+			if (isset($params["vacio"])){
+			    $$newColonia->setVacio($params["vacio"]);
+			}
+			
 			
 			if (isset($params["codColonia"])){
 				$newColonia->setCodColonia($params["codColonia"]);
@@ -446,8 +448,19 @@ class ColoniaController extends Controller{
 		//Creamos este método para comprobar el usuario, sino se podría utilizar el API default
 		
 		$user=$this->getUser();
+		$coloniaId = $request->query->get("colonia");
 		
-		$visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$user->getIdUsu()]);
+		
+		
+		if($coloniaId){
+		    $colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($coloniaId);
+		    $visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$user->getIdUsu(),
+		                                                                                  'colonia'=>$colonia
+		    ]);
+		}else{
+		    $visits=$this->getDoctrine()->getRepository(VisitasColonia::class)->findBy(['usuario'=>$user->getIdUsu()]);
+		}
+		
 		
 		return new JsonResponse(
 				$this->normalizer->normalize(

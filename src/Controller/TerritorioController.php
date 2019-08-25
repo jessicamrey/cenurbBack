@@ -58,7 +58,7 @@ class TerritorioController extends Controller{
 		    "%s://%s%s",
 		    isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
 		    $_SERVER['SERVER_NAME'],
-		    '/public/files/nocol'
+		    '/public/files/nocol/'
 		    );
 	    }
 	
@@ -320,7 +320,11 @@ class TerritorioController extends Controller{
 				$locNidos->setLateralDerecho($params["latDer"]);
 				$locNidos->setLateralIzquierdo($params["latIzq"]);
 				$locNidos->setPatioInterior($params["patio"]);
-				$locNidos->setNumPiso($params["numPiso"]);
+				if (isset($params["numPiso"])){
+				    $locNidos->setNumPiso($params["numPiso"]);
+				}
+				
+				
 				$locNidos->setLat($params["lat"]);
 				$locNidos->setLon($params["lon"]);
 				if (isset($params["emplazamientoId"])){

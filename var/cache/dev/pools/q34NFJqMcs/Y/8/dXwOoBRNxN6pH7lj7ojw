@@ -43,6 +43,11 @@
                         ],
                         'get' => [
                             'method' => 'GET',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'getByUser' => [
+                            'method' => 'GET',
                             'route_name' => 'api_get_visitasCol',
                             'normalization_context' => [
                                 'groups' => [

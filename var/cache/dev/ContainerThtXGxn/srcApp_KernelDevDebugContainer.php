@@ -1,6 +1,6 @@
 <?php
 
-namespace ContainerRJi2Ypv;
+namespace ContainerThtXGxn;
 
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -1164,6 +1164,9 @@ class srcApp_KernelDevDebugContainer extends Container
         $instance->addListener('kernel.request', [0 => function () {
             return ($this->privates['debug.debug_handlers_listener'] ?? $this->getDebug_DebugHandlersListenerService());
         }, 1 => 'configure'], 2048);
+        $instance->addListener('console.command', [0 => function () {
+            return ($this->privates['debug.debug_handlers_listener'] ?? $this->getDebug_DebugHandlersListenerService());
+        }, 1 => 'configure'], 2048);
         $instance->addListener('kernel.exception', [0 => function () {
             return ($this->privates['debug.debug_handlers_listener'] ?? $this->getDebug_DebugHandlersListenerService());
         }, 1 => 'onKernelException'], -2048);
@@ -1797,7 +1800,7 @@ class srcApp_KernelDevDebugContainer extends Container
      */
     protected function getApiPlatform_Metadata_Extractor_YamlService()
     {
-        return $this->privates['api_platform.metadata.extractor.yaml'] = new \ApiPlatform\Core\Metadata\Extractor\YamlExtractor([0 => ($this->targetDirs[3].'/config/packages/apiplatform/tempUser.yml'), 1 => ($this->targetDirs[3].'/config/packages/apiplatform/otrasEspecies.yml'), 2 => ($this->targetDirs[3].'/config/packages/apiplatform/locNidosCol.yml'), 3 => ($this->targetDirs[3].'/config/packages/apiplatform/colonia.yml'), 4 => ($this->targetDirs[3].'/config/packages/apiplatform/territorio.yml'), 5 => ($this->targetDirs[3].'/config/packages/apiplatform/visitasTerritorio.yml'), 6 => ($this->targetDirs[3].'/config/packages/apiplatform/visitasColonia.yml'), 7 => ($this->targetDirs[3].'/config/packages/apiplatform/censoMunicipio.yml'), 8 => ($this->targetDirs[3].'/config/packages/apiplatform/emplazamiento.yml'), 9 => ($this->targetDirs[3].'/config/packages/apiplatform/observacionesTerritorio.yml'), 10 => ($this->targetDirs[3].'/config/packages/apiplatform/temporada.yml'), 11 => ($this->targetDirs[3].'/config/packages/apiplatform/tipoEdificio.yml'), 12 => ($this->targetDirs[3].'/config/packages/apiplatform/tipoPropiedad.yml'), 13 => ($this->targetDirs[3].'/config/packages/apiplatform/tipoTerritorio.yml')], $this);
+        return $this->privates['api_platform.metadata.extractor.yaml'] = new \ApiPlatform\Core\Metadata\Extractor\YamlExtractor([0 => ($this->targetDirs[3].'/config/packages/apiplatform/otrasEspecies.yml'), 1 => ($this->targetDirs[3].'/config/packages/apiplatform/locNidosCol.yml'), 2 => ($this->targetDirs[3].'/config/packages/apiplatform/colonia.yml'), 3 => ($this->targetDirs[3].'/config/packages/apiplatform/territorio.yml'), 4 => ($this->targetDirs[3].'/config/packages/apiplatform/visitasTerritorio.yml'), 5 => ($this->targetDirs[3].'/config/packages/apiplatform/visitasColonia.yml'), 6 => ($this->targetDirs[3].'/config/packages/apiplatform/censoMunicipio.yml'), 7 => ($this->targetDirs[3].'/config/packages/apiplatform/emplazamiento.yml'), 8 => ($this->targetDirs[3].'/config/packages/apiplatform/observacionesTerritorio.yml'), 9 => ($this->targetDirs[3].'/config/packages/apiplatform/temporada.yml'), 10 => ($this->targetDirs[3].'/config/packages/apiplatform/tipoEdificio.yml'), 11 => ($this->targetDirs[3].'/config/packages/apiplatform/tipoPropiedad.yml'), 12 => ($this->targetDirs[3].'/config/packages/apiplatform/tipoTerritorio.yml')], $this);
     }
 
     /**
