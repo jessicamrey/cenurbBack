@@ -9,12 +9,16 @@ easy_admin:
             class: App\Entity\OtrasEspecies
         VisitasColonia:
             class: App\Entity\VisitasColonia
+        VisitaColoniaImages:
+            class: App\Entity\VisitaColoniaImages
         Territorio:
             class: App\Entity\Territorio
         LocNidosNoCol:
             class: App\Entity\LocNidosNoCol
         VisitasTerritorio:
             class: App\Entity\VisitasTerritorio
+        VisitaTerritorioImages:
+            class: App\Entity\VisitaTerritorioImages
         SegUsu:
             class: App\Entity\SegUsu
         CensoMunicipio:

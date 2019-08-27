@@ -92,6 +92,7 @@ class VisitasColonia
     
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("visita")
      */
     private $nombreUsuario;
 

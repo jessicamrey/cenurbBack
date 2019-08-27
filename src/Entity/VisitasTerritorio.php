@@ -84,7 +84,7 @@ class VisitasTerritorio
     private $hora;
     
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\VisitaTerritorioImages", mappedBy="visita", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\VisitaTerritorioImages", mappedBy="visita", cascade={"persist", "remove"})
      * @Groups("visitaTerr")
      */
     private $visitaTerritorioImages;

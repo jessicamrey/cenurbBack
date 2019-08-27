@@ -639,13 +639,19 @@ class TerritorioController extends Controller{
 		for($i=0;$i<count($uploadedFiles); $i++){
 				
 			$visitaImage=new VisitaTerritorioImages();
-			if (file_exists($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITATERR'). $id .'/' .$visitaImage->getImage()) &&
-					is_writable($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITATERR'). $id .'/' .$visitaImage->getImage()))
-			{
-				unlink($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITATERR'). $id .'/' .$visitaImage->getImage());
-			}
+			
+			
 			$visitaImage->setImageFile($uploadedFiles[$i]);
 	
+			$visitaImage->setFileName(sprintf(
+			    "%s://%s%s",
+			    isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+			    $_SERVER['SERVER_NAME'],
+			    '/public/images/VisitasTerr/'
+			    )
+			    
+			    );
+			
 			$visita->addVisitaTerritorioImage($visitaImage);
 		}
 		$em = $this->getDoctrine()->getManager();
@@ -654,7 +660,7 @@ class TerritorioController extends Controller{
 		$em->flush();
 		return new JsonResponse(
 				$this->normalizer->normalize(
-						$visita, 'json', ['visita']
+				    $visita, 'json', ['groups' => ['visitaTerr']]
 				)
 		);
 	}

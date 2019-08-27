@@ -514,7 +514,6 @@ class ColoniaController extends Controller{
                                                                                             'usuario'=>$user->getIdUsu()]);
 		
 		$entityManager = $this->getDoctrine()->getManager('default');
-	
 		if ($visita!=null){
 	
 				
@@ -533,6 +532,11 @@ class ColoniaController extends Controller{
 			if (isset($params["completo"])){
 				$visita->setCompleto($params["completo"]);
 			}
+			if (isset($params["anno"])){
+			    $temporada=$this->getDoctrine()->getRepository(Temporada::class)->findOneBy(['anno'=>$params["anno"]]);
+			    $visita->setTemporada($temporada);
+			}
+			
 			
 								
 			$entityManager->persist($visita);
@@ -543,7 +547,7 @@ class ColoniaController extends Controller{
 	
 		return new JsonResponse(
 				$this->normalizer->normalize(
-						$visita, 'json', ['groups' => ['visitaCol']]
+						$visita, 'json', ['groups' => ['visita']]
 				));
 	}
 	
@@ -768,18 +772,24 @@ class ColoniaController extends Controller{
 	public function uploadImageAction(Request $request, $id)
 	{
 		$uploadedFiles = $request->files->get('file');
-	
+		
 		$visita=$this->getDoctrine()->getRepository(VisitasColonia::class)->find($id);
 		
 		for($i=0;$i<count($uploadedFiles); $i++){
 			
 			$visitaImage=new VisitaColoniaImages();
-			if (file_exists($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITACOL'). $id .'/' .$visitaImage->getImage()) &&
-					is_writable($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITACOL'). $id .'/' .$visitaImage->getImage()))
-			{
-				unlink($this->get('kernel')->getRootDir().'/public/'.getEnv('APP_IMAGE_VISITACOL'). $id .'/' .$visitaImage->getImage());
-			}
+			
+			
 			$visitaImage->setImageFile($uploadedFiles[$i]);
+			
+			$visitaImage->setFileName(sprintf(
+			    "%s://%s%s",
+			    isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+			    $_SERVER['SERVER_NAME'],
+			    '/public/images/VisitasCol/'
+			    )
+			   
+			);
 	
 			$visita->addVisitaColoniaImage($visitaImage);
 		}
@@ -789,7 +799,7 @@ class ColoniaController extends Controller{
 		$em->flush();
 		return new JsonResponse(
 				$this->normalizer->normalize(
-						$visita, 'json', ['visita']
+				    $visita, 'json', ['groups' => ['visita']]
 				)
 		);
 	}
@@ -812,7 +822,7 @@ class ColoniaController extends Controller{
 			$em->flush();
 			return new JsonResponse(
 					$this->normalizer->normalize(
-							$visita, 'json', ['visita']
+					    $visita, 'json', ['groups' => ['visita']]
 					)
 			);
 		}
