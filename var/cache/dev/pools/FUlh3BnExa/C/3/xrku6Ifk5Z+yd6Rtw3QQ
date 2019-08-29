@@ -1,0 +1,151 @@
+<?php return [PHP_INT_MAX, static function () {
+
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata')),
+        ],
+        null,
+        [
+            'ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata' => [
+                'shortName' => [
+                    'Territorio',
+                ],
+                'description' => [
+                    '',
+                ],
+                'itemOperations' => [
+                    [
+                        'get' => [
+                            'method' => 'GET',
+                            'normalization_context' => [
+                                'groups' => [
+                                    'territorio',
+                                ],
+                            ],
+                            'denormalization_context' => [
+                                'groups' => [
+                                    'territorio',
+                                ],
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'put' => [
+                            'method' => 'PUT',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'delete' => [
+                            'method' => 'DELETE',
+                            'access_control' => 'is_granted(\'ROLE_ADMIN\')',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                    ],
+                ],
+                'collectionOperations' => [
+                    [
+                        'post' => [
+                            'method' => 'POST',
+                            'route_name' => 'api_new_territorio',
+                            'swagger_context' => [
+                                'summary' => 'Registrar una nuevo territorio',
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'getFav' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_get_favoritosTerr',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'postNoCol' => [
+                            'method' => 'POST',
+                            'route_name' => 'api_add_locNidosNoCol',
+                            'swagger_context' => [
+                                'summary' => 'Añade información sobre nidos a un territorio',
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'get' => [
+                            'method' => 'GET',
+                            'normalization_context' => [
+                                'groups' => [
+                                    'territorio',
+                                ],
+                            ],
+                            'denormalization_context' => [
+                                'groups' => [
+                                    'territorio',
+                                ],
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'newVisit' => [
+                            'method' => 'POST',
+                            'route_name' => 'api_new_visitaTerr',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsAnno' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_annoTerr',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsCcaa' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_ccaaTerr',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsProvincia' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_provinciaTerr',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsGeneral' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_generalTerr',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'statsObservaciones' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_stats_observaciones',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                    ],
+                ],
+                'graphql' => [
+                    [
+                        'query' => [],
+                        'delete' => [],
+                        'update' => [],
+                        'create' => [],
+                    ],
+                ],
+                'attributes' => [
+                    [
+                        'input' => null,
+                        'output' => null,
+                        'filters' => [
+                            'annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                            'annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter',
+                            'annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_range_filter',
+                            'annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_boolean_filter',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        $o[0],
+        []
+    );
+
+}];

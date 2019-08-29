@@ -1,0 +1,104 @@
+<?php return [PHP_INT_MAX, static function () {
+
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata')),
+        ],
+        null,
+        [
+            'ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata' => [
+                'shortName' => [
+                    'VisitasColonia',
+                ],
+                'description' => [
+                    '',
+                ],
+                'itemOperations' => [
+                    [
+                        'get' => [
+                            'method' => 'GET',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'put' => [
+                            'method' => 'PUT',
+                            'route_name' => 'api_put_visitaCol',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'delete' => [
+                            'method' => 'DELETE',
+                            'route_name' => 'api_del_visitaCol',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                    ],
+                ],
+                'collectionOperations' => [
+                    [
+                        'post' => [
+                            'method' => 'POST',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'get' => [
+                            'method' => 'GET',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'getByUser' => [
+                            'method' => 'GET',
+                            'route_name' => 'api_get_visitasCol',
+                            'normalization_context' => [
+                                'groups' => [
+                                    'visita',
+                                ],
+                            ],
+                            'denormalization_context' => [
+                                'groups' => [
+                                    'visita',
+                                ],
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                    ],
+                ],
+                'graphql' => [
+                    [
+                        'query' => [],
+                        'delete' => [],
+                        'update' => [],
+                        'create' => [],
+                    ],
+                ],
+                'attributes' => [
+                    [
+                        'pagination_enabled' => false,
+                        'normalization_context' => [
+                            'groups' => [
+                                'visita',
+                            ],
+                        ],
+                        'denormalization_context' => [
+                            'groups' => [
+                                'visita',
+                            ],
+                        ],
+                        'input' => null,
+                        'output' => null,
+                        'filters' => [
+                            'annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_date_filter',
+                            'annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_numeric_filter',
+                            'annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                            'annotated_app_entity_visitas_colonia_api_platform_core_bridge_doctrine_orm_filter_boolean_filter',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        $o[0],
+        []
+    );
+
+}];

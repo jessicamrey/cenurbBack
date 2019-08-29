@@ -358,7 +358,16 @@ class TerritorioController extends Controller{
 
 	public function getFavoritos(Request $request, $id){
 		$user=$this->getUser();
-		$territorios=$user->getTerritoriosFavoritos();
+		$favoritos=$this->getDoctrine()->getRepository(FavoritosTerr::class)->findBy(['usuario'=>$user]);
+		
+		$territorios=[];
+		foreach ($favoritos as &$favorito){
+		    
+		    $territorio=$favorito->getTerritorio();
+		    
+		    array_push($territorios, $territorio);
+		    
+		}
 		
 		return new JsonResponse(
 			$this->normalizer->normalize(
@@ -398,9 +407,11 @@ class TerritorioController extends Controller{
 		$user =$this->getUser();		
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
+		$territorio=$this->getDoctrine()->getRepository(Territorio::class)->find($id);
 		
-		$fav=$this->getDoctrine()->getRepository(FavoritosTerr::class)->find($id);
-		$entityManager->remove($fav);
+		$favoritos=$this->getDoctrine()->getRepository(FavoritosTerr::class)->findBy(['usuario'=>$user, "territorio"=>$territorio]);
+
+		$entityManager->remove($favoritos[0]);
 		$entityManager->flush();
 		$entityManager->close();
 	
@@ -536,12 +547,20 @@ class TerritorioController extends Controller{
 	
 	public function newFavorito(Request $request){
 		$params=json_decode($request->getContent(), true);
-		
+		$user=$this->getUser();
 		$territorio=$this->getDoctrine()->getRepository(Territorio::class)->find($params["territorio"]);
 		
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
-	
+		$existe=$this->getDoctrine()->getRepository(FavoritosTerr::class)->findBy(['usuario'=>$user, "territorio"=>$territorio]);
+		
+		if (count($existe)>0){
+		    return new Response(
+		        'Se ha guardado el favorito',
+		        Response::HTTP_OK,
+		        array('content-type' => 'text/html')
+		        );
+		}
 		if ($territorio!=null){
 			//abrimos nuestro manager
 			$entityManager = $this->getDoctrine()->getManager('default');

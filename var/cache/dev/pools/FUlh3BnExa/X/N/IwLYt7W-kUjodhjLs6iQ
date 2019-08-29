@@ -1,0 +1,116 @@
+<?php return [PHP_INT_MAX, static function () {
+
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata')),
+        ],
+        null,
+        [
+            'ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata' => [
+                'shortName' => [
+                    'CensoMunicipio',
+                ],
+                'description' => [
+                    '',
+                ],
+                'itemOperations' => [
+                    [
+                        'get' => [
+                            'method' => 'GET',
+                            'normalization_context' => [
+                                'groups' => [
+                                    'censo',
+                                ],
+                            ],
+                            'denormalization_context' => [
+                                'groups' => [
+                                    'censo',
+                                ],
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'put' => [
+                            'method' => 'PUT',
+                            'normalization_context' => [
+                                'groups' => [
+                                    'censo',
+                                ],
+                            ],
+                            'denormalization_context' => [
+                                'groups' => [
+                                    'censo',
+                                ],
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'delete' => [
+                            'method' => 'DELETE',
+                            'access_control' => 'is_granted(\'ROLE_ADMIN\')',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                    ],
+                ],
+                'collectionOperations' => [
+                    [
+                        'post' => [
+                            'method' => 'POST',
+                            'route_name' => 'api_new_censoMunicipio',
+                            'input' => null,
+                            'output' => null,
+                        ],
+                        'get' => [
+                            'method' => 'GET',
+                            'normalization_context' => [
+                                'groups' => [
+                                    'censo',
+                                ],
+                            ],
+                            'denormalization_context' => [
+                                'groups' => [
+                                    'censo',
+                                ],
+                            ],
+                            'input' => null,
+                            'output' => null,
+                        ],
+                    ],
+                ],
+                'graphql' => [
+                    [
+                        'query' => [],
+                        'delete' => [],
+                        'update' => [],
+                        'create' => [],
+                    ],
+                ],
+                'attributes' => [
+                    [
+                        'pagination_enabled' => false,
+                        'normalization_context' => [
+                            'groups' => [
+                                'censo',
+                            ],
+                        ],
+                        'denormalization_context' => [
+                            'groups' => [
+                                'censo',
+                            ],
+                        ],
+                        'input' => null,
+                        'output' => null,
+                        'filters' => [
+                            'annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter',
+                            'annotated_app_entity_censo_municipio_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        $o[0],
+        []
+    );
+
+}];

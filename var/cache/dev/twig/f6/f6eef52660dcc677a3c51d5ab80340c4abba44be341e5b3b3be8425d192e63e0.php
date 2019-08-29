@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* VichUploaderBundle:Form:fields.html.twig */
+/* @VichUploader/Form/fields.html.twig */
 class __TwigTemplate_e960b2c33adb9eb826ec3f04454e3fe877ff9c3ca28d5fcf8caa502c247601ed extends \Twig\Template
 {
     private $source;
@@ -39,10 +39,10 @@ class __TwigTemplate_e960b2c33adb9eb826ec3f04454e3fe877ff9c3ca28d5fcf8caa502c247
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "VichUploaderBundle:Form:fields.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@VichUploader/Form/fields.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "VichUploaderBundle:Form:fields.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@VichUploader/Form/fields.html.twig"));
 
         // line 1
         $this->displayBlock('vich_file_row', $context, $blocks);
@@ -262,7 +262,7 @@ class __TwigTemplate_e960b2c33adb9eb826ec3f04454e3fe877ff9c3ca28d5fcf8caa502c247
 
     public function getTemplateName()
     {
-        return "VichUploaderBundle:Form:fields.html.twig";
+        return "@VichUploader/Form/fields.html.twig";
     }
 
     public function getDebugInfo()
@@ -319,6 +319,6 @@ class __TwigTemplate_e960b2c33adb9eb826ec3f04454e3fe877ff9c3ca28d5fcf8caa502c247
     {% set label = label|trans|default(label) %}
     {{- block('form_label') }}
 {% endblock %}
-", "VichUploaderBundle:Form:fields.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/vich/uploader-bundle/Resources/views/Form/fields.html.twig");
+", "@VichUploader/Form/fields.html.twig", "/home/jessica/Escritorio/back4/cenurbBack/vendor/vich/uploader-bundle/Resources/views/Form/fields.html.twig");
     }
 }

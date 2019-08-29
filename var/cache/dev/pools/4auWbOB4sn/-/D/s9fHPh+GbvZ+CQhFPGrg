@@ -1,0 +1,64 @@
+<?php return [PHP_INT_MAX, static function () {
+
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['ApiPlatform\\Core\\Annotation\\ApiResource'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Core\\Annotation\\ApiResource')),
+            clone ($p['ApiPlatform\\Core\\Annotation\\ApiFilter'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Core\\Annotation\\ApiFilter')),
+            clone $p['ApiPlatform\\Core\\Annotation\\ApiFilter'],
+            clone $p['ApiPlatform\\Core\\Annotation\\ApiFilter'],
+            clone $p['ApiPlatform\\Core\\Annotation\\ApiFilter'],
+            clone ($p['Doctrine\\ORM\\Mapping\\Entity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+        ],
+        null,
+        [
+            'stdClass' => [
+                'filterClass' => [
+                    1 => 'ApiPlatform\\Core\\Bridge\\Doctrine\\Orm\\Filter\\SearchFilter',
+                    'ApiPlatform\\Core\\Bridge\\Doctrine\\Orm\\Filter\\NumericFilter',
+                    'ApiPlatform\\Core\\Bridge\\Doctrine\\Orm\\Filter\\RangeFilter',
+                    'ApiPlatform\\Core\\Bridge\\Doctrine\\Orm\\Filter\\BooleanFilter',
+                ],
+                'properties' => [
+                    1 => [
+                        'usuario' => 'exact',
+                        'id' => 'exact',
+                        'codTerritorio' => 'exact',
+                        'nombre' => 'partial',
+                        'barrio' => 'partial',
+                        'calleNumPiso' => 'partial',
+                        'nombreCentro' => 'partial',
+                        'tipoPropiedad' => 'exact',
+                        'tipoEdificio' => 'exact',
+                        'ccaa' => 'exact',
+                        'provincia' => 'exact',
+                        'municipio' => 'exact',
+                    ],
+                    [
+                        'temporada',
+                        'especie',
+                    ],
+                    [
+                        'temporada',
+                    ],
+                    [
+                        'amenazada',
+                        'vacio',
+                    ],
+                ],
+                'repositoryClass' => [
+                    5 => 'App\\Repository\\TerritorioRepository',
+                ],
+            ],
+        ],
+        [
+            $o[0],
+            $o[1],
+            $o[2],
+            $o[3],
+            $o[4],
+            $o[5],
+        ],
+        []
+    );
+
+}];

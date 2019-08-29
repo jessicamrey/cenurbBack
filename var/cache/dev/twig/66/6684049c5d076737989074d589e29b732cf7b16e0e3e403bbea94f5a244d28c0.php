@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* ApiPlatformBundle:DataCollector:request.html.twig */
+/* @ApiPlatform/DataCollector/request.html.twig */
 class __TwigTemplate_573c7ffbfc2d8fc4110e928c5ae59e1c196266d08310b347d497b2be22d3340b extends \Twig\Template
 {
     private $source;
@@ -41,15 +41,15 @@ class __TwigTemplate_573c7ffbfc2d8fc4110e928c5ae59e1c196266d08310b347d497b2be22d
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "ApiPlatformBundle:DataCollector:request.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@ApiPlatform/DataCollector/request.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "ApiPlatformBundle:DataCollector:request.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@ApiPlatform/DataCollector/request.html.twig"));
 
         // line 77
         $macros["apiPlatform"] = $this->macros["apiPlatform"] = $this;
         // line 1
-        $this->parent = $this->loadTemplate("@WebProfiler/Profiler/layout.html.twig", "ApiPlatformBundle:DataCollector:request.html.twig", 1);
+        $this->parent = $this->loadTemplate("@WebProfiler/Profiler/layout.html.twig", "@ApiPlatform/DataCollector/request.html.twig", 1);
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->leave($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof);
@@ -615,7 +615,7 @@ $context["answer"] === false)) {
 
     public function getTemplateName()
     {
-        return "ApiPlatformBundle:DataCollector:request.html.twig";
+        return "@ApiPlatform/DataCollector/request.html.twig";
     }
 
     public function isTraitable()
@@ -823,6 +823,6 @@ $context["answer"] === false)) {
         </div>
     {% endif %}
 {% endblock %}
-", "ApiPlatformBundle:DataCollector:request.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/api-platform/core/src/Bridge/Symfony/Bundle/Resources/views/DataCollector/request.html.twig");
+", "@ApiPlatform/DataCollector/request.html.twig", "/home/jessica/Escritorio/back4/cenurbBack/vendor/api-platform/core/src/Bridge/Symfony/Bundle/Resources/views/DataCollector/request.html.twig");
     }
 }

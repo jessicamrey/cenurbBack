@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* EasyAdminBundle:default:field_integer.html.twig */
+/* @EasyAdmin/default/field_integer.html.twig */
 class __TwigTemplate_ba6c17da23a3d721bea59db919cbeac280945acaeeb27d1c9633831f34fe44ce extends \Twig\Template
 {
     private $source;
@@ -34,10 +34,10 @@ class __TwigTemplate_ba6c17da23a3d721bea59db919cbeac280945acaeeb27d1c9633831f34f
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "EasyAdminBundle:default:field_integer.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@EasyAdmin/default/field_integer.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "EasyAdminBundle:default:field_integer.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@EasyAdmin/default/field_integer.html.twig"));
 
         // line 1
         if (twig_get_attribute($this->env, $this->source, (isset($context["field_options"]) || array_key_exists("field_options", $context) ? $context["field_options"] : (function () { throw new RuntimeError('Variable "field_options" does not exist.', 1, $this->source); })()), "format", [], "any", false, false, false, 1)) {
@@ -63,7 +63,7 @@ class __TwigTemplate_ba6c17da23a3d721bea59db919cbeac280945acaeeb27d1c9633831f34f
 
     public function getTemplateName()
     {
-        return "EasyAdminBundle:default:field_integer.html.twig";
+        return "@EasyAdmin/default/field_integer.html.twig";
     }
 
     public function isTraitable()
@@ -83,6 +83,6 @@ class __TwigTemplate_ba6c17da23a3d721bea59db919cbeac280945acaeeb27d1c9633831f34f
 {% else %}
     {{ value|number_format }}
 {% endif %}
-", "EasyAdminBundle:default:field_integer.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_integer.html.twig");
+", "@EasyAdmin/default/field_integer.html.twig", "/home/jessica/Escritorio/back4/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_integer.html.twig");
     }
 }

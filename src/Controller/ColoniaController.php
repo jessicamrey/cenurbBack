@@ -435,7 +435,16 @@ class ColoniaController extends Controller{
 		
 		$user=$this->getUser();
 		
-		$colonias=$user->getColoniasFavoritas();
+		$favoritos=$this->getDoctrine()->getRepository(FavoritosCol::class)->findBy(['usuario'=>$user]);
+		
+		$colonias=[];
+		foreach ($favoritos as &$favorito){
+		    
+		    $colonia=$favorito->getColonia();
+		   
+		    array_push($colonias, $colonia);
+		    
+		}
 		
 		return new JsonResponse(
 			$this->normalizer->normalize(
@@ -586,7 +595,15 @@ class ColoniaController extends Controller{
 		
 		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($params["colonia"]);
 		
+		$existe=$this->getDoctrine()->getRepository(FavoritosCol::class)->findBy(['usuario'=>$user, "colonia"=>$colonia]);
 		
+		if (count($existe)>0){
+		    return new Response(
+		        'Se ha guardado el favorito',
+		        Response::HTTP_OK,
+		        array('content-type' => 'text/html')
+		        );
+		}
 		if ($colonia!=null){
 			//abrimos nuestro manager
 			$entityManager = $this->getDoctrine()->getManager('default');
@@ -618,8 +635,11 @@ class ColoniaController extends Controller{
 		//abrimos nuestro manager
 		$entityManager = $this->getDoctrine()->getManager('default');
 		
-		$fav=$this->getDoctrine()->getRepository(FavoritosCol::class)->find($id);
-		$entityManager->remove($fav);
+		$colonia=$this->getDoctrine()->getRepository(Colonia::class)->find($id);
+		
+		$favoritos=$this->getDoctrine()->getRepository(FavoritosCol::class)->findBy(['usuario'=>$user, "colonia"=>$colonia]);
+		
+		$entityManager->remove($favoritos[0]);
 		$entityManager->flush();
 		$entityManager->close();
 

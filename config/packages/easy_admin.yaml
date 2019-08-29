@@ -5,6 +5,8 @@ easy_admin:
             class: App\Entity\Colonia
         LocNidosCol:
             class: App\Entity\LocNidosCol
+        FavoritosCol:
+            class: App\Entity\FavoritosCol
         OtrasEspecies:
             class: App\Entity\OtrasEspecies
         VisitasColonia:
@@ -13,6 +15,8 @@ easy_admin:
             class: App\Entity\VisitaColoniaImages
         Territorio:
             class: App\Entity\Territorio
+        FavoritosTerr:
+            class: App\Entity\FavoritosTerr
         LocNidosNoCol:
             class: App\Entity\LocNidosNoCol
         VisitasTerritorio:

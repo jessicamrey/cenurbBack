@@ -12,7 +12,7 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* EasyAdminBundle:default:flash_messages.html.twig */
+/* @EasyAdmin/default/flash_messages.html.twig */
 class __TwigTemplate_16c6af6a79c0d48b6da88654149a85c9b022336ee45e5bb093e21c3cc7e31182 extends \Twig\Template
 {
     private $source;
@@ -34,10 +34,10 @@ class __TwigTemplate_16c6af6a79c0d48b6da88654149a85c9b022336ee45e5bb093e21c3cc7e
     {
         $macros = $this->macros;
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "EasyAdminBundle:default:flash_messages.html.twig"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@EasyAdmin/default/flash_messages.html.twig"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "EasyAdminBundle:default:flash_messages.html.twig"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "@EasyAdmin/default/flash_messages.html.twig"));
 
         // line 1
         if (( !(null === twig_get_attribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 1, $this->source); })()), "session", [], "any", false, false, false, 1)) && twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 1, $this->source); })()), "session", [], "any", false, false, false, 1), "started", [], "any", false, false, false, 1))) {
@@ -87,7 +87,7 @@ class __TwigTemplate_16c6af6a79c0d48b6da88654149a85c9b022336ee45e5bb093e21c3cc7e
 
     public function getTemplateName()
     {
-        return "EasyAdminBundle:default:flash_messages.html.twig";
+        return "@EasyAdmin/default/flash_messages.html.twig";
     }
 
     public function isTraitable()
@@ -113,6 +113,6 @@ class __TwigTemplate_16c6af6a79c0d48b6da88654149a85c9b022336ee45e5bb093e21c3cc7e
         {% endfor %}
     </div>
 {% endif %}
-", "EasyAdminBundle:default:flash_messages.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/flash_messages.html.twig");
+", "@EasyAdmin/default/flash_messages.html.twig", "/home/jessica/Escritorio/back4/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/flash_messages.html.twig");
     }
 }
