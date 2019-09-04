@@ -375,6 +375,6 @@ class __TwigTemplate_75357018d2f01d44673085187f3cf17b5d1048b881e81391795bfcd1f70
 
 </body>
 </html>
-", "ApiPlatformBundle:SwaggerUi:index.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/api-platform/core/src/Bridge/Symfony/Bundle/Resources/views/SwaggerUi/index.html.twig");
+", "ApiPlatformBundle:SwaggerUi:index.html.twig", "/home/jessica/Escritorio/back4/cenurbBack/vendor/api-platform/core/src/Bridge/Symfony/Bundle/Resources/views/SwaggerUi/index.html.twig");
     }
 }

@@ -19,4 +19,6 @@ return [
     Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
     EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle::class => ['all' => true],
     FOS\OAuthServerBundle\FOSOAuthServerBundle::class => ['all' => true],
+    Onurb\Bundle\YumlBundle\OnurbYumlBundle::class => ['all' => true],
+    
 ];

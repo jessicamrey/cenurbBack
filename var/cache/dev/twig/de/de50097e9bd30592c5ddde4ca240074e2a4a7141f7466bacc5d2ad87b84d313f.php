@@ -798,6 +798,6 @@ class __TwigTemplate_0f3389e4b90b472ac9e27fce0511f05e769d7d61c1f1410ba12a02ce284
     </table>
     {% endfor %}
 {% endmacro %}
-", "WebProfilerBundle:Collector:messenger.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Collector/messenger.html.twig");
+", "WebProfilerBundle:Collector:messenger.html.twig", "/home/jessica/Escritorio/back4/cenurbBack/vendor/symfony/web-profiler-bundle/Resources/views/Collector/messenger.html.twig");
     }
 }

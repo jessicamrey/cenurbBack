@@ -24,9 +24,10 @@ use Doctrine\ORM\Mapping as ORM;
  * 												"tipoEdificio": "exact",
  *                                              "municipioAsignado": "exact",
  * 												"ccaa": "exact", 
+ *                                              "temporada": "exact", 
  * 												"provincia": "exact", 
  * 												"municipio": "exact"})
- * @ApiFilter(NumericFilter::class, properties={"temporada", "especie"})
+ * @ApiFilter(NumericFilter::class, properties={"especie"})
  * @ApiFilter(RangeFilter::class, properties={"temporada"})
  * @ApiFilter(BooleanFilter::class, properties={"vacio"})
  * @ORM\Entity(repositoryClass="App\Repository\ColoniaRepository")

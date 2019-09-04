@@ -27,6 +27,7 @@
       <parameter key="VichUploaderBundle">Vich\UploaderBundle\VichUploaderBundle</parameter>
       <parameter key="EasyAdminBundle">EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle</parameter>
       <parameter key="FOSOAuthServerBundle">FOS\OAuthServerBundle\FOSOAuthServerBundle</parameter>
+      <parameter key="OnurbYumlBundle">Onurb\Bundle\YumlBundle\OnurbYumlBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
@@ -100,6 +101,10 @@
       <parameter key="FOSOAuthServerBundle" type="collection">
         <parameter key="path">/home/jessica/Escritorio/back4/cenurbBack/vendor/friendsofsymfony/oauth-server-bundle</parameter>
         <parameter key="namespace">FOS\OAuthServerBundle</parameter>
+      </parameter>
+      <parameter key="OnurbYumlBundle" type="collection">
+        <parameter key="path">/home/jessica/Escritorio/back4/cenurbBack/vendor/onurb/doctrine-yuml-bundle/lib/Onurb/Bundle/YumlBundle</parameter>
+        <parameter key="namespace">Onurb\Bundle\YumlBundle</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -617,6 +622,13 @@
       <parameter>Authorize</parameter>
       <parameter>Default</parameter>
     </parameter>
+    <parameter key="onurb_yuml.show_fields_description">true</parameter>
+    <parameter key="onurb_yuml.colors" type="collection"/>
+    <parameter key="onurb_yuml.notes" type="collection"/>
+    <parameter key="onurb_yuml.extension">png</parameter>
+    <parameter key="onurb_yuml.style">plain</parameter>
+    <parameter key="onurb_yuml.direction">TB</parameter>
+    <parameter key="onurb_yuml.scale">normal</parameter>
     <parameter key="data_collector.templates" type="collection">
       <parameter key="data_collector.request" type="collection">
         <parameter>request</parameter>
@@ -693,6 +705,10 @@
       <parameter key="easyadmin.data_collector" type="collection">
         <parameter>easyadmin</parameter>
         <parameter>@EasyAdmin/data_collector/easyadmin.html.twig</parameter>
+      </parameter>
+      <parameter key="onurb_yuml.toolbar" type="collection">
+        <parameter>doctrine_yuml</parameter>
+        <parameter>@OnurbYuml/Toolbar/toolbar.html.twig</parameter>
       </parameter>
       <parameter key="data_collector.config" type="collection">
         <parameter>config</parameter>
@@ -943,26 +959,54 @@
     </service>
     <service id="services_resetter" class="Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter" public="true">
       <argument type="iterator">
+        <argument key="cache.app" type="service" id="cache.app" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.system" type="service" id="cache.system" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.validator" type="service" id="cache.validator" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.serializer" type="service" id="cache.serializer" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.annotations" type="service" id="cache.annotations" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.property_info" type="service" id="cache.property_info" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.messenger.restart_workers_signal" type="service" id="cache.messenger.restart_workers_signal" on-invalid="ignore_uninitialized"/>
         <argument key="form.choice_list_factory.cached" type="service" id="form.choice_list_factory.cached" on-invalid="ignore_uninitialized"/>
         <argument key="profiler" type="service" id="profiler" on-invalid="ignore_uninitialized"/>
         <argument key="debug.validator" type="service" id="debug.validator" on-invalid="ignore_uninitialized"/>
         <argument key="debug.stopwatch" type="service" id="debug.stopwatch" on-invalid="ignore_uninitialized"/>
+        <argument key="debug.event_dispatcher" type="service" id="debug.event_dispatcher" on-invalid="ignore_uninitialized"/>
         <argument key="form.type.entity" type="service" id="form.type.entity" on-invalid="ignore_uninitialized"/>
         <argument key="security.token_storage" type="service" id="security.token_storage" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.security_expression_language" type="service" id="cache.security_expression_language" on-invalid="ignore_uninitialized"/>
         <argument key="swiftmailer.email_sender.listener" type="service" id="swiftmailer.email_sender.listener" on-invalid="ignore_uninitialized"/>
         <argument key="monolog.handler.main" type="service" id="monolog.handler.main" on-invalid="ignore_uninitialized"/>
         <argument key="monolog.handler.console" type="service" id="monolog.handler.console" on-invalid="ignore_uninitialized"/>
+        <argument key="api_platform.cache.route_name_resolver" type="service" id="api_platform.cache.route_name_resolver" on-invalid="ignore_uninitialized"/>
+        <argument key="api_platform.cache.identifiers_extractor" type="service" id="api_platform.cache.identifiers_extractor" on-invalid="ignore_uninitialized"/>
+        <argument key="api_platform.cache.subresource_operation_factory" type="service" id="api_platform.cache.subresource_operation_factory" on-invalid="ignore_uninitialized"/>
+        <argument key="api_platform.cache.metadata.resource" type="service" id="api_platform.cache.metadata.resource" on-invalid="ignore_uninitialized"/>
+        <argument key="api_platform.cache.metadata.property" type="service" id="api_platform.cache.metadata.property" on-invalid="ignore_uninitialized"/>
       </argument>
       <argument type="collection">
+        <argument key="cache.app">reset</argument>
+        <argument key="cache.system">reset</argument>
+        <argument key="cache.validator">reset</argument>
+        <argument key="cache.serializer">reset</argument>
+        <argument key="cache.annotations">reset</argument>
+        <argument key="cache.property_info">reset</argument>
+        <argument key="cache.messenger.restart_workers_signal">reset</argument>
         <argument key="form.choice_list_factory.cached">reset</argument>
         <argument key="profiler">reset</argument>
         <argument key="debug.validator">reset</argument>
         <argument key="debug.stopwatch">reset</argument>
+        <argument key="debug.event_dispatcher">reset</argument>
         <argument key="form.type.entity">reset</argument>
         <argument key="security.token_storage">setToken</argument>
+        <argument key="cache.security_expression_language">reset</argument>
         <argument key="swiftmailer.email_sender.listener">reset</argument>
         <argument key="monolog.handler.main">reset</argument>
         <argument key="monolog.handler.console">reset</argument>
+        <argument key="api_platform.cache.route_name_resolver">reset</argument>
+        <argument key="api_platform.cache.identifiers_extractor">reset</argument>
+        <argument key="api_platform.cache.subresource_operation_factory">reset</argument>
+        <argument key="api_platform.cache.metadata.resource">reset</argument>
+        <argument key="api_platform.cache.metadata.property">reset</argument>
       </argument>
     </service>
     <service id="reverse_container" class="Symfony\Component\DependencyInjection\ReverseContainer" public="false">
@@ -1220,6 +1264,7 @@
     </service>
     <service id="cache.app" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="true">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="cache.app.recorder_inner"/>
     </service>
     <service id="cache.app.simple" class="Symfony\Component\Cache\Psr16Cache" public="false">
@@ -1231,30 +1276,36 @@
     </service>
     <service id="cache.system" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="true">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="cache.system.recorder_inner"/>
     </service>
     <service id="cache.validator" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="false">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="cache.validator.recorder_inner"/>
     </service>
     <service id="cache.serializer" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="false">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="cache.serializer.recorder_inner"/>
     </service>
     <service id="cache.annotations" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="false">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="cache.annotations.recorder_inner"/>
     </service>
     <service id="cache.property_info" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="false">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="cache.property_info.recorder_inner"/>
     </service>
     <service id="cache.messenger.restart_workers_signal" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="false">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="cache.messenger.restart_workers_signal.recorder_inner"/>
     </service>
     <service id="cache.adapter.system" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false" abstract="true">
-      <tag name="cache.pool" clearer="cache.system_clearer"/>
+      <tag name="cache.pool" clearer="cache.system_clearer" reset="reset"/>
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
@@ -1264,7 +1315,7 @@
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.adapter.apcu" class="Symfony\Component\Cache\Adapter\ApcuAdapter" public="false" abstract="true">
-      <tag name="cache.pool" clearer="cache.default_clearer"/>
+      <tag name="cache.pool" clearer="cache.default_clearer" reset="reset"/>
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
@@ -1274,7 +1325,7 @@
       </call>
     </service>
     <service id="cache.adapter.doctrine" class="Symfony\Component\Cache\Adapter\DoctrineAdapter" public="false" abstract="true">
-      <tag name="cache.pool" provider="cache.default_doctrine_provider" clearer="cache.default_clearer"/>
+      <tag name="cache.pool" provider="cache.default_doctrine_provider" clearer="cache.default_clearer" reset="reset"/>
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument></argument>
@@ -1284,7 +1335,7 @@
       </call>
     </service>
     <service id="cache.adapter.filesystem" class="Symfony\Component\Cache\Adapter\FilesystemAdapter" public="false" abstract="true">
-      <tag name="cache.pool" clearer="cache.default_clearer"/>
+      <tag name="cache.pool" clearer="cache.default_clearer" reset="reset"/>
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
@@ -1295,13 +1346,13 @@
       </call>
     </service>
     <service id="cache.adapter.psr6" class="Symfony\Component\Cache\Adapter\ProxyAdapter" public="false" abstract="true">
-      <tag name="cache.pool" provider="cache.default_psr6_provider" clearer="cache.default_clearer"/>
+      <tag name="cache.pool" provider="cache.default_psr6_provider" clearer="cache.default_clearer" reset="reset"/>
       <argument></argument>
       <argument></argument>
       <argument>0</argument>
     </service>
     <service id="cache.adapter.redis" class="Symfony\Component\Cache\Adapter\RedisAdapter" public="false" abstract="true">
-      <tag name="cache.pool" provider="cache.default_redis_provider" clearer="cache.default_clearer"/>
+      <tag name="cache.pool" provider="cache.default_redis_provider" clearer="cache.default_clearer" reset="reset"/>
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument></argument>
@@ -1335,7 +1386,7 @@
       </call>
     </service>
     <service id="cache.adapter.array" class="Symfony\Component\Cache\Adapter\ArrayAdapter" public="false" abstract="true">
-      <tag name="cache.pool" clearer="cache.default_clearer"/>
+      <tag name="cache.pool" clearer="cache.default_clearer" reset="reset"/>
       <tag name="monolog.logger" channel="cache"/>
       <argument>0</argument>
       <call method="setLogger">
@@ -1760,7 +1811,7 @@
       <call method="setTranslator">
         <argument type="service">
           <service class="Symfony\Component\Validator\Util\LegacyTranslatorProxy">
-            <argument type="service" id="translator.data_collector"/>
+            <argument type="service" id="translator.data_collector" on-invalid="ignore"/>
           </service>
         </argument>
       </call>
@@ -2234,6 +2285,8 @@
           <argument>/home/jessica/Escritorio/back4/cenurbBack/src/Resources/VichUploaderBundle/translations</argument>
           <argument>/home/jessica/Escritorio/back4/cenurbBack/src/Resources/EasyAdminBundle/translations</argument>
           <argument>/home/jessica/Escritorio/back4/cenurbBack/src/Resources/FOSOAuthServerBundle/translations</argument>
+          <argument>/home/jessica/Escritorio/back4/cenurbBack/vendor/onurb/doctrine-yuml-bundle/lib/Onurb/Bundle/YumlBundle/Resources/translations</argument>
+          <argument>/home/jessica/Escritorio/back4/cenurbBack/src/Resources/OnurbYumlBundle/translations</argument>
           <argument>/home/jessica/Escritorio/back4/cenurbBack/src/Resources/translations</argument>
         </argument>
       </argument>
@@ -2503,6 +2556,9 @@
         <argument type="service" id="easyadmin.data_collector"/>
       </call>
       <call method="add">
+        <argument type="service" id="onurb_yuml.toolbar"/>
+      </call>
+      <call method="add">
         <argument type="service" id="data_collector.config"/>
       </call>
     </service>
@@ -2685,6 +2741,7 @@
     <service id="debug.event_dispatcher" class="Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher" public="false">
       <tag name="container.hot_path"/>
       <tag name="monolog.logger" channel="event"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="debug.event_dispatcher.inner"/>
       <argument type="service" id="debug.stopwatch"/>
       <argument type="service" id="monolog.logger.event" on-invalid="null"/>
@@ -4395,6 +4452,7 @@
     </service>
     <service id="cache.security_expression_language" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="false">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="cache.security_expression_language.recorder_inner"/>
     </service>
     <service id="security.authentication.listener.anonymous" class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
@@ -5498,6 +5556,14 @@
         <argument>!FOSOAuthServer</argument>
       </call>
       <call method="addPath">
+        <argument>/home/jessica/Escritorio/back4/cenurbBack/vendor/onurb/doctrine-yuml-bundle/lib/Onurb/Bundle/YumlBundle/Resources/views</argument>
+        <argument>OnurbYuml</argument>
+      </call>
+      <call method="addPath">
+        <argument>/home/jessica/Escritorio/back4/cenurbBack/vendor/onurb/doctrine-yuml-bundle/lib/Onurb/Bundle/YumlBundle/Resources/views</argument>
+        <argument>!OnurbYuml</argument>
+      </call>
+      <call method="addPath">
         <argument>/home/jessica/Escritorio/back4/cenurbBack/templates</argument>
       </call>
       <call method="addPath">
@@ -5702,6 +5768,14 @@
       <call method="addPath">
         <argument>/home/jessica/Escritorio/back4/cenurbBack/vendor/friendsofsymfony/oauth-server-bundle/Resources/views</argument>
         <argument>!FOSOAuthServer</argument>
+      </call>
+      <call method="addPath">
+        <argument>/home/jessica/Escritorio/back4/cenurbBack/vendor/onurb/doctrine-yuml-bundle/lib/Onurb/Bundle/YumlBundle/Resources/views</argument>
+        <argument>OnurbYuml</argument>
+      </call>
+      <call method="addPath">
+        <argument>/home/jessica/Escritorio/back4/cenurbBack/vendor/onurb/doctrine-yuml-bundle/lib/Onurb/Bundle/YumlBundle/Resources/views</argument>
+        <argument>!OnurbYuml</argument>
       </call>
       <call method="addPath">
         <argument>/home/jessica/Escritorio/back4/cenurbBack/templates</argument>
@@ -6159,8 +6233,9 @@
     <service id="api_platform.listener.view.write" class="ApiPlatform\Core\EventListener\WriteListener">
       <tag name="kernel.event_listener" event="kernel.view" method="onKernelView" priority="32"/>
       <argument type="service" id="debug.api_platform.data_persister"/>
-      <argument type="service" id="api_platform.iri_converter" on-invalid="null"/>
+      <argument type="service" id="api_platform.iri_converter"/>
       <argument type="service" id="api_platform.metadata.resource.metadata_factory.cached"/>
+      <argument type="service" id="api_platform.resource_class_resolver"/>
     </service>
     <service id="api_platform.listener.request.deserialize" class="ApiPlatform\Core\EventListener\DeserializeListener">
       <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" priority="2"/>
@@ -6230,14 +6305,17 @@
     </service>
     <service id="api_platform.cache.route_name_resolver" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="false">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="api_platform.cache.route_name_resolver.recorder_inner"/>
     </service>
     <service id="api_platform.cache.identifiers_extractor" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="false">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="api_platform.cache.identifiers_extractor.recorder_inner"/>
     </service>
     <service id="api_platform.cache.subresource_operation_factory" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="false">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="api_platform.cache.subresource_operation_factory.recorder_inner"/>
     </service>
     <service id="api_platform.cache_warmer.cache_pool_clearer" class="ApiPlatform\Core\Bridge\Symfony\Bundle\CacheWarmer\CachePoolClearerCacheWarmer" public="false">
@@ -6363,10 +6441,12 @@
     </service>
     <service id="api_platform.cache.metadata.resource" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="false">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="api_platform.cache.metadata.resource.recorder_inner"/>
     </service>
     <service id="api_platform.cache.metadata.property" class="Symfony\Component\Cache\Adapter\TraceableAdapter" public="false">
       <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="api_platform.cache.metadata.property.recorder_inner"/>
     </service>
     <service id="api_platform.metadata.extractor.xml" class="ApiPlatform\Core\Metadata\Extractor\XmlExtractor" public="false">
@@ -7289,6 +7369,18 @@
       <argument type="service" id="session" on-invalid="null"/>
       <argument>twig</argument>
     </service>
+    <service id="onurb_yuml.toolbar" class="Onurb\Bundle\YumlBundle\DataCollector\DoctrineYumlDataCollector">
+      <tag name="data_collector" template="@OnurbYuml/Toolbar/toolbar.html.twig" id="doctrine_yuml"/>
+    </service>
+    <service id="onurb_yuml.client" class="Onurb\Bundle\YumlBundle\Yuml\YumlClient" public="true">
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+    </service>
+    <service id="Onurb\Bundle\YumlBundle\Command\YumlCommand" class="Onurb\Bundle\YumlBundle\Command\YumlCommand">
+      <tag name="console.command" command="yuml:mappings"/>
+      <call method="setName">
+        <argument>yuml:mappings</argument>
+      </call>
+    </service>
     <service id="annotated_app_entity_territorio_api_platform_core_bridge_doctrine_orm_filter_search_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter" public="false" autowire="true">
       <tag name="api_platform.filter"/>
       <argument type="service" id="doctrine"/>
@@ -7468,6 +7560,7 @@
         <argument key="tipoEdificio">exact</argument>
         <argument key="municipioAsignado">exact</argument>
         <argument key="ccaa">exact</argument>
+        <argument key="temporada">exact</argument>
         <argument key="provincia">exact</argument>
         <argument key="municipio">exact</argument>
       </argument>
@@ -7478,7 +7571,6 @@
       <argument>null</argument>
       <argument type="service" id="monolog.logger" on-invalid="ignore"/>
       <argument type="collection">
-        <argument key="temporada">null</argument>
         <argument key="especie">null</argument>
       </argument>
     </service>
@@ -8037,26 +8129,6 @@
         <argument key="translation.loader.yml" type="service" id="translation.loader.yml"/>
       </argument>
     </service>
-    <service id=".service_locator.UwRI0uT" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="reverse_container" type="service" id="reverse_container" on-invalid="ignore_uninitialized"/>
-      </argument>
-    </service>
-    <service id=".service_locator.AoifO_3" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="initialized_session" type="service" id="session" on-invalid="ignore_uninitialized"/>
-        <argument key="session" type="service" id="session" on-invalid="ignore"/>
-      </argument>
-    </service>
-    <service id=".service_locator.jD4_ZG7" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="security.authorization_checker" type="service" id="security.authorization_checker"/>
-        <argument key="security.token_storage" type="service" id="security.token_storage"/>
-      </argument>
-    </service>
     <service id=".service_locator.CDOTD6." class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -8242,8 +8314,28 @@
       <argument type="service" id="api_platform.metadata.property.metadata_factory.cached"/>
       <argument type="service" id="api_platform.path_segment_name_generator.dash"/>
     </service>
+    <service id=".service_locator.UwRI0uT" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="reverse_container" type="service" id="reverse_container" on-invalid="ignore_uninitialized"/>
+      </argument>
+    </service>
+    <service id=".service_locator.AoifO_3" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="initialized_session" type="service" id="session" on-invalid="ignore_uninitialized"/>
+        <argument key="session" type="service" id="session" on-invalid="ignore"/>
+      </argument>
+    </service>
+    <service id=".service_locator.jD4_ZG7" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="security.authorization_checker" type="service" id="security.authorization_checker"/>
+        <argument key="security.token_storage" type="service" id="security.token_storage"/>
+      </argument>
+    </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
-      <argument type="service" id=".service_locator.UQkDxpc"/>
+      <argument type="service" id=".service_locator.4jyhMJV"/>
       <argument type="collection">
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -8300,6 +8392,7 @@
         <argument key="vich:mapping:debug-class">vich_uploader.command.mapping_debug_class</argument>
         <argument key="vich:mapping:debug">vich_uploader.command.mapping_debug</argument>
         <argument key="vich:mapping:list-classes">vich_uploader.command.mapping_list_classes</argument>
+        <argument key="yuml:mappings">Onurb\Bundle\YumlBundle\Command\YumlCommand</argument>
         <argument key="make:auth">maker.auto_command.make_auth</argument>
         <argument key="make:command">maker.auto_command.make_command</argument>
         <argument key="make:controller">maker.auto_command.make_controller</argument>
@@ -8320,9 +8413,10 @@
         <argument key="make:migration">maker.auto_command.make_migration</argument>
       </argument>
     </service>
-    <service id=".service_locator.UQkDxpc" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.4jyhMJV" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="Onurb\Bundle\YumlBundle\Command\YumlCommand" type="service" id="Onurb\Bundle\YumlBundle\Command\YumlCommand"/>
         <argument key="console.command.about" type="service" id="console.command.about"/>
         <argument key="console.command.assets_install" type="service" id="console.command.assets_install"/>
         <argument key="console.command.cache_clear" type="service" id="console.command.cache_clear"/>
@@ -8731,9 +8825,6 @@
     <service id="Symfony\Bundle\FrameworkBundle\Templating\EngineInterface" alias="templating.engine.delegating" public="false"/>
     <service id="twig.loader" alias="twig.loader.filesystem"/>
     <service id="api_platform.name_converter" alias="serializer.name_converter.metadata_aware"/>
-    <service id=".service_locator.Lg2InRH" alias="templating.engine.php.helpers_locator" public="false"/>
-    <service id=".service_locator.b1qho2Z" alias="api_platform.serializer_locator" public="false"/>
-    <service id=".service_locator.vXduHpj" alias="api_platform.filter_locator" public="false"/>
     <service id="validator" alias="debug.validator" public="true"/>
     <service id="api_platform.metadata.property.metadata_factory.property_info.inner" alias="api_platform.metadata.property.metadata_factory.xml" public="false"/>
     <service id="api_platform.metadata.property.metadata_factory.inherited.inner" alias="api_platform.metadata.property.metadata_factory.property_info" public="false"/>
@@ -8783,6 +8874,10 @@
     <service id="api_platform.metadata.resource.metadata_factory.cached.inner" alias="api_platform.metadata.resource.metadata_factory.operation" public="false"/>
     <service id="api_platform.metadata.property.name_collection_factory.cached.inner" alias="api_platform.metadata.property.name_collection_factory.yaml" public="false"/>
     <service id="api_platform.metadata.property.metadata_factory.cached.inner" alias="api_platform.metadata.property.metadata_factory.validator" public="false"/>
+    <service id=".service_locator.Lg2InRH" alias="templating.engine.php.helpers_locator" public="false"/>
+    <service id=".service_locator.b1qho2Z" alias="api_platform.serializer_locator" public="false"/>
+    <service id=".service_locator.vXduHpj" alias="api_platform.filter_locator" public="false"/>
+    <service id=".service_locator.VdFTLMb" alias=".service_locator.LtnrEkg" public="false"/>
     <service id="console.command.public_alias.doctrine_cache.contains_command" alias="doctrine_cache.contains_command" public="true"/>
     <service id="console.command.public_alias.doctrine_cache.delete_command" alias="doctrine_cache.delete_command" public="true"/>
     <service id="console.command.public_alias.doctrine_cache.flush_command" alias="doctrine_cache.flush_command" public="true"/>

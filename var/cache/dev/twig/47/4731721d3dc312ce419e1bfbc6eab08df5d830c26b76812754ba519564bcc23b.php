@@ -105,6 +105,6 @@ class __TwigTemplate_8287f70e09a821bb027a09f22834762bdff9b373c723e19d0344696e99a
         <img src=\"{{ asset(value) }}\">
     </div>
 {% endif %}
-", "EasyAdminBundle:default:field_image.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_image.html.twig");
+", "EasyAdminBundle:default:field_image.html.twig", "/home/jessica/Escritorio/back4/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_image.html.twig");
     }
 }

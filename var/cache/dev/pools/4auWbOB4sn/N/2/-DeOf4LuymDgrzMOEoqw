@@ -1,28 +1,28 @@
-<?php return [PHP_INT_MAX, static function () {
+<?php
 
-    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
-        $o = [
-            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Routing\\Annotation\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
-            clone $p['Symfony\\Component\\Routing\\Annotation\\Route'],
-        ],
-        null,
-        [
-            'Symfony\\Component\\Routing\\Annotation\\Route' => [
-                'path' => [
-                    '/',
-                    '/',
-                ],
-                'name' => [
-                    'easyadmin',
-                    'admin',
-                ],
+namespace Symfony\Component\VarExporter\Internal;
+
+return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
+    $o = [
+        clone (($p = &Registry::$prototypes)['Symfony\\Component\\Routing\\Annotation\\Route'] ?? Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+        clone $p['Symfony\\Component\\Routing\\Annotation\\Route'],
+    ],
+    null,
+    [
+        'Symfony\\Component\\Routing\\Annotation\\Route' => [
+            'path' => [
+                '/',
+                '/',
+            ],
+            'name' => [
+                'easyadmin',
+                'admin',
             ],
         ],
-        [
-            $o[0],
-            $o[1],
-        ],
-        []
-    );
-
-}];
+    ],
+    [
+        $o[0],
+        $o[1],
+    ],
+    []
+);

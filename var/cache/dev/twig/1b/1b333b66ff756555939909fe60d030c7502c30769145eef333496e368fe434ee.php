@@ -71,6 +71,6 @@ class __TwigTemplate_e085c93e80b5015f888a9a13e7874613e59c4c14f9bc90bafd888827019
         <?php echo \$view['form']->row(\$child) ?>
     <?php endif; ?>
 <?php endforeach; ?>
-", "FrameworkBundle:Form:form_rows.html.php", "/home/jessica/Escritorio/back2/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_rows.html.php");
+", "FrameworkBundle:Form:form_rows.html.php", "/home/jessica/Escritorio/back4/cenurbBack/vendor/symfony/framework-bundle/Resources/views/Form/form_rows.html.php");
     }
 }

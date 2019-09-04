@@ -82,6 +82,8 @@ return array(
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
     'Pagerfanta\\' => array($vendorDir . '/pagerfanta/pagerfanta/src/Pagerfanta'),
     'PackageVersions\\' => array($vendorDir . '/ocramius/package-versions/src/PackageVersions'),
+    'Onurb\\Doctrine\\ORMMetadataGrapher\\' => array($vendorDir . '/onurb/doctrine-metadata-grapher/lib/Onurb/Doctrine/ORMMetadataGrapher'),
+    'Onurb\\Bundle\\YumlBundle\\' => array($vendorDir . '/onurb/doctrine-yuml-bundle/lib/Onurb/Bundle/YumlBundle'),
     'OAuth2\\' => array($vendorDir . '/friendsofsymfony/oauth2-php/lib'),
     'Nelmio\\CorsBundle\\' => array($vendorDir . '/nelmio/cors-bundle'),
     'Negotiation\\' => array($vendorDir . '/willdurand/negotiation/src/Negotiation'),

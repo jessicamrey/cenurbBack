@@ -161,6 +161,6 @@ class __TwigTemplate_078a71c7bd9bd3de2529b9d4cccd6c0b0768efd6212b017ea732d8488ac
         </div>
     </section>
 {% endblock %}
-", "EasyAdminBundle:default:exception.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/exception.html.twig");
+", "EasyAdminBundle:default:exception.html.twig", "/home/jessica/Escritorio/back4/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/exception.html.twig");
     }
 }

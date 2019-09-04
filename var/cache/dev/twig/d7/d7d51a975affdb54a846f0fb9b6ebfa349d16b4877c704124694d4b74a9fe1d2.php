@@ -605,6 +605,6 @@ class __TwigTemplate_f8064c9ceb3ee1f18ef61819419b77ed362dc839fe5c66c31e732edde62
 {% endblock reset_row %}
 
 {% block form_group_class 'col-sm-10' %}
-", "EasyAdminBundle:form:bootstrap_3_horizontal_layout.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/form/bootstrap_3_horizontal_layout.html.twig");
+", "EasyAdminBundle:form:bootstrap_3_horizontal_layout.html.twig", "/home/jessica/Escritorio/back4/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/form/bootstrap_3_horizontal_layout.html.twig");
     }
 }

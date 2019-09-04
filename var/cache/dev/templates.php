@@ -181,4 +181,5 @@
   'FOSOAuthServerBundle:Authorize:authorize.html.twig' => __DIR__.'/../../../vendor/friendsofsymfony/oauth-server-bundle/Resources/views/Authorize/authorize.html.twig',
   'FOSOAuthServerBundle:Authorize:authorize_content.html.twig' => __DIR__.'/../../../vendor/friendsofsymfony/oauth-server-bundle/Resources/views/Authorize/authorize_content.html.twig',
   'FOSOAuthServerBundle::form.html.twig' => __DIR__.'/../../../vendor/friendsofsymfony/oauth-server-bundle/Resources/views/form.html.twig',
+  'OnurbYumlBundle:Toolbar:toolbar.html.twig' => __DIR__.'/../../../vendor/onurb/doctrine-yuml-bundle/lib/Onurb/Bundle/YumlBundle/Resources/views/Toolbar/toolbar.html.twig',
 );

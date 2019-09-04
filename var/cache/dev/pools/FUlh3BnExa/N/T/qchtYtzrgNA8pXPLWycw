@@ -1,91 +1,67 @@
-<?php return [PHP_INT_MAX, static function () {
+<?php
 
-    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
-        $o = [
-            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata')),
-        ],
-        null,
-        [
-            'ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata' => [
-                'shortName' => [
-                    'VisitasTerritorio',
-                ],
-                'description' => [
-                    '',
-                ],
-                'itemOperations' => [
-                    [
-                        'get' => [
-                            'method' => 'GET',
-                            'route_name' => 'api_get_visitaTerr',
-                            'input' => null,
-                            'output' => null,
-                        ],
-                        'getNormal' => [
-                            'method' => 'GET',
-                            'normalization_context' => [
-                                'groups' => [
-                                    'getVisitaTerr',
-                                ],
+namespace Symfony\Component\VarExporter\Internal;
+
+return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
+    $o = [
+        clone (Registry::$prototypes['ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata'] ?? Registry::p('ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata')),
+    ],
+    null,
+    [
+        'ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata' => [
+            'shortName' => [
+                'VisitasTerritorio',
+            ],
+            'description' => [
+                '',
+            ],
+            'itemOperations' => [
+                [
+                    'get' => [
+                        'method' => 'GET',
+                        'route_name' => 'api_get_visitaTerr',
+                        'input' => null,
+                        'output' => null,
+                    ],
+                    'getNormal' => [
+                        'method' => 'GET',
+                        'normalization_context' => [
+                            'groups' => [
+                                'getVisitaTerr',
                             ],
-                            'denormalization_context' => [
-                                'groups' => [
-                                    'getVisitaTerr',
-                                ],
+                        ],
+                        'denormalization_context' => [
+                            'groups' => [
+                                'getVisitaTerr',
                             ],
-                            'input' => null,
-                            'output' => null,
                         ],
-                        'put' => [
-                            'method' => 'PUT',
-                            'route_name' => 'api_put_visitaTerr',
-                            'input' => null,
-                            'output' => null,
-                        ],
-                        'delete' => [
-                            'method' => 'DELETE',
-                            'route_name' => 'api_del_visitaTerr',
-                            'input' => null,
-                            'output' => null,
-                        ],
+                        'input' => null,
+                        'output' => null,
+                    ],
+                    'put' => [
+                        'method' => 'PUT',
+                        'route_name' => 'api_put_visitaTerr',
+                        'input' => null,
+                        'output' => null,
+                    ],
+                    'delete' => [
+                        'method' => 'DELETE',
+                        'route_name' => 'api_del_visitaTerr',
+                        'input' => null,
+                        'output' => null,
                     ],
                 ],
-                'collectionOperations' => [
-                    [
-                        'post' => [
-                            'method' => 'POST',
-                            'input' => null,
-                            'output' => null,
-                        ],
-                        'get' => [
-                            'method' => 'GET',
-                            'route_name' => 'api_get_visitasTerr',
-                            'normalization_context' => [
-                                'groups' => [
-                                    'visitaTerr',
-                                ],
-                            ],
-                            'denormalization_context' => [
-                                'groups' => [
-                                    'visitaTerr',
-                                ],
-                            ],
-                            'input' => null,
-                            'output' => null,
-                        ],
+            ],
+            'collectionOperations' => [
+                [
+                    'post' => [
+                        'method' => 'POST',
+                        'input' => null,
+                        'output' => null,
                     ],
-                ],
-                'graphql' => [
-                    [
-                        'query' => [],
-                        'delete' => [],
-                        'update' => [],
-                        'create' => [],
-                    ],
-                ],
-                'attributes' => [
-                    [
-                        'pagination_enabled' => false,
+                    'get' => [
+                        'method' => 'GET',
+                        'route_name' => 'api_get_visitasTerr',
                         'normalization_context' => [
                             'groups' => [
                                 'visitaTerr',
@@ -98,17 +74,41 @@
                         ],
                         'input' => null,
                         'output' => null,
-                        'filters' => [
-                            'annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_date_filter',
-                            'annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter',
-                            'annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                    ],
+                ],
+            ],
+            'graphql' => [
+                [
+                    'query' => [],
+                    'delete' => [],
+                    'update' => [],
+                    'create' => [],
+                ],
+            ],
+            'attributes' => [
+                [
+                    'pagination_enabled' => false,
+                    'normalization_context' => [
+                        'groups' => [
+                            'visitaTerr',
                         ],
+                    ],
+                    'denormalization_context' => [
+                        'groups' => [
+                            'visitaTerr',
+                        ],
+                    ],
+                    'input' => null,
+                    'output' => null,
+                    'filters' => [
+                        'annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_date_filter',
+                        'annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_numeric_filter',
+                        'annotated_app_entity_visitas_territorio_api_platform_core_bridge_doctrine_orm_filter_search_filter',
                     ],
                 ],
             ],
         ],
-        $o[0],
-        []
-    );
-
-}];
+    ],
+    $o[0],
+    []
+);

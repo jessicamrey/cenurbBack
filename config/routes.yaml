@@ -159,6 +159,10 @@ api_get_favoritosCol:
         _api_resource_class: App\Entity\Colonia
         _api_collection_operation_name: 'getFav'
         
+doctrine_yuml:
+        resource: "@OnurbYumlBundle/Resources/config/routing.yml"
+        prefix:   /my_prefix/
+        
 api_new_visitaCol:
     path: '/api/colonias/{id}/visitas'
     methods: ['POST']

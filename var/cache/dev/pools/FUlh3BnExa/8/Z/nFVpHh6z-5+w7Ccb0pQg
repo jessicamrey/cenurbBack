@@ -1,80 +1,80 @@
-<?php return [PHP_INT_MAX, static function () {
+<?php
 
-    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
-        $o = [
-            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata')),
-        ],
-        null,
-        [
-            'ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata' => [
-                'shortName' => [
-                    'OtrasEspecies',
-                ],
-                'description' => [
-                    '',
-                ],
-                'itemOperations' => [
-                    [
-                        'get' => [
-                            'method' => 'GET',
-                            'input' => null,
-                            'output' => null,
-                        ],
-                        'put' => [
-                            'method' => 'PUT',
-                            'input' => null,
-                            'output' => null,
-                        ],
-                        'delete' => [
-                            'method' => 'DELETE',
-                            'access_control' => 'is_granted(\'ROLE_ADMIN\')',
-                            'input' => null,
-                            'output' => null,
-                        ],
-                    ],
-                ],
-                'collectionOperations' => [
-                    [
-                        'get' => [
-                            'method' => 'GET',
-                            'input' => null,
-                            'output' => null,
-                        ],
-                    ],
-                ],
-                'graphql' => [
-                    [
-                        'query' => [],
-                        'delete' => [],
-                        'update' => [],
-                        'create' => [],
-                    ],
-                ],
-                'attributes' => [
-                    [
-                        'pagination_enabled' => false,
-                        'normalization_context' => [
-                            'groups' => [
-                                'colonia',
-                            ],
-                        ],
-                        'denormalization_context' => [
-                            'groups' => [
-                                'colonia',
-                            ],
-                        ],
+namespace Symfony\Component\VarExporter\Internal;
+
+return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
+    $o = [
+        clone (Registry::$prototypes['ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata'] ?? Registry::p('ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata')),
+    ],
+    null,
+    [
+        'ApiPlatform\\Core\\Metadata\\Resource\\ResourceMetadata' => [
+            'shortName' => [
+                'OtrasEspecies',
+            ],
+            'description' => [
+                '',
+            ],
+            'itemOperations' => [
+                [
+                    'get' => [
+                        'method' => 'GET',
                         'input' => null,
                         'output' => null,
-                        'filters' => [
-                            'annotated_app_entity_otras_especies_api_platform_core_bridge_doctrine_orm_filter_numeric_filter',
-                            'annotated_app_entity_otras_especies_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                    ],
+                    'put' => [
+                        'method' => 'PUT',
+                        'input' => null,
+                        'output' => null,
+                    ],
+                    'delete' => [
+                        'method' => 'DELETE',
+                        'access_control' => 'is_granted(\'ROLE_ADMIN\')',
+                        'input' => null,
+                        'output' => null,
+                    ],
+                ],
+            ],
+            'collectionOperations' => [
+                [
+                    'get' => [
+                        'method' => 'GET',
+                        'input' => null,
+                        'output' => null,
+                    ],
+                ],
+            ],
+            'graphql' => [
+                [
+                    'query' => [],
+                    'delete' => [],
+                    'update' => [],
+                    'create' => [],
+                ],
+            ],
+            'attributes' => [
+                [
+                    'pagination_enabled' => false,
+                    'normalization_context' => [
+                        'groups' => [
+                            'colonia',
                         ],
+                    ],
+                    'denormalization_context' => [
+                        'groups' => [
+                            'colonia',
+                        ],
+                    ],
+                    'input' => null,
+                    'output' => null,
+                    'filters' => [
+                        'annotated_app_entity_otras_especies_api_platform_core_bridge_doctrine_orm_filter_numeric_filter',
+                        'annotated_app_entity_otras_especies_api_platform_core_bridge_doctrine_orm_filter_search_filter',
                     ],
                 ],
             ],
         ],
-        $o[0],
-        []
-    );
-
-}];
+    ],
+    $o[0],
+    []
+);

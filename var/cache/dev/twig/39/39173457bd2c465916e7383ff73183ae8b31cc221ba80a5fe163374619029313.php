@@ -74,6 +74,6 @@ class __TwigTemplate_b9e596204129b50190a2fd8dcff46bed2aaaefeb0e805ffb524966fd7ba
     public function getSourceContext()
     {
         return new Source("<time datetime=\"{{ value|date('c') }}\" title=\"{{ value|date('r') }}\">{{ value|date(field_options.format) }}</time>
-", "EasyAdminBundle:default:field_datetimetz.html.twig", "/home/jessica/Escritorio/back2/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_datetimetz.html.twig");
+", "EasyAdminBundle:default:field_datetimetz.html.twig", "/home/jessica/Escritorio/back4/cenurbBack/vendor/easycorp/easyadmin-bundle/src/Resources/views/default/field_datetimetz.html.twig");
     }
 }
